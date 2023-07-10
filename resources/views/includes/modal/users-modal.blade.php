@@ -86,10 +86,13 @@
                                 <div class="form-group">
                                     <label>Employee Type</label>
                                     <select class="select-employee-type"  name="employee_type" id="employee_type" required>
-                                        <option value="0" selected>Select Type</option>
-                                        <option value="jobholder" >Jobholder</option>
+                                        <option value="" selected disabled>Select Type</option>
+                                        <option value="permanent" >Permanent</option>
+                                        <option value="probation" >Probation</option>
+                                        <option value="contract" >Contract</option>
                                         <option value="outsourcing" >Outsourcing</option>
-                                        <option value="parttime" >Part-time</option>
+                                        <option value="hl" >Harian Lepas</option>
+                                        <option value="magang" >Magang</option>
                                         <option value="freelancers" >Freelancers</option>
                                     </select>
 
@@ -113,7 +116,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="col-sm-6" id="section-doe" 
+                            <div class="col-sm-6" id="section-doe"
                             {{-- style="display: none" --}}
                             >
                                 <div class="form-group">

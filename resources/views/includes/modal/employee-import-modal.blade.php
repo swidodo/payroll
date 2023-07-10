@@ -16,7 +16,6 @@
                 </div>
                 <div class="mt-4">
                     <a href="{{URL::to('public/file/template-excel-employee/template-excel-employee.csv')}}"><p>Download Format Import Data</p></a>
-                    Note : import harus tanpa format header
                 </div>
             </div>
         </div>

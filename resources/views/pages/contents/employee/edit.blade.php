@@ -118,21 +118,18 @@
                                     <div class="form-group col-md-6">
                                         <label for="marital_status" class="form-label">Marital Status</label>
                                         <select class="form-control select"  id="marital_status" name="marital_status">
-                                            <option value="0">Select Status</option>
-                                            <option value="single">Single</option>
-                                            <option value="married">Married</option>
-                                            <option value="married">Widow</option>
-                                            <option value="married">Widower</option>
+                                            <option value="single" {{ ($employee->marital_status == "single") ? 'selected':''}}>Single</option>
+                                            <option value="married" {{ ($employee->marital_status == "married") ? 'selected':''}}>Married</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="marital_status" class="form-label">Status</label>
                                         <select class="form-control select"  id="status-employee-edit" name="employee_status">
                                             <option value="0">Select Status</option>
-                                            <option value="active">Active</option>
+                                            <option value="active" {{ ($employee->status == "active") ? 'selected' : ''}}>Active</option>
                                             @if ($currentDate != $employee->company_doj )
-                                                <option value="fired">Fired</option>
-                                                <option value="pension">Pension</option>
+                                                <option value="fired" {{ ($employee->status == "fired") ? 'selected' : ''}}>Fired</option>
+                                                <option value="pension" {{ ($employee->status == "pension") ? 'selected' : ''}}>Pension</option>
                                            @endif
                                         </select>
                                     </div>
@@ -155,9 +152,22 @@
                                             <label for="employee_id" class="form-label">Employee ID</label>
                                             <input class="form-control" disabled="disabled" name="employee_id" type="text" value="{{$employeesId ?? ''}}" id="employee_id">
                                         </div>
-                                        <div class="form-group col-md-12">
+                                        <div class="form-group col-md-6">
                                             <label for="employee_id" class="form-label">Employee Number</label>
                                             <input class="form-control" name="no_employee" type="text" value="{{$employee->no_employee ?? ''}}" id="employee_id">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="form-label">Employee Type</label>
+                                            <select class="form-control select"  name="employee_type" id="employee_type" required>
+                                                <option value="" selected disabled>Select Type</option>
+                                                <option value="permanent" {{($employee->employee_type =="permanent") ? 'selected' : ''}}>Permanent</option>
+                                                <option value="probation" {{($employee->employee_type =="probation") ? 'selected' : ''}}>Probation</option>
+                                                <option value="contract" {{($employee->employee_type =="contract") ? 'selected' : ''}}>Contract</option>
+                                                <option value="outsourcing" {{($employee->employee_type =="outsourcing") ? 'selected' : ''}}>Outsourcing</option>
+                                                <option value="hl" {{($employee->employee_type =="hl") ? 'selected' : ''}}>Past Daily</option>
+                                                <option value="magang" {{($employee->employee_type =="magang") ? 'selected' : ''}}>Magang</option>
+                                                <option value="freelancers" {{($employee->employee_type =="freelancers") ? 'selected' : ''}}>Freelancers</option>
+                                            </select>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="company_doj" class="form-label">Company Date Of Joining</label>

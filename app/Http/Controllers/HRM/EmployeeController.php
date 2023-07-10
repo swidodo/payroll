@@ -47,8 +47,6 @@ class EmployeeController extends Controller
             } else {
                 $employees = Employee::where('created_by', Auth::user()->creatorId())->get();
             }
-
-
             return view('pages.contents.employee.index', compact('employees'));
         } else {
             return redirect()->route('employees.index')->with('error', __('Permission denied.'));
@@ -710,6 +708,9 @@ class EmployeeController extends Controller
                         $user->email    = $row[10];
                         $user->password = 'phadir123';//default
                         $user->type     = 'user'; //default
+                        $doj            = ($row[14] != "" ) ? $row[14] : '0000-00-00';
+                        $doe            = ($row[15] != "" ) ? $row[15] : '0000-00-00';
+                        $out_date       = ($row[22] != "" ) ? $row[22] : '0000-00-00';
                         if($user->save()){
                             $employee = [
                                 "name"                  =>$row[0],
@@ -724,16 +725,16 @@ class EmployeeController extends Controller
                                 "address"               =>$row[9],
                                 "email"                 =>$row[10],
                                 "department_id"         =>$row[12],//belum diget
-                                "designation_id"        =>$row[13],//belum diget
-                                "company_doj"           =>$row[14],
-                                "company_doe"           =>$row[15],
+                                "no_employee"           =>$row[13],//belum diget
+                                "company_doj"           => $doj,
+                                "company_doe"           => $doe,
                                 "account_holder_name"   =>$row[16],
                                 "account_number"        =>$row[17],
                                 "bank_name"             =>$row[18],
                                 "bank_identifier_code"  =>$row[19],
                                 "branch_location"       =>$row[20],
                                 "employee_type"         =>$row[21],//value harus sama dengan optionnya
-                                "out_date"              =>$row[22],
+                                "out_date"              =>$out_date,
                                 "status"                =>$row[23],
                                 "user_id"               =>$user->id,
                                 "branch_id"             =>$branchId->id,

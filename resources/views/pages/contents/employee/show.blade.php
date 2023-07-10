@@ -129,7 +129,7 @@
                         <h4>Company Detail</h4>
                         <hr>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="info text-sm">
                                     <strong class="font-bold">Branch : </strong>
                                     <span>{{$employee->branch->name ?? ''}}</span>
@@ -139,6 +139,12 @@
                                 <div class="info text-sm">
                                     <strong class="font-bold">Employee Number : </strong>
                                     <span>{{$employee->no_employee ?? ''}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info text-sm">
+                                    <strong class="font-bold">Employee Type : </strong>
+                                    <span>{{$employee->employee_type ?? ''}}</span>
                                 </div>
                             </div>
                             <div class="col-md-6">

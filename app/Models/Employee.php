@@ -23,6 +23,7 @@ class Employee extends Model
         'email',
         'password',
         'employee_id',
+        'no_employee',
         'branch_id',
         'department_id',
         'designation_id',
