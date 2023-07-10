@@ -137,20 +137,26 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="info text-sm">
+                                    <strong class="font-bold">Employee Number : </strong>
+                                    <span>{{$employee->no_employee ?? ''}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info text-sm">
                                     <strong class="font-bold">Date Of Joining :</strong>
                                     <span>{{$employee->company_doj ? date("F jS, Y", strtotime($employee->company_doj)) : ''}}</span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="info text-sm">
-                                    <strong class="font-bold">Date End :</strong>
-                                    <span>{{$employee->company_doe ? date("F jS, Y", strtotime($employee->company_doe)) : ''}}</span>
+                                    <strong class="font-bold">Leave Type :</strong>
+                                    <span>{{ucwords($employee->leave_type) ?? ''}}</span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="info text-sm">
-                                    <strong class="font-bold">Leave Type :</strong>
-                                    <span>{{ucwords($employee->leave_type) ?? ''}}</span>
+                                    <strong class="font-bold">Date End :</strong>
+                                    <span>{{$employee->company_doe ? date("F jS, Y", strtotime($employee->company_doe)) : ''}}</span>
                                 </div>
                             </div>
                             <div class="col-md-6">

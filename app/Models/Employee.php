@@ -28,6 +28,7 @@ class Employee extends Model
         'designation_id',
         'company_doj',
         'company_doe',
+        'no_employee',
         'documents',
         'account_holder_name',
         'account_number',

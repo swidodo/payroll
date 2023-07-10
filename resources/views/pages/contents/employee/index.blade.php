@@ -38,6 +38,7 @@
                         <thead>
                             <tr>
                                 <th>Employee ID</th>
+                                <th>Employee Number</th>
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Phone</th>
@@ -62,6 +63,7 @@
                                         @endcan
                                     </h2>
                                 </td>
+                                <td class="font-style">{{ $employee->no_employee ?? '' }}</td>
                                 <td class="font-style">{{ $employee->name ?? '' }}</td>
                                 <td>{{ $employee->email ?? '' }}</td>
                                 <td>{{ $employee->phone ?? '' }}</td>

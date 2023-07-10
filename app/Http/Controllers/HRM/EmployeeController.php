@@ -231,6 +231,7 @@ class EmployeeController extends Controller
             $request['account_number'] = $request->account_number == 0 ? null : $request->account_number;
             $request['religion'] = $request->religion == 0 ? null : $request->religion;
             $request['status'] = $request->employee_status == 0 ? null : $request->employee_status;
+            $request['no_employee'] = $request->no_employee == 0 ? null : $request->no_employee;
 
             if ($request['status'] == 'fired' || $request['status'] == 'pension' || $request['status'] == 'resign') {
                 $request['is_active'] = 0;
