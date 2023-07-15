@@ -19,6 +19,7 @@
                                     <option>Promotion</option>
                                     <option>Rotation</option>
                                     <option>Mutation</option>
+                                    <option>Demotion</option>
                                 </select>
                                 <label>Employee Name</label>
                                 <select name="employee_id" class="form-control mb-3" id="employeeId">
