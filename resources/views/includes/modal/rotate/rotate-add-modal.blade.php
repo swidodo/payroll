@@ -22,25 +22,25 @@
                                     <option>Demotion</option>
                                 </select>
                                 <label>Employee Name</label>
-                                <select name="employee_id" class="form-control mb-3" id="employeeId">
+                                <select name="employee_id" class="form-control form-select mb-3" id="employeeId">
                                 </select>
                                 <label>Job Level</label>
-                                <input type="text" name="i" class="form-control mb-3">
+                                <input type="text" name="job_level" class="form-control mb-3">
                             </div>
                             <div class="col-md-6">
                                 <label>Central Office</label>
-                                <input type="text" id="company" class="form-control mb-3" disable>
+                                <input type="text" id="company" class="form-control form-select mb-3" disable>
                                 <input type="hidden" name="company_id" id="companyId">
                                 <input type="hidden" name="company_name" id="companyName">
                                 <label>Branch Name</label>
-                                <input type="text" id="branch" class="form-control mb-3" disable>
+                                <input type="text" id="branch" class="form-control form-select mb-3" disable>
                                 <input type="hidden" name="branch_id" id="branchId">
                                 <input type="hidden" name="branch_name" id="branchName">
                                 <label>From Department</label>
-                                <select name="from_department" class="form-control mb-3" id="fromDepartment">
+                                <select name="from_department" class="form-control form-select mb-3" id="fromDepartment">
                                 </select>
                                 <label>To Department</label>
-                                <select name="to_department" class="form-control mb-3" id="toDepartment">
+                                <select name="to_department" class="form-control form-select mb-3" id="toDepartment">
                                     <option></option>
                                 </select>
                             </div>

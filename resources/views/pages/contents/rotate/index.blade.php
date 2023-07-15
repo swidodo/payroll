@@ -37,9 +37,10 @@
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered table-hover" id="tblRotation">
                         <thead>
-                            <th>Rotate ID</th>
+                            <th>No</th>
                             <th>Rotation Date</th>
                             <th>Employee Name</th>
+                            <th>Job Level</th>
                             <th>From Department</th>
                             <th>To Department</th>
                             <th>Company Office</th>
@@ -75,8 +76,8 @@
                     },
                 columns: [
                         {
-                            data: 'rotate_id',
-                            name: 'rotate_id'
+                            data: 'id',
+                            name: 'id'
                         },
                         {
                             data: 'rotate_date',
@@ -85,6 +86,10 @@
                         {
                             data: 'employee_name',
                             name : 'employee_name'
+                        },
+                        {
+                            data: 'job_level',
+                            name : 'job_level'
                         },
                         {
                             data: 'from_department_name',
@@ -182,7 +187,58 @@
         })
         $(document).on('click','.edit_rotate',function(){
            var id = $(this).attr('data-id');
-           $('#editRotate').modal('show')
+           $.ajax({
+                url : 'edit-data-rotation',
+                type : 'post',
+                data : {id : id},
+                dataType : 'json',
+                beforeSend : function(){
+
+                },
+                success : function(respon){
+                    $('#editRotate').modal('show')
+                    $('#editRotationDate').val(respon.rotation.rotate_date);
+                    $('#editCompany').val(respon.company[0].name);
+                    $('#editCompanyName').val(respon.company[0].name);
+                    $('#editCompanyId').val(respon.company[0].id);
+                    $('#editBranch').val(respon.branch[0].name);
+                    $('#editBranchName').val(respon.branch[0].name);
+                    $('#editBranchId').val(respon.branch[0].id);
+                    $('#editjobLevel').val(respon.rotation.job_level);
+                    $('#id').val(respon.rotation.id);
+                   var html =`<option value="`+respon.rotation.from_department_id+`" selected>`+ respon.rotation.from_department_name +`</option>`;
+                   var html2=`<option value="`+respon.rotation.to_department_id+`" selected>`+ respon.rotation.to_department_name+`</option>`;
+                   $.each(respon.department,function(key,val){
+                        html2 += `<option value="`+val.id+`">`+val.department_name+`</option>`;
+                   })
+                   $('#editFromDepartment').html(html);
+                   $('#editToDepartment').html(html2);
+                   var emp = `<option value="`+respon.rotation.employee_id+`" selected>`+ respon.rotation.employee_name +`</option>`;
+                   $('#editEmployeeId').html(emp);
+                },
+                error : function(){
+                    alert('Terjadi kesalahan, silahkan coba kembali !')
+                }
+           })
+        })
+        $('#editFormRotation').on('submit',function(e){
+            e.preventDefault();
+            var data = $('#editFormRotation').serialize();
+            console.log(data);
+            $.ajax({
+                url : 'update-data-rotation',
+                type : 'post',
+                data : data,
+                dataType : 'json',
+                beforeSend : function(){
+
+                },
+                success : function(){
+                    $('#editRotate').modal('hide')
+                    table.ajax.reload(null,true);
+                }
+
+            })
         })
     })
 </script>
