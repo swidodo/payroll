@@ -94,7 +94,8 @@ class RotateController extends Controller
     {
         $user = Auth::user();
         $id = $request->id;
-        $branch = Branch::select('company_id','id','name')
+        $branch = DB::table('branches')
+                    ->select('company_id','id','name')
                     ->where('id',$user->branch_id)
                     ->get();
         $company = DB::table('companies')
@@ -224,7 +225,8 @@ class RotateController extends Controller
     }
     public function get_branch(){
         $user = Auth::user();
-        $branch = Branch::select('company_id','id','name')
+        $branch =  DB::table('branches')
+                    ->select('company_id','id','name')
                     ->where('id',$user->branch_id)
                     ->get();
         $company = DB::table('companies')
