@@ -1,6 +1,6 @@
 @extends('pages.dashboard')
 
-@section('title', 'Denda')
+@section('title', 'Rotation')
 
 @section('dashboard-content')
 @push('addon-style')
