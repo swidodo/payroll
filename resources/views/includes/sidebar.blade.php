@@ -307,6 +307,13 @@
                     </li>
                 @endcanany
 
+                @canany(['manage employee', 'view employee', 'edit employee', 'delete employee', 'manage employee profile', 'show employee profile'])
+                    <li class=" {{(request()->routeIs('employees*')) ? 'active' : ''}}">
+                        <a class=" {{(request()->routeIs('rotation*')) ? 'active' : ''}}" href="{{route('rotation-employee')}}"><i class="la la-users"></i> <span>Rotation Employees</span>
+                        </a>
+                    </li>
+                @endcanany
+
 
                 @canany(['manage on duty', 'create on duty', 'view history leave', 'manage leave', 'create leave', 'manage overtime', 'create overtime', 'manage request shift schedule', 'create request shift schedule', 'manage attendance', 'create attendance', 'manage timesheet', 'create timesheet', 'show shift schedule', 'manage dayoff', 'create dayoff',  'show employee request', 'manage company holiday', 'create company holiday'])
                     <li class="submenu">

@@ -181,8 +181,9 @@
                                             <label for="leave_type" class="form-label">Leave Type</label>
                                             <select class="form-control select"  id="leave_type" name="leave_type">
                                                 <option value="0">Select Type</option>
-                                                <option value="monthly">Monthly</option>
-                                                <option value="annual">Annual</option>
+                                                {{-- <option value="monthly">Monthly</option> --}}
+                                                <option value="PS">Annual Proreta Start</option>
+                                                <option value="PE">Annual Proreta End</option>
                                             </select>
                                         </div>
                                         <div class="form-group col-md-6">

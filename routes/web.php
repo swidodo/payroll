@@ -39,6 +39,9 @@ use App\Http\Controllers\PaySlipController;
 use App\Http\Controllers\PPH21Controller;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SetPTKPController;
+// rotate
+use App\Http\Controllers\RotateController;
+use App\Http\Controllers\CompanyController;
 // report
 use App\Http\Controllers\HRM\EmployeeReportController;
 use App\Http\Controllers\Report\ReportRecapAttendanceController;
@@ -233,6 +236,12 @@ Route::group(['middleware' => 'auth'], function () {
                 ->name('employee.request.approve');
         Route::post('employee-request/reject/{id}', [EmployeeController::class, 'rejectRequest'])
                 ->name('employee.request.reject');
+
+        // Rotation employee
+        Route::get('rotation-employee',[RotateController::class,'index'])->name('rotation-employee');
+        Route::get('get-rotation-employee',[RotateController::class,'get_data_rotate'])->name('get-rotation-employee');
+        Route::get('get-branch-select',[RotateController::class,'get_branch'])->name('get-branch-select');
+        Route::post('save-data-rotation',[RotateController::class,'save_rotation'])->name('save-data-rotation');
 
         // Reporting
         Route::get('reporting-attandance-view',[ReportRecapAttendanceController::class,'index'])->name('reporting-attandance');
