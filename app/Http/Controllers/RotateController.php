@@ -237,7 +237,8 @@ class RotateController extends Controller
                          ->select('id','department_name')
                          ->where('branch_id',$user->branch_id)
                          ->get();
-        $employee = Employee::select('id','name')
+        $employee = DB::table('employees')
+                        ->select('id','name')
                         ->where('branch_id',$user->branch_id)
                         ->get();
         $data = [
