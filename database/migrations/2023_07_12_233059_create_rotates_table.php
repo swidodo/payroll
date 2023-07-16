@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('rotates', function (Blueprint $table) {
             $table->id();
             $table->integer('rotate_id');
-            $table->integer('employee_id');
+            $table->bigIncrements('employee_id');
             $table->integer('company_id');
             $table->integer('branch_id');
             $table->integer('from_department_id');

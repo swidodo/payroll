@@ -5,11 +5,11 @@ use App\models\Rotate;
 use App\models\Employee;
 use App\models\Branch;
 // use App\models\Company;
-use Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use DataTables;
+use Response;
 
 class RotateController extends Controller
 {
@@ -170,46 +170,6 @@ class RotateController extends Controller
         }catch (Exception $e) {
             DB::rollBack();
         }
-        // $branch = Branch::select('company_id','id','name')
-        //             ->where('id',$user->branch_id)
-        //             ->get();
-        //     $company = DB::table('companies')
-        //             ->select('id','name')
-        //             ->where('id',$branch[0]->company_id)
-        //             ->get();
-        //     $department = DB::table('departments')
-        //                 ->select('id','department_name')
-        //                 ->where('branch_id',$user->branch_id)
-        //                 ->get();
-        //     $employee = Employee::select('id','name')
-        //                 ->where('branch_id',$user->branch_id)
-        //                 ->get();
-
-        // try {
-        //     $data = [
-        //         'employee_id'           => $request->employee_id,
-        //         'branch_id'             => $request->branch_id,
-        //         'company_id'            => $request->company_id,
-        //         'from_department_id'    => $request->from_department_id,
-        //         'to_department_id'      => $request->to_department_id,
-        //         'employee_name'         => $employee_name,
-        //         'branch_name'           => $branch_name,
-        //         'from_department_name'  => $from_name,
-        //         'to_department_name'    => $to_name,
-        //         'type_rotate'           => $request->type_rotate,
-        //         'updated_at'            => $update,
-        //     ];
-        //     Rotate::insert($data);
-        //     $response = [
-        //         'status' => 'success',
-        //         'msg'    => 'Insert data success !',
-        //     ];
-        //     return reponse()->json($response);
-        // }
-        // catch (Exception $e) {
-
-        // }
-
     }
     public function destroy($id)
     {

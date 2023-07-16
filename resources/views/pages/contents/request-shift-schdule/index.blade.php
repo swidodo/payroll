@@ -1,6 +1,6 @@
 @extends('pages.dashboard')
 
-@section('title', 'Request Shift Schedule')
+@section('title', 'Request Schedule')
 
 @section('dashboard-content')
 <div class="page-wrapper">
@@ -12,10 +12,10 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Request Shift Schedule</h3>
+                    <h3 class="page-title">Request Schedule</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Request Shift Schedule</li>
+                        <li class="breadcrumb-item active">Request Schedule</li>
                     </ul>
                 </div>
                 @can('create request shift schedule')

@@ -1,6 +1,6 @@
 @extends('pages.dashboard')
 
-@section('title', 'Create Shift Type')
+@section('title', 'Edit Shcedule')
 
 @section('dashboard-content')
 <div class="page-wrapper">
@@ -12,10 +12,10 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Request Shift Schedule</h3>
+                    <h3 class="page-title">Request Schedule</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active"><a href="{{route('request-shift-schedule.index')}}">Request Shift Schedule</a></li>
+                        <li class="breadcrumb-item active"><a href="{{route('request-shift-schedule.index')}}">Request Schedule</a></li>
                         <li class="breadcrumb-item active">Edit</li>
                     </ul>
                 </div>
@@ -37,7 +37,7 @@
                 <div class="card">
                     <div class="card-header p-3">
                         <div class="d-flex align-items-center">
-                            <h5 class="card-title mb-0" id="title">Edit Request Shift Schedule</h5>
+                            <h5 class="card-title mb-0" id="title">Edit Request Schedule</h5>
                         </div>
                     </div>
                     <div class="card-body">
@@ -85,7 +85,7 @@
                                         @endif
                                     </div>
                                     @if (count($leaveApprovals) > 0)
-                                    
+
                                     <div class="form-group" id="approver">
                                         @php
                                             $show = false;
@@ -139,7 +139,7 @@
                                             <div class="form-group mt-3" id="rejected-reason" style="display: none">
                                                 <label for="rejected_reason" class="form-label">Rejected Reason</label>
                                                 <textarea class="form-control" placeholder="Rejected Reason" name="rejected_reason" cols="30" rows="3" id="rejected_reason_edit">{{$reqShiftSchedule->rejected_reason}}</textarea>
-        
+
                                                 <div class="mt-3">
                                                     <label for="formFile" class="form-label">Attachment</label>
                                                     <input class="form-control" type="file" id="formFile" name="attachment_reject">
@@ -180,9 +180,9 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-group col-md-6">
-                                                                            <label for="phone" class="form-label">Shift </label><span class="text-danger pl-1"> *</span>
+                                                                            <label for="phone" class="form-label">Type </label><span class="text-danger pl-1"> *</span>
                                                                             <select class="select" id="" name="schedule[{{$no}}][shift_id]">
-                                                                                <option value="0">Select Shift</option>
+                                                                                <option value="0">Select Type</option>
                                                                                 @foreach ($shifts as $shift)
                                                                                     @if ($shift->id == $schedule->shift_id)
                                                                                         <option value="{{$shift->id}}" selected>{{$shift->name}}</option>
@@ -269,14 +269,14 @@
 
                 $('input[name*="schedule_date"]').each(function( e ) {
                     let val = $(this)
-                    val.change(function (e) { 
+                    val.change(function (e) {
                         console.log(e.target.value);
                         // console.log($(this).val());
                         $(this).attr('value', $(this).val())
                         $(this).attr('value', e.target.value)
                      })
 
-                
+
 
                 })
                 /* When click show user */
