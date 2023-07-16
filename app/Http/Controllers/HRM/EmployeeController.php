@@ -63,7 +63,7 @@ class EmployeeController extends Controller
                 ->addColumn('view_profile', function ($d) {
                     $view = '';
                     $view .= '<h2 class="table-avatar">';
-                    if (auth()->user()->can('show employee profile')) {
+                    if (Auth()->user()->can('show employee profile')) {
                         $url_view = route('employees.show',$d->id);
                         $view .= '<a href="'.$url_view.'" class="btn btn-outline-primary">'.$d->employee_id.'</a>';
                     }else {
@@ -85,18 +85,18 @@ class EmployeeController extends Controller
                 })
                 ->addColumn('view', function ($d) {
                     $view = '';
-                    if (auth()->user()->canany(PermissionEnum::CustomerAddressesEdit->value)) {
+                    if (Auth()->user()->canany(['edit employee', 'delete employee'])) {
                         $view = '<td class="text-end" >
                                         <div class="dropdown dropdown-action" >
                                             <a href = "#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons"> more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">';
                         if (strtolower($d->status) == 'active') {
-                            if (auth()->user()->can('edit employee')) {
+                            if (Auth()->user()->can('edit employee')) {
                                 $url_edit = route('employees.edit', $d->id);
                                 $view .= '<a data-url="" id="edit-employee" class="dropdown-item" href="'.$url_edit.'"><i class="fa fa-pencil m-r-5" ></i> Edit</a>';
                             }
                         }
-                        if (auth()->user()->can('delete employee')) {
+                        if (Auth()->user()->can('delete employee')) {
                             $url_delete = route('employees.destroy', $d->id);
                             $view .= '<a id="delete-employee" data-url="'.$url_delete.'" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
                         }
