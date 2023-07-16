@@ -83,7 +83,11 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::resource('users', UsersController::class);
         Route::resource('roles', RolesController::class);
+
+        /** route employees */
         Route::resource('employees', EmployeeController::class);
+        Route::resource('employees/get-data-employees', GetDataEmployees::class)->name('employees.get-data-employees');
+        /** end route employees */
 
         // HRM Config Master Data
         Route::resource('branches', BranchController::class);

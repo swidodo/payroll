@@ -22,6 +22,7 @@ use App\Models\Travel;
 use App\Models\User;
 use App\Models\Utility;
 use Carbon\Carbon;
+use DataTables;
 use Exception;
 use Faker\Provider\Medical;
 use Illuminate\Http\Request;
@@ -53,6 +54,77 @@ class EmployeeController extends Controller
         }
     }
 
+    /** ajaxDatatable */
+    public function GetDataEmployees()
+    {
+        try {
+            /** type user */
+            if (Auth::user()->type == 'employee') {
+                $employees = Employee::query()->where('user_id', '=', Auth::user()->id)->with('branch');
+            } else {
+                $employees = Employee::query()->where('created_by', Auth::user()->creatorId())->with('branch');
+            }
+            $response = datatables()->eloquent($employees)
+                ->addColumn('view_profile', function ($d) {
+                    $view = '';
+                    $view .= '<h2 class="table-avatar">';
+                    if (auth()->user()->can('show employee profile')) {
+                        $url_view = route('employees.show',$d->id);
+                        $view .= '<a href="'.$url_view.'" class="btn btn-outline-primary">'.$d->employee_id.'</a>';
+                    }else {
+                        $view .= '<a href="#" class="avatar"><img src ="https://ui-avatars.com/api/?name='.$d->employee_id.'" alt =""></a><a href = "#" class="btn btn-outline-primary">'.$d->employee_id.'</a>';
+                    }
+                    $view .= '</h2>';
+                    return $view;
+                })
+                ->addColumn('view_status', function ($d) {
+                    $view = '';
+                    if (strtolower($d->status) == 'active'){
+                        $view .= '<span class="badge bg-inverse-success">'.ucwords($d->status).'</span>';
+                    }else if(strtolower($d->status) == 'fired') {
+                        $view .= '<span class="badge bg-inverse-danger">'.ucwords($d->status).'</span>';
+                    }else if(strtolower($d->status) == 'pension') {
+                        $view .= '<span class="badge bg-inverse-info">'.ucwords($d->status).'</span>';
+                    }
+                    return $view;
+                })
+                ->addColumn('view', function ($d) {
+                    $view = '';
+                    if (auth()->user()->canany(PermissionEnum::CustomerAddressesEdit->value)) {
+                        $view = '<td class="text-end" >
+                                        <div class="dropdown dropdown-action" >
+                                            <a href = "#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons"> more_vert</i></a>
+                                            <div class="dropdown-menu dropdown-menu-right">';
+                        if (strtolower($d->status) == 'active') {
+                            if (auth()->user()->can('edit employee')) {
+                                $url_edit = route('employees.edit', $d->id);
+                                $view .= '<a data-url="" id="edit-employee" class="dropdown-item" href="'.$url_edit.'"><i class="fa fa-pencil m-r-5" ></i> Edit</a>';
+                            }
+                        }
+                        if (auth()->user()->can('delete employee')) {
+                            $url_delete = route('employees.destroy', $d->id);
+                            $view .= '<a id="delete-employee" data-url="'.$url_delete.'" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
+                        }
+
+                        $view .= '</div></div></td>';
+                    }
+                    return $view;
+                })
+                ->escapeColumns([])
+                ->toJson();
+        } catch (Throwable $e) {
+            /** error response */
+            $response = response()->json([
+                'draw'            => 0,
+                'recordsTotal'    => 0,
+                'recordsFiltered' => 0,
+                'data'            => [],
+                'error'           => $e->getMessage(),
+            ]);
+        }
+        return $response;
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -60,7 +132,11 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        //
+        $data = DB::table('rotates')
+            ->select('*')
+            ->orderBy('id','DESC')
+            ->get();
+        return DataTables::of($data)->make(true);
     }
 
     /**
