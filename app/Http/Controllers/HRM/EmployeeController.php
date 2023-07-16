@@ -85,7 +85,7 @@ class EmployeeController extends Controller
                 })
                 ->addColumn('view', function ($d) {
                     $view = '';
-                    if (auth()->user()->canany(PermissionEnum::CustomerAddressesEdit->value)) {
+                    if (auth()->user()->canany(['edit employee', 'delete employee'])) {
                         $view = '<td class="text-end" >
                                         <div class="dropdown dropdown-action" >
                                             <a href = "#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons"> more_vert</i></a>
