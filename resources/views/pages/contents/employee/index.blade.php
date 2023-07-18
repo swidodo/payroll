@@ -33,7 +33,7 @@
         <!-- /Page Header -->
         <div class="row">
             <div class="col-md-12">
-                <div class="table-responsive" style="overflow-x: visible">
+                <div class="table-responsive">
                     <table class="table table-striped custom-table" id="table-empolyees">
                         <thead>
                             <tr>
