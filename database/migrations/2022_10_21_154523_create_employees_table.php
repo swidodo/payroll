@@ -29,7 +29,9 @@ return new class extends Migration
             $table->string('password')->nullable();
 
             $table->string('employee_id')->default('0');
-            $table->integer('branch_id')->default('0');
+            $table->string('no_employee')->default('0');
+            $table->integer('branch_id');
+            $table->integer('company_id');
             $table->integer('department_id')->default('0');
             $table->integer('designation_id')->default('0');
             //date of join

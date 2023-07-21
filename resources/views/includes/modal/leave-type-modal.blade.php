@@ -18,6 +18,15 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>Leave Type  <span class="text-danger">*</span></label>
+                                    <select class="form-select" name="type_name">
+                                        <option value="GVM">Goverment</option>
+                                        <option value="ANN">Annual</option>
+                                        <option value="SIC">Sick</option>
+                                        <option value="ALP">Alpa</option>
+                                        <option value="MATE">Maternity</option>
+                                        <option value="MARR">Marry</option>
+                                        <option value="MOUR">Mourning</option>
+                                    </select>
                                     <input class="form-control" type="text" name="title" placeholder="Enter Leave Type Name">
 
                                     @if ($errors->has('title'))

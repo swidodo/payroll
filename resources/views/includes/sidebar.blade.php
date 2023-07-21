@@ -301,12 +301,20 @@
                 </li>
 
                 @canany(['manage employee', 'view employee', 'edit employee', 'delete employee', 'manage employee profile', 'show employee profile'])
-                    <li class=" {{(request()->routeIs('employees*')) ? 'active' : ''}}">
-                        <a class=" {{(request()->routeIs('employees*')) ? 'active' : ''}}" href="{{route('employees.index')}}"><i class="la la-users"></i> <span>Employees</span>
-                        </a>
-                    </li>
+                <li class="submenu">
+                    <a href="#"><i class="la la-clock"></i> <span>Employee</span> <span class="menu-arrow"></span></a>
+                    <ul style="display: none;">
+                        <li class=" {{(request()->routeIs('employees*')) ? 'active' : ''}}">
+                            <a class=" {{(request()->routeIs('employees*')) ? 'active' : ''}}" href="{{route('employees.index')}}"><i class="la la-users"></i> <span>Employees</span>
+                            </a>
+                        </li>
+                        <li class=" {{(request()->routeIs('employees*')) ? 'active' : ''}}">
+                            <a class=" {{(request()->routeIs('rotation*')) ? 'active' : ''}}" href="{{route('rotation-employee')}}"><i class="la la-users"></i> <span>Rotation</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 @endcanany
-
 
                 @canany(['manage on duty', 'create on duty', 'view history leave', 'manage leave', 'create leave', 'manage overtime', 'create overtime', 'manage request shift schedule', 'create request shift schedule', 'manage attendance', 'create attendance', 'manage timesheet', 'create timesheet', 'show shift schedule', 'manage dayoff', 'create dayoff',  'show employee request', 'manage company holiday', 'create company holiday'])
                     <li class="submenu">
@@ -325,7 +333,7 @@
                             @endcanany
 
                             @canany(['manage request shift schedule', 'create request shift schedule', 'edit request shift schedule', 'delete request shift schedule'])
-                                <li class="{{(request()->routeIs('request-shift-schedule*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('request-shift-schedule*')) ? 'active' : ''}}" href="{{ route('request-shift-schedule.index') }}">Request Shift Schedule</a></li>
+                                <li class="{{(request()->routeIs('request-shift-schedule*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('request-shift-schedule*')) ? 'active' : ''}}" href="{{ route('request-shift-schedule.index') }}">Request Schedule</a></li>
                             @endcanany
 
                             @canany(['show shift schedule'])
@@ -380,23 +388,12 @@
                     <li class="submenu">
                         <a href="#"><i class="la la-cube"></i> <span> HR Management</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
-
                             @canany(['manage performance review', 'create performance review', 'edit performance review', 'delete performance review'])
-                                <li class="submenu {{(request()->routeIs('performance-review*')) ? 'active' : ''}}" >
-                                    <a style="padding: 9px 10px 9px 50px" href="#"> <span> Performance Setup</span> <span class="menu-arrow"></span></a>
-                                    <ul style="display: none;">
-
-                                        @canany(['manage performance review', 'create performance review', 'edit performance review', 'delete performance review'])
-                                            <li class="{{(request()->routeIs('performance-review*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('performance-review*')) ? 'active' : ''}}" href="{{ route('performance-review.index') }}">Performance Review</a></li>
-                                        @endcanany
-
-                                    </ul>
-                                </li>
+                                <li class="{{(request()->routeIs('performance-review*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('performance-review*')) ? 'active' : ''}}" href="{{ route('performance-review.index') }}">KPI</a></li>
                             @endcanany
-
                             @canany(['manage project', 'create project'])
                                 <li class=" {{(request()->routeIs('projects*')) ? 'active' : ''}}">
-                                    <a class=" {{(request()->routeIs('projects*')) ? 'active' : ''}}" href="{{route('projects.index')}}">Projects
+                                    <a class=" {{(request()->routeIs('projects*')) ? 'active' : ''}}" href="{{route('projects.index')}}">Talent
                                     </a>
                                 </li>
                             @endcanany
@@ -613,7 +610,7 @@
 
                                     @canany(['manage shift type', 'create shift type', 'edit shift type', 'delete shift type'])
                                         <li class=" {{(request()->routeIs('shift-type*')) ? 'active' : ''}}">
-                                            <a  class="{{(request()->routeIs('shift-type*')) ? 'active' : ''}}" href="{{route('shift-type.index')}}"></i> <span> Shift Type</span>
+                                            <a  class="{{(request()->routeIs('shift-type*')) ? 'active' : ''}}" href="{{route('shift-type.index')}}"></i> <span> Schedule Type</span>
                                             </a>
                                         </li>
                                     @endcanany

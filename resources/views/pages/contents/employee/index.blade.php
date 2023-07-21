@@ -33,8 +33,8 @@
         <!-- /Page Header -->
         <div class="row">
             <div class="col-md-12">
-                <div class="table-responsive" style="overflow-x: visible">
-                    <table class="table table-striped custom-table datatable">
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table" id="table-empolyees">
                         <thead>
                             <tr>
                                 <th>Employee ID</th>
@@ -51,55 +51,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($employees as $employee)
-                            <tr>
-                                <td>
-                                    <h2 class="table-avatar">
-                                         @can('show employee profile')
-                                            <a href="{{route('employees.show',$employee->id)}}" class="btn btn-outline-primary">{{'#'.$employee->employee_id }}</a>
-                                        @else
-                                            {{-- <a href="#" class="avatar"><img src="https://ui-avatars.com/api/?name={{$employee->employee_id}}" alt=""></a> --}}
-                                            <a href="#" class="btn btn-outline-primary">{{$employee->employee_id}}</a>
-                                        @endcan
-                                    </h2>
-                                </td>
-                                <td class="font-style">{{ $employee->no_employee ?? '' }}</td>
-                                <td class="font-style">{{ $employee->name ?? '' }}</td>
-                                <td>{{ $employee->email ?? '' }}</td>
-                                <td>{{ $employee->phone ?? '' }}</td>
-                                <td class="font-style">{{$employee->branch->name ?? ''}}</td>
-                                <td class="font-style">{{$employee->company_doj ?  Auth::user()->dateFormat($employee->company_doj) : '-' }}</td>
-                                <td>
-                                    @if (strtolower($employee->status) == 'active')
-                                            <span class="badge bg-inverse-success">{{ucwords($employee->status)}}</span>
-                                    @elseif (strtolower($employee->status) == 'fired')
-                                        <span class="badge bg-inverse-danger">{{ucwords($employee->status)}}</span>
-                                    @elseif (strtolower($employee->status) == 'pension')
-                                        <span class="badge bg-inverse-info">{{ucwords($employee->status)}}</span>
-                                    @endif
-                                </td>
-                                @canany(['edit employee', 'delete employee'])
-                                    <td class="text-end">
-                                        <div class="dropdown dropdown-action">
-                                            <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                @if (strtolower($employee->status) == 'active')
-                                                    @can('edit employee')
-                                                        <a  data-url="" id="edit-employee" class="dropdown-item" href="{{route('employees.edit', $employee->id)}}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                    @endcan
-                                                @endif
-                                                @can('delete employee')
-                                                    <a id="delete-employee" data-url="{{route('employees.destroy', $employee->id)}}" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                @endcan
-
-                                            </div>
-                                        </div>
-                                    </td>
-                                @endcanany
-                            </tr>
-                            @endforeach
-
                         </tbody>
                     </table>
                 </div>
@@ -148,10 +99,60 @@
         });
     </script>
     @endif
-
     <script>
             $(document).ready(function () {
                 /* When click show user */
+                /* datatable employees */
+                $('#table-empolyees').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    destroy: true,
+                    ajax : {
+                        url : "{{route('employees.get-data-employees')}}",
+                    },
+                    columns: [
+                        {
+                            data: 'view_profile',
+                            name: 'employee_id'
+                        },
+                        {
+                            data: 'no_employee',
+                            name: 'no_employee'
+                        },
+                        {
+                            data: 'name',
+                            name : 'name'
+                        },
+                        {
+                            data: 'email',
+                            name : 'email'
+                        },
+                        {
+                            data: 'phone',
+                            name : 'phone'
+                        },
+                        {
+                            data: 'branch.name',
+                            name : 'branch.name'
+                        },
+                        {
+                            data: 'company_doj',
+                            name : 'company_doj'
+                        },
+                        {
+                            data: 'view_status',
+                            name : 'status'
+                        },
+                        @can('delete employee')
+                            {
+                                data: 'view',
+                                orderable: 'false',
+                                searcharable: 'false'
+                            }
+                        @endcan
+                    ],
+
+                });
 
                 $('body').on('click', '#delete-employee', function(){
                     const deleteURL = $(this).data('url');

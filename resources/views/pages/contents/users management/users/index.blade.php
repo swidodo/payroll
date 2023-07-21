@@ -56,7 +56,7 @@
                         </thead>
                         <tbody>
                             @foreach ($users as $user)
-                          
+
                             <tr>
                                 <td>
                                     <h2 class="table-avatar">
@@ -90,7 +90,7 @@
                                         -
                                     @endif
 
-                                   
+
 
                                 </td>
                                 @if(Auth::user()->can('edit user') || Auth::user()->can('delete user'))

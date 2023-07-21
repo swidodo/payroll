@@ -1,6 +1,6 @@
 @extends('pages.dashboard')
 
-@section('title', 'Create Request Shift Schedule')
+@section('title', 'Create Request Schedule')
 
 @section('dashboard-content')
 <div class="page-wrapper">
@@ -12,7 +12,7 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Request Shift Schedule</h3>
+                    <h3 class="page-title">Request Schedule</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
                         <li class="breadcrumb-item active"><a href="{{route('request-shift-schedule.index')}}">Request Shift Schedule</a></li>
@@ -38,7 +38,7 @@
                 <div class="card">
                     <div class="card-header p-3">
                         <div class="d-flex align-items-center">
-                            <h5 class="card-title mb-0" id="title">Create Request Shift Schedule</h5>
+                            <h5 class="card-title mb-0" id="title">Create Request Schedule</h5>
                         </div>
                     </div>
                     <div class="card-body">
@@ -193,9 +193,9 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-group col-md-6">
-                                                                            <label for="phone" class="form-label">Shift </label><span class="text-danger pl-1"> *</span>
+                                                                            <label for="phone" class="form-label">Type</label> </label><span class="text-danger pl-1"> *</span>
                                                                             <select class="select" id="" name="schedule[${scheduleNo}][shift_id]">
-                                                                                <option value="0">Select Shift</option>
+                                                                                <option value="0">Select Type</option>
                                                                                 @foreach ($shifts as $shift)
                                                                                     <option value="{{$shift->id}}">{{$shift->name}}</option>
                                                                                 @endforeach
