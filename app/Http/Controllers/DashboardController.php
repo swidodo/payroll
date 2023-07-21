@@ -26,7 +26,7 @@ class DashboardController extends Controller
 
             //Info Ulang Tahun
             $today = Carbon::now()->format('m-d');
-            $birthday = Employee::whereRaw("to_char(dob, 'MM-DD') = '$today'")
+            $birthDay = Employee::whereRaw("to_char(dob, 'MM-DD') = '$today'")
                 ->get();
 
             //Info Karyawan Baru
