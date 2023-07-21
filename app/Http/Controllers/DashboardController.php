@@ -24,7 +24,16 @@ class DashboardController extends Controller
             $data['branches'] = Branch::where('created_by', '=', Auth::user()->creatorId())
                 ->get();
 
-            return view('pages.contents.dashboard.dashboard-company', $data);
+            //Info Ulang Tahun
+            $today = Carbon::now()->format('m-d');
+            $birthDay = Employee::whereRaw("to_char(dob, 'MM-DD') = '$today'")
+                ->get();
+
+            //Info Karyawan Baru
+            $newEmployee = Employee::whereDate('company_doj', now()->format('Y-m-d'))->get();
+
+
+            return view('pages.contents.dashboard.dashboard-company', $data)->with('birthDay', $birthDay)->with('newEmployee', $newEmployee);
         } else {
             $employee = Employee::where('user_id', Auth::user()->id)->first();
             $attendanceStatus = $employee->present_status($employee->id, date('Y-m-d'));
