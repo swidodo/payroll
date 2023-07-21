@@ -86,7 +86,7 @@
             @endforeach
 
             {{-- Ulang Tahun --}}
-            @foreach ($birthDay as $data)
+            @foreach ($birthday as $data)
                 <div class="card">
                     <div class="card-body"
                         style="border-left-style: solid; border-radius: 4px; border-width: 5px;border-color: #e71304; background-color: #faff85">
