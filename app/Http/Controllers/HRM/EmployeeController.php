@@ -306,17 +306,37 @@ class EmployeeController extends Controller
                 $request['is_active'] = 0;
                 $request['out_date'] = date('Y-m-d');
             }
+            //total leavez
+            $work       = Carbon::parse($employee->company_doj)->diffInMonths(date('Y-m-d'));
+            $thisMonth  = date('m',strtotime($employee->company_doj));
+            $thisday    = date('d',strtotime($employee->company_doj));
+            $moreMonth  =  12 - (int)$thisMonth;
 
-            //total leave
-            if ($request['leave_type'] == 'monthly') {
-                $diff = Carbon::parse($employee->company_doe)->diffInMonths($employee->company_doj);
-                $total_leave = $diff - 1;
-                $request['total_leave'] = $total_leave;
-            } elseif ($request['leave_type'] == 'annual') {
-                $diff = Carbon::parse($employee->company_doe)->diffInMonths($employee->company_doj);
-                $total_leave = $diff;
-                $request['total_leave'] = $total_leave;
+            if ($work >= 12 ){
+                $total_leave =0;
+                if ($request->leave_type == "PS"){
+                    if ((int)$thisday < 15){
+                        $total_leave = (int)$moreMonth + 1;
+                    }else{
+                        $total_leave = $moreMonth;
+                    }
+                }
+                if($request->leave_type == "PE"){
+                    $total_leave = (int)$moreMonth + 1;
+                }
+               $request['total_leave'] = $total_leave;
+            }else{
+                $request['total_leave'] = 0;
             }
+            // if ($request['leave_type'] == 'monthly') {
+            //     $diff = Carbon::parse($employee->company_doe)->diffInMonths($employee->company_doj);
+            //     $total_leave = $diff - 1;
+            //     $request['total_leave'] = $total_leave;
+            // } elseif ($request['leave_type'] == 'annual') {
+            //     $diff = Carbon::parse($employee->company_doe)->diffInMonths($employee->company_doj);
+            //     $total_leave = $diff;
+            //     $request['total_leave'] = $total_leave;
+            // }
 
             $employee->update($request->except(['educations', 'experiences', 'families']));
 
@@ -822,8 +842,6 @@ class EmployeeController extends Controller
         Employee::Insert($employee_arr);
    return redirect('/employees');
     }
-
-
     public function read_files($filename)
     {
        if (($open = fopen($filename, "r")) !== FALSE) {

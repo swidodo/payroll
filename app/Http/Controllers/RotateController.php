@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\models\Rotate;
 use App\models\Employee;
 use App\models\Branch;
-// use App\models\Company;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -18,7 +18,9 @@ class RotateController extends Controller
         return view('pages.contents.rotate.index');
     }
     public function get_data_rotate(){
-        $data = DB::table('rotates')
+        $user   = Auth::user();
+        $branch = Branch::find($user->branch_id);
+        $data   = DB::table('rotates')
                     ->select('*')
                     ->orderBy('id','DESC')
                     ->get();
