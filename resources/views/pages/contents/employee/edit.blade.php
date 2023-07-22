@@ -182,8 +182,8 @@
                                             <select class="form-control select"  id="leave_type" name="leave_type">
                                                 <option value="0">Select Type</option>
                                                 {{-- <option value="monthly">Monthly</option> --}}
-                                                <option value="PS">Annual Proreta Start</option>
-                                                <option value="PE">Annual Proreta End</option>
+                                                <option value="PS" {{($employee->leave_type == 'PS') ? 'selected' : ''}}>Annual Proreta Start</option>
+                                                <option value="PE"  {{($employee->leave_type == 'PE') ? 'selected' : ''}}>Annual Proreta End</option>
                                             </select>
                                         </div>
                                         <div class="form-group col-md-6">

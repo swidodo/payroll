@@ -328,15 +328,6 @@ class EmployeeController extends Controller
             }else{
                 $request['total_leave'] = 0;
             }
-            // if ($request['leave_type'] == 'monthly') {
-            //     $diff = Carbon::parse($employee->company_doe)->diffInMonths($employee->company_doj);
-            //     $total_leave = $diff - 1;
-            //     $request['total_leave'] = $total_leave;
-            // } elseif ($request['leave_type'] == 'annual') {
-            //     $diff = Carbon::parse($employee->company_doe)->diffInMonths($employee->company_doj);
-            //     $total_leave = $diff;
-            //     $request['total_leave'] = $total_leave;
-            // }
 
             $employee->update($request->except(['educations', 'experiences', 'families']));
 

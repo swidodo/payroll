@@ -1,10 +1,15 @@
 @extends('pages.dashboard')
 
 @section('title', 'Employees')
-
+@push('addon-style')
+    <style>
+        .borderless {
+            border:0px !important;
+        }
+    </style>
+@endpush()
 @section('dashboard-content')
 <div class="page-wrapper">
-
     <!-- Page Content -->
     <div class="content container-fluid">
 
@@ -33,92 +38,82 @@
                 <div class="card ">
                     <div class="card-body employee-detail-body fulls-card">
                     <h4>Personal Data</h4>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">EmployeeId : </strong>
-                                    <span>{{$employeesId ?? 'Detail Employee'}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm font-style">
-                                    <strong class="font-bold">Name :</strong>
-                                    <span>{{$employee->name ?? ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm font-style">
-                                    <strong class="font-bold">Email :</strong>
-                                    <span>{{$employee->email ?? ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Date of Birth :</strong>
-                                    <span>{{$employee->dob ? date("F jS, Y", strtotime($employee->dob)) : ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Identity Number :</strong>
-                                    <span>{{$employee->identity_card  ?? ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Account Number :</strong>
-                                    <span>{{$employee->account_number  ?? ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Family Card Number :</strong>
-                                    <span>{{$employee->family_card  ?? ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Npwp Number :</strong>
-                                    <span>{{$employee->npwp_number  ?? ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Phone :</strong>
-                                    <span>{{$employee->phone  ?? ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Gender :</strong>
-                                    <span>{{$employee->gender  ?? ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Marital Status :</strong>
-                                    <span>{{ucwords($employee->marital_status)  ?? ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Status :</strong>
-                                    <span>{{ucwords($employee->status)  ?? ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Religion :</strong>
-                                    <span>{{ucwords($employee->religion)  ?? ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Address :</strong>
-                                    <span>{{$employee->address  ?? ''}}</span>
-                                </div>
-                            </div>
+                        <hr style="margin-bottom :-4px;">
+                        <div class="table-responsive">
+                            <table class="table table-borderless">
+                                <tbody>
+                                <tr class="borderless">
+                                    <td width="40" class="borderless">Name</td>
+                                    <td width="1" class="borderless">:</td>
+                                    <td class="borderless">{{$employee->name ?? ''}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40" class="borderless">Email</td>
+                                    <td width="1" class="borderless">:</td>
+                                    <td class="borderless">{{$employee->email ?? ''}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40" class="borderless">Date of Birth</td>
+                                    <td width="1" class="borderless">:</td>
+                                    <td class="borderless">{{$employee->dob ? date("F jS, Y", strtotime($employee->dob)) : ''}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40" class="borderless">Identity Number</td>
+                                    <td width="1" class="borderless">:</td>
+                                    <td class="borderless">{{$employee->identity_card  ?? ''}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40" class="borderless">Bank Name</td>
+                                    <td width="1" class="borderless">:</td>
+                                    <td class="borderless">{{$employee->bank_name  ?? ''}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40" class="borderless">Account Number</td>
+                                    <td width="1" class="borderless">:</td>
+                                    <td class="borderless">{{$employee->account_number  ?? ''}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40" class="borderless">Family Card</td>
+                                    <td width="1" class="borderless">:</td>
+                                    <td class="borderless">{{$employee->family_card  ?? ''}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40" class="borderless">Npwp Number</td>
+                                    <td width="1" class="borderless">:</td>
+                                    <td class="borderless">{{$employee->npwp_number  ?? ''}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40" class="borderless">Phone</td>
+                                    <td width="1" class="borderless">:</td>
+                                    <td class="borderless">{{$employee->phone  ?? ''}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40" class="borderless">Gender</td>
+                                    <td width="1" class="borderless">:</td>
+                                    <td class="borderless">{{$employee->gender  ?? ''}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40" class="borderless">Marital Status</td>
+                                    <td width="1" class="borderless">:</td>
+                                    <td class="borderless">{{ucwords($employee->marital_status)  ?? ''}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40" class="borderless">Status</td>
+                                    <td width="1" class="borderless">:</td>
+                                    <td class="borderless">{{ucwords($employee->status)  ?? ''}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40" class="borderless">Religion</td>
+                                    <td width="1" class="borderless">:</td>
+                                    <td class="borderless">{{ucwords($employee->religion)  ?? ''}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40" class="borderless">Address</td>
+                                    <td width="1" class="borderless">:</td>
+                                    <td class="borderless">{{ucwords($employee->address)  ?? ''}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                         </div>
                     </div>
                     </div>
@@ -127,96 +122,96 @@
                 <div class="card ">
                     <div class="card-body employee-detail-body fulls-card">
                         <h4>Company Detail</h4>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Branch : </strong>
-                                    <span>{{$employee->branch->name ?? ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Employee Number : </strong>
-                                    <span>{{$employee->no_employee ?? ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Employee Type : </strong>
-                                    <span>{{$employee->employee_type ?? ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Date Of Joining :</strong>
-                                    <span>{{$employee->company_doj ? date("F jS, Y", strtotime($employee->company_doj)) : ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Leave Type :</strong>
-                                    <span>{{ucwords($employee->leave_type) ?? ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Date End :</strong>
-                                    <span>{{$employee->company_doe ? date("F jS, Y", strtotime($employee->company_doe)) : ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Leave Allowance :</strong>
-                                    <span>{{ucwords($employee->total_leave) ?? ''}}</span>
-                                </div>
-                            </div>
+                        <hr style="margin-bottom :-4px;">
+                        <div class="table-responsive">
+                            <table class="table table-borderless">
+                                <tbody>
+                                    <tr class="borderless">
+                                        <td width="40" class="borderless">Branch</td>
+                                        <td width="1" class="borderless">:</td>
+                                        <td class="borderless">{{$employee->branch->name ?? ''}}</td>
+                                    </tr>
+                                    <tr class="borderless">
+                                        <td width="40" class="borderless">Join Date</td>
+                                        <td width="1" class="borderless">:</td>
+                                        <td class="borderless">{{$employee->company_doj ? date("F jS, Y", strtotime($employee->company_doj)) : ''}}</td>
+                                    </tr>
+                                    <tr class="borderless">
+                                        <td width="40" class="borderless">End Date</td>
+                                        <td width="1" class="borderless">:</td>
+                                        <td class="borderless">{{$employee->company_doe ? date("F jS, Y", strtotime($employee->company_doe)) : ''}}</td>
+                                    </tr>
+                                    <tr class="borderless">
+                                        <td width="40" class="borderless">Address</td>
+                                        <td width="1" class="borderless">:</td>
+                                        <td class="borderless">{{$employee->company_doe ? date("F jS, Y", strtotime($employee->company_doe)) : ''}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    </div>
+                </div>
             </div>
             <div class="col-md-6">
                 <div class="card ">
                     <div class="card-body employee-detail-body fulls-card">
                     <h4>Employement Data</h4>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Start Date : </strong>
-                                    <span> {{$employement != null ? $employement->employee->company_doj ? date("F jS, Y", strtotime($employement->employee->company_doj)) : '' : ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm font-style">
-                                    <strong class="font-bold">End Date :</strong>
-                                    <span> {{$employement != null ? $employement->employee->company_doe ? date("F jS, Y", strtotime($employement->employee->company_doe)) : '' : ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm font-style">
-                                    <strong class="font-bold">Movement Type :</strong>
-                                    <span>{{ $employement->movement_type ?? ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Employee Area :</strong>
-                                    <span>{{$employement->area ?? ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Employee Office :</strong>
-                                    <span>{{$employement->office ?? ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Note :</strong>
-                                    <span>{{$employement->note ?? ''}}</span>
-                                </div>
-                            </div>
+                        <hr style="margin-bottom :-4px;">
+                        <div class="table-responsive">
+                            <table class="table table-borderless">
+                                <tbody>
+                                <tr>
+                                    <td width="40" class="borderless">Employee Code</td>
+                                    <td width="1" class="borderless">:</td>
+                                    <td  class="borderless">{{$employeesId ?? 'Detail Employee'}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40" class="borderless">EmployeeId</td>
+                                    <td width="1" class="borderless">:</td>
+                                    <td  class="borderless">{{$employee->no_employee ?? ''}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40" class="borderless">Employee Type</td>
+                                    <td width="1" class="borderless">:</td>
+                                    <td  class="borderless">{{$employee->employee_type ?? ''}}</td>
+                                </tr>
+                                <tr>
+                                    <td  class="borderless">Leave Type</td>
+                                    <td  class="borderless">:</td>
+                                    <td  class="borderless">{{($employee->leave_type =="PS") ? 'Annual Proreta Start' : 'Annual Proreta End'}}</td>
+                                </tr>
+                                <tr>
+                                    <td  class="borderless">Leave Allowance </td>
+                                    <td  class="borderless">:</td>
+                                    <td  class="borderless">{{ucwords($employee->total_leave) ?? ''}}</td>
+                                </tr>
+                                <tr>
+                                    <td  class="borderless">Start Date</td>
+                                    <td  class="borderless">:</td>
+                                    <td  class="borderless">{{$employement != null ? $employement->employee->company_doj ? date("F jS, Y", strtotime($employement->employee->company_doj)) : '' : ''}}</td>
+                                </tr>
+                                <tr>
+                                    <td  class="borderless">End Date</td>
+                                    <td  class="borderless">:</td>
+                                    <td  class="borderless">{{$employement != null ? $employement->employee->company_doe ? date("F jS, Y", strtotime($employement->employee->company_doe)) : '' : ''}}</td>
+                                </tr>
+                                <tr>
+                                    <td  class="borderless">Movement Type </td>
+                                    <td  class="borderless">:</td>
+                                    <td  class="borderless">{{ $employement->movement_type ?? ''}}</td>
+                                </tr>
+                                <tr>
+                                    <td  class="borderless">Employee Area </td>
+                                    <td  class="borderless">:</td>
+                                    <td  class="borderless">{{$employement->area ?? ''}}</td>
+                                </tr>
+                                <tr>
+                                    <td  class="borderless">Note </td>
+                                    <td  class="borderless">:</td>
+                                    <td  class="borderless">{{$employement->note ?? ''}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     </div>
@@ -272,9 +267,9 @@
                                     <tbody>
                                         @foreach ($employeeFamilies as $family)
                                             <tr>
-                                            <td>{{ $family->name }}</td>
-                                            <td>{{ $family->gender }}</td>
-                                            <td>{{ $family->relationship }}</td>
+                                            <td class="borderless">{{ $family->name }}</td>
+                                            <td class="borderless">{{ $family->gender }}</td>
+                                            <td class="borderless">{{ $family->relationship }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
