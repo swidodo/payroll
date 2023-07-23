@@ -116,46 +116,12 @@
                         </table>
                         </div>
                     </div>
-                    </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card ">
-                    <div class="card-body employee-detail-body fulls-card">
-                        <h4>Company Detail</h4>
-                        <hr style="margin-bottom :-4px;">
-                        <div class="table-responsive">
-                            <table class="table table-borderless">
-                                <tbody>
-                                    <tr class="borderless">
-                                        <td width="40" class="borderless">Branch</td>
-                                        <td width="1" class="borderless">:</td>
-                                        <td class="borderless">{{$employee->branch->name ?? ''}}</td>
-                                    </tr>
-                                    <tr class="borderless">
-                                        <td width="40" class="borderless">Join Date</td>
-                                        <td width="1" class="borderless">:</td>
-                                        <td class="borderless">{{$employee->company_doj ? date("F jS, Y", strtotime($employee->company_doj)) : ''}}</td>
-                                    </tr>
-                                    <tr class="borderless">
-                                        <td width="40" class="borderless">End Date</td>
-                                        <td width="1" class="borderless">:</td>
-                                        <td class="borderless">{{$employee->company_doe ? date("F jS, Y", strtotime($employee->company_doe)) : ''}}</td>
-                                    </tr>
-                                    <tr class="borderless">
-                                        <td width="40" class="borderless">Address</td>
-                                        <td width="1" class="borderless">:</td>
-                                        <td class="borderless">{{$employee->company_doe ? date("F jS, Y", strtotime($employee->company_doe)) : ''}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="card ">
-                    <div class="card-body employee-detail-body fulls-card">
-                    <h4>Employement Data</h4>
+                <div class="card">
+                    <div class="card-body employee-detail-body fulls-card" style="margin-bottom : -10px;">
+                        <h4>Employement Data</h4>
                         <hr style="margin-bottom :-4px;">
                         <div class="table-responsive">
                             <table class="table table-borderless">
@@ -214,7 +180,165 @@
                             </table>
                         </div>
                     </div>
+                </div>
+                <div class="card" style="margin-top : -20px;">
+                    <div class="card-body employee-detail-body fulls-card" style="margin-bottom:-30px;">
+                        <h4>Medical</h4>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="info text-sm">
+                                    <strong class="font-bold">Height (cm) : </strong>
+                                    <span>{{$employeeMedical->height ?? ''}} </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info text-sm font-style">
+                                    <strong class="font-bold">Weight (kg) :</strong>
+                                    <span>{{$employeeMedical->weight ?? ''}}  </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info text-sm font-style">
+                                    <strong class="font-bold">Blood Type
+                                        :</strong>
+                                    <span>{{$employeeMedical->blood_type ?? ''}} </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info text-sm font-style">
+                                    <strong class="font-bold">Medical Test
+                                        :</strong>
+                                    <span>{{$employeeMedical->medical_test ?? ''}} </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                {{-- <div class="card ">
+                    <div class="card-body employee-detail-body fulls-card">
+                        <h4>Company Detail</h4>
+                        <hr style="margin-bottom :-4px;">
+                        <div class="table-responsive">
+                            <table class="table table-borderless">
+                                <tbody>
+                                    <tr class="borderless">
+                                        <td width="40" class="borderless">Branch</td>
+                                        <td width="1" class="borderless">:</td>
+                                        <td class="borderless">{{$employee->branch->name ?? ''}}</td>
+                                    </tr>
+                                    <tr class="borderless">
+                                        <td width="40" class="borderless">Join Date</td>
+                                        <td width="1" class="borderless">:</td>
+                                        <td class="borderless">{{$employee->company_doj ? date("F jS, Y", strtotime($employee->company_doj)) : ''}}</td>
+                                    </tr>
+                                    <tr class="borderless">
+                                        <td width="40" class="borderless">End Date</td>
+                                        <td width="1" class="borderless">:</td>
+                                        <td class="borderless">{{$employee->company_doe ? date("F jS, Y", strtotime($employee->company_doe)) : ''}}</td>
+                                    </tr>
+                                    <tr class="borderless">
+                                        <td width="40" class="borderless">Address</td>
+                                        <td width="1" class="borderless">:</td>
+                                        <td class="borderless">{{$employee->company_doe ? date("F jS, Y", strtotime($employee->company_doe)) : ''}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div> --}}
+                <div class="card ">
+                    <div class="card-body employee-detail-body fulls-card">
+                        <div class="title d-flex">
+                          <h4 class="mb-0 pt-1">Experience</h4>
+                          <div class="ms-auto">
+                              <a href="#" title="List Experience" id="show-modal-experience" data-bs-toggle="modal" data-bs-target="#show-experience" class="btn p-0 px-2 btn-primary" ><i class="fa fa-eye"></i></a>
+                          </div>
+                      </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="info text-sm">
+                                    <strong class="font-bold">Start Date : </strong>
+                                    <span> {{$employeeExperience != null ? $employeeExperience->start_date ? date("F jS, Y", strtotime($employeeExperience->start_date)) : '' : ''}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info text-sm font-style">
+                                    <strong class="font-bold">End Date :</strong>
+                                    <span> {{$employeeExperience != null ? $employeeExperience->end_date ? date("F jS, Y", strtotime($employeeExperience->end_date)) : '' : ''}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info text-sm">
+                                    <strong class="font-bold">Sequence :</strong>
+                                    <span>{{$employeeExperience->sequence  ?? ''}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info text-sm">
+                                    <strong class="font-bold">Job :</strong>
+                                    <span>{{$employeeExperience->job  ?? ''}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info text-sm">
+                                    <strong class="font-bold">Position :</strong>
+                                    <span>{{$employeeExperience->position ?? ''}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info text-sm">
+                                    <strong class="font-bold">Address :</strong>
+                                    <span>{{$employeeExperience->address ?? ''}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info text-sm">
+                                    <strong class="font-bold">City :</strong>
+                                    <span>{{$employeeExperience->city ?? ''}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info text-sm">
+                                    <strong class="font-bold">Reason Leaving :</strong>
+                                    <span>{{$employeeExperience->reason_leaving ?? ''}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card ">
+                    <div class="card-body employee-detail-body fulls-card">
+                    <h4>Document Detail</h4>
+                        <hr>
+                        <div class="row">
+                            @php
+
+                            $employeedoc = !empty($employee)?$employee->documents()->pluck('document_value','document_id'):[];
+                        @endphp
+                        @if(!$documents->isEmpty())
+                        @foreach($documents as $key=>$document)
+                        <div class="col-md-6">
+                            <div class="info text-sm">
+                                <strong class="font-bold">{{$document->name }} : </strong>
+                                <span><a href="{{ (!empty($employeedoc[$document->id])?asset('storage/uploads/document').'/'.$employeedoc[$document->id]:'') }}" target="_blank">{{ (!empty($employeedoc[$document->id])?$employeedoc[$document->id]:'') }}</a></span>
+                            </div>
+                        </div>
+                        @endforeach
+                        @else
+                          <div class="text-center">
+                            No Document Type Added.!
+                          </div>
+                        @endif
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-md-6">
                 <div class="card ">
@@ -280,133 +404,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="card ">
-                    <div class="card-body employee-detail-body fulls-card">
-                    <h4>Medical</h4>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Height (cm) : </strong>
-                                    <span>{{$employeeMedical->height ?? ''}} </span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm font-style">
-                                    <strong class="font-bold">Weight (kg) :</strong>
-                                    <span>{{$employeeMedical->weight ?? ''}}  </span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm font-style">
-                                    <strong class="font-bold">Blood Type
-                                        :</strong>
-                                    <span>{{$employeeMedical->blood_type ?? ''}} </span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm font-style">
-                                    <strong class="font-bold">Medical Test
-                                        :</strong>
-                                    <span>{{$employeeMedical->medical_test ?? ''}} </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card ">
-                    <div class="card-body employee-detail-body fulls-card">
-                        <div class="title d-flex">
-                          <h4 class="mb-0 pt-1">Experience</h4>
-                          <div class="ms-auto">
-                              <a href="#" title="List Experience" id="show-modal-experience" data-bs-toggle="modal" data-bs-target="#show-experience" class="btn p-0 px-2 btn-primary" ><i class="fa fa-eye"></i></a>
-                          </div>
-                      </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Start Date : </strong>
-                                    <span> {{$employeeExperience != null ? $employeeExperience->start_date ? date("F jS, Y", strtotime($employeeExperience->start_date)) : '' : ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm font-style">
-                                    <strong class="font-bold">End Date :</strong>
-                                    <span> {{$employeeExperience != null ? $employeeExperience->end_date ? date("F jS, Y", strtotime($employeeExperience->end_date)) : '' : ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Sequence :</strong>
-                                    <span>{{$employeeExperience->sequence  ?? ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Job :</strong>
-                                    <span>{{$employeeExperience->job  ?? ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Position :</strong>
-                                    <span>{{$employeeExperience->position ?? ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Address :</strong>
-                                    <span>{{$employeeExperience->address ?? ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">City :</strong>
-                                    <span>{{$employeeExperience->city ?? ''}}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info text-sm">
-                                    <strong class="font-bold">Reason Leaving :</strong>
-                                    <span>{{$employeeExperience->reason_leaving ?? ''}}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card ">
-                    <div class="card-body employee-detail-body fulls-card">
-                    <h4>Document Detail</h4>
-                        <hr>
-                        <div class="row">
-                            @php
 
-                            $employeedoc = !empty($employee)?$employee->documents()->pluck('document_value','document_id'):[];
-                        @endphp
-                        @if(!$documents->isEmpty())
-                        @foreach($documents as $key=>$document)
-                        <div class="col-md-6">
-                            <div class="info text-sm">
-                                <strong class="font-bold">{{$document->name }} : </strong>
-                                <span><a href="{{ (!empty($employeedoc[$document->id])?asset('storage/uploads/document').'/'.$employeedoc[$document->id]:'') }}" target="_blank">{{ (!empty($employeedoc[$document->id])?$employeedoc[$document->id]:'') }}</a></span>
-                            </div>
-                        </div>
-                        @endforeach
-                        @else
-                          <div class="text-center">
-                            No Document Type Added.!
-                          </div>
-                        @endif
-                        </div>
-                    </div>
-                    </div>
-            </div>
         </div>
     </div>
     <!-- /Page Content -->

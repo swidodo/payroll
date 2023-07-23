@@ -122,6 +122,10 @@
                                             <option value="married" {{ ($employee->marital_status == "married") ? 'selected':''}}>Married</option>
                                         </select>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="address" class="form-label">Address</label><span class="text-danger pl-1">*</span>
+                                        <textarea class="form-control" rows="2" name="address" cols="50" id="address">{{$employee->address ?? ''}}</textarea>
+                                    </div>
                                     <div class="form-group col-md-6">
                                         <label for="marital_status" class="form-label">Status</label>
                                         <select class="form-control select"  id="status-employee-edit" name="employee_status">
@@ -134,70 +138,62 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="address" class="form-label">Address</label><span class="text-danger pl-1">*</span>
-                                    <textarea class="form-control" rows="2" name="address" cols="50" id="address">{{$employee->address ?? ''}}</textarea>
-                                </div>
-
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="card emp_details">
-                        <div class="card-header p-3"><h4 class="mb-0">Company Detail</h4></div>
+                        <div class="card-header p-3"><h4 class="mb-0">Employee Data</h4></div>
                         <div class="card-body employee-detail-edit-body fulls-card">
-
-                                <div class="row">
-                                        <div class="form-group col-md-12">
-                                            <label for="employee_id" class="form-label">Employee ID</label>
-                                            <input class="form-control" disabled="disabled" name="employee_id" type="text" value="{{$employeesId ?? ''}}" id="employee_id">
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="employee_id" class="form-label">Employee Number</label>
-                                            <input class="form-control" name="no_employee" type="text" value="{{$employee->no_employee ?? ''}}" id="employee_id">
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label class="form-label">Employee Type</label>
-                                            <select class="form-control select"  name="employee_type" id="employee_type" required>
-                                                <option value="" selected disabled>Select Type</option>
-                                                <option value="permanent" {{($employee->employee_type =="permanent") ? 'selected' : ''}}>Permanent</option>
-                                                <option value="probation" {{($employee->employee_type =="probation") ? 'selected' : ''}}>Probation</option>
-                                                <option value="contract" {{($employee->employee_type =="contract") ? 'selected' : ''}}>Contract</option>
-                                                <option value="outsourcing" {{($employee->employee_type =="outsourcing") ? 'selected' : ''}}>Outsourcing</option>
-                                                <option value="hl" {{($employee->employee_type =="hl") ? 'selected' : ''}}>Past Daily</option>
-                                                <option value="magang" {{($employee->employee_type =="magang") ? 'selected' : ''}}>Magang</option>
-                                                <option value="freelancers" {{($employee->employee_type =="freelancers") ? 'selected' : ''}}>Freelancers</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="company_doj" class="form-label">Company Date Of Joining</label>
-                                            <input class="form-control" value="{{$employee->company_doj  ?? ''}}"   name="company_doj" type="date" id="company_doj">
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="company_doe\" class="form-label">Company Date End</label>
-                                            <input class="form-control" value="{{$employee->company_doe  ?? ''}}"   name="company_doe" type="date" id="company_doj">
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="leave_type" class="form-label">Leave Type</label>
-                                            <select class="form-control select"  id="leave_type" name="leave_type">
-                                                <option value="0">Select Type</option>
-                                                {{-- <option value="monthly">Monthly</option> --}}
-                                                <option value="PS" {{($employee->leave_type == 'PS') ? 'selected' : ''}}>Annual Proreta Start</option>
-                                                <option value="PE"  {{($employee->leave_type == 'PE') ? 'selected' : ''}}>Annual Proreta End</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="branch_id" class="form-label">Branch</label>
-                                            <select class="form-control select" name="branch_id">
-                                                <option value="" selected>Select Branch</option>
-                                                @foreach ($branches as $branch)
-                                                    <option value="{{$branch->id }}" {{($branch->id == $employee->branch_id) ? 'selected' : ''}}>{{$branch->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label for="employee_id" class="form-label">Employee Code</label>
+                                    <input class="form-control" disabled="disabled" name="employee_id" type="text" value="{{$employeesId ?? ''}}" id="employee_id">
                                 </div>
-
+                                <div class="form-group col-md-6">
+                                    <label for="employee_id" class="form-label">Employee ID</label>
+                                    <input class="form-control" name="no_employee" type="text" value="{{$employee->no_employee ?? ''}}" id="employee_id">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="form-label">Employee Type</label>
+                                    <select class="form-control select"  name="employee_type" id="employee_type">
+                                        <option value="" disabled>Select Type</option>
+                                        <option value="permanent" {{($employee->employee_type =="permanent") ? 'selected' : ''}}>Permanent</option>
+                                        <option value="probation" {{($employee->employee_type =="probation") ? 'selected' : ''}}>Probation</option>
+                                        <option value="contract" {{($employee->employee_type =="contract") ? 'selected' : ''}}>Contract</option>
+                                        <option value="outsourcing" {{($employee->employee_type =="outsourcing") ? 'selected' : ''}}>Outsourcing</option>
+                                        <option value="hl" {{($employee->employee_type =="hl") ? 'selected' : ''}}>Past Daily</option>
+                                        <option value="magang" {{($employee->employee_type =="magang") ? 'selected' : ''}}>Magang</option>
+                                        <option value="freelancers" {{($employee->employee_type =="freelancers") ? 'selected' : ''}}>Freelancers</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="leave_type" class="form-label">Leave Type</label>
+                                    <select class="form-control select"  id="leave_type" name="leave_type">
+                                        <option value="0">Select Type</option>
+                                        {{-- <option value="monthly">Monthly</option> --}}
+                                        <option value="PS" {{($employee->leave_type == 'PS') ? 'selected' : ''}}>Annual Proreta Start</option>
+                                        <option value="PE"  {{($employee->leave_type == 'PE') ? 'selected' : ''}}>Annual Proreta End</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="branch_id" class="form-label">Branch</label>
+                                    <select class="form-control select" name="branch_id">
+                                        <option value="" selected>Select Branch</option>
+                                        @foreach ($branches as $branch)
+                                            <option value="{{$branch->id }}" {{($branch->id == $employee->branch_id) ? 'selected' : ''}}>{{$branch->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="company_doj" class="form-label">Company Date Of Joining</label>
+                                    <input class="form-control" value="{{$employee->company_doj  ?? ''}}"   name="company_doj" type="date" id="company_doj">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="company_doe\" class="form-label">Company Date End</label>
+                                    <input class="form-control" value="{{$employee->company_doe  ?? ''}}"   name="company_doe" type="date" id="company_doj">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
