@@ -260,7 +260,8 @@ class RotateController extends Controller
                 DB::table('employees')
                     ->where ('id',$request->employee_id)
                     ->update($update);
-                Rotate::insert($data);
+                DB::table('rotates')
+                ->insert($data);
                 DB::commit();
                 $response = [
                     'status' => 'success',
