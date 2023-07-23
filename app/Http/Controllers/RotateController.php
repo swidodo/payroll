@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\models\Rotate;
+use App\models\RotateModel;
 use App\models\Employee;
 use App\models\Branch;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use DataTables;
 use Response;
+use Exception;
 
 class RotateController extends Controller
 {
