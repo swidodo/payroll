@@ -13,7 +13,7 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label>Rotation Date</label>
-                                <input type="date" name="rotate_date" class="form-control mb-3">
+                                <input type="date" name="rotate_date" class="form-control mb-3" required>
                                 <label>Rotation Type</label>
                                 <select name="rotate_name" class="form-control form-select mb-3">
                                     <option>Promotion</option>
@@ -25,7 +25,7 @@
                                 <select name="employee_id" class="form-control form-select mb-3" id="employeeId">
                                 </select>
                                 <label>Job Level</label>
-                                <input type="text" name="job_level" class="form-control mb-3">
+                                <input type="text" name="job_level" class="form-control mb-3" required>
                             </div>
                             <div class="col-md-6">
                                 <label>Central Office</label>
