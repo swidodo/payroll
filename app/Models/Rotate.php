@@ -9,5 +9,5 @@ class Rotate extends Model
 {
     use HasFactory;
     protected $table = 'rotates';
-    // protected $guarded = ['id'];
+    protected $guarded = ['id'];
 }

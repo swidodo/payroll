@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\models\RotateModel;
+use App\models\Rotate;
 use App\models\Employee;
 use App\models\Branch;
 use Illuminate\Support\Facades\Auth;
@@ -260,7 +260,7 @@ class RotateController extends Controller
                 DB::table('employees')
                     ->where ('id',$request->employee_id)
                     ->update($update);
-                RotateModel::insert($data);
+                Rotate::insert($data);
                 DB::commit();
                 $response = [
                     'status' => 'success',
