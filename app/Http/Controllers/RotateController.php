@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\models\RotateModel ;
+use App\models\RotateModel;
 use App\models\Employee;
 use App\models\Branch;
 use Illuminate\Support\Facades\Auth;
