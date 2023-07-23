@@ -19,7 +19,10 @@ class RotateController extends Controller
     }
     public function get_data_rotate(){
         $user   = Auth::user();
-        $branch = Branch::find($user->branch_id);
+        $branch = DB::table('branches')
+                    ->select('*')
+                    ->where('branch_id',$user->branch_id)
+                    ->get();
         $data   = DB::table('rotates')
                     ->select('*')
                     ->orderBy('id','DESC')
