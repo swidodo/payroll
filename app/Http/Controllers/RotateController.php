@@ -21,7 +21,7 @@ class RotateController extends Controller
         $user   = Auth::user();
         $branch = DB::table('branches')
                     ->select('*')
-                    ->where('branch_id',$user->branch_id)
+                    ->where('id',$user->branch_id)
                     ->get();
         $data   = DB::table('rotates')
                     ->select('*')
