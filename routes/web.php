@@ -249,6 +249,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('edit-data-rotation',[RotateController::class,'edit'])->name('edit-data-rotation');
         Route::post('update-data-rotation',[RotateController::class,'update'])->name('update-data-rotation');
 
+        /** departement */
+        Route::resource('departements', DepartementController::Controller::class);
+        /** departement */
+
         // Reporting
         Route::get('reporting-attandance-view',[ReportRecapAttendanceController::class,'index'])->name('reporting-attandance');
         Route::get('get-reporting-attandance',[ReportRecapAttendanceController::class,'get_report_attadance'])->name('get-reporting-attandance');
