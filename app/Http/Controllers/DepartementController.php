@@ -30,7 +30,7 @@ class DepartementController extends Controller
             /** Departement */
             $departements = Departement::query()->where('created_by', Auth::user()->creatorId())->with('branch','departement_head');
             $response = datatables()->eloquent($departements)
-                ->addColumn('view', function ($d) {
+                ->addColumn('action', function ($d) {
                     $view = '';
                         $view = '<td class="text-end" >
                                         <div class="dropdown dropdown-action" >
@@ -71,7 +71,7 @@ class DepartementController extends Controller
     {
         $branch = Branch::all();
         $departement_head = Branch::all();
-        return view('pages.contents.departement.add',compact('branch','departement_head'));
+        return view('pages.contents.departement.create',compact('branch','departement_head'));
     }
 
     /**
@@ -149,7 +149,7 @@ class DepartementController extends Controller
     {
         $branch = Branch::all();
         $departement_head = Branch::all();
-        $departement =  Departement::find($id);
+        $departement =  Departement::with('branch','departement_head')->where('id',$id)->first();
 
         return view('pages.contents.departement.show', compact('branch', 'departement_head', 'departement'));
     }
