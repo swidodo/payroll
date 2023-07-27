@@ -48,7 +48,7 @@ class HistoryLeaveController extends Controller
                     ->select('history_leaves.*','employees.name','leave_types.title')
                     ->leftJoin('leave_types','leave_types.id','=','history_leaves.leave_type_id')
                     ->leftJoin('employees','employees.id','=','history_leaves.employee_id')
-                    ->where('employees.branch_id',1)
+                    ->where('employees.branch_id',$request->branch_id)
                     ->orderBy('history_leaves.id','DESC')
                     ->get();
         return Datatables::of($data)->make(true);
