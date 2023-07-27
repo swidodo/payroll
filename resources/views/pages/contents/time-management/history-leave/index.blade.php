@@ -147,23 +147,7 @@
                                             </a>
                                         @endif
                                     </td>
-                                    {{-- @canany(['edit leave', 'delete leave'])
-                                        <td class="text-end">
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    @can('edit leave')
-                                                        <a  data-url="{{route('leaves.edit', $leave->id)}}" id="edit-leave" class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_leave"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                    @endcan
-                                                    @can('delete leave')
-                                                        <a id="delete-leave" data-url="{{route('leaves.destroy', $leave->id)}}" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_leave"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                    @endcan
-
-                                                </div>
-                                            </div>
-                                        </td>
-                                    @endcanany --}}
                                 </tr>
                             {{-- @endforeach --}}
                         </tbody>
@@ -281,7 +265,13 @@
                         },
                         {
                             data: 'attachment_request_path',
-                            name : 'attachment_request_path'
+                            render: function ( data, type, row ) {
+                                return `<a href="`+data+`">
+                                            <div class="status_badge badge bg-success p-2 px-3 rounded">
+                                                File
+                                            </div>
+                                        </a>`;
+                            }
                         },
                         {
                             data: 'leave_reason',
@@ -289,7 +279,23 @@
                         },
                         {
                             data: 'status',
-                            name : 'status'
+                            render : function(data, type, row){
+                                var btn = '';
+                                if (data == 'Pending'){
+                                    btn = `<div class="status_badge badge bg-warning p-2 px-3 rounded">`+data+`</div>`;
+                                }
+                                if (data == 'Approved'){
+                                    btn = `<div class="status_badge badge bg-success p-2 px-3 rounded">`+data+`</div>`;
+                                }
+                                if (data =='Rejected'){
+                                    btn = `<a href="" class="text-white">
+                                                <div class="status_badge badge bg-danger p-2 px-3 rounded">
+                                                    `+data+`
+                                                </div>
+                                            </a>`;
+                                }
+                                return btn;
+                            }
                         },
                 ],
             })
@@ -366,3 +372,6 @@
         });
     </script>
 @endpush
+
+
+
