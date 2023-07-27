@@ -12,6 +12,7 @@ use App\Models\LevelApproval;
 use App\Models\Overtime;
 use App\Models\Utility;
 use Carbon\Carbon;
+use DataTables;
 use DateTime;
 use Exception;
 use Illuminate\Http\Request;
@@ -54,9 +55,8 @@ class LeaveController extends Controller
                 $leaves = Leave::where('created_by', '=', Auth::user()->creatorId())->get();
                 $employee  = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
                 $leaveType = LeaveType::where('created_by', '=', Auth::user()->creatorId())->get();
-
-
-                return view('pages.contents.time-management.leaves.index', compact('leaves', 'employee', 'leaveType'));
+                // return view('pages.contents.time-management.leaves.index', compact('leaves', 'employee', 'leaveType'));
+                return view('pages.contents.time-management.leaves.index',compact('leaves', 'employee', 'leaveType'));
             }
         } else {
             toast('Permission denied.', 'error');
@@ -64,12 +64,46 @@ class LeaveController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function get_leave(){
+        $user = Auth::user();
+        $data = DB::table('leaves')
+                    ->select('employees.name',
+                            'leave_types.title',
+                            'leaves.applied_on',
+                            'leaves.start_date',
+                            'leaves.end_date',
+                            'leaves.total_leave_days',
+                            'leaves.leave_reason',
+                            'leaves.attachment_request_path',
+                            'leaves.status',
+                            'leaves.id')
+                    ->leftJoin('leave_types','leave_types.id','=','leaves.leave_type_id')
+                    ->leftJoin('employees','employees.id','=','leaves.employee_id')
+                    ->where('employees.branch_id',$user->branch_id)
+                    ->orderBy('leaves.id','DESC')
+                    ->get();
+        return Datatables::of($data)
+                        ->addIndexColumn()
+                        ->addColumn('action', function($row){
+                        $btn ='';
+                        if(Auth()->user()->canany('edit leave','delete leave')){
+                            $btn .= '<div class="dropdown dropdown-action">
+                                        <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                        <div class="dropdown-menu dropdown-menu-right">';
+                                        if(Auth()->user()->can('edit leave')){
+                                            $btn .= '<a  data-url="'.route('leaves.edit', $row->id).'" id="edit-leave" class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_leave"><i class="fa fa-pencil m-r-5"></i> Edit</a>';
+                                        }
+                                        if(Auth()->user()->can('edit leave')){
+                                            $btn .= '<a id="delete-leave" data-url="'.route('leaves.destroy', $row->id).'" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_leave"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
+                                        }
+                            $btn .= '</div></div>';
+                        }
+                        return $btn;
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+
+    }
     public function store(Request $request)
     {
         if (Auth::user()->can('create leave')) {

@@ -32,12 +32,12 @@
 
         <form action="{{route('history-leave.index')}}" accept-charset="UTF-8"  method="GET">
                 <div class="row filter-row align-items-center">
-            <div class="col-sm-6 col-md-3"> 
+            <div class="col-sm-6 col-md-3">
                 <div class="form-group" >
                     <label class="focus-label">Branch</label>
-                    <select class="select" name="branch_id" id="branch-filter">  
+                    <select class="select" name="branch_id" id="branch-filter">
                         <option value="0" >Select Branch</option>
-                        @foreach ($branches as $item)
+                        {{-- @foreach ($branches as $item)
                             @if (strlen(Request::query('branch_id')) > 10)
                                 @if ($item->id == \Illuminate\Support\Facades\Crypt::decrypt(Request::query('branch_id')))
                                     <option value="{{\Illuminate\Support\Facades\Crypt::encrypt($item->id)}}" selected>{{ $item->name }}</option>
@@ -47,16 +47,18 @@
                             @else
                                 <option value="{{\Illuminate\Support\Facades\Crypt::encrypt($item->id)}}" >{{ $item->name }}</option>
                             @endif
+                        @endforeach --}}
+                        @foreach ($branch as $item)
+                            <option value={{ $item->id }}>{{$item->name}}</option>
                         @endforeach
                     </select>
                 </div>
             </div>
-            <div class="col-sm-6 col-md-3"> 
+            <div class="col-sm-6 col-md-3">
                 <div class="form-group" >
                     <label class="focus-label">Employee</label>
-                    <select class="select" name="employee_id" id="employee-filter"> 
-                        <option value="0" >Select Employee</option>
-                        @foreach ($employee as $item)
+                    <select class="select" name="employee_id" id="employee-filter">
+                        {{-- @foreach ($employee as $item)
                             @if (strlen(Request::query('employee_id')) > 10)
                                 @if ($item->id == \Illuminate\Support\Facades\Crypt::decrypt(Request::query('employee_id')))
                                     <option value="{{\Illuminate\Support\Facades\Crypt::encrypt($item->id)}}" selected>{{ $item->name }}</option>
@@ -66,20 +68,20 @@
                             @else
                                 <option value="{{\Illuminate\Support\Facades\Crypt::encrypt($item->id)}}" >{{ $item->name }}</option>
                             @endif
-                        @endforeach
+                        @endforeach --}}
                     </select>
                 </div>
             </div>
-            <div class="col-sm-6 col-md-2">  
-                <button href="#" type="submit" class="btn btn-success w-100"> Search </button>  
-            </div>  
+            <div class="col-sm-6 col-md-2">
+                <button href="#" type="submit" class="btn btn-success w-100"> Search </button>
+            </div>
         </div>
     </form>
 
         <div class="row">
             <div class="col-md-12">
-                <div class="table-responsive" style="overflow-x: visible">
-                    <table class="table table-striped custom-table datatable">
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table" id="tblHistory">
                         <thead>
                             <tr>
                                 <th>Employee</th>
@@ -97,7 +99,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($leaves as $leave)
+                            {{-- @foreach ($leaves as $leave)
                                 <tr>
                                     <td>
                                         {{$leave->employee->name ?? '-'}}
@@ -163,7 +165,7 @@
                                         </td>
                                     @endcanany --}}
                                 </tr>
-                            @endforeach
+                            {{-- @endforeach --}}
                         </tbody>
                     </table>
                 </div>
@@ -172,7 +174,7 @@
     </div>
     <!-- /Page Content -->
 
-    @include('includes.modal.leave-modal')
+    {{-- @include('includes.modal.leave-modal') --}}
 
 </div>
 @endsection
@@ -212,105 +214,155 @@
     @endif
 
     <script>
-            $(document).ready(function () {
-                /* When click show user */
-                
+        $(document).ready(function () {
+            /* When click show user */
+            $('select#status_edit').change(function(){
+                let selectedItem = $(this).children('option:selected').val()
 
-                $('select#status_edit').change(function(){
-                    let selectedItem = $(this).children('option:selected').val()
-
-                    if (selectedItem == 'Rejected') {
-                        $('#rejected-reason').show()
-                    }else{
-                        $('#rejected-reason').hide()
-                    }
-                })
-
-                if($('.select-employee').length > 0) {
-                    $('.select-employee').select2({
-                        width: '100%',
-                        tags: true,
-                        dropdownParent: $('#add_leave')
-                    });
+                if (selectedItem == 'Rejected') {
+                    $('#rejected-reason').show()
+                }else{
+                    $('#rejected-reason').hide()
                 }
+            })
 
-                if($('.select-leave-type').length > 0) {
-                    $('.select-leave-type').select2({
-                        width: '100%',
-                        tags: true,
-                        dropdownParent: $('#add_leave')
-                    });
-                }
+            if($('.select-employee').length > 0) {
+                $('.select-employee').select2({
+                    width: '100%',
+                    tags: true,
+                    dropdownParent: $('#add_leave')
+                });
+            }
 
-                //edit
-                if($('.select-employee-edit').length > 0) {
-                    $('.select-employee-edit').select2({
-                        width: '100%',
-                        tags: true,
-                        dropdownParent: $('#edit_leave')
-                    });
-                }
+            if($('.select-leave-type').length > 0) {
+                $('.select-leave-type').select2({
+                    width: '100%',
+                    tags: true,
+                    dropdownParent: $('#add_leave')
+                });
+            }
+            $.ajaxSetup({
+                headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
+             });
+            var branch_id=$('#branch-filter').val();
+            var table = $('#tblHistory').DataTable({
+                processing: true,
+                serverSide: true,
+                destroy: true,
+                ajax : {
+                        "url" : 'data-history-leaves',
+                        "type" : 'POST',
+                        "data" : {"_token": "{{ csrf_token() }}",branch_id : branch_id},
+                    },
+                columns: [
+                    {
+                            data: 'name',
+                            name: 'name'
+                        },
+                        {
+                            data: 'title',
+                            name : 'title'
+                        },
+                        {
+                            data: 'applied_on',
+                            name : 'applied_on'
+                        },
+                        {
+                            data: 'start_date',
+                            name : 'start_date'
+                        },
+                        {
+                            data: 'end_date',
+                            name : 'end_date'
+                        },
+                        {
+                            data: 'total_leave_days',
+                            name : 'total_leave_days'
+                        },
+                        {
+                            data: 'attachment_request_path',
+                            name : 'attachment_request_path'
+                        },
+                        {
+                            data: 'leave_reason',
+                            name : 'leave_reason'
+                        },
+                        {
+                            data: 'status',
+                            name : 'status'
+                        },
+                ],
+            })
 
-                if($('.select-leave-type-edit').length > 0) {
-                    $('.select-leave-type-edit').select2({
-                        width: '100%',
-                        tags: true,
-                        dropdownParent: $('#edit_leave')
-                    });
-                }
+            //edit
+            if($('.select-employee-edit').length > 0) {
+                $('.select-employee-edit').select2({
+                    width: '100%',
+                    tags: true,
+                    dropdownParent: $('#edit_leave')
+                });
+            }
 
-                    $('body').on('click', '#edit-leave', function () {
-                        const editUrl = $(this).data('url');
-                        $('.wrapper-approver').empty()
-                        $('#approver').hide()
+            if($('.select-leave-type-edit').length > 0) {
+                $('.select-leave-type-edit').select2({
+                    width: '100%',
+                    tags: true,
+                    dropdownParent: $('#edit_leave')
+                });
+            }
+
+                $('body').on('click', '#edit-leave', function () {
+                    const editUrl = $(this).data('url');
+                    $('.wrapper-approver').empty()
+                    $('#approver').hide()
 
 
-                        $.get(editUrl, (data) => {
-                            // let splitFile = data[2].attachment_reject.split('/')
-                            // const lastItem = splitFile[splitFile.length - 1]
+                    $.get(editUrl, (data) => {
+                        // let splitFile = data[2].attachment_reject.split('/')
+                        // const lastItem = splitFile[splitFile.length - 1]
 
-                            // 3 tier approval
-                            if(data.level_approve != null)
-                            {
-                                $('#level_approve').attr('value', data.level_approve)
-                                $('#form-status').show()
-                            }
-                            if(data.leaveApprovals.length > 0)
-                            {
-                                $.each(data.leaveApprovals, function (indexInArray, valueOfElement) { 
-                                    if (valueOfElement !== null) {
-                                        $('.wrapper-approver').append(`<input disabled style="margin-bottom: 3px" class="form-control"  type="text" value="${valueOfElement.approver}">`)
-                                        $('#approver').show()
-                                    }
-                                });
-                            }
-                            // 3 tier approval
-                            
-                            $('#start_date_edit').val(data[2].start_date)
-                            $('#end_date_edit').val(data[2].end_date)
-                            $('#leave_reason_edit').html(data[2].leave_reason)
-                            $('#rejected_reason_edit').html(data[2].rejected_reason)
-                            // $('#attachment_rejected_edit_anchor').attr('href', data[2].attachment_reject)
-                            // $('#attachment_rejected_edit_anchor').html(lastItem)
-                            
-                            $('#employee_id_edit option[value='+ data[0].id +']').attr('selected','selected');
-                            $('#employee_id_edit').val(data[0].id ? data[0].id : 0).trigger('change');
+                        // 3 tier approval
+                        if(data.level_approve != null)
+                        {
+                            $('#level_approve').attr('value', data.level_approve)
+                            $('#form-status').show()
+                        }
+                        if(data.leaveApprovals.length > 0)
+                        {
+                            $.each(data.leaveApprovals, function (indexInArray, valueOfElement) {
+                                if (valueOfElement !== null) {
+                                    $('.wrapper-approver').append(`<input disabled style="margin-bottom: 3px" class="form-control"  type="text" value="${valueOfElement.approver}">`)
+                                    $('#approver').show()
+                                }
+                            });
+                        }
+                        // 3 tier approval
 
-                            $('#leave_type_id_edit option[value='+ data[2].leave_type_id +']').attr('selected','selected');
-                            $('#leave_type_id_edit').val(data[2].leave_type_id ? data[2].leave_type_id : 0).trigger('change');
+                        $('#start_date_edit').val(data[2].start_date)
+                        $('#end_date_edit').val(data[2].end_date)
+                        $('#leave_reason_edit').html(data[2].leave_reason)
+                        $('#rejected_reason_edit').html(data[2].rejected_reason)
+                        // $('#attachment_rejected_edit_anchor').attr('href', data[2].attachment_reject)
+                        // $('#attachment_rejected_edit_anchor').html(lastItem)
 
-                            $('#status_edit option[value='+ data[2].status +']').attr('selected','selected');
-                            $('#status_edit').val(data[2].status ? data[2].status : 0).trigger('change');
-                            
-                            const urlNow = '{{ Request::url() }}'
-                            $('#edit-form-leave').attr('action', urlNow + '/' + data[2].id);
-                        })
-                    });
+                        $('#employee_id_edit option[value='+ data[0].id +']').attr('selected','selected');
+                        $('#employee_id_edit').val(data[0].id ? data[0].id : 0).trigger('change');
 
-                $('body').on('click', '#delete-leave', function(){
-                    const deleteURL = $(this).data('url');
-                    $('#form-delete-leave').attr('action', deleteURL);
-                })
-            });
+                        $('#leave_type_id_edit option[value='+ data[2].leave_type_id +']').attr('selected','selected');
+                        $('#leave_type_id_edit').val(data[2].leave_type_id ? data[2].leave_type_id : 0).trigger('change');
+
+                        $('#status_edit option[value='+ data[2].status +']').attr('selected','selected');
+                        $('#status_edit').val(data[2].status ? data[2].status : 0).trigger('change');
+
+                        const urlNow = '{{ Request::url() }}'
+                        $('#edit-form-leave').attr('action', urlNow + '/' + data[2].id);
+                    })
+                });
+
+            $('body').on('click', '#delete-leave', function(){
+                const deleteURL = $(this).data('url');
+                $('#form-delete-leave').attr('action', deleteURL);
+            })
+        });
     </script>
 @endpush

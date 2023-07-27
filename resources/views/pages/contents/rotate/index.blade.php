@@ -66,6 +66,11 @@
 
 
 <script>
+    $.ajaxSetup({
+        headers: {
+        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
     $(document).ready(function () {
         var table = $('#tblRotation').DataTable({
                 processing: true,

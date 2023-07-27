@@ -13,6 +13,7 @@ use App\Models\LevelApproval;
 use App\Models\Overtime;
 use App\Models\Utility;
 use Carbon\Carbon;
+use DataTables;
 use DateTime;
 use Exception;
 use Illuminate\Http\Request;
@@ -24,46 +25,33 @@ use Illuminate\Support\Facades\Validator;
 
 class HistoryLeaveController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
+    public function index()
     {
-        // dd($request->all(), Crypt::decryptString($request->branch_id), Crypt::decryptString($request->employee_id));
         if (Auth::user()->can('manage leave')) {
-            $leaves = HistoryLeave::where('history_leaves.created_by', '=', Auth::user()->creatorId())
-                ->join('leave_types', 'history_leaves.leave_type_id', '=', 'leave_types.id')
-                ->join('employees', 'history_leaves.employee_id', '=', 'employees.id');
-
-            if (isset($request->branch_id) && $request->branch_id != 0) {
-                $branch_id = Crypt::decrypt($request->branch_id);
-                $leaves
-                    ->whereRaw('employees.branch_id = ?', [$branch_id]);
+            $user = Auth::user();
+            $branch = Branch::find($user->branch_id);
+            if ( $user->initial == 'HO'){
+                $branches['branch'] = Branch::select('*')->where('company_id',$branch->company_id)->get();
+            }else{
+                $branches['branch'] =  Branch::select('*')->where('id',$user->branch_id)->get();
             }
-            if (isset($request->employee_id) && $request->employee_id != 0) {
-                $employee_id = Crypt::decrypt($request->employee_id);
-                $leaves->whereRaw('employees.id = ?', [$employee_id]);
-            }
-            $employee  = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
-            $leaveType = LeaveType::where('created_by', '=', Auth::user()->creatorId())->get();
-            $branches = Branch::where('created_by', Auth::user()->creatorId())->get();
-            $leaves = $leaves->get();
-
-            return view('pages.contents.time-management.history-leave.index', compact('branches', 'leaves', 'employee', 'leaveType'));
+            return view('pages.contents.time-management.history-leave.index',$branches);
         } else {
             toast('Permission denied.', 'error');
             return redirect()->route('dashboard');
         }
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    }
+    public function get_data(Request $request){
+        $data = DB::table('history_leaves')
+                    ->select('history_leaves.*','employees.name','leave_types.title')
+                    ->leftJoin('leave_types','leave_types.id','=','history_leaves.leave_type_id')
+                    ->leftJoin('employees','employees.id','=','history_leaves.employee_id')
+                    ->where('employees.branch_id',1)
+                    ->orderBy('history_leaves.id','DESC')
+                    ->get();
+        return Datatables::of($data)->make(true);
+    }
     public function store(Request $request)
     {
         // if (Auth::user()->can('create leave')) {
@@ -158,13 +146,6 @@ class HistoryLeaveController extends Controller
         //     return redirect()->route('leaves.index');
         // }
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $leave = HistoryLeave::find($id);
@@ -176,13 +157,6 @@ class HistoryLeaveController extends Controller
 
         return view('pages.contents.time-management.history-leave.detail-rejected', compact('leave', 'fileType'));
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         // $leave = Leave::find($id);
@@ -220,13 +194,6 @@ class HistoryLeaveController extends Controller
         // }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         // if (Auth::user()->can('edit leave')) {
@@ -353,13 +320,6 @@ class HistoryLeaveController extends Controller
         //     return redirect()->route('leaves.index');
         // }
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //     $leave = Leave::find($id);

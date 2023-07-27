@@ -211,7 +211,9 @@ Route::group(['middleware' => 'auth'], function () {
 
         // Time management
         Route::resource('leaves', LeaveController::class);
+        Route::get('get-leaves', [LeaveController::class,'get_leave']);
         Route::resource('history-leave', HistoryLeaveController::class);
+        Route::post('data-history-leaves',[HistoryLeaveController::class,'get_data'])->name('data-history-leaves');
         Route::resource('overtimes', OvertimeController::class);
         Route::resource('time-management-report', TimeManagementReportController::class);
         Route::resource('time-management-report', TimeManagementReportController::class);
@@ -250,7 +252,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('update-data-rotation',[RotateController::class,'update'])->name('update-data-rotation');
 
         /** departement */
-        Route::resource('departements', DepartementController::Controller::class);
+        Route::resource('departements', DepartementController::class);
         /** departement */
 
         // Reporting
