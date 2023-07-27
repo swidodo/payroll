@@ -36,18 +36,6 @@
                 <div class="form-group" >
                     <label class="focus-label">Branch</label>
                     <select class="select" name="branch_id" id="branch-filter">
-                        <option value="0" >Select Branch</option>
-                        {{-- @foreach ($branches as $item)
-                            @if (strlen(Request::query('branch_id')) > 10)
-                                @if ($item->id == \Illuminate\Support\Facades\Crypt::decrypt(Request::query('branch_id')))
-                                    <option value="{{\Illuminate\Support\Facades\Crypt::encrypt($item->id)}}" selected>{{ $item->name }}</option>
-                                @else
-                                    <option value="{{\Illuminate\Support\Facades\Crypt::encrypt($item->id)}}" >{{ $item->name }}</option>
-                                @endif
-                            @else
-                                <option value="{{\Illuminate\Support\Facades\Crypt::encrypt($item->id)}}" >{{ $item->name }}</option>
-                            @endif
-                        @endforeach --}}
                         @foreach ($branch as $item)
                             <option value={{ $item->id }}>{{$item->name}}</option>
                         @endforeach
@@ -58,17 +46,10 @@
                 <div class="form-group" >
                     <label class="focus-label">Employee</label>
                     <select class="select" name="employee_id" id="employee-filter">
-                        {{-- @foreach ($employee as $item)
-                            @if (strlen(Request::query('employee_id')) > 10)
-                                @if ($item->id == \Illuminate\Support\Facades\Crypt::decrypt(Request::query('employee_id')))
-                                    <option value="{{\Illuminate\Support\Facades\Crypt::encrypt($item->id)}}" selected>{{ $item->name }}</option>
-                                @else
-                                    <option value="{{\Illuminate\Support\Facades\Crypt::encrypt($item->id)}}" >{{ $item->name }}</option>
-                                @endif
-                            @else
-                                <option value="{{\Illuminate\Support\Facades\Crypt::encrypt($item->id)}}" >{{ $item->name }}</option>
-                            @endif
-                        @endforeach --}}
+                        <option value=""></option>
+                        @foreach ($employee as $item)
+                            <option value={{ $item->id }}>{{ $item->name }}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -93,63 +74,10 @@
                                 <th>Attachment</th>
                                 <th>Leave Reason</th>
                                 <th>Status</th>
-                                {{-- @if(Auth::user()->can('edit leave') || Auth::user()->can('delete leave'))
-                                    <th class="text-end">Action</th>
-                                @endif --}}
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- @foreach ($leaves as $leave)
-                                <tr>
-                                    <td>
-                                        {{$leave->employee->name ?? '-'}}
-                                    </td>
-                                    <td>
-                                        {{$leave->title ?? '-'}}
-                                    </td>
-                                    <td>
-                                        {{$leave->applied_on ?? '-'}}
-                                    </td>
-                                    <td>
-                                        {{$leave->start_date ?? '-'}}
-                                    </td>
-                                    <td>
-                                        {{$leave->end_date ?? '-'}}
-                                    </td>
-                                    @php
-                                        $startDate = new DateTime($leave->start_date);
-                                        $endDate   = new DateTime($leave->end_date);
-                                        $total_leave_days = !empty($startDate->diff($endDate))?$startDate->diff($endDate)->days:0;
-                                    @endphp
-                                    <td>
-                                        {{$total_leave_days ?? '-'}}
-                                    </td>
-                                    <td>
-                                        <a href=" {{isset($leave->attachment_request_path) ? asset($leave->attachment_request_path) : '#'}}">
-                                            <div class="status_badge badge bg-success p-2 px-3 rounded">
-                                                File
-                                            </div>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        {{$leave->leave_reason ?? '-'}}
-                                    </td>
-                                    <td>
-                                        @if($leave->status=="Pending")
-                                            <div class="status_badge badge bg-warning p-2 px-3 rounded">{{ $leave->status ?? '-'}}</div>
-                                        @elseif($leave->status=="Approved")
-                                            <div class="status_badge badge bg-success p-2 px-3 rounded">{{ $leave->status ?? '-'}}</div>
-                                        @elseif($leave->status=="Rejected")
-                                            <a href="{{route('leaves.show', $leave->id)}}" class="text-white">
-                                                <div class="status_badge badge bg-danger p-2 px-3 rounded">
-                                                    {{ $leave->status ?? '-'}}
-                                                </div>
-                                            </a>
-                                        @endif
-                                    </td>
 
-                                </tr>
-                            {{-- @endforeach --}}
                         </tbody>
                     </table>
                 </div>
@@ -198,8 +126,12 @@
     @endif
 
     <script>
+
         $(document).ready(function () {
             /* When click show user */
+            $.ajaxSetup({
+                headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
+            });
             $('select#status_edit').change(function(){
                 let selectedItem = $(this).children('option:selected').val()
 
@@ -225,10 +157,8 @@
                     dropdownParent: $('#add_leave')
                 });
             }
-            $.ajaxSetup({
-                headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
-             });
-            var branch_id=$('#branch-filter').val();
+            var branch_id = $('#branch-filter').val();
+            var employeeId = $('#employee-filter').val();
             var table = $('#tblHistory').DataTable({
                 processing: true,
                 serverSide: true,
@@ -236,7 +166,7 @@
                 ajax : {
                         "url" : 'data-history-leaves',
                         "type" : 'POST',
-                        "data" : {"_token": "{{ csrf_token() }}",branch_id : branch_id},
+                        "data" : {branch_id : branch_id,employee_id : employeeId},
                     },
                 columns: [
                     {
@@ -299,75 +229,8 @@
                         },
                 ],
             })
+            $().on('change',function(){
 
-            //edit
-            if($('.select-employee-edit').length > 0) {
-                $('.select-employee-edit').select2({
-                    width: '100%',
-                    tags: true,
-                    dropdownParent: $('#edit_leave')
-                });
-            }
-
-            if($('.select-leave-type-edit').length > 0) {
-                $('.select-leave-type-edit').select2({
-                    width: '100%',
-                    tags: true,
-                    dropdownParent: $('#edit_leave')
-                });
-            }
-
-                $('body').on('click', '#edit-leave', function () {
-                    const editUrl = $(this).data('url');
-                    $('.wrapper-approver').empty()
-                    $('#approver').hide()
-
-
-                    $.get(editUrl, (data) => {
-                        // let splitFile = data[2].attachment_reject.split('/')
-                        // const lastItem = splitFile[splitFile.length - 1]
-
-                        // 3 tier approval
-                        if(data.level_approve != null)
-                        {
-                            $('#level_approve').attr('value', data.level_approve)
-                            $('#form-status').show()
-                        }
-                        if(data.leaveApprovals.length > 0)
-                        {
-                            $.each(data.leaveApprovals, function (indexInArray, valueOfElement) {
-                                if (valueOfElement !== null) {
-                                    $('.wrapper-approver').append(`<input disabled style="margin-bottom: 3px" class="form-control"  type="text" value="${valueOfElement.approver}">`)
-                                    $('#approver').show()
-                                }
-                            });
-                        }
-                        // 3 tier approval
-
-                        $('#start_date_edit').val(data[2].start_date)
-                        $('#end_date_edit').val(data[2].end_date)
-                        $('#leave_reason_edit').html(data[2].leave_reason)
-                        $('#rejected_reason_edit').html(data[2].rejected_reason)
-                        // $('#attachment_rejected_edit_anchor').attr('href', data[2].attachment_reject)
-                        // $('#attachment_rejected_edit_anchor').html(lastItem)
-
-                        $('#employee_id_edit option[value='+ data[0].id +']').attr('selected','selected');
-                        $('#employee_id_edit').val(data[0].id ? data[0].id : 0).trigger('change');
-
-                        $('#leave_type_id_edit option[value='+ data[2].leave_type_id +']').attr('selected','selected');
-                        $('#leave_type_id_edit').val(data[2].leave_type_id ? data[2].leave_type_id : 0).trigger('change');
-
-                        $('#status_edit option[value='+ data[2].status +']').attr('selected','selected');
-                        $('#status_edit').val(data[2].status ? data[2].status : 0).trigger('change');
-
-                        const urlNow = '{{ Request::url() }}'
-                        $('#edit-form-leave').attr('action', urlNow + '/' + data[2].id);
-                    })
-                });
-
-            $('body').on('click', '#delete-leave', function(){
-                const deleteURL = $(this).data('url');
-                $('#form-delete-leave').attr('action', deleteURL);
             })
         });
     </script>

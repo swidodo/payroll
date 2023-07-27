@@ -31,11 +31,12 @@ class HistoryLeaveController extends Controller
             $user = Auth::user();
             $branch = Branch::find($user->branch_id);
             if ( $user->initial == 'HO'){
-                $branches['branch'] = Branch::select('*')->where('company_id',$branch->company_id)->get();
+                $dataLeaveHistory['branch'] = Branch::select('*')->where('company_id',$branch->company_id)->get();
             }else{
-                $branches['branch'] =  Branch::select('*')->where('id',$user->branch_id)->get();
+                $dataLeaveHistory['branch'] =  Branch::select('*')->where('id',$user->branch_id)->get();
+                $dataLeaveHistory['employee'] = Employee::select('id','name')->where('branch_id',$user->branch_id)->groupBy('id')->get();
             }
-            return view('pages.contents.time-management.history-leave.index',$branches);
+            return view('pages.contents.time-management.history-leave.index',$dataLeaveHistory);
         } else {
             toast('Permission denied.', 'error');
             return redirect()->route('dashboard');
