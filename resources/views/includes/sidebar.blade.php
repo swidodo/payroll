@@ -300,10 +300,10 @@
 
                 </li>
                 <li class="submenu">
-                    <a href="#"><i class="la la-clock"></i> <span>Master Data</span> <span class="menu-arrow"></span></a>
+                    <a href="#"><i class="la la-tables"></i> <span>Master Data</span> <span class="menu-arrow"></span></a>
                     <ul style="display: none;">
                         <li class=" {{(request()->routeIs('departement*')) ? 'active' : ''}}">
-                            <a class=" {{(request()->routeIs('departement*')) ? 'active' : ''}}" href="{{route('departement.index')}}"><i class="la la-table"></i> <span>Departement Management</span>
+                            <a class=" {{(request()->routeIs('departement*')) ? 'active' : ''}}" href="{{route('departement.index')}}"><i class="la la-table"></i> <span>Departement</span>
                             </a>
                         </li>
                     </ul>

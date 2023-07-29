@@ -19,7 +19,7 @@
                     </ul>
                 </div>
                 <div class="col-auto float-end ms-auto">
-                    <a href="{{route('departement.create')}}" class="btn add-btn"><i class="fa fa-plus"></i> Shift Type</a>
+                    <a href="{{route('departement.create')}}" class="btn add-btn"><i class="fa fa-plus"></i> Departement</a>
                 </div>
             </div>
         </div>

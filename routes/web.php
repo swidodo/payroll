@@ -6,6 +6,7 @@ use App\Http\Controllers\PerformanceReviewController;
 use App\Http\Controllers\Auth\AuthenticationController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\DayTypeController;
 use App\Http\Controllers\HRM\EmployeeController;
 use App\Http\Controllers\LeaveTypeController;
@@ -250,7 +251,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('update-data-rotation',[RotateController::class,'update'])->name('update-data-rotation');
 
         /** departement */
-        Route::resource('departements', DepartementController::Controller::class);
+        Route::resource('departement', DepartementController::class);
         Route::get('get-data-departements',[DepartementController::class,'GetDataDepartements'])->name('departement.get-data-departements');
         /** departement */
 
