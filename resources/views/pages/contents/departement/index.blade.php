@@ -37,7 +37,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="table-responsive">
-                    <table class="table table-striped custom-table table-departements">
+                    <table class="table table-striped custom-table" id="table-departements">
                         <thead>
                             <tr>
                                 <th>Departement Name</th>
