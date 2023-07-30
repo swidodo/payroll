@@ -19,9 +19,9 @@ class Departement extends Model
     ];
 
 
-    public function department_head()
+    public function departement_head()
     {
-        return $this->belongsTo(Employee::class, 'department_head_id');
+        return $this->belongsTo(Employee::class, 'departement_head_id');
     }
 
     public function branch()

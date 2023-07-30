@@ -57,8 +57,6 @@
     </div>
     <!-- /Page Content -->
 
-    {{-- @include('includes.modal.shift-type-modal') --}}
-
 </div>
 @endsection
 
