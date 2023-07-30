@@ -11,10 +11,11 @@ class Departement extends Model
 
     protected $fillable = [
         'name',
-        'department_head_id',
+        'departement_head_id',
         'branch_id',
         'is_active',
-        'description'
+        'description',
+        'created_by'
     ];
 
 

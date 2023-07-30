@@ -1,6 +1,6 @@
 @extends('pages.dashboard')
 
-@section('title', 'Create Shift Type')
+@section('title', 'Create Departement')
 
 @section('dashboard-content')
 <div class="page-wrapper">
@@ -68,7 +68,7 @@
                                         @endif
                                     </div>
                                     <div class="form-group">
-                                        <label>Branch  <span class="text-danger">*</span></label>
+                                        <label>Departement Head  <span class="text-danger">*</span></label>
                                         <select class=" select" id="" name="departement_head_id">
                                             <option value="0">Select Head</option>
                                             @foreach ($departement_head as $dh)

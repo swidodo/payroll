@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Branch;
 use App\Models\Departement;
+use App\Models\Employee;
 use DataTables;
 use Exception;
 use Illuminate\Http\Request;
@@ -70,7 +71,7 @@ class DepartementController extends Controller
     public function create()
     {
         $branch = Branch::all();
-        $departement_head = Branch::all();
+        $departement_head = Employee::all();
         return view('pages.contents.departement.create',compact('branch','departement_head'));
     }
 
@@ -97,27 +98,17 @@ class DepartementController extends Controller
 
             try {
                 DB::beginTransaction();
-                $i=0;
-                $data_array= [];
-                foreach($request->name as $data_row){
-                    if ($data_row !=''){
-                        $data = [
-                            'departement_head_id'   =>$request->departement_head_id[$i],
-                            'branch_id'             => $request->branch_id[$i],
-                            'name'                  => $request->name[$i],
-                            'description'           => $request->name[$i],
-                            'created_by'            => Auth::user()->creatorId()
-                        ];
-                        array_push($data_array,$data);
-                    }
-                    $i++;
-                }
-                if (count($data_array) > 0){
-                    Departement::Insert($data_array);
-                }else{
-                    toast('Departement Faild created.', 'error');
-                    return redirect()->route('departement.index');
-                }
+
+                $data = [
+                    'departement_head_id'=>$request->departement_head_id,
+                    'branch_id'          =>$request->branch_id,
+                    'name'               =>$request->name,
+                    'description'        =>$request->description,
+                    'is_active'          =>$request->is_active,
+                    'created_by'         =>Auth::user()->creatorId()
+                ];
+
+                Departement::Insert($data);
                 DB::commit();
                 toast('Departement successfully created.', 'success');
                 return redirect()->route('allowances.index');
@@ -148,7 +139,7 @@ class DepartementController extends Controller
     public function edit($id)
     {
         $branch = Branch::all();
-        $departement_head = Branch::all();
+        $departement_head = Employee::all();
         $departement =  Departement::with('branch','departement_head')->where('id',$id)->first();
 
         return view('pages.contents.departement.show', compact('branch', 'departement_head', 'departement'));

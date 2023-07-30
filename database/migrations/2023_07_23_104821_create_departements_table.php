@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('departements', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->bigInteger('department_head_id')->comment('employee_id');
+            $table->bigInteger('departement_head_id')->comment('employee_id');
             $table->integer('branch_id');
             $table->enum('is_active', [0,1])->default(1);
             $table->string('description')->nullable();
