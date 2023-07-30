@@ -250,7 +250,7 @@
                         </ul>
                     </li>
                     <li class="submenu">
-                        <a href="#"><i class="la la-table"></i> <span> Tables </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-archive"></i> <span> Tables </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li><a href="tables-basic.html">Basic Tables </a></li>
                             <li><a href="data-tables.html">Data Table </a></li>
