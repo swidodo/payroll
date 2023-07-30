@@ -43,7 +43,7 @@ class DepartementController extends Controller
                         /** edit */
                         /** delete */
                         $url_delete = route('departement.destroy', $d->id);
-                        $view .= '<a id="delete-departement" data-url="'.$url_delete.'" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
+                        $view .= '<a id="delete-departement" data-url="'.$url_delete.'" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_departement"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
                         /** delete */
                         $view .= '</div></div></td>';
                     return $view;
@@ -210,7 +210,7 @@ class DepartementController extends Controller
             $delete->delete();
 
             toast('Departement successfully deleted.', 'success');
-            return redirect()->route('employees.index', $id);
+            return redirect()->route('departement.index', $id);
     }
 
 }
