@@ -1,6 +1,6 @@
 @extends('pages.dashboard')
 
-@section('title', 'Create Shift Type')
+@section('title', 'Create Departement')
 
 @section('dashboard-content')
 <div class="page-wrapper">
@@ -12,7 +12,7 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Create Shift Type</h3>
+                    <h3 class="page-title">Create Departement</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
                         <li class="breadcrumb-item active"><a href="{{route('departement.index')}}">Departements</a></li>
@@ -67,7 +67,7 @@
                                         @endif
                                     </div>
                                     <div class="form-group">
-                                        <label>Branch  <span class="text-danger">*</span></label>
+                                        <label>Departement Head  <span class="text-danger">*</span></label>
                                         <select class=" select" id="" name="departement_head_id">
                                             <option value="0">Select Head</option>
                                             @foreach ($departement_head as $dh)
@@ -83,12 +83,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Description  <span class="text-danger">*</span></label>
-                                        <select class=" select" id="" name="description">
-                                            <option value="0">Select Head</option>
-                                            @foreach ($departement_head as $dh)
-                                            <option value="{{$dh->id}}">{{$dh->name}}</option>
-                                            @endforeach
-                                        </select>
+                                        <textarea class="form-control" name="description" placeholder="description"></textarea>
 
                                         @if ($errors->has('description'))
                                         <div class="text-danger" role="alert">

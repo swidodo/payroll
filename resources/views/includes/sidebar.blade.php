@@ -250,7 +250,7 @@
                         </ul>
                     </li>
                     <li class="submenu">
-                        <a href="#"><i class="la la-table"></i> <span> Tables </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-archive"></i> <span> Tables </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li><a href="tables-basic.html">Basic Tables </a></li>
                             <li><a href="data-tables.html">Data Table </a></li>
@@ -298,6 +298,15 @@
                         {{-- <span class="menu-arrow"></span> --}}
                    </a>
 
+                </li>
+                <li class="submenu">
+                    <a href="#"><i class="la la-table"></i> <span>Master Data</span> <span class="menu-arrow"></span></a>
+                    <ul style="display: none;">
+                        <li class=" {{(request()->routeIs('departement*')) ? 'active' : ''}}">
+                            <a class=" {{(request()->routeIs('departement*')) ? 'active' : ''}}" href="{{route('departement.index')}}"><i class="la la-table"></i> <span>Departement</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
                 @canany(['manage employee', 'view employee', 'edit employee', 'delete employee', 'manage employee profile', 'show employee profile'])
