@@ -38,70 +38,61 @@
             </div>
         @endif
 
-        
+
 
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
                         <form method="GET" action="{{route('attendance.index')}}" accept-charset="UTF-8" id="attendanceemployee_filter">
-                        <div class="row align-items-center justify-content-end">
-                            <div class="col-md-10 ">
-                                <div class="row justify-content-end">
-                                    <div class="col-3">
-                                        <label class="form-label">Type</label> <br>
-
-                                        <div class="form-check form-check-inline form-group">
-                                            <input type="radio" id="monthly" value="monthly" name="type" class="form-check-input" {{isset($_GET['type']) && $_GET['type']=='monthly' ?'checked':'checked'}}>
-                                            <label class="form-check-label" for="monthly">Monthly</label>
-                                        </div>
-                                        <div class="form-check form-check-inline form-group">
-                                            <input type="radio" id="daily" value="daily" name="type" class="form-check-input" {{isset($_GET['type']) && $_GET['type']=='daily' ?'checked':''}}>
-                                            <label class="form-check-label" for="daily">Daily</label>
-                                        </div>
-
-                                    </div>
-                                    <div class="col-md-3 month">
-                                        <div class="btn-box">
-                                            <label for="month" class="form-label">Month</label>
-                                            <input class="month-btn form-control month-btn" name="month" type="month" value="{{isset($_GET['month'])?$_GET['month']:date('Y-m')}}" id="month">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 date d-none">
-                                        <div class="btn-box">
-                                            <label for="date" class="form-label">Date</label>
-                                            <input class="form-control month-btn" name="date" type="date" value="" id="date">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
+                        <div class="row align-items-center justify-content-start">
+                            <div class="col-md-9">
+                                <div class="row justify-content-start align-items-center">
+                                    <div class="col-md-5">
                                         <div class="btn-box">
                                             <label for="attendance" class="form-label">Branch</label>
                                             <select class="form-control select" id="branch" name="branch">
-                                                <option value="" selected="selected">Select Branch</option>
-                                                @foreach ($branches as $branch)
-                                                <option value="{{$branch->id}}">{{$branch->name}}</option>
-                                            @endforeach
+                                                @foreach ($branch as $branch)
+                                                    <option value="{{$branch->id}}" {{($branch->id == Auth::user()->branch_id) ? 'selected':''}}>{{$branch->name}}</option>
+                                                @endforeach
                                             </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 month">
+                                        <div class="btn-box">
+                                            <label for="month" class="form-label">Tanggal</label>
+                                            <input class="form-control" name="month" type="date" value="{{ $date }}" id="date">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3 d-flex align-items-center">
+                                        <div class="form-check form-check-inline form-group  mt-4">
+                                            <input type="checkbox" id="monthly" value="monthly" name="type" class="form-check-input">
+                                            <label class="form-check-label" for="monthly">Monthly</label>
+                                        </div>
+                                        <div class="mt-2">
+                                            <a href="#" class="ms-4" id="btnEmployee"><i class="fa fa-window-restore fa-2x" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5 date d-none">
+                                        <div class="btn-box">
+                                            <label for="date" class="form-label">Date</label>
+                                            <input class="form-control month-btn" name="date" type="date" value="" id="month">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-auto mt-4">
+                            <div class="col-2 mt-3 d-flex justify-content-start">
                                 <div class="row">
-                                    <div class="col-auto">
-
-                                        <a href="#" class="btn btn-sm btn-primary" onclick="document.getElementById('attendanceemployee_filter').submit(); return false;" data-bs-toggle="tooltip" title="" data-original-title="Search" data-bs-original-title="Search">
-                                            <span class="btn-inner--icon"><i class="la la-search"></i></span>
-                                        </a>
-
-                                        {{-- <a href="https://vixprodigitech.com/hrm/attendanceemployee" class="btn btn-sm btn-danger " data-bs-toggle="tooltip" data-original-title="Reset" data-bs-original-title="Reset">
-                                            <span class="btn-inner--icon"><i class="la la-trash"></i></span>
-                                        </a> --}}
+                                    <div class="col-auto ">
+                                        <button type="button" class="btn btn-primary" id="btnSerach">search <span class="btn-inner--icon"><i class="la la-search"></i></span></button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </form></div>
+                    </form>
+                </div>
 
                 </div>
             </div>
@@ -109,7 +100,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped custom-table datatable">
+                            <table class="table table-striped custom-table" id="attandaceList">
                                 <thead>
                                     <tr>
                                         <th>Employee</th>
@@ -126,58 +117,9 @@
                                         @endif
                                     </tr>
                                 </thead>
-                                @php
-                                    $no=1;
-                                @endphp
+
                                 <tbody>
-                                    @foreach ($attendanceEmployee as $att)
-                                        <tr>
-                                            <td>
-                                                {{$att->employee->name}}
-                                            </td>
-                                            <td>
-                                                {{isset($att->shift) && $att->shift->status == 'Approved' ? $att->shift->shift_type->name : '-'}}
-                                            </td>
-                                            <td>
-                                                {{$att->date}}
-                                            </td>
-                                            <td>
-                                                {{$att->status}}
-                                            </td>
-                                            <td>
-                                                {{\Carbon\Carbon::parse(  $att->clock_in)->format('H:i') }}
-                                            </td>
-                                            <td>
-                                                {{\Carbon\Carbon::parse(  $att->clock_out)->format('H:i')}}
-                                            </td>
-                                            <td>
-                                                {{\Carbon\Carbon::parse(  $att->late)->format('H:i')}}
-                                            </td>
-                                            <td>
-                                                {{\Carbon\Carbon::parse(  $att->early_leaving)->format('H:i')}}
-                                            </td>
-                                            <td>
-                                                {{\Carbon\Carbon::parse(  $att->overtime)->format('H:i')}}
-                                            </td>
-                                            @canany(['edit attendance', 'delete attendance'])
-                                                <td class="text-end">
-                                                    <div class="dropdown dropdown-action">
-                                                        <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 
-                                                        <div class="dropdown-menu dropdown-menu-right">
-                                                            @can('edit attendance')
-                                                                <a  data-url="{{route('attendance.edit', $att->id)}}" id="edit-attendance_btn" class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_attendance"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                            @endcan
-                                                            @can('delete attendance')
-                                                                <a id="delete-attendance" data-url="{{route('attendance.destroy', $att->id)}}" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_attendance"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                            @endcan
-
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            @endcanany
-                                        </tr>
-                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -188,7 +130,8 @@
     </div>
     <!-- /Page Content -->
 
-    @include('includes.modal.attendance-modal')
+    @include('includes.modal.attendance.attendance-modal')
+    @include('includes.modal.attendance.attendance-employee')
 
 </div>
 @endsection
@@ -221,36 +164,163 @@
 
 
     <script>
-            $(document).ready(function () {
-                /* When click show user */
+        $.ajaxSetup({
+            headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
+        });
+        $(document).ready(function () {
+                $()
+            /* When click show user */
+                $('body').on('click', '#edit-attendance_btn', function () {
+                    const editUrl = $(this).data('url');
+                    $('#employee_id_edit option[value='+ 0 +']').attr('selected','selected');
+                    $('#employee_id_edit').val(0).trigger('change');
+                    $('#date').val('')
+                    $('#clock_in').val('')
+                    $('#clock_out').val('')
+                    const time = {{ Js::from(date("H:i:s")) }}
 
+                    $.get(editUrl, (data) => {
+                        $('#date-edit').val(data[1].date)
+                        $('#clock_in').val(data[1].clock_in)
+                        $('#clock_out').val(time)
 
-                    $('body').on('click', '#edit-attendance_btn', function () {
-                        const editUrl = $(this).data('url');
-                        $('#employee_id_edit option[value='+ 0 +']').attr('selected','selected');
-                        $('#employee_id_edit').val(0).trigger('change');
-                        $('#date').val('')
-                        $('#clock_in').val('')
-                        $('#clock_out').val('')
-                        const time = {{ Js::from(date("H:i:s")) }}
+                        $('#employee_id_edit option[value='+ data[0][0].id +']').attr('selected','selected');
+                        $('#employee_id_edit').val(data[0][0].id ? data[0][0].id : 0).trigger('change');
 
-                        $.get(editUrl, (data) => {
-                            $('#date-edit').val(data[1].date)
-                            $('#clock_in').val(data[1].clock_in)
-                            $('#clock_out').val(time)
+                        const urlNow = '{{ Request::url() }}'
+                        $('#edit-form-attendance').attr('action', urlNow + '/' + data[1].id);
+                    })
+                });
 
-                            $('#employee_id_edit option[value='+ data[0][0].id +']').attr('selected','selected');
-                            $('#employee_id_edit').val(data[0][0].id ? data[0][0].id : 0).trigger('change');
+            $('body').on('click', '#delete-attendance', function(){
+                const deleteURL = $(this).data('url');
+                $('#form-delete-attendance').attr('action', deleteURL);
+            })
+        });
+        var employeeId = [];
+        $(document).on('change','.checkedEmployee',function(){
+            var id = $(this).val();
 
-                            const urlNow = '{{ Request::url() }}'
-                            $('#edit-form-attendance').attr('action', urlNow + '/' + data[1].id);
-                        })
-                    });
-
-                $('body').on('click', '#delete-attendance', function(){
-                    const deleteURL = $(this).data('url');
-                    $('#form-delete-attendance').attr('action', deleteURL);
+            if (this.checked === true) {
+                if (! employeeId.includes(id)){
+                    employeeId.push(id);
+                }
+		    }else{
+                var list = $(this).val();
+			    $.each(employeeId,function(key,val){
+                    if (list == val){
+                        employeeId.splice(key,1)
+                    }
                 })
-            });
+            }
+        })
+
+        $('#btnEmployee').on('click',function(e){
+            e.preventDefault();
+            getListEmployee(branchId)
+            $('#getDataEmployee').modal('show')
+        })
+
+
+        var type = $('#monthly').val();
+        var date = $('#date').val();
+        var branchId = $('#branch').val();
+        loadData(type,date,branchId,employeeId);
+
+        function loadData(type,date,branchId,employeeId){
+            $('#attandaceList').DataTable({
+                processing: true,
+                serverSide: true,
+                destroy: true,
+                ajax : {
+                        "url" : 'data-attendance-employee',
+                        "type" : 'POST',
+                        "data" : {type_filter : type, date :date, branch_id : branchId, employee_id : employeeId},
+                    },
+                columns: [
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'shif',
+                        name: 'shif'
+                    },
+                    {
+                        data: 'date',
+                        name: 'date'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
+                    },
+                    {
+                        data: 'clock_in',
+                        name: 'clock_in'
+                    },
+                    {
+                        data: 'clock_out',
+                        name: 'clock_out'
+                    },
+                    {
+                        data: 'late',
+                        name: 'late'
+                    },
+                    {
+                        data: 'early_leaving',
+                        name: 'early_leaving'
+                    },
+                    {
+                        data: 'overtime',
+                        name: 'overtime'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action'
+                    },
+                ],
+            })
+        }
+        function getListEmployee(branchId){
+            var branchId = $('#branch').val();
+            $('#setFilterattandaceList').DataTable({
+                processing: true,
+                serverSide: true,
+                destroy: true,
+                ajax : {
+                        "url" : 'getList-employee-attendance',
+                        "type" : 'POST',
+                        "data" : {branch_id : branchId},
+                    },
+                columns: [
+                    {
+                        data :'action',
+                        name :'action'
+                    },
+                    {
+                        data: 'no_employee',
+                        name: 'no_employee'
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    // {
+                    //     data: 'department.name',
+                    //     name: 'department.name'
+                    // },
+                    {
+                        data: 'branch.name',
+                        name: 'branch.name'
+                    },
+                                    ],
+            })
+        }
+        $('#setSearch').on('click',function(){
+            $('#getDataEmployee').modal('hide');
+        })
+        $('#btnSerach').on('click',function(){
+            loadData(type,date,branchId,employeeId)
+        })
     </script>
 @endpush

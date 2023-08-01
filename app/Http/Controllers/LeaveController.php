@@ -67,7 +67,7 @@ class LeaveController extends Controller
     public function get_leave(){
         $user = Auth::user();
         $data = DB::table('leaves')
-                    ->select('employees.name',
+                    ->select('employees.name','no_employee',
                             'leave_types.title',
                             'leaves.applied_on',
                             'leaves.start_date',

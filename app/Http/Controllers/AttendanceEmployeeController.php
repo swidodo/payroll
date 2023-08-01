@@ -14,8 +14,10 @@ use App\Models\ShiftSchedule;
 use App\Models\ShiftType;
 use App\Models\Utility;
 use Carbon\Carbon;
+use DataTables;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use Maatwebsite\Excel\Facades\Excel;
@@ -31,18 +33,9 @@ class AttendanceEmployeeController extends Controller
         if (Auth::user()->can('manage attendance')) {
             $branches = Branch::where('created_by', Auth::user()->creatorId())->get();
             $employees = Employee::where('created_by', Auth::user()->creatorId())->get();
-
-            // $department = Department::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
-            // $department->prepend('Select Department', '');
-
             if (Auth::user()->type != 'client' && Auth::user()->type != 'company') {
-
                 $emp = !empty(Auth::user()->employee) ? Auth::user()->employee->id : 0;
-
                 $attendanceEmployee = AttendanceEmployee::where('employee_id', $emp);
-
-
-
                 if ($request->type == 'monthly' && !empty($request->month)) {
 
                     $month = date('m', strtotime($request->month));
@@ -78,67 +71,75 @@ class AttendanceEmployeeController extends Controller
                 }
                 $attendanceEmployee = $attendanceEmployee->get();
             } else {
-
-                $employee = Employee::select('id')->where('created_by', Auth::user()->creatorId());
-
-                if (!empty($request->branch)) {
-                    $employee->where('branch_id', $request->branch);
-                }
-
-                // if(!empty($request->department))
-                // {
-                //     $employee->where('department_id', $request->department);
-                // }
-
-                $employee = $employee->get()->pluck('id');
-
-                $attendanceEmployee = AttendanceEmployee::whereIn('employee_id', $employee);
-                if ($request->type == 'monthly' && !empty($request->month)) {
-                    $month = date('m', strtotime($request->month));
-                    $year  = date('Y', strtotime($request->month));
-
-                    $start_date = Carbon::parse(date($year . '-' . $month))->startOfMonth()->toDateString();
-                    $end_date   = Carbon::parse(date($year . '-' . $month))->endOfMonth()->toDateString();
-
-                    $attendanceEmployee->whereBetween(
-                        'date',
-                        [
-                            $start_date,
-                            $end_date,
-                        ]
-                    );
-                } elseif ($request->type == 'daily' && !empty($request->date)) {
-                    $attendanceEmployee->where('date', $request->date);
-                } else {
-                    $month      = date('m');
-                    $year       = date('Y');
-                    $start_date = Carbon::parse(date($year . '-' . $month))->startOfMonth()->toDateString();
-                    $end_date   = Carbon::parse(date($year . '-' . $month))->endOfMonth()->toDateString();
-
-                    $attendanceEmployee->whereBetween(
-                        'date',
-                        [
-                            $start_date,
-                            $end_date,
-                        ]
-                    );
-                }
-                // dd($attendanceEmployee->toSql());
-                //dd($attendanceEmployee->toSql(), $attendanceEmployee->getBindings());
-                $attendanceEmployee = $attendanceEmployee->get();
+                $branch = Branch::find(Auth::user()->branch_id);
+                $data['branch'] = Branch::where('company_id',$branch->company_id)->get();
+                $data['employees'] = Employee::where('branch_id',$branch ->id);
+                $data['date'] = date('Y-m-d');
             }
-
-            return view(
-                'pages.contents.attendance.index',
-                compact('branches', 'attendanceEmployee', 'employees')
-                // , compact('attendanceEmployee', 'branch', 'department')
-            );
+            return view('pages.contents.attendance.index', $data);
         } else {
             toast('Permission denied.', 'error');
             return redirect()->back();
         }
     }
+    public function get_data(Request $request){
+        $data = DB::table('employees')
+                    ->select('employees.name',
+                            'shift_types.name as shif',
+                            'attendance_employees.date',
+                            'attendance_employees.status',
+                            'attendance_employees.clock_in',
+                            'attendance_employees.clock_out',
+                            'attendance_employees.late',
+                            'attendance_employees.early_leaving',
+                            'attendance_employees.overtime',
+                            'attendance_employees.id')
+                    ->leftJoin('attendance_employees','attendance_employees.employee_id','=','employees.id')
+                    ->leftJoin('shift_schedules','shift_schedules.employee_id','=','employees.id')
+                    ->leftJoin('shift_types','shift_types.id','=','shift_schedules.shift_id')
+                    ->where('employees.branch_id','=',$request->branch);
+                    if(isset($request->type)){
+                        $data->where('attendance_employees.date','=',$request->date);
+                    }else{
+                        $data->where('attendance_employees.date','=',$request->date);
+                    }
+                    if ($request->employee_id != []){
+                        $data->whereIn('employees.id',$request->employee_id);
+                    }
+                    $data->get();
+        return DataTables::of($data)
+                        ->addIndexColumn()
+                        ->addColumn('action', function($row){
+                            $btn ='';
+                            if(Auth()->user()->canany('edit leave','delete leave')){
+                                $btn .= `<div class="dropdown dropdown-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                <div class="dropdown-menu dropdown-menu-right">`;
+                                if(Auth()->user()->can('edit attendance')){
+                                    $btn .= '<a  data-url='.route('attendance.edit', $row->id).' id="edit-attendance_btn" class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_attendance"><i class="fa fa-pencil m-r-5"></i> Edit</a>';
+                                }
+                                if(Auth()->user()->can('delete attendance')){
+                                    $btn .= '<a id="delete-attendance" data-url='.route('attendance.destroy', $row->id).' class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_attendance"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
+                                }
+                                    $btn .= '</div></div>';
+                                }
+                                return $btn;
+                            })
+                        ->rawColumns(['action'])
+                        ->make(true);
 
+    }
+    public function get_list_employee(Request $request){
+        $data = Employee::where('branch_id','=',$request->branch_id)->with('branch');
+        return datatables()->eloquent($data)
+                        ->addIndexColumn()
+                        ->addColumn('action', function($row){
+                                $input = '<input type="checkbox" name="list[]" class="checkedEmployee" value ="'.$row->id.'">';
+                                return $input;
+                            })
+                            ->escapeColumns([])
+                            ->toJson();
+    }
     public function edit($id)
     {
         if (Auth::user()->can('edit attendance')) {
