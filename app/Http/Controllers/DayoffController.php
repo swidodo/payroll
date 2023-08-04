@@ -29,16 +29,6 @@ class DayoffController extends Controller
             })
             ->get();
 
-            // // Get user ids with the same branch_id
-            // $userIds = User::where('branch_id', $branchId)->pluck('id')->toArray();
-
-            // // Fetch Dayoff data based on the created_by (user_id) with the same branch_id
-            // $dayoffs = DB::table('dayoffs')
-            //     ->whereIn('created_by', $userIds)
-            //     ->get();
-
-            // dd($dayoffs);
-
             // $employees = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
             // $shiftSchedules = ShiftSchedule::where('created_by', '=', Auth::user()->creatorId())->where('status', 'Approved')->orderBy('id', 'asc')->get();
             // $dayoffs = Dayoff::select('id', 'date')->get();
