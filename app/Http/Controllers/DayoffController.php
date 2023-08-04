@@ -21,8 +21,6 @@ class DayoffController extends Controller
             $branchId = Auth::user()->branch_id;
             // dd($branchId);
 
-            // $dayoffs = Dayoff::where('created_by', $branchId)->get();
-
             $dayoffs = DB::table('dayoffs')
             ->whereIn('created_by', function ($query) use ($branchId) {
                 $query->select('id')
@@ -40,6 +38,7 @@ class DayoffController extends Controller
             //     ->get();
 
             // dd($dayoffs);
+
             // $employees = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
             // $shiftSchedules = ShiftSchedule::where('created_by', '=', Auth::user()->creatorId())->where('status', 'Approved')->orderBy('id', 'asc')->get();
             // $dayoffs = Dayoff::select('id', 'date')->get();
