@@ -45,6 +45,7 @@
                     <table class="table table-striped custom-table" id="tblLeaveEmployee">
                         <thead>
                             <tr>
+                                <th>Employee ID</th>
                                 <th>Employee</th>
                                 <th>Leave Type</th>
                                 <th>Applied On</th>
@@ -218,6 +219,10 @@
                     },
                 columns: [
                         {
+                            data: 'no_employee',
+                            name: 'no_employee'
+                        },
+                        {
                             data: 'name',
                             name: 'name'
                         },
@@ -242,12 +247,12 @@
                             name : 'total_leave_days'
                         },
                         {
-                            data: 'leave_reason',
-                            name : 'leave_reason'
-                        },
-                        {
                             data: 'attachment_request_path',
                             name : 'attachment_request_path'
+                        },
+                        {
+                            data: 'leave_reason',
+                            name : 'leave_reason'
                         },
                         {
                             data: 'status',

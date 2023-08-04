@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Branch;
 use App\Models\Departement;
+use App\Models\Employee;
 use DataTables;
 use Exception;
 use Illuminate\Http\Request;
@@ -37,14 +38,23 @@ class DepartementController extends Controller
                                             <a href = "#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons"> more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">';
                         /** edit */
-                        $url_edit = route('departements.edit', $d->id);
+                        $url_edit = route('departement.edit', $d->id);
                         $view .= '<a data-url="" id="edit-departement" class="dropdown-item" href="'.$url_edit.'"><i class="fa fa-pencil m-r-5" ></i> Edit</a>';
                         /** edit */
                         /** delete */
-                        $url_delete = route('departements.destroy', $d->id);
-                        $view .= '<a id="delete-departement" data-url="'.$url_delete.'" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
+                        $url_delete = route('departement.destroy', $d->id);
+                        $view .= '<a id="delete-departement" data-url="'.$url_delete.'" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_departement"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
                         /** delete */
                         $view .= '</div></div></td>';
+                    return $view;
+                })
+                ->addColumn('status', function ($d) {
+                    $view = '';
+                    if($d->is_active == '1'){
+                        $view ='Active';
+                    }else{
+                        $view ='Not Active';
+                    }
                     return $view;
                 })
                 ->escapeColumns([])
@@ -70,7 +80,7 @@ class DepartementController extends Controller
     public function create()
     {
         $branch = Branch::all();
-        $departement_head = Branch::all();
+        $departement_head = Employee::all();
         return view('pages.contents.departement.create',compact('branch','departement_head'));
     }
 
@@ -97,30 +107,20 @@ class DepartementController extends Controller
 
             try {
                 DB::beginTransaction();
-                $i=0;
-                $data_array= [];
-                foreach($request->name as $data_row){
-                    if ($data_row !=''){
-                        $data = [
-                            'departement_head_id'   =>$request->departement_head_id[$i],
-                            'branch_id'             => $request->branch_id[$i],
-                            'name'                  => $request->name[$i],
-                            'description'           => $request->name[$i],
-                            'created_by'            => Auth::user()->creatorId()
-                        ];
-                        array_push($data_array,$data);
-                    }
-                    $i++;
-                }
-                if (count($data_array) > 0){
-                    Departement::Insert($data_array);
-                }else{
-                    toast('Departement Faild created.', 'error');
-                    return redirect()->route('departement.index');
-                }
+
+                $data = [
+                    'departement_head_id'=>$request->departement_head_id,
+                    'branch_id'          =>$request->branch_id,
+                    'name'               =>$request->name,
+                    'description'        =>$request->description,
+                    'is_active'          =>$request->is_active,
+                    'created_by'         =>Auth::user()->creatorId()
+                ];
+
+                Departement::Insert($data);
                 DB::commit();
                 toast('Departement successfully created.', 'success');
-                return redirect()->route('allowances.index');
+                return redirect()->route('departement.index');
             } catch (Exception $e) {
                 DB::rollBack();
                 toast('Something went wrong.', 'error');
@@ -148,10 +148,10 @@ class DepartementController extends Controller
     public function edit($id)
     {
         $branch = Branch::all();
-        $departement_head = Branch::all();
+        $departement_head = Employee::all();
         $departement =  Departement::with('branch','departement_head')->where('id',$id)->first();
 
-        return view('pages.contents.departement.show', compact('branch', 'departement_head', 'departement'));
+        return view('pages.contents.departement.edit', compact('branch', 'departement_head', 'departement'));
     }
 
     /**
@@ -178,12 +178,19 @@ class DepartementController extends Controller
 
         try {
             DB::beginTransaction();
-            $insert_departement = Departement::find($id);
-            $insert_departement->update($request->all());
+            $data = [
+                'departement_head_id'=>$request->departement_head_id,
+                'branch_id'          =>$request->branch_id,
+                'name'               =>$request->name,
+                'description'        =>$request->description,
+                'is_active'          =>$request->is_active
+            ];
+
+            Departement::where('id', $id)->update($data);
 
             DB::commit();
             toast('Departement successfully updated.', 'success');
-            return redirect()->route('allowances.index');
+            return redirect()->route('departement.index');
         } catch (Exception $e) {
             DB::rollBack();
             toast('Something went wrong.', 'error');
@@ -203,7 +210,7 @@ class DepartementController extends Controller
             $delete->delete();
 
             toast('Departement successfully deleted.', 'success');
-            return redirect()->route('employees.index', $id);
+            return redirect()->route('departement.index', $id);
     }
 
 }

@@ -9,8 +9,10 @@ use App\Models\Overtime;
 use App\Models\OvertimeApproval;
 use App\Models\OvertimeType;
 use App\Models\Utility;
+use App\Models\Branch;
 use Carbon\Carbon;
 use Exception;
+use DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -38,7 +40,6 @@ class OvertimeController extends Controller
                 //3 tier approval
                 if (!is_null($employee[0]->level_approval)) {
                     $levelApprove = $employee[0]->approval;
-
                     $approval = OvertimeApproval::where('level', $levelApprove->level)
                         ->where('is_approver_company', false)
                         ->where('approver_id', $employee[0]->id)
@@ -52,26 +53,61 @@ class OvertimeController extends Controller
 
                 return view('pages.contents.time-management.overtime.index', compact('overtimes', 'employee', 'overtimeTypes', 'dayTypes'));
             } else {
-                $overtimes = Overtime::where('created_by', '=', Auth::user()->creatorId())->get();
-                $employee  = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
-                $overtimeTypes = OvertimeType::where('created_by', '=', Auth::user()->creatorId())->get();
-                $dayTypes      = DayType::where('created_by', '=', Auth::user()->creatorId())->get();
-
-                return view('pages.contents.time-management.overtime.index', compact('overtimes', 'employee', 'overtimeTypes', 'dayTypes'));
+                $data['branch']     = Branch::Where('id','=',Auth::user()->branch_id)->get();
+                $data['employee']   = Employee::where('branch_id', '=', Auth::user()->branch_id)->get();
+                $data['dayTypes']   = DayType::where('created_by', '=', Auth::user()->creatorId())->get();
+                $data['date']       = date('Y-m-d');
+                return view('pages.contents.time-management.overtime.index',$data );
+                // $overtimes = Overtime::where('created_by', '=', Auth::user()->creatorId())->get();
+                // $overtimeTypes = OvertimeType::where('created_by', '=', Auth::user()->creatorId())->get();
+                // return view('pages.contents.time-management.overtime.index', compact('overtimes', 'employee', 'overtimeTypes', 'dayTypes'));
             }
         } else {
             toast('Permission denied.', 'error');
             return redirect()->route('dashboard');
         }
     }
+    public function get_data(Request $request){
+        // print_r($request->branch_id);
+        $data = DB::table('overtimes')
+                    ->select('overtimes.id',
+                            'employees.no_employee',
+                            'employees.name',
+                            'overtimes.start_date',
+                            'overtimes.start_time',
+                            'day_types.name as day_name',
+                            'overtimes.end_time',
+                            'overtimes.duration',
+                            'overtimes.amount_fee',
+                            'overtimes.status',
+                            'overtimes.notes')
+                    ->leftJoin('employees','employees.id','=','overtimes.employee_id')
+                    ->leftJoin('day_types','day_types.id','=','overtimes.day_type_id')
+                    ->where('employees.branch_id','=',$request->branch_id)
+                    ->where('overtimes.start_date','=',$request->date)
+                    ->get();
+        return DataTables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+                    $btn ='';
+                    if(Auth()->user()->canany('edit leave','delete leave')){
+                        $btn .= '<div class="dropdown dropdown-action">
+                                    <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">';
+                                    if(Auth()->user()->can('edit overtime')){
+                                        $btn .= '<a  data-url="'.route('overtimes.edit', $row->id).'" id="edit-overtime" class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_overtime"><i class="fa fa-pencil m-r-5"></i> Edit</a>';
+                                    }
+                                    if(Auth()->user()->can('delete overtime')){
+                                        $btn .= '<a id="delete-overtime" data-url="'.route('overtimes.destroy', $row->id).'" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_overtime"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
+                                    }
+                        $btn .= '</div></div>';
+                    }
+                    return $btn;
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+    }
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         if (Auth::user()->can('create overtime')) {

@@ -17,32 +17,6 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Start Date </label>
-                                <input type="date" name="start_date" id="startdate" class="form-control " placeholder="Start Date" required>
-
-                                @if ($errors->has('start_date'))
-                                    <div class="text-danger" role="alert">
-                                        <small><strong>{{ $errors->get('start_date')[0] }}</strong></small>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>End Date </label>
-                                <input type="date" name="end_date" id="enddate" class="form-control " placeholder="End Date" required>
-
-                                @if ($errors->has('end_date'))
-                                <div class="text-danger" role="alert">
-                                    <small><strong>{{ $errors->get('end_date')[0] }}</strong></small>
-                                </div>
-                            @endif
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
                                 <label for="religion" class="control-label" required>Employee ID </label>
                                 <select  class="form-control select-employee" name="employee_id" id="employee_id_add" required>
                                     @if ( !is_null(Auth::user()->employee) )
@@ -52,9 +26,9 @@
                                             @endif
                                         @endforeach
                                     @else
-                                        <option value="0">Change Employee ID</option>
+                                        <option value="0">Change Employee</option>
                                         @foreach ($employee as $e)
-                                            <option value="{{$e->id}}">{{$e->name}}</option>
+                                            <option value="{{$e->id}}">{{$e->no_employee." - ".$e->name}}</option>
                                         @endforeach
                                     @endif
                                 </select>
@@ -66,8 +40,35 @@
                             @endif
                             </div>
                         </div>
+                        {{-- <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Start Date </label>
+                                <input type="date" name="start_date" id="startdate" class="form-control " placeholder="Start Date" required>
+
+                                @if ($errors->has('start_date'))
+                                    <div class="text-danger" role="alert">
+                                        <small><strong>{{ $errors->get('start_date')[0] }}</strong></small>
+                                    </div>
+                                @endif
+                            </div>
+                        </div> --}}
 
                         <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date </label>
+                                <input type="date" name="end_date" id="enddate" class="form-control " placeholder="End Date" required>
+
+                                @if ($errors->has('end_date'))
+                                <div class="text-danger" role="alert">
+                                    <small><strong>{{ $errors->get('end_date')[0] }}</strong></small>
+                                </div>
+                            @endif
+                            </div>
+                        </div>
+
+
+
+                        {{-- <div class="col-md-6">
                             <div class="form-group">
                                 <label for="religion" class="control-label" required>Overtime Type </label>
                                 <select class="form-control  select-overtime" name="overtime_type_id" id="overtime_id_add" required >
@@ -83,8 +84,34 @@
                                 </div>
                             @endif
                             </div>
+                        </div> --}}
+
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Start Time </label>
+                                <input type="text" name="start_time" id="time_add" class="form-control" placeholder="00:00" required>
+
+                                @if ($errors->has('start_time'))
+                                <div class="text-danger" role="alert">
+                                    <small><strong>{{ $errors->get('start_time')[0] }}</strong></small>
+                                </div>
+                            @endif
+                            </div>
                         </div>
 
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>End Time </label>
+                                <input type="text" name="end_time" id="time_add" class="form-control" placeholder="00:00" required>
+
+                                @if ($errors->has('end_time'))
+                                <div class="text-danger" role="alert">
+                                    <small><strong>{{ $errors->get('end_time')[0] }}</strong></small>
+                                </div>
+                            @endif
+                            </div>
+                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="religion" class="control-label" required="">Day type </label>
@@ -102,33 +129,6 @@
                             @endif
                             </div>
                         </div>
-
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label>Start Time </label>
-                                <input type="text" name="start_time" id="time_add" class="form-control" placeholder="01:00 - 23:59" required>
-
-                                @if ($errors->has('start_time'))
-                                <div class="text-danger" role="alert">
-                                    <small><strong>{{ $errors->get('start_time')[0] }}</strong></small>
-                                </div>
-                            @endif
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>End Time </label>
-                                <input type="text" name="end_time" id="time_add" class="form-control" placeholder="01:00 - 23:59" required>
-
-                                @if ($errors->has('end_time'))
-                                <div class="text-danger" role="alert">
-                                    <small><strong>{{ $errors->get('end_time')[0] }}</strong></small>
-                                </div>
-                            @endif
-                            </div>
-                        </div>
-
                             {{-- <div class="form-group">
                             <label>duration </label>
                             <input type="text" name="duration" id="duration" class="form-control " placeholder="duration" required>
@@ -174,33 +174,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Start Date </label>
-                                <input type="date" name="start_date" id="start_date_edit" class="form-control " placeholder="Start Date" required>
-
-                                @if ($errors->has('start_date'))
-                                    <div class="text-danger" role="alert">
-                                        <small><strong>{{ $errors->get('start_date')[0] }}</strong></small>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>End Date </label>
-                                <input type="date" name="end_date" id="end_date_edit" class="form-control " placeholder="End Date" required>
-
-                                @if ($errors->has('end_date'))
-                                <div class="text-danger" role="alert">
-                                    <small><strong>{{ $errors->get('end_date')[0] }}</strong></small>
-                                </div>
-                            @endif
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="religion" class="control-label" required>Employee ID </label>
+                                <label for="religion" class="control-label" required>Employee</label>
                                 <select class="form-control select-employee-edit" name="employee_id" id="employee_id_edit" required>
                                     @if ( !is_null(Auth::user()->employee) )
                                         @foreach ($employee as $e)
@@ -220,8 +194,33 @@
                                  @endif
                             </div>
                         </div>
+                        {{-- <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Start Date </label>
+                                <input type="date" name="start_date" id="start_date_edit" class="form-control " placeholder="Start Date" required>
+
+                                @if ($errors->has('start_date'))
+                                    <div class="text-danger" role="alert">
+                                        <small><strong>{{ $errors->get('start_date')[0] }}</strong></small>
+                                    </div>
+                                @endif
+                            </div>
+                        </div> --}}
 
                         <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date </label>
+                                <input type="date" name="end_date" id="end_date_edit" class="form-control " placeholder="End Date" required>
+
+                                @if ($errors->has('end_date'))
+                                <div class="text-danger" role="alert">
+                                    <small><strong>{{ $errors->get('end_date')[0] }}</strong></small>
+                                </div>
+                            @endif
+                            </div>
+                        </div>
+
+                        {{-- <div class="col-md-6">
                             <div class="form-group">
                                 <label for="religion" class="control-label" required>Overtime Type </label>
                                 <select class="form-control  select-overtime-edit" name="overtime_type_id" id="overtime_id_edit" required >
@@ -237,25 +236,9 @@
                                 </div>
                             @endif
                             </div>
-                        </div>
+                        </div> --}}
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="religion" class="control-label" required="">Day type </label>
-                                <select class="form-control  select-day-type-edit" name="day_type_id" id="day_type_id_edit" required >
-                                    <option value="0" selected>Change Day Type</option>
-                                    @foreach ($dayTypes as $type)
-                                    <option value="{{$type->id}}">{{$type->name}}</option>
-                                    @endforeach
-                                </select>
 
-                                @if ($errors->has('day_type_id'))
-                                <div class="text-danger" role="alert">
-                                    <small><strong>{{ $errors->get('day_type_id')[0] }}</strong></small>
-                                </div>
-                            @endif
-                            </div>
-                        </div>
 
                         <div class="col-lg-6">
                             <div class="form-group">
@@ -282,7 +265,23 @@
                             @endif
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="religion" class="control-label" required="">Day type </label>
+                                <select class="form-control  select-day-type-edit" name="day_type_id" id="day_type_id_edit" required >
+                                    <option value="0" selected>Change Day Type</option>
+                                    @foreach ($dayTypes as $type)
+                                    <option value="{{$type->id}}">{{$type->name}}</option>
+                                    @endforeach
+                                </select>
 
+                                @if ($errors->has('day_type_id'))
+                                <div class="text-danger" role="alert">
+                                    <small><strong>{{ $errors->get('day_type_id')[0] }}</strong></small>
+                                </div>
+                            @endif
+                            </div>
+                        </div>
                             {{-- <div class="form-group">
                             <label>duration </label>
                             <input type="text" name="duration" id="duration" class="form-control " placeholder="duration" required>
@@ -301,15 +300,15 @@
                             </div>
                         </div>
 
-                        
+
                         <div class="col-md-12">
                             <div class="form-group" id="approver" style="display: none">
                                 <label for="status" class="form-label">Approved By</label>
                                 <div class="wrapper-approver">
-                                    
+
                                 </div>
                             </div>
-                           
+
                             <div class="form-group" id="form-status" style="display: none">
                                 <label for="status" class="form-label">Status</label>
                                 <input hidden type="text" name="level_approve" id="level_approve" value="">
@@ -338,8 +337,8 @@
                             </div>
 
                         </div>
-                        
-                        
+
+
                     </div>
                     <div class="submit-section">
                         <button type="submit" class="btn btn-primary submit-btn">Submit</button>

@@ -250,7 +250,7 @@
                         </ul>
                     </li>
                     <li class="submenu">
-                        <a href="#"><i class="la la-table"></i> <span> Tables </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-archive"></i> <span> Tables </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li><a href="tables-basic.html">Basic Tables </a></li>
                             <li><a href="data-tables.html">Data Table </a></li>
@@ -298,6 +298,15 @@
                         {{-- <span class="menu-arrow"></span> --}}
                    </a>
 
+                </li>
+                <li class="submenu">
+                    <a href="#"><i class="la la-table"></i> <span>Master Data</span> <span class="menu-arrow"></span></a>
+                    <ul style="display: none;">
+                        <li class=" {{(request()->routeIs('departement*')) ? 'active' : ''}}">
+                            <a class=" {{(request()->routeIs('departement*')) ? 'active' : ''}}" href="{{route('departement.index')}}"><i class="la la-table"></i> <span>Departement</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
                 @canany(['manage employee', 'view employee', 'edit employee', 'delete employee', 'manage employee profile', 'show employee profile'])
@@ -400,41 +409,24 @@
                         </ul>
                     </li>
                 @endcanany
-
-
-                @canany(['manage payroll', 'create payroll', 'manage denda', 'create denda', 'manage payslip', 'generate payslip'])
-                    <li class="submenu">
-                        <a href="#"><i class="la la-book"></i> <span> Payroll</span> <span class="menu-arrow"></span></a>
-                        <ul style="display: none;">
-
-                            @canany(['manage payroll', 'create payroll'])
-                                <li class="{{(request()->routeIs('payroll*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('payroll*')) ? 'active' : ''}}" href="{{ route('payroll.index') }}">List Payroll</a></li>
-                            @endcanany
-
-                            @canany(['manage payslip', 'generate payslip'])
-                                <li class="{{(request()->routeIs('payslips*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('payslips*')) ? 'active' : ''}}" href="{{ route('payslips.index') }}">Payslip</a></li>
-                            @endcanany
-
-
-                        </ul>
-                    </li>
-                @endcanany
-
                 @canany(['manage reimburst', 'create reimburst', 'manage cash advance', 'create cash advance', 'manage loan', 'create loan', 'manage allowance', 'create allowance'])
                     <li class="submenu">
                         <a href="#"><i class="la la-usd"></i> <span> Finance</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
+                            @canany(['manage payroll', 'create payroll'])
+                                <li class="{{(request()->routeIs('payroll*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('payroll*')) ? 'active' : ''}}" href="{{ route('payroll.index') }}">Payroll</a></li>
+                            @endcanany
                             @canany(['manage reimburst', 'create reimburst'])
                                 <li class="{{(request()->routeIs('reimburst*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('reimburst*')) ? 'active' : ''}}" href="{{ route('reimburst.index') }}"> Reimburst</a></li>
                             @endcanany
 
                             @canany(['manage cash advance', 'create cash advance'])
-                                <li class="{{(request()->routeIs('cash*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('cash*')) ? 'active' : ''}}" href="{{route('cash.index')}}"> Cash Advance</a></li>
+                                <li class="{{(request()->routeIs('cash*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('cash*')) ? 'active' : ''}}" href="{{route('cash.index')}}">Loan</a></li>
                             @endcanany
 
-                            @canany(['manage loan', 'create loan'])
+                            {{-- @canany(['manage loan', 'create loan'])
                                 <li class="{{(request()->routeIs('loans*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('loans*')) ? 'active' : ''}}" href="{{route('loans.index')}}"> Loan</a></li>
-                            @endcanany
+                            @endcanany --}}
 
                             @canany(['manage allowance', 'create allowance'])
                             <li class=" {{(request()->routeIs('allowances*')) ? 'active' : ''}}">
@@ -447,7 +439,18 @@
                         </ul>
                     </li>
                 @endcanany
+                @canany(['manage payroll', 'create payroll', 'manage denda', 'create denda', 'manage payslip', 'generate payslip'])
+                <li class="submenu">
+                    <a href="#"><i class="la la-book"></i> <span> Payroll</span> <span class="menu-arrow"></span></a>
+                    <ul style="display: none;">
+                        @canany(['manage payslip', 'generate payslip'])
+                            <li class="{{(request()->routeIs('payslips*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('payslips*')) ? 'active' : ''}}" href="{{ route('payslips.index') }}">Payslip</a></li>
+                        @endcanany
 
+
+                    </ul>
+                </li>
+            @endcanany
                 @canany(['manage user',
                         // 'create user',
                         // 'manage role',

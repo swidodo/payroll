@@ -54,7 +54,7 @@
                 </div>
             </div>
             <div class="col-sm-6 col-md-2">
-                <button href="#" type="submit" class="btn btn-success w-100"> Search </button>
+                <button type="button" class="btn btn-success w-100" id="search"> Search </button>
             </div>
         </div>
     </form>
@@ -65,6 +65,7 @@
                     <table class="table table-striped custom-table" id="tblHistory">
                         <thead>
                             <tr>
+                                <th>Employee ID</th>
                                 <th>Employee</th>
                                 <th>Leave Type</th>
                                 <th>Applied On</th>
@@ -159,7 +160,21 @@
             }
             var branch_id = $('#branch-filter').val();
             var employeeId = $('#employee-filter').val();
-            var table = $('#tblHistory').DataTable({
+            loadData(branch_id,employeeId)
+
+            $('#search').on('click',function(e){
+                e.preventDefault();
+                var emp = $('#employee-filter').val();
+                var branchId = $('#branch-filter').val();
+                if (emp==""){
+                    alert("");
+                }else{
+                    loadData(branch_id,emp)
+                }
+            })
+        });
+        function loadData(branch_id,employeeId){
+            $('#tblHistory').DataTable({
                 processing: true,
                 serverSide: true,
                 destroy: true,
@@ -169,7 +184,11 @@
                         "data" : {branch_id : branch_id,employee_id : employeeId},
                     },
                 columns: [
-                    {
+                        {
+                            data: 'no_employee',
+                            name: 'no_employee'
+                        },
+                        {
                             data: 'name',
                             name: 'name'
                         },
@@ -229,10 +248,7 @@
                         },
                 ],
             })
-            $().on('change',function(){
-
-            })
-        });
+        }
     </script>
 @endpush
 

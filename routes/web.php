@@ -6,6 +6,7 @@ use App\Http\Controllers\PerformanceReviewController;
 use App\Http\Controllers\Auth\AuthenticationController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\DayTypeController;
 use App\Http\Controllers\HRM\EmployeeController;
 use App\Http\Controllers\LeaveTypeController;
@@ -211,16 +212,20 @@ Route::group(['middleware' => 'auth'], function () {
 
         // Time management
         Route::resource('leaves', LeaveController::class);
-        Route::get('get-leaves', [LeaveController::class,'get_leave']);
         Route::resource('history-leave', HistoryLeaveController::class);
         Route::post('data-history-leaves',[HistoryLeaveController::class,'get_data'])->name('data-history-leaves');
+        Route::post('filter-leave-history',[HistoryLeaveController::class,'get_data_filter_employee'])->name('filter-leave-history');
+
         Route::resource('overtimes', OvertimeController::class);
+        Route::post('get-list-overtime', [OvertimeController::class,'get_data'])->name('get-list-overtime');
         Route::resource('time-management-report', TimeManagementReportController::class);
         Route::resource('time-management-report', TimeManagementReportController::class);
         Route::post('time-management-report/export-pdf', [TimeManagementReportController::class, 'exportPdf'])->name('time-management.export');
         Route::resource('request-shift-schedule', ReqShiftScheduleController::class);
         Route::resource('shift-schedule', ShiftScheduleController::class);
         Route::resource('attendance', AttendanceEmployeeController::class);
+        Route::post('data-attendance-employee', [AttendanceEmployeeController::class,'get_data'])->name('data-attendance-employee');
+        Route::post('getList-employee-attendance', [AttendanceEmployeeController::class,'get_list_employee'])->name('getList-employee-attendance');
         Route::get('bulk-attendance', [AttendanceEmployeeController::class, 'bulkAttendance'])->name('bulk-attendance.index');
         Route::post('bulk-attendance', [AttendanceEmployeeController::class, 'bulkAttendanceData'])->name('bulk-attendance.index');
         Route::post('clock-in-out', [AttendanceEmployeeController::class, 'clockStore'])->name('clock_store');
@@ -252,7 +257,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('update-data-rotation',[RotateController::class,'update'])->name('update-data-rotation');
 
         /** departement */
-        Route::resource('departements', DepartementController::class);
+        Route::resource('departement', DepartementController::class);
+        Route::get('get-data-departements',[DepartementController::class,'GetDataDepartements'])->name('departement.get-data-departements');
         /** departement */
 
         // Reporting

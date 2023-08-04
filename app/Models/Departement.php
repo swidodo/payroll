@@ -11,16 +11,17 @@ class Departement extends Model
 
     protected $fillable = [
         'name',
-        'department_head_id',
+        'departement_head_id',
         'branch_id',
         'is_active',
-        'description'
+        'description',
+        'created_by'
     ];
 
 
-    public function department_head()
+    public function departement_head()
     {
-        return $this->belongsTo(Employee::class, 'department_head_id');
+        return $this->belongsTo(Employee::class, 'departement_head_id');
     }
 
     public function branch()

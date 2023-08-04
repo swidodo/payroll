@@ -19,7 +19,7 @@
                     </ul>
                 </div>
                 <div class="col-auto float-end ms-auto">
-                    <a href="{{route('departement.create')}}" class="btn add-btn"><i class="fa fa-plus"></i> Shift Type</a>
+                    <a href="{{route('departement.create')}}" class="btn add-btn"><i class="fa fa-plus"></i> Departement</a>
                 </div>
             </div>
         </div>
@@ -37,7 +37,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="table-responsive">
-                    <table class="table table-striped custom-table table-departements">
+                    <table class="table table-striped custom-table" id="table-departements">
                         <thead>
                             <tr>
                                 <th>Departement Name</th>
@@ -57,8 +57,36 @@
     </div>
     <!-- /Page Content -->
 
-    {{-- @include('includes.modal.shift-type-modal') --}}
-
+    <!-- Delete Day Modal -->
+    <div class="modal custom-modal fade" id="delete_departement" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="form-header">
+                        <h3>Delete Cash in Advance</h3>
+                        <p>Are you sure want to delete?</p>
+                    </div>
+                    <div class="modal-btn delete-action">
+                        <div class="row">
+                            <div class="col-6">
+                                <form action="" id="form-delete-departement" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary continue-btn">Delete</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-6">
+                                <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Delete User Modal -->
 </div>
 @endsection
 
@@ -119,6 +147,10 @@
                     ],
 
                 });
+                $('body').on('click', '#delete-departement', function(){
+                    const deleteURL = $(this).data('url');
+                    $('#form-delete-departement').attr('action', deleteURL);
+                })
             });
     </script>
 @endpush
