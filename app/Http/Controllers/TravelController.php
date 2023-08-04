@@ -24,7 +24,6 @@ class TravelController extends Controller
     {
         if (Auth::user()->can('manage on duty')) {
             $branchId = Auth::user()->branch_id;
-            // dd($branchId);
 
             $travel = DB::table('travel')
                 ->join('employees', 'travel.employee_id', '=', 'employees.id')

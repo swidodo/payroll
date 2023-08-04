@@ -38,7 +38,7 @@
                         <table class="table table-striped custom-table" id="table-travel">
                             <thead>
                                 <tr>
-                                    <th>Employeee</th>
+                                    <th>Employee</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
                                     <th>Purpose of Trip</th>
