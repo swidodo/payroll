@@ -186,6 +186,15 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
+                                    <label for="branch_id" class="form-label">Departement</label>
+                                    <select class="form-control select" name="branch_id">
+                                        <option value="" selected>Departement</option>
+                                        @foreach ($departements as $departement)
+                                        <option value="{{$departement->id}}" {{($departement->id == $employee->department_id) ? 'selected' : ''}}>{{$departement->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
                                     <label for="company_doj" class="form-label">Company Date Of Joining</label>
                                     <input class="form-control" value="{{$employee->company_doj  ?? ''}}"   name="company_doj" type="date" id="company_doj">
                                 </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\HRM;
 use App\Http\Controllers\Controller;
 use App\Models\AllRequest;
 use App\Models\Branch;
+use App\Models\Departement;
 use App\Models\Document;
 use App\Models\Employee;
 use App\Models\EmployeeDocument;
@@ -191,6 +192,7 @@ class EmployeeController extends Controller
             $empId        = $id;
             $documents    = Document::where('created_by', Auth::user()->creatorId())->get();
             $branches     = Branch::where('created_by', Auth::user()->creatorId())->get();
+            $departements     = Departement::where('created_by', Auth::user()->creatorId())->get();
             // $departments  = Department::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
             // $designations = Designation::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
@@ -211,7 +213,7 @@ class EmployeeController extends Controller
             $currentDate = Carbon::now()->format('Y-m-d');
 
 
-            return view('pages.contents.employee.edit', compact('employee', 'employeesId', 'branches', 'employement', 'employeeEducation', 'employeeExperience', 'employeeExperiences', 'branches', 'employeeEducations', 'documents', 'employeeFamilies', 'employeeMedical', 'currentDate'));
+            return view('pages.contents.employee.edit', compact('employee', 'employeesId', 'branches', 'employement', 'employeeEducation', 'employeeExperience', 'employeeExperiences', 'branches', 'employeeEducations', 'documents', 'employeeFamilies', 'employeeMedical', 'currentDate','departements'));
             // return view('pages.contents.employee.show', compact('employee', 'employeesId', 'branches', 'departments', 'designations', 'documents'));
         } else {
             toast('Permission denied.', 'error');
