@@ -230,6 +230,11 @@
                                         <td class="borderless">{{$employee->branch->name ?? ''}}</td>
                                     </tr>
                                     <tr class="borderless">
+                                        <td width="40" class="borderless">Departement</td>
+                                        <td width="1" class="borderless">:</td>
+                                        <td class="borderless">{{$employee->departement->name ?? ''}}</td>
+                                    </tr>
+                                    <tr class="borderless">
                                         <td width="40" class="borderless">Join Date</td>
                                         <td width="1" class="borderless">:</td>
                                         <td class="borderless">{{$employee->company_doj ? date("F jS, Y", strtotime($employee->company_doj)) : ''}}</td>

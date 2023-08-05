@@ -117,4 +117,9 @@ class Employee extends Model
     {
         return $this->hasOne(LevelApproval::class, 'employee_id');
     }
+
+    public function departement()
+    {
+        return $this->hasOne(Departement::class, 'department_id');
+    }
 }
