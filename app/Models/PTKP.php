@@ -8,11 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PTKP extends Model
 {
     use HasFactory;
-    protected $table = 'ptkp';
+    protected $table = 'parameter_pph21s';
 
-    protected $fillable = [
-        'status_name',
-        'ptkp_amount',
-        'created_by'
-    ];
+    protected $guarded = ['id'];
 }

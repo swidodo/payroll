@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Branch;
 use App\Models\Employee;
 use App\Models\LevelApproval;
 use App\Models\OnDutyApproval;
@@ -14,7 +13,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator as FacadesValidator;
-use Yajra\DataTables\Facades\DataTables;
 
 use function GuzzleHttp\Promise\all;
 
@@ -23,17 +21,7 @@ class TravelController extends Controller
     public function index()
     {
         if (Auth::user()->can('manage on duty')) {
-            $branchId = Auth::user()->branch_id;
-
-            $travel = DB::table('travel')
-                ->join('employees', 'travel.employee_id', '=', 'employees.id')
-                ->where('employees.branch_id', $branchId)
-                ->select('travel.*', 'employees.name as employee_name')
-                ->get();
-            // dd($travel);
-
             if (Auth::user()->type == 'employee') {
-
                 $emp     = Employee::where('user_id', '=', Auth::user()->id)->first();
                 $travels = Travel::where('created_by', '=', Auth::user()->creatorId())->where('employee_id', '=', $emp->id)->get();
                 $employee     = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
@@ -55,51 +43,6 @@ class TravelController extends Controller
             } else {
                 $travels = Travel::where('created_by', '=', Auth::user()->creatorId())->get();
                 $employee     = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
-            }
-
-            if (request()->ajax()) {
-                return DataTables::of($travel)
-                    ->addColumn('employee_name', function ($travel) {
-                        return $travel->employee_name ?? '-';
-                    })
-                    ->addColumn('status', function ($travel) {
-                        if ($travel->status == "Pending") {
-                            return '<div class="status_badge badge bg-warning p-2 px-3 rounded">Pending</div>';
-                        } elseif ($travel->status == "Approved") {
-                            return '<div class="status_badge badge bg-success p-2 px-3 rounded">Approved</div>';
-                        } elseif ($travel->status == "Rejected") {
-                            return '<a href="' . route('travels.show', $travel->id) . '" class="text-white">
-                                        <div class="status_badge badge bg-danger p-2 px-3 rounded">Rejected</div>
-                                    </a>';
-                        }
-                    })
-                    ->addColumn('action', function ($travel) {
-                        $action = '';
-
-                        if (Auth()->user()->canany(['edit on duty', 'delete on duty'])) {
-                            $action = ' <td class="text-end">
-                            <div class="dropdown dropdown-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-
-                                <div class="dropdown-menu dropdown-menu-right">';
-
-                            if (Auth()->user()->can('edit on duty')) {
-                                $url_edit = route('travels.edit', $travel->id);
-
-                                $action .= '<a data-url="' . $url_edit .  '" id="edit-travel" class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_travel"><i class="fa fa-pencil m-r-5"></i> Edit</a>';
-                            }
-                            if (Auth()->user()->can('delete on duty')) {
-                                $url_delete = route('travels.destroy', $travel->id);
-
-                                $action .= '<a data-url="'  . $url_delete .  '" id="delete-travel" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_travel"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
-                            }
-                            $action .= '</div></div></td>';
-                        }
-
-                        return $action;
-                    })
-                    ->escapeColumns([])
-                    ->toJson();
             }
 
             return view('pages.contents.travel.index', compact('travels', 'employee'));

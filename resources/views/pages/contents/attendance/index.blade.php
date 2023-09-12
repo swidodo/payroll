@@ -62,13 +62,13 @@
                                     <div class="col-md-3 month">
                                         <div class="btn-box">
                                             <label for="month" class="form-label">Tanggal</label>
-                                            <input class="form-control" name="month" type="date" value="{{ $date }}" id="date">
+                                            <input class="form-control" name="month" type="date" value="{{ $date }}" id="dateId">
                                         </div>
                                     </div>
 
                                     <div class="col-3 d-flex align-items-center">
                                         <div class="form-check form-check-inline form-group  mt-4">
-                                            <input type="checkbox" id="monthly" value="monthly" name="type" class="form-check-input">
+                                            <input type="checkbox" id="monthly" value="" name="type" class="form-check-input">
                                             <label class="form-check-label" for="monthly">Monthly</label>
                                         </div>
                                         <div class="mt-2">
@@ -103,7 +103,8 @@
                             <table class="table table-striped custom-table" id="attandaceList">
                                 <thead>
                                     <tr>
-                                        <th>Employee</th>
+                                        <th>Employee ID</th>
+                                        <th>Employee Name</th>
                                         <th>Shift</th>
                                         <th>Date</th>
                                         <th>Status</th>
@@ -168,33 +169,30 @@
             headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
         });
         $(document).ready(function () {
-                $()
-            /* When click show user */
-                $('body').on('click', '#edit-attendance_btn', function () {
-                    const editUrl = $(this).data('url');
-                    $('#employee_id_edit option[value='+ 0 +']').attr('selected','selected');
-                    $('#employee_id_edit').val(0).trigger('change');
-                    $('#date').val('')
-                    $('#clock_in').val('')
-                    $('#clock_out').val('')
-                    const time = {{ Js::from(date("H:i:s")) }}
+            $(document).on('click','.edit-attendance',function(){
+                var url = $(this).attr('data-url');
+                $.get(url,(data)=>{
+                   $('#noEmployee').val(data[0].employee.no_employee);
+                   $('#nameEmployee').val(data[0].employee.name);
+                   $('#date-edit').val(data[0].date);
+                   $('#clock_in').val(data[0].clock_in);
+                   $('#clock_out').val(data[0].clock_out);
+                })
+                $('#edit_attendance').modal('show')
+            })
+            $('#edit-form-attendance').on('submit',function(e){
+                e.preventDefault();
+                alert();
 
-                    $.get(editUrl, (data) => {
-                        $('#date-edit').val(data[1].date)
-                        $('#clock_in').val(data[1].clock_in)
-                        $('#clock_out').val(time)
+            })
+            $(document).on('click','.delete-attendance',function(e){
+                e.preventDefault();
+                var url = $(this).attr('data-url');
+                $('#delete_attendance').modal('show')
+                // $.get(url,(data)=>{
+                //     console.log(data);
+                // })
 
-                        $('#employee_id_edit option[value='+ data[0][0].id +']').attr('selected','selected');
-                        $('#employee_id_edit').val(data[0][0].id ? data[0][0].id : 0).trigger('change');
-
-                        const urlNow = '{{ Request::url() }}'
-                        $('#edit-form-attendance').attr('action', urlNow + '/' + data[1].id);
-                    })
-                });
-
-            $('body').on('click', '#delete-attendance', function(){
-                const deleteURL = $(this).data('url');
-                $('#form-delete-attendance').attr('action', deleteURL);
             })
         });
         var employeeId = [];
@@ -220,10 +218,8 @@
             getListEmployee(branchId)
             $('#getDataEmployee').modal('show')
         })
-
-
         var type = $('#monthly').val();
-        var date = $('#date').val();
+        var date = $('#dateId').val();
         var branchId = $('#branch').val();
         loadData(type,date,branchId,employeeId);
 
@@ -238,6 +234,10 @@
                         "data" : {type_filter : type, date :date, branch_id : branchId, employee_id : employeeId},
                     },
                 columns: [
+                    {
+                        data: 'no_employee',
+                        name: 'no_employee'
+                    },
                     {
                         data: 'name',
                         name: 'name'
@@ -313,13 +313,30 @@
                         data: 'branch.name',
                         name: 'branch.name'
                     },
-                                    ],
+                ],
+                "drawCallback": function( settings ) {
+				$(".checkedEmployee").each(function (key,val) {
+					if (employeeId.includes(val.value)) {
+						$(this).prop("checked",true);
+					}
+				})
+   			}
             })
         }
         $('#setSearch').on('click',function(){
             $('#getDataEmployee').modal('hide');
         })
+        $('#monthly').on('change',function(){
+            if (this.checked){
+                $('#monthly').val('monthly');
+            }else{
+                $('#monthly').val();
+            }
+        })
         $('#btnSerach').on('click',function(){
+            var type = $('#monthly').val();
+            var date = $('#dateId').val();
+            var branchId = $('#branch').val();
             loadData(type,date,branchId,employeeId)
         })
     </script>

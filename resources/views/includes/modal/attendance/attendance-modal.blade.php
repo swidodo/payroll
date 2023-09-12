@@ -56,30 +56,19 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="religion" class="control-label" required>Employee ID </label>
-                                        <select class="form-control select-employee-edit" name="employee_id" id="employee_id_edit" required>
-                                            <option value="0">Select Employee</option>
-                                            @foreach ($employees as $e)
-                                                <option value="{{$e->id}}">{{$e->name}}</option>
-                                            @endforeach
-                                        </select>
-
-                                        @if ($errors->has('employee_id'))
-                                        <div class="text-danger" role="alert">
-                                            <small><strong>{{ $errors->get('employee_id')[0] }}</strong></small>
-                                        </div>
-                                    @endif
+                                        <input type="text" class="form-control " name="no_employee" id="noEmployee" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="religion" class="control-label" required>Employee Name</label>
+                                        <input type="text" class="form-control " name="no_employee" id="nameEmployee" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="religion" class="control-label" required>Date </label>
-                                        <input class="form-control " name="date" type="date" value="" id="date-edit">
-
-                                        @if ($errors->has('date'))
-                                        <div class="text-danger" role="alert">
-                                            <small><strong>{{ $errors->get('date')[0] }}</strong></small>
-                                        </div>
-                                    @endif
+                                        <input class="form-control" name="date" type="date" value="" id="date-edit">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -87,11 +76,11 @@
                                         <label for="religion" class="control-label" required>Clock In </label>
                                         <input class="form-control " name="clock_in" type="time" value="" id="clock_in">
 
-                                        @if ($errors->has('clock_in'))
+                                        {{-- @if ($errors->has('clock_in'))
                                         <div class="text-danger" role="alert">
                                             <small><strong>{{ $errors->get('clock_in')[0] }}</strong></small>
                                         </div>
-                                    @endif
+                                    @endif --}}
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -99,11 +88,29 @@
                                         <label for="religion" class="control-label" required>Clock Out </label>
                                         <input class="form-control " name="clock_out" type="time" value="" id="clock_out">
 
-                                        @if ($errors->has('clock_out'))
+                                        {{-- @if ($errors->has('clock_out'))
                                         <div class="text-danger" role="alert">
                                             <small><strong>{{ $errors->get('clock_out')[0] }}</strong></small>
                                         </div>
-                                    @endif
+                                    @endif --}}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="religion" class="control-label" required>Status</label>
+                                        <select class="form-control form-select" id="status" name="status">
+                                            <option value="Present">Present</option>
+                                            <option value="Alpha">Alpha</option>
+                                            <option value="Leave">Leave</option>
+                                            <option value="Sick With Letter">Sick With Letter</option>
+                                            <option value="Sick Without Letter">Sick Without Letter</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="religion" class="control-label" required>upload file</label>
+                                        <input type="file" class="form-control" name="upload_file" id="fileUpload">
                                     </div>
                                 </div>
                             </div>

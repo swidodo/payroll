@@ -59,6 +59,11 @@ return new class extends Migration
             $table->integer('total_leave')->default(0);
             $table->integer('total_leave_remaining')->nullable();
             $table->date('out_date')->nullable();
+            $table->string('bpjs_kesehatan')->nullable();
+            $table->string('bpjs_tk_jht')->nullable();
+            $table->string('bpjs_tk_jkk')->nullable();
+            $table->string('bpjs_tk_jp')->nullable();
+            $table->string('bpjs_tk_jkm')->nullable();
             $table->enum('status', ['pension', 'fired', 'active'])->default('active');
             $table->timestamps();
         });

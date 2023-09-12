@@ -17,6 +17,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->integer('days');
+            $table->string('code');
             $table->integer('created_by');
             $table->timestamps();
         });

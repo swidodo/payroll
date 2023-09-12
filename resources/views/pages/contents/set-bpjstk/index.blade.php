@@ -47,7 +47,9 @@
                         <tbody>
                             @foreach ($datas as $data)
                                 <tr>
-                                    <td>{{$data->employee->name}}</td>
+                                    <td>
+                                        {{-- {{$data->employee->name}} --}}
+                                    </td>
                                     <td class="d-flex flex-wrap pad-bot-role">
                                         @php
                                             $decodeDataBpjstk = json_decode($data->bpjstk_name, true);

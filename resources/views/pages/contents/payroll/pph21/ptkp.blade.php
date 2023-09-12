@@ -1,6 +1,6 @@
 @extends('pages.dashboard')
 
-@section('title', 'Setting PTKP')
+@section('title', 'PTKP')
 
 @section('dashboard-content')
 <div class="page-wrapper">
@@ -12,10 +12,10 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Setting PTKP</h3>
+                    <h3 class="page-title">PTKP</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Setting PTKP</li>
+                        <li class="breadcrumb-item active">PTKP</li>
                     </ul>
                 </div>
             </div>
@@ -23,9 +23,27 @@
         <!-- /Page Header -->
 
         <div class="row justify-content-center">
-            <div class="col-md-8" >
-            
-                <form action="{{route('setting.ptkp.post')}}" method="POST">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover" id="tblPtkp">
+                    <thead>
+                        <th>Ptkp Deskripsi</th>
+                        <th>Ptkp Code</th>
+                        <th>Amount</th>
+                        <th>Action</th>
+                    </thead>
+                </table>
+                <tbody>
+                    
+                </tbody>
+            </div>
+
+
+
+
+
+
+
+                <!-- <form action="" method="POST">
                     @csrf
                     <div class="row justify-content-center">
                         <div class="col-sm-6">
@@ -138,12 +156,11 @@
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn">Save</button>
                     </div>
-                </form>
-            </div>
+                </form> -->
         </div>
     </div>
     <!-- /Page Content -->
-
+    @include('includes.modal.edit-ptkp-modal')
 </div>
 @endsection
 
@@ -156,6 +173,8 @@
 
     <!-- Datetimepicker CSS -->
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap-datetimepicker.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/plugins/sweetalert2/sweetalert2.min.css')}}">
+
 @endpush
 
 @push('addon-script')
@@ -172,6 +191,7 @@
     <!-- Datatable JS -->
     <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
 
     @if (Session::has('edit-show'))
     <script>
@@ -185,19 +205,98 @@
             $(document).ready(function () {
                 /* When click show user */
 
-                $('select#type').change(function(){
-                    let val = $(this).val()
+                // $('select#type').change(function(){
+                //     let val = $(this).val()
 
-                    if(val == 'Fixed'){
-                        $('#label-type').html('Amount')
-                    }else{
-                        $('#label-type').html('Percentage %')
+                //     if(val == 'Fixed'){
+                //         $('#label-type').html('Amount')
+                //     }else{
+                //         $('#label-type').html('Percentage %')
 
+                //     }
+
+                // })
+
+                $.ajaxSetup({
+                    headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
+                });
+
+                var table = $('#tblPtkp').DataTable({
+                            processing: true,
+                            serverSide: true,
+                            destroy: true,
+                            ajax : {
+                                    "url" : 'get-ptkp',
+                                    "type" : 'POST',
+                                },
+                            columns: [
+                                {
+                                    data: 'name',
+                                    name: 'name'
+                                },
+                                {
+                                    data: 'code',
+                                    name: 'code'
+                                },
+                                {
+                                    data: 'value',
+                                    name: 'value'
+                                },
+                                {
+                                    data: 'action',
+                                    name: 'action'
+                                },
+                            ],
+                        })
+
+            $(document).on('click','.edit-ptkp',function(e){
+                e.preventDefault();
+                var id = $(this).attr('data-id');
+                $.ajax({
+                    url : 'edit-ptkp',
+                    type : 'post',
+                    data : {id:id},
+                    dataType : 'json',
+                    beforeSend : function(){
+
+                    },
+                    success : function(respon){
+                        $('#edit-id').val(respon.id);
+                        $('#edit-name').val(respon.name);
+                        $('#edit-code').val(respon.code);
+                        $('#edit-amount').val(respon.value);
+                        $('#edit_ptkp_modal').modal('show')
+                    },
+                    error : function(){
+                        alert('terjadi kesalahan !');
                     }
-
                 })
+            })
+        $('#edit-form-ptkp').on('submit',function(e){
+            e.preventDefault();
+            var data = $('#edit-form-ptkp').serialize();
+            $.ajax({
+                url : 'update-ptkp',
+                type : 'post',
+                data : data,
+                dataType : 'json',
+                beforeSend : function(){
 
-                
-            });
+                },
+                success : function(respon){
+                    table.ajax.reload();
+                    swal.fire({
+                        icon : respon.status,
+                        text : respon.msg
+                    })
+                    $('#edit_ptkp_modal').modal('hide')
+                     table.ajax.reload();
+                },
+                error : function(){
+                    alert('There is an error !, please try again')
+                }
+            })
+        })
+        });
     </script>
 @endpush

@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\Loan;
 use App\Models\LoanOption;
+use App\Models\Branch;
 use Exception;
+use DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -27,8 +29,9 @@ class LoanController extends Controller
                 $loans = Loan::where('created_by', '=', Auth::user()->creatorId())->get();
                 $employee  = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
                 $loanType = LoanOption::where('created_by', '=', Auth::user()->creatorId())->get();
+                $branch   = Branch::where('id','=',Auth::user()->branch_id)->get();
 
-                return view('pages.contents.loan.index', compact('loans', 'employee', 'loanType'));
+                return view('pages.contents.loan.index', compact('employee', 'loanType','branch'));
             }
         } else {
             toast('Permission denied.', 'error');
@@ -36,23 +39,140 @@ class LoanController extends Controller
         }
     }
 
+    public function installment()
+    {
+        if (Auth::user()->can('manage loan')) {
+            if (Auth::user()->type != 'company') {
+                $user       = Auth::user();
+                $employee   = Employee::where('user_id', '=', $user->id)->get();
+                $loans      = Loan::where('employee_id', '=', $user->employee->id)->get();
+                $loanType   = LoanOption::where('created_by', '=', Auth::user()->creatorId())->get();
+                $branch     = Branch::find(Auth::user()->branch_id);
+
+                return view('pages.contents.loan.index', compact('loans', 'employee', 'loanType','branch'));
+            } else {
+                $loans      = Loan::where('created_by', '=', Auth::user()->creatorId())->get();
+                $employee   = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
+                $loanType   = LoanOption::where('created_by', '=', Auth::user()->creatorId())->get();
+                $branch   = Branch::where('id','=',Auth::user()->branch_id)->get();
+
+                return view('pages.contents.loan.installment', compact('employee', 'loanType','branch'));
+            }
+        } else {
+            toast('Permission denied.', 'error');
+            return redirect()->back();
+        }
+    }
+    public function get_data_castReceipt(Request $request){
+        if($request->branch_id !=""){
+            $branchId = $request->branch_id;
+        }else{
+            $branchId = Auth::user()->branch_id;
+        }
+        if ($request->status !=""){
+            $status = $request->status;
+        }else{
+            $status = 'ongoing';
+        }
+        $data = Loan::where('branch_id','=',$branchId)
+                    ->where('installment','=',0)
+                    ->where('number_of_installment','=',0)
+                    ->where('status','=',$status)
+                    ->with('loan_type','employee')
+                    ->get();
+
+        return DataTables::of($data)
+                        ->addIndexColumn()
+                        ->addColumn('action',function($row){
+                            $btn ='';
+                            if(Auth()->user()->canany('edit loan','delete loan')){
+                                $btn .= '<div class="dropdown dropdown-action">
+                                            <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                            <div class="dropdown-menu dropdown-menu-right">';
+                                            if(Auth()->user()->can('edit loan')){
+                                                $btn .= ' <a  data-url="'.route('loans.edit', $row->id).'" id="edit-loan" class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_loan"><i class="fa fa-pencil m-r-5"></i> Edit</a>';
+                                            }
+                                            if(Auth()->user()->can('delete loan')){
+                                                $btn .= '<a data-id='.$row->id.' class="dropdown-item delete-loan" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
+                                            }
+                                $btn .= '</div></div>';
+                            }
+                            return $btn;
+                        })
+                        ->rawColumns(['action'])
+                        ->make(true);
+
+    }
+    public function get_data_installment(Request $request){
+        if($request->branch_id !=""){
+            $branchId = $request->branch_id;
+        }else{
+            $branchId = Auth::user()->branch_id;
+        }
+        if ($request->status !=""){
+            $status = $request->status;
+        }else{
+            $status = 'ongoing';
+        }
+        $data = Loan::where('branch_id','=',$branchId)
+                    ->where('installment','<>',0)
+                    ->where('number_of_installment','<>',0)
+                    ->where('status','=',$status)
+                    ->with('loan_type','employee')
+                    ->get();
+
+        return DataTables::of($data)
+                        ->addIndexColumn()
+                        ->addColumn('action',function($row){
+                            $btn ='';
+                            if(Auth()->user()->canany('edit loan','delete loan')){
+                                $btn .= '<div class="dropdown dropdown-action">
+                                            <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                            <div class="dropdown-menu dropdown-menu-right">';
+                                            if(Auth()->user()->can('edit loan')){
+                                                $btn .= ' <a  data-url="'.route('loans.edit', $row->id).'" id="edit-loan" class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_loan"><i class="fa fa-pencil m-r-5"></i> Edit</a>';
+                                            }
+                                            if(Auth()->user()->can('delete loan')){
+                                                $btn .= '<a data-id='.$row->id.' class="dropdown-item delete-installment" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
+                                            }
+                                $btn .= '</div></div>';
+                            }
+                            return $btn;
+                        })
+                        ->rawColumns(['action'])
+                        ->make(true);
+
+    }
     public function store(Request $request)
     {
         if (Auth::user()->can('create loan')) {
-            $validator = Validator::make(
-                $request->all(),
-                [
-                    'loan_type_id' => 'required',
-                    'employee_id' => 'required',
-                    'installment' => 'required',
-                    'amount' => 'required',
-                ]
-            );
+            if ($request->loan == "installment"){
+                $validator = Validator::make(
+                    $request->all(),
+                    [
+                        'loan_type_id'  => 'required',
+                        'employee_id'   => 'required',
+                        'installment'   => 'required',
+                        'tenor'         => 'required',
+                        'amount'        => 'required',
+                        'branch_id'     => 'required',
+                    ]
+                );
+            }else{
+                $validator = Validator::make(
+                    $request->all(),
+                    [
+                        'loan_type_id'  => 'required',
+                        'employee_id'   => 'required',
+                        'amount'        => 'required',
+                        'branch_id'     => 'required',
+                    ]
+                );
+            }
 
             if ($validator->fails()) {
                 return redirect()->back()->with('errors', $validator->messages());
             }
-
             try {
                 DB::beginTransaction();
 
@@ -64,34 +184,57 @@ class LoanController extends Controller
                 } else {
                     $loan->employee_id = $request->employee_id;
                 }
-                $loan->loan_type_id         = $request->loan_type_id;
-                $loan->amount               = $request->amount;
-                $loan->installment          = $request->installment;
-                $loan->number_of_installment = 1;
-                $loan->status               = 'ongoing';
-                $loan->created_by           = Auth::user()->creatorId();
+                if ($request->loan == "installment"){
+                    $loan->loan_type_id         = $request->loan_type_id;
+                    $loan->amount               = $request->amount;
+                    $loan->installment          = $request->installment;
+                    $loan->number_of_installment= 1;
+                    $loan->tenor                = $request->tenor;
+                    $loan->status               = 'ongoing';
+                    $loan->branch_id            = $request->branch_id;
+                    $loan->created_by           = Auth::user()->creatorId();
+                }else{
+                    $loan->loan_type_id         = $request->loan_type_id;
+                    $loan->amount               = $request->amount;
+                    $loan->installment          = 0;
+                    $loan->number_of_installment = 0;
+                    $loan->status               = 'ongoing';
+                    $loan->branch_id            = $request->branch_id;
+                    $loan->created_by           = Auth::user()->creatorId();
+                }
                 $loan->save();
 
                 DB::commit();
                 toast('Loan successfully created.', 'success');
-                return redirect()->route('loans.index');
+                if ($request->loan == "installment"){
+                    return redirect()->route('loan_cash_receipt');
+                }else{
+                    return redirect()->route('loans.index');
+                }
             } catch (Exception $e) {
                 DB::rollBack();
                 toast('Something went wrong.', 'error');
-                return redirect()->route('loans.index');
+                if ($request->loan == "installment"){
+                    return redirect()->route('loan_cash_receipt');
+                }else{
+                    return redirect()->route('loans.index');
+                }
             }
         } else {
             toast('Permission denied.', 'error');
-            return redirect()->route('loans.index');
+            if ($request->loan == "installment"){
+                return redirect()->route('loan_cash_receipt');
+            }else{
+                return redirect()->route('loans.index');
+            }
         }
     }
 
     public function edit($id)
     {
-        $loan = Loan::find($id);
+        $loan = Loan::where('id','=',$id)->with('employee')->first();
         if (Auth::user()->can('edit loan')) {
-            if ($loan->created_by == Auth::user()->creatorId()) {
-
+            if ($loan->branch_id == Auth::user()->branch_id) {
                 return response()->json($loan);
             } else {
                 return response()->json(['error' => 'Permission denied.'], 401);
@@ -101,12 +244,12 @@ class LoanController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $loan = Loan::find($id);
+        $loan = Loan::find($request->id);
 
         if (Auth::user()->can('edit loan')) {
-            if ($loan->created_by == Auth::user()->creatorId()) {
+            if ($loan->branch_id == Auth::user()->branch_id) {
                 $validator = Validator::make(
                     $request->all(),
                     [
@@ -121,10 +264,20 @@ class LoanController extends Controller
                 }
 
                 try {
-                    $loan->update($request->all());
+                    $data = $loan->update($request->all());
+                    if ($data){
+                        $res = [
+                            'status' => 'success',
+                            'msg'    => 'Data success updated!'
+                        ];
+                    }else{
+                        $res = [
+                            'status' => 'error',
+                            'msg'    => 'Data not success updated!'
+                        ];
+                    }
+                    return response()->json($res);
 
-                    toast('Loan' . $loan->name . ' successfully updated.', 'success');
-                    return redirect()->route('loans.index');
                 } catch (Exception $e) {
                     toast('Permission denied.', 'error');
                     return redirect()->back();
@@ -139,23 +292,38 @@ class LoanController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $loan = Loan::find($id);
-
         if (Auth::user()->can('delete loan')) {
-            if ($loan->created_by == Auth::user()->creatorId()) {
-                $loan->delete();
+            $loan = Loan::find($request->id);
+            if ($loan->branch_id == Auth::user()->branch_id) {
+                $del = $loan->delete();
 
-                toast('Loan' . $loan->name . ' successfully deleted.', 'success');
-                return redirect()->route('loans.index');
+                if ($del){
+                    $res = [
+                        'status' =>'success',
+                        'msg'    => "Data success deleted !",
+                    ];
+                }else{
+                    $res = [
+                        'status' =>'success',
+                        'msg'    => "Data success deleted !",
+                    ];
+                }
+               return response()->json($res);
             } else {
-                toast('Permission denied.', 'error');
-                return redirect()->back();
+                $res = [
+                    'status' =>'error',
+                    'msg'    => "Permission denied.",
+                ];
+                return response()->json($res);
             }
         } else {
-            toast('Permission denied.', 'error');
-            return redirect()->back();
+            $res = [
+                'status' =>'error',
+                'msg'    => "Permission denied.",
+            ];
+            return response()->json($res);
         }
     }
 }

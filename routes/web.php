@@ -38,8 +38,14 @@ use App\Http\Controllers\LoanController;
 use App\Http\Controllers\PayslipCodePinController;
 use App\Http\Controllers\PaySlipController;
 use App\Http\Controllers\PPH21Controller;
+use App\Http\Controllers\Rekap_pph21Controller;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SetPTKPController;
+use App\Http\Controllers\BpjsController;
+use App\Http\Controllers\Master_max_limit_bpjsController;
+use App\Http\Controllers\DeductionBpjs;
+use App\Http\Controllers\Allowance_otherController;
+use App\Http\Controllers\PtkpController;
 // rotate
 use App\Http\Controllers\RotateController;
 use App\Http\Controllers\CompanyController;
@@ -58,7 +64,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/login', [AuthenticationController::class, 'loginView'])
         ->name('login.view')
         ->middleware('checkUserIfLogin');
@@ -100,12 +105,39 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('day-type', DayTypeController::class);
         Route::resource('shift-type', ShiftTypeController::class);
         Route::resource('allowance-option', AllowanceOptionController::class);
+        // other allowance
+        Route::get('allowance-other',[Allowance_otherController::class,'index'])->name('allowance-other');
+        Route::post('get-allowance-other',[Allowance_otherController::class,'get_data'])->name('get-allowance-other');
+        Route::post('store-allowance-other',[Allowance_otherController::class,'store'])->name('store-allowance-other');
+        Route::post('edit-allowance-other',[Allowance_otherController::class,'edit'])->name('edit-allowance-other');
+        Route::post('update-allowance-other',[Allowance_otherController::class,'update'])->name('update-allowance-other');
+        Route::post('delete-allowance-other',[Allowance_otherController::class,'destroy'])->name('delete-allowance-other');
+
+        // leave type
+        Route::post('create-leave-type', [LeaveTypeController::class,'store'])->name('create-leave-type');
 
         //Finance
         Route::resource('reimburst', ReimburstController::class);
         Route::resource('cash', CashController::class);
         Route::resource('allowances', AllowanceController::class);
+
+        // loans
         Route::resource('loans', LoanController::class);
+        Route::post('get-list-installment',[LoanController::class,'get_data_installment'])
+                ->name('get-list-installment');
+        Route::post('get-list-loan',[LoanController::class,'get_data_castReceipt'])
+                ->name('get-list-loan');
+        Route::post('update-loan-installment',[LoanController::class,'update'])
+                ->name('update-loan-installment');
+        Route::post('update-loan',[LoanController::class,'update'])
+                ->name('update-loan');
+        Route::post('delete-loan',[LoanController::class,'destroy'])
+                ->name('delete-loan');
+        Route::post('delete-installment',[LoanController::class,'destroy'])
+                ->name('delete-installment');
+
+
+        Route::get('loan_cash_receipt',[LoanController::class,'installment'])->name('loan_cash_receipt');
         Route::get('set-bpjstk', [PayrollController::class, 'indexSetBpjsTk'])
                 ->name('set-bpjstk.index');
         Route::get('set-bpjstk/{id}/edit', [PayrollController::class, 'editSetBpjsTk'])
@@ -127,11 +159,25 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/payslips/download-pdf/{payslipEmployee}', [PaySlipController::class, 'downloadPDF'])
                 ->name('payslips.downloadPDF');
         Route::resource('denda', FineController::class);
-        Route::get('/setting/pph21/ptkp', [PPH21Controller::class, 'indexPTKP'])
+        Route::get('ptkp', [PtkpController::class, 'index'])
                 ->name('setting.ptkp.index');
-        Route::post('/setting/pph21/ptkp', [PPH21Controller::class, 'storeAndUpdatePTKP'])
-                ->name('setting.ptkp.post');
+        Route::post('get-ptkp', [PtkpController::class, 'get_data'])
+                ->name('get-ptkp');
+        Route::post('edit-ptkp', [PtkpController::class, 'edit'])
+                ->name('edit-ptkp');
+        Route::post('update-ptkp', [PtkpController::class, 'update'])
+                ->name('update-ptkp');
         Route::resource('set-ptkp', SetPTKPController::class);
+        // rekap pph21 new
+        Route::get('get-rekap-pph',[Rekap_pph21Controller::class,'index'])->name('get-rekap-pph');
+        Route::post('data-rekap-pph',[Rekap_pph21Controller::class,'get_pph21'])->name('data-rekap-pph');
+
+        // payroll new
+        Route::post('get-data-payroll',[PayrollController::class,'get_data'])->name('get-data-payroll');
+        Route::post('payroll-addNew',[PayrollController::class,'store'])->name('payroll-addNew');
+        Route::post('edit-data-payroll',[PayrollController::class,'edit'])->name('edit-data-payroll');
+        Route::post('update-data-payroll',[PayrollController::class,'update'])->name('update-data-payroll');
+        Route::post('delete-data-payroll',[PayrollController::class,'destroy'])->name('delete-data-payroll');
 
         // Payroll Setting
         Route::get('/setting/bpjs-tk', [PayrollController::class, 'indexBpjsTk'])
@@ -215,6 +261,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('history-leave', HistoryLeaveController::class);
         Route::post('data-history-leaves',[HistoryLeaveController::class,'get_data'])->name('data-history-leaves');
         Route::post('filter-leave-history',[HistoryLeaveController::class,'get_data_filter_employee'])->name('filter-leave-history');
+        Route::get('get-leaves',[LeaveController::class,'get_leave'])->name('get-leaves');
 
         Route::resource('overtimes', OvertimeController::class);
         Route::post('get-list-overtime', [OvertimeController::class,'get_data'])->name('get-list-overtime');
@@ -266,7 +313,25 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('get-reporting-attandance',[ReportRecapAttendanceController::class,'get_report_attadance'])->name('get-reporting-attandance');
         Route::get('reporting-attandance-excel',[ReportRecapAttendanceController::class,'attandanceExportExcel'])->name('reporting-attandance-excel');
         Route::get('reporting-attandance-pdf',[ReportRecapAttendanceController::class,'attandancePrintPdf'])->name('reporting-attandance-pdf');
-});
+
+        // Master bpjs
+        Route::get('master-bpjs',[BpjsController::class,'index'])->name('master-bpjs');
+        Route::post('get-master-bpjs',[BpjsController::class,'get_data'])->name('get-master-bpjs');
+        Route::post('store-master-bpjs',[BpjsController::class,'store'])->name('store-master-bpjs');
+        Route::post('edit-master-bpjs',[BpjsController::class,'edit'])->name('edit-master-bpjs');
+        Route::post('update-mater-bpjs',[BpjsController::class,'update'])->name('update-mater-bpjs');
+        Route::post('delete-master-bpjs',[BpjsController::class,'destroy'])->name('delete-master-bpjs');
+        // Master limit bpjs
+        Route::get('master-limit-bpjs',[Master_max_limit_bpjsController::class,'index'])->name('master-limit-bpjs');
+        Route::post('get-master-limit-bpjs',[Master_max_limit_bpjsController::class,'get_data'])->name('get-master-limit-bpjs');
+        Route::post('store-master-limit-bpjs',[Master_max_limit_bpjsController::class,'store'])->name('store-master-limit-bpjs');
+        Route::post('edit-master-limit-bpjs',[Master_max_limit_bpjsController::class,'edit'])->name('edit-master-limit-bpjs');
+        Route::post('update-master-limit-bpjs',[Master_max_limit_bpjsController::class,'update'])->name('update-master-limit-bpjs');
+        Route::post('delete-master-limit-bpjs',[Master_max_limit_bpjsController::class,'destroy'])->name('delete-master-limit-bpjs');
+        // deduction bpjs
+        Route::get('get-data-bpjs',[DeductionBpjs::class,'index'])->name('get-data-bpjs');
+        Route::post('data-bpjs-value',[DeductionBpjs::class,'get_data'])->name('data-bpjs-value');
+    });
 
 /*Route::get('/clear', function() {
 

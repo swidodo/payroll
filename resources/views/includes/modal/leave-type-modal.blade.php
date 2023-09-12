@@ -12,23 +12,20 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{route('leave-type.store')}}" method="POST">
+                    <form action="{{route('leave-type.store')}}" method="POST" id="fromAddLeaveType">
                         @csrf
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>Leave Type  <span class="text-danger">*</span></label>
-                                    <select class="form-select" name="type_name">
-                                        <option value="GVM">Goverment</option>
-                                        <option value="ANN">Annual</option>
-                                        <option value="SIC">Sick</option>
-                                        <option value="ALP">Alpa</option>
-                                        <option value="MATE">Maternity</option>
-                                        <option value="MARR">Marry</option>
-                                        <option value="MOUR">Mourning</option>
+                                    <select class="form-select" name="type_name" id="typeName">
+                                        <option value="SDS">SICK WITH LETTER</option>
+                                        <option value="STS">SICK WITHOUT LETTER</option>
+                                        <option value="IZN">PERMISSION</option>
+                                        <option value="A">ALPHA</option>
+                                        <option value="CT">LEAVE</option>
+                                        <option value="DSP">DISPENSATION</option>
                                     </select>
-                                    <input class="form-control" type="text" name="title" placeholder="Enter Leave Type Name">
-
                                     @if ($errors->has('title'))
                                     <div class="text-danger" role="alert">
                                         <small><strong>{{ $errors->get('title')[0] }}</strong></small>
@@ -39,11 +36,26 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>Days Per Year <span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text" name="days" placeholder="Enter Days / Year Name">
+                                    <input class="form-control" type="text" name="days" placeholder="Enter Days / Year Name" id="days">
 
                                     @if ($errors->has('days'))
                                     <div class="text-danger" role="alert">
                                         <small><strong>{{ $errors->get('days')[0] }}</strong></small>
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Include Salary<span class="text-danger">*</span></label>
+                                     <select class="form-select" name="include_salary" id="includeSalary">
+                                        <option value="N">No</option>
+                                        <option value="Y">Yes</option>
+                                    </select>
+
+                                    @if ($errors->has('include_salary'))
+                                    <div class="text-danger" role="alert">
+                                        <small><strong>{{ $errors->get('include_salary')[0] }}</strong></small>
                                     </div>
                                     @endif
                                 </div>
@@ -94,6 +106,21 @@
                                     @if ($errors->has('days'))
                                     <div class="text-danger" role="alert">
                                         <small><strong>{{ $errors->get('days')[0] }}</strong></small>
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
+                             <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Include Salary<span class="text-danger">*</span></label>
+                                     <select class="form-select" name="include_salary" id="editincludeSalary">
+                                        <option value="N">No</option>
+                                        <option value="Y">Yes</option>
+                                    </select>
+
+                                    @if ($errors->has('include_salary'))
+                                    <div class="text-danger" role="alert">
+                                        <small><strong>{{ $errors->get('include_salary')[0] }}</strong></small>
                                     </div>
                                     @endif
                                 </div>

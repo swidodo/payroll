@@ -55,19 +55,45 @@ class LeaveTypeController extends Controller
             );
 
             if ($validator->fails()) {
-                return redirect()->back()->with('errors', $validator->messages());
+                $res = [
+                    'status' => 'error',
+                    'msg'    => $validator->messages(),
+                ];
+                return response()->json($res);
             }
-
-            $leavetype             = new LeaveType();
-            $leavetype->title      = $request->title;
-            $leavetype->days       = $request->days;
+            $check = LeaveType::where('code',$request->code)->count();
+            if($check > 0){
+                $res = [
+                    'status' => 'error',
+                    'msg'    => 'Data already in leave Type.',
+                ];
+                return response()->json($res);
+            }
+            $leavetype                  = new LeaveType();
+            $leavetype->title           = $request->title;
+            $leavetype->code            = $request->code;
+            $leavetype->days            = $request->days;
+            $leavetype->include_salary  = $request->include_salary;
             $leavetype->created_by = Auth::user()->creatorId();
-            $leavetype->save();
-
-            return redirect()->route('leave-type.index')->with('success', 'Leave Type  successfully created.');
+            $insert = $leavetype->save();
+            if($insert){
+                $res = [
+                    'status' => 'success',
+                    'msg'    => 'Data successfully created.',
+                ];
+            }else{
+                $res = [
+                    'status' => 'error',
+                    'msg'    => 'Data Not Success created.',
+                ];
+            }
+            return response()->json($res);
         } else {
-            toast('Permission denied.', 'error');
-            return redirect()->back();
+            $res = [
+                'status' => 'error',
+                'msg'    => 'Permission denied.',
+            ];
+            return response()->json($res);
         }
     }
 
@@ -101,14 +127,6 @@ class LeaveTypeController extends Controller
             return response()->json(['error' => 'Permission denied.'], 401);
         }
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $leavetype = LeaveType::find($id);
@@ -130,8 +148,9 @@ class LeaveTypeController extends Controller
                     ]);
                 }
 
-                $leavetype->title = $request->title;
-                $leavetype->days  = $request->days;
+                $leavetype->title           = $request->title;
+                $leavetype->days            = $request->days;
+                $leavetype->include_salary  = $request->include_salary;
                 $leavetype->save();
 
                 return redirect()->route('leave-type.index')->with('success', 'LeaveType successfully updated.');

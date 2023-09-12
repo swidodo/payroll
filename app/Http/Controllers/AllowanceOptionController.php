@@ -31,6 +31,7 @@ class AllowanceOptionController extends Controller
                 $request->all(),
                 [
                     'name' => 'required|max:20',
+                    'pay_type' => 'required',
                 ]
             );
 
@@ -40,10 +41,17 @@ class AllowanceOptionController extends Controller
 
             try {
                 DB::beginTransaction();
-
-                $allowanceOption             = new AllowanceOption();
-                $allowanceOption->name       = $request->name;
-                $allowanceOption->created_by = Auth::user()->creatorId();
+                if (isset($request->include_attendance)){
+                    $include_attendance = $request->include_attendance;
+                }else{
+                    $include_attendance = 'N';
+                }
+                $allowanceOption                       = new AllowanceOption();
+                $allowanceOption->name                 = $request->name;
+                $allowanceOption->pay_type             = $request->pay_type;
+                $allowanceOption->include_attendance   = $include_attendance;
+                $allowanceOption->branch_id            = Auth::user()->branch_id;
+                $allowanceOption->created_by           = Auth::user()->creatorId();
                 $allowanceOption->save();
 
                 DB::commit();
@@ -85,6 +93,7 @@ class AllowanceOptionController extends Controller
                     $request->all(),
                     [
                         'name' => 'required|max:20',
+                        'pay_type' => 'required',
 
                     ]
                 );
@@ -95,8 +104,15 @@ class AllowanceOptionController extends Controller
 
                 try {
                     DB::beginTransaction();
-
-                    $allowanceOption->name = $request->name;
+                    if (isset($request->include_attendance)){
+                        $include_attendance = $request->include_attendance;
+                    }else{
+                        $include_attendance = 'N';
+                    }
+                    $allowanceOption->name       = $request->name;
+                    $allowanceOption->pay_type   = $request->pay_type;
+                    $allowanceOption->branch_id  = Auth::user()->branch_id;
+                    $allowanceOption->include_attendance   = $include_attendance;
                     $allowanceOption->save();
 
                     DB::commit();

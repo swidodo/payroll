@@ -47,11 +47,10 @@
 
         <div class="row">
             <div class="card">
-                <div class="card-header">
-                    <h4>Filter Data</h4>
-                </div>
                 <div class="card-body">
                     <div class="row">
+                        <h4>Filter Data</h4>
+                        <hr />
                         <div class="col-md-4">
                             <label for="attendance" class="form-label">Branch</label>
                             <select class="form-control form-control-sm select" id="branchId" name="branch">
@@ -63,6 +62,9 @@
                         <div class="col-md-4">
                             <label for="attendance" class="form-label">Date</label>
                             <input type="date" id="date" value="{{ $date}}" class="form-control">
+                        </div>
+                        <div class="col-md-4 d-flex align-items-center">
+                        <button type="button" class="btn btn-primary mt-4" id="searchData"> Search </button>
                         </div>
                     </div>
                 </div>
@@ -206,7 +208,7 @@
             });
             // load datatable
             var branchId = $('#branchId').val();
-            var date = $('#date').val();
+            var date = "";
             loadData(branchId,date)
             /* When click show user */
             $('input[id*="time_add"]').each(function( index ) {
@@ -343,6 +345,11 @@
                 const deleteURL = $(this).data('url');
                 $('#form-delete-overtime').attr('action', deleteURL);
             })
+            $('#searchData').on('click',function(){
+                var branchId = $('#branchId').val();
+                var date = $('#date').val();
+                loadData(branchId,date)
+            })
 
         });
         function loadData(branch_id,date){
@@ -382,7 +389,12 @@
                         },
                         {
                             data: 'amount_fee',
-                            name: 'amount_fee'
+                            render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                                    if(base.lastIndexOf(".") != -1)
+                                        base = base.substring(0, base.lastIndexOf("."));
+                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                            }
                         },
                         {
                             data: 'duration',
@@ -390,7 +402,19 @@
                         },
                         {
                             data: 'status',
-                            name: 'status'
+                            render : function(data,type,row){
+                                var btn ='';
+                                if (data === "Pending"){
+                                    btn = '<span class="badge badge-warning">Pending</span>'
+                                }
+                                if (data === "Approve"){
+                                    btn = '<span class="badge badge-success">Approve</span>'
+                                }
+                                if (data === "Reject"){
+                                    btn = '<span class="badge badge-danger">Reject</span>'
+                                }
+                                return btn;
+                            }
                         },
                         {
                             data: 'notes',

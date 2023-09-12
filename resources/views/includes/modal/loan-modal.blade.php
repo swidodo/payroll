@@ -14,6 +14,8 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 {{-- @if (Auth::user()->type == 'company') --}}
+                                <input type="hidden" name="loan" value="loan">
+                                <input type="text" name="branch_id" value="{{ Auth::user()->branch_id }}">
                                     <div class="form-group">
                                         <label>Employee <span class="text-danger">*</span></label>
                                         <select class="form-control select-employee" id="employee_id" name="employee_id">
@@ -40,11 +42,13 @@
                                 {{-- @endif --}}
 
                                 <div class="form-group">
-                                    <label for="loan_type_id" class="form-label">Loan Type</label>
+                                    <label for="loan_type_id" class="form-label">Loan Name</label>
                                     <select name="loan_type_id" id="loan_type_id" class="form-control select-cash-type">
-                                        <option value="0">Select Loan Type</option>
                                         @foreach ($loanType as $type)
-                                        <option value="{{$type->id}}">{{$type->name}}</option>
+                                            @if($type->name =="KASBON"){
+                                                <option value="{{$type->id}}" {{($type->name =="KASBON") ? 'selected' : ''}}>{{$type->name}}</option>
+                                            }
+                                            @endif
                                         @endforeach
                                     </select>
 
@@ -54,21 +58,8 @@
                                             </div>
                                         @endif
                                 </div>
-
-                                <label for="installment" class="form-label">Installment</label>
-                                <div class="input-group mb-3">
-                                    <input type="number" class="form-control" placeholder="Installment Plan" name="installment"  id="installment">
-                                    <span class="input-group-text">X</span>
-
-                                        @if ($errors->has('installment'))
-                                            <div class="text-danger" role="alert">
-                                                <small><strong>{{ $errors->get('installment')[0] }}</strong></small>
-                                            </div>
-                                        @endif
-                                </div>
-
                                 <div class="form-group">
-                                    <label for="amount" class="form-label">Amount</label>
+                                    <label for="amount" class="form-label">Nominal</label>
                                     <input type="number" class="form-control" placeholder="Amount" name="amount"  id="amount">
 
                                         @if ($errors->has('amount'))
@@ -100,27 +91,16 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="" id="edit-form-loan" method="POST">
-                        @method('PUT')
+                    <form id="edit-form-loan" method="POST">
                         @csrf
                         <div class="row">
                             <div class="col-sm-12">
                                 {{-- @if (Auth::user()->type == 'company') --}}
+                                <input type="hidden" name="loan" value="loan">
+                                <input type="hidden" name="id" value="" id="loanId">
                                     <div class="form-group">
                                         <label>Employee <span class="text-danger">*</span></label>
                                         <select class="form-control select-employee-edit" id="employee_id_edit" name="employee_id">
-                                            @if ( !is_null(Auth::user()->employee) )
-                                                @foreach ($employee as $e)
-                                                    @if ($e->id == Auth::user()->employee->id)
-                                                        <option value="{{$e->id}}" selected>{{$e->name}}</option>
-                                                    @endif
-                                                @endforeach
-                                            @else
-                                                <option value="0">Select Employee</option>
-                                                @foreach ($employee as $e)
-                                                    <option value="{{$e->id}}">{{$e->name}}</option>
-                                                @endforeach
-                                            @endif
                                         </select>
 
                                         @if ($errors->has('employee_id'))
@@ -132,11 +112,13 @@
                                 {{-- @endif --}}
 
                                 <div class="form-group">
-                                    <label for="loan_type_id" class="form-label">Loan Type</label>
+                                    <label for="loan_type_id" class="form-label">Loan Name</label>
                                     <select name="loan_type_id" id="loan_type_id_edit" class="form-control select-cash-type-edit">
-                                        <option value="0">Select Loan Type</option>
                                         @foreach ($loanType as $type)
-                                        <option value="{{$type->id}}">{{$type->name}}</option>
+                                            @if($type->name =="KASBON"){
+                                                <option value="{{$type->id}}" {{($type->name =="KASBON") ? 'selected' : ''}}>{{$type->name}}</option>
+                                            }
+                                            @endif
                                         @endforeach
                                     </select>
 
@@ -146,21 +128,8 @@
                                             </div>
                                         @endif
                                 </div>
-
-                                <label for="installment" class="form-label">Installment</label>
-                                <div class="input-group mb-3">
-                                    <input type="number" class="form-control" placeholder="Installment Plan" name="installment"  id="installment-edit">
-                                    <span class="input-group-text">X</span>
-
-                                        @if ($errors->has('installment'))
-                                            <div class="text-danger" role="alert">
-                                                <small><strong>{{ $errors->get('installment')[0] }}</strong></small>
-                                            </div>
-                                        @endif
-                                </div>
-
                                 <div class="form-group">
-                                    <label for="amount" class="form-label">Amount</label>
+                                    <label for="amount" class="form-label">Nominal</label>
                                     <input type="number" class="form-control" placeholder="Amount" name="amount"  id="amount-edit">
 
                                         @if ($errors->has('amount'))

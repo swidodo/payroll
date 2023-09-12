@@ -12,6 +12,7 @@ class AllowanceFinance extends Model
     protected $fillable = [
         'employee_id',
         'allowance_type_id',
+        'type_pay',
         'amount',
         'created_by',
     ];

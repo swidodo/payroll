@@ -24,7 +24,7 @@
 
 
         <div class="row">
-            
+
             <div class="col-md-4">
                 <div class="card punch-status">
                     <div class="card-body">
@@ -50,7 +50,7 @@
                                 @elseif (empty($attendanceStatus))
 
                                 @endif
-                                
+
                                 @if (isset($attendanceEmployee))
                                     @if ($attendanceEmployee->break_in != '00:00:00')
                                         <div class="punch-det">
@@ -68,7 +68,7 @@
                                             </div>
                                         </div>
                                     @else
-                                        
+
                                     @endif
                                 @endif
 
@@ -85,7 +85,7 @@
                         <div class="punch-btn-section">
                             <form action="{{ route('clock_store') }}" method="post">
                                 @csrf
-                                
+
                                 @if (!empty($attendanceStatus) && $attendanceStatus->status == 'Present' || !empty($attendanceStatus) && $attendanceStatus->status == 'Overtime')
                                     <input hidden name="clock" value="clock_out" type="text">
                                     <button {{ empty($shiftSchedule) || !empty($attendanceStatus) && $attendanceStatus->clock_out != '00:00:00' ? 'disabled' : ''}} type="submit" class="btn btn-primary punch-btn">Clock Out </button>
@@ -159,7 +159,7 @@
                                 @csrf
                                 <input hidden name="time_now" value="{{date("H:i:s")}}" type="text">
                                 <button
-                                 {{ is_null($timesheet) ? 'disabled' : ''}} 
+                                 {{ is_null($timesheet) ? 'disabled' : ''}}
                                  type="submit" class="btn btn-primary punch-btn">{{ !is_null($timesheet) ? is_null($timesheet->start_time) ? 'Start' : 'End' : 'Start'}}</button>
                             </form>
                         </div>

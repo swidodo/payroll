@@ -63,32 +63,33 @@
                                         </div>
                                     @endforeach
                                 </div>
-
-                                {{-- <div class="form-group">
-                                    <label for="allowance_type_id" class="form-label">Type</label>
-                                    <select name="allowance_type_id" id="allowance_type_id" class="form-control select-allowance-type">
-                                        <option value="0">Select Allowance Type</option>
-                                        @foreach ($allowanceTypes as $type)
-                                            <option value="{{$type->id}}">{{$type->name}}</option>
-                                        @endforeach
-                                    </select>
-                                        @if ($errors->has('allowance_type_id'))
-                                            <div class="text-danger" role="alert">
-                                                <small><strong>{{ $errors->get('allowance_type_id')[0] }}</strong></small>
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <label>Allowance BPJS</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="checkAll">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                Select All
+                                            </label>
+                                        </div>
+                                        <hr />
+                                    </div>
+                                    @foreach ($allowanceTypes as $type)
+                                        <div class="row mx-4">
+                                            <div class="form-check col-md-6 mb-3">
+                                                <input class="form-check-input itemCheck" data-id="{{$type->id}}" type="checkbox" name="allowance_id[]" value="{{$type->id}}" id="flexCheckDefault">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    {{$type->name}}
+                                                </label>
                                             </div>
-                                        @endif
-                                </div> --}}
-
-                                {{-- <div class="form-group">
-                                    <label for="amount" class="form-label">Amount</label>
-                                    <input type="number" class="form-control" placeholder="Amount" name="amount"  id="amount">
-
-                                        @if ($errors->has('amount'))
-                                            <div class="text-danger" role="alert">
-                                                <small><strong>{{ $errors->get('amount')[0] }}</strong></small>
+                                            <div class="col-md-6 mb-3">
+                                                <input type="text" class="form-control itemAmount {{$type->id}}" data-id="{{$type->id}}" name="amount[]"/>
                                             </div>
-                                        @endif
-                                </div> --}}
+                                        </div>
+                                    @endforeach
+                                </div>
+
+
                             </div>
                         </div>
                         <div class="submit-section">

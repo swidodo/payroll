@@ -28,4 +28,8 @@ class Departement extends Model
     {
         return $this->belongsTo(Branch::class, 'branch_id');
     }
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class, 'employee_id');
+    }
 }

@@ -26,6 +26,19 @@
                                     </div>
                                     @endif
                                 </div>
+                                <div class="form-group">
+                                    <label>Pay Type<span class="text-danger">*</span></label>
+                                    <select class="form-control form-select" name="pay_type" id="pay_type">
+                                        <option value="fixed">Fixed</option>
+                                        <option value="unfixed">Unfixed</option>
+                                    </select>
+                                    @if ($errors->has('name'))
+                                    <div class="text-danger" role="alert">
+                                        <small><strong>{{ $errors->get('name')[0] }}</strong></small>
+                                    </div>
+                                    @endif
+                                </div>
+                                <div id="include"></div>
                             </div>
                         </div>
                         <div class="submit-section">
@@ -40,10 +53,10 @@
 
     <!-- Edit reimbursement Modal -->
     <div id="edit_allowance" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Leave Type</h5>
+                    <h5 class="modal-title">Edit Allowance Option</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -64,6 +77,25 @@
                                         </div>
                                         @endif
                                     </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Pay Type<span class="text-danger">*</span></label>
+                                    <select class="form-control form-select" name="pay_type" id="edit_pay_type">
+                                        <option value="fixed">Fixed</option>
+                                        <option value="unfixed">Unfixed</option>
+                                    </select>
+                                    @if ($errors->has('pay_type'))
+                                    <div class="text-danger" role="alert">
+                                        <small><strong>{{ $errors->get('pay_type')[0] }}</strong></small>
+                                    </div>
+                                    @endif
+                                </div>
+                                <div class="form-group">
+                                    <label>Include Attendance</label>
+                                    <select class="form-control form-select" name="include_attendance" id="includeAttendance">
+                                        <option value="N" selected>No</option>
+                                        <option value="Y">Yes</option>
+                                    </select>
                                 </div>
                         </div>
                         <div class="submit-section">

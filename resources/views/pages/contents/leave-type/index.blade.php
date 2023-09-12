@@ -104,6 +104,7 @@
 
     <!-- Datetimepicker CSS -->
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap-datetimepicker.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/plugins/sweetalert2/sweetalert2.min.css')}}">
 @endpush
 
 @push('addon-script')
@@ -120,6 +121,7 @@
     <!-- Datatable JS -->
     <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
 
     @if (Session::has('edit-show'))
     <script>
@@ -131,6 +133,9 @@
 
     <script>
             $(document).ready(function () {
+                $.ajaxSetup({
+                    headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
+                });
                 /* When click show user */
 
 
@@ -154,5 +159,32 @@
                     $('#form-delete-leave-type').attr('action', deleteURL);
                 })
             });
+            $('#fromAddLeaveType').on('submit', function(e){
+                e.preventDefault();
+                var title = $('#typeName option:selected').text();
+                var code = $('#typeName option:selected').val();
+                var days = $('#days').val();
+                var include = $('#includeSalary').val();
+                $.ajax({
+                    url : 'create-leave-type',
+                    type : 'post',
+                    data :{ title : title, code : code, days: days,include_salary:include},
+                    dataType : 'json',
+                    beforeSend : function(){
+
+                    },
+                    success : function(respon){
+                        Swal.fire({
+                            icon : respon.status,
+                            text : respon.msg,
+                        })
+                       $('#add_leave_type').modal('hide');
+                    },
+                    error : function () {
+                        alert('There is an error !, please try again')
+                    }
+                })
+
+            })
     </script>
 @endpush

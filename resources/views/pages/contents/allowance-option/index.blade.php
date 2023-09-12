@@ -44,6 +44,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Allowance Option</th>
+                                <th>Pay Type</th>
                                 @if(Auth::user()->can('edit allowance option') || Auth::user()->can('delete allowance option'))
                                     <th class="text-end">Action</th>
                                 @endif
@@ -58,6 +59,9 @@
                                     <td>{{$no++}}</td>
                                     <td>
                                         {{$option->name}}
+                                    </td>
+                                    <td>
+                                        {{$option->pay_type}}
                                     </td>
                                     @canany(['edit allowance option', 'delete allowance option'])
                                         <td class="text-end">
@@ -137,6 +141,8 @@
 
                         $.get(editUrl, (data) => {
                             $('#edit-name-allowance-option').val(data.name)
+                            $('#edit_pay_type').val(data.pay_type)
+                            $('#includeAttendance').val(data.include_attendance)
 
                             const urlNow = '{{ Request::url() }}'
                             $('#edit-form-allowance-option').attr('action', urlNow + '/' + data.id);
@@ -148,5 +154,36 @@
                     $('#form-delete-allowance-option').attr('action', deleteURL);
                 })
             });
+            $('#pay_type').on('change',function(){
+                var val = $(this).val();
+                if(val == "unfixed"){
+                    $('#include').html(`
+                        <div class="form-group">
+                            <label>Include Attendance</label>
+                            <select class="form-control form-select" name="include_attendance" id="includeAttendance">
+                                <option value="N" selected>No</option>
+                                <option value="Y">Yes</option>
+                            </select>
+                        </div>`);
+                }else{
+                    $('#include').html('');
+                }
+            })
+            $('#edit_pay_type').on('change',function(){
+                var val = $(this).val();
+                if(val == "unfixed"){
+                    $('#includes').html(`
+                        <div class="form-group">
+                            <label>Include Attendance</label>
+                            <select class="form-control form-select" name="include_attendance" id="includeAttendance">
+                                <option value="N" selected>No</option>
+                                <option value="Y">Yes</option>
+                            </select>
+                        </div>`);
+                }else{
+                    $('#includes').html('');
+                }
+            })
+            
     </script>
 @endpush

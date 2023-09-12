@@ -56,11 +56,11 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Date </label>
-                                <input type="date" name="end_date" id="enddate" class="form-control " placeholder="End Date" required>
+                                <input type="date" name="start_date" id="enddate" class="form-control " placeholder="End Date" required>
 
-                                @if ($errors->has('end_date'))
+                                @if ($errors->has('start_date'))
                                 <div class="text-danger" role="alert">
-                                    <small><strong>{{ $errors->get('end_date')[0] }}</strong></small>
+                                    <small><strong>{{ $errors->get('start_date')[0] }}</strong></small>
                                 </div>
                             @endif
                             </div>

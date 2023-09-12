@@ -10,6 +10,7 @@ use App\Models\OvertimeApproval;
 use App\Models\OvertimeType;
 use App\Models\Utility;
 use App\Models\Branch;
+use App\Models\AllowanceFinance;
 use Carbon\Carbon;
 use Exception;
 use DataTables;
@@ -26,6 +27,114 @@ class OvertimeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function break_time($hourTime){
+        $jmlhour = $hourTime;
+        $break = 0;
+        if ($jmlhour <= 4){
+            $break = 0;
+        }
+        if ($jmlhour > 4 && $jmlhour < 8 )
+        {
+            $break = 1;
+        }
+        if ($jmlhour >= 8){
+        $over = [];
+        for ($x=1; $x <= $jmlhour; $x++){
+            if ( $x % 4 == 0 ){
+            array_push($over,$x);
+            }
+        }
+        $break = count($over) - 1;
+        }
+        return $break;
+    }
+    public function timeTot_61($Tottime,$type_overtime){
+        if ($type_overtime == "Saturday"){
+            if ( $Tottime <= 5 ) {
+                $hour1 = $Tottime * 2;
+                $sisa = 0;
+            }
+            if ($Tottime > 5) {
+                $hour1 = 5 * 2;
+                $sisa = $Tottime - 5;
+            }
+            $hour2 = 0;
+            $hour3 = 0;
+            if ($sisa > 0 && $sisa == 1){
+                $hour2 = $sisa * 3;
+            }
+            if ($sisa > 0 && $sisa > 1){
+                $hour2 = 1 * 3;
+                $hour3 = ($sisa - 1) * 4;
+            }
+            $hour = $hour1 + $hour2 + $hour3 ;
+            return $hour;
+        }else{
+            if ( $Tottime <= 7 ) {
+                $hour1 = $Tottime * 2;
+                $sisa = 0;
+            }
+            if ($Tottime > 7) {
+                $hour1 = 7 * 2;
+                $sisa = $Tottime - 7;
+            }
+            $hour2 = 0;
+            $hour3 = 0;
+            if ($sisa > 0 && $sisa == 1){
+                $hour2 = $sisa * 3;
+            }
+            if ($sisa > 0 && $sisa > 1){
+                $hour2 = 1 * 3;
+                $hour3 = ($sisa - 1) * 4;
+            }
+            $hour = $hour1 + $hour2 + $hour3 ;
+            return $hour;
+        }
+    }
+    public function timeTot_52($Tottime){
+        // 8 jam pertama * 2
+        if ( $Tottime <= 8 ) {
+            $hour1 = $Tottime * 2;
+            $sisa = 0;
+        }
+        if ($Tottime > 8) {
+            $hour1 = 8 * 2;
+            $sisa = $Tottime - 8;
+        }
+        $hour2 = 0;
+        $hour3 = 0;
+        if ($sisa > 0 && $sisa == 1){
+            $hour2 = $sisa * 3;
+        }
+        if ($sisa > 0 && $sisa > 1){
+            $hour2 = 1 * 3;
+            $hour3 = ($sisa - 1) * 4;
+        }
+        $hour = $hour1 + $hour2 + $hour3 ;
+       return $hour;
+    }
+
+    public function timeTot_weekday($Totover){
+        $fisrttime  = 1.5 * 1;
+        $Tottime    =  $Totover - 1;
+        $sisa = $Tottime * 2;
+        $hour = $fisrttime + $sisa ;
+        return $hour;
+    }
+
+    public function total_allowance($employee_id){
+        $allowance = AllowanceFinance::select(DB::raw('sum(amount) as total_allowance'))
+                                     ->leftJoin('allowance_options','allowance_options.id','=','allowance_type_id')
+                                     ->where('employee_id','=',$employee_id)
+                                     ->where('allowance_options.pay_type','=','fixed')
+                                     ->first();
+        if ($allowance !=null ){
+            $total = $allowance->total_allowance;
+        }else{
+            $total = 0;
+        }
+        return  $total;
+    }
     public function index()
     {
         if (Auth::user()->can('manage overtime')) {
@@ -68,7 +177,7 @@ class OvertimeController extends Controller
         }
     }
     public function get_data(Request $request){
-        // print_r($request->branch_id);
+        $defaultDate = date('m');
         $data = DB::table('overtimes')
                     ->select('overtimes.id',
                             'employees.no_employee',
@@ -83,14 +192,18 @@ class OvertimeController extends Controller
                             'overtimes.notes')
                     ->leftJoin('employees','employees.id','=','overtimes.employee_id')
                     ->leftJoin('day_types','day_types.id','=','overtimes.day_type_id')
-                    ->where('employees.branch_id','=',$request->branch_id)
-                    ->where('overtimes.start_date','=',$request->date)
-                    ->get();
+                    ->where('employees.branch_id','=',$request->branch_id);
+                    if ($request->date !=""){
+                        $data->where('overtimes.start_date','=',$request->date);
+                    }else{
+                        $data->where(DB::raw("TO_CHAR(overtimes.start_date,'MM')"),'=',$defaultDate);
+                    }
+                    $data->get();
         return DataTables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                     $btn ='';
-                    if(Auth()->user()->canany('edit leave','delete leave')){
+                    if(Auth()->user()->canany('edit overtimes','delete overtimes')){
                         $btn .= '<div class="dropdown dropdown-action">
                                     <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">';
@@ -110,106 +223,128 @@ class OvertimeController extends Controller
 
     public function store(Request $request)
     {
-        if (Auth::user()->can('create overtime')) {
-            $validator = Validator::make(
-                $request->all(),
-                [
-                    'employee_id' => 'required',
-                    'overtime_type_id' => 'required',
-                    'day_type_id' => 'required',
-                    'start_date' => 'required',
-                    'end_date' => 'required',
-                    'start_time' => 'required',
-                    'end_time' => 'required',
-                    // 'duration' => 'required',
-                    // 'notes' => 'required',
-                    // 'status' => 'required',
-                ]
-            );
+        // if (Auth::user()->can('create overtime')) {
+            // $validator = Validator::make(
+            //     $request->all(),
+            //     [
+            //         'employee_id' => 'required',
+            //         'overtime_type_id' => 'required',
+            //         'day_type_id' => 'required',
+            //         'start_date' => 'required',
+            //         'end_date' => 'required',
+            //         'start_time' => 'required',
+            //         'end_time' => 'required',
+            //         // 'duration' => 'required',
+            //         // 'notes' => 'required',
+            //         // 'status' => 'required',
+            //     ]
+            // );
 
-            if ($validator->fails()) {
-                return redirect()->back()->with('errors', $validator->messages());
-            }
-            try {
-                DB::beginTransaction();
+            // if ($validator->fails()) {
+            //     return redirect()->back()->with('errors', $validator->messages());
+            // }
+            // try {
+                // DB::beginTransaction();
                 $employee       = Employee::where('id', $request->employee_id)->where('created_by', Auth::user()->creatorId())->first();
-                $dayType       = DayType::where('id', $request->day_type_id)->first();
-                $duration       = strtotime($request->end_time) - strtotime($request->start_time);
+                $dayType        = DayType::where('id', $request->day_type_id)->first();
                 $diffInHour     = Carbon::parse($request->end_time)->diffInHours(Carbon::parse($request->start_time));
-                $diffInDay     = Carbon::parse($request->end_date)->diffInDays(Carbon::parse($request->start_date));
-                $durationToTime =  gmdate('H:i:s', $duration);
+                $typeCompany = 'default';
 
-                // overtime calculation
-                if (!is_null($employee->basic_salary)) {
-                    $overtimePayPerHour    = 1 / 173 * $employee->basic_salary->amount;
-                    $pay = 0;
-                    if ($diffInHour == 1) {
-                        $pay = 1.5 * floor($overtimePayPerHour);
-                    } elseif ($diffInHour > 1) {
-                        $pay = 0;
-                        for ($i = 0; $i < $diffInHour; $i++) {
-                            if ($i == 0) {
-                                $pay += 1.5 * floor($overtimePayPerHour);
-                            } else {
-                                $pay += 2 * floor($overtimePayPerHour);
-                            }
-                        }
+                if ($typeCompany=='default'){
+                    // overtime calculation
+                    // ini belum untuk pengurangan tanggal dan waktu
+                    $overTimes = (int)$diffInHour - (int)$this->break_time($diffInHour);
+                    if ($employee->type_work == "52" && $dayType->name =="Week Day"){
+                        $tot_Overtime = $this->timeTot_weekday($overTimes);
                     }
-                    $request['amount_fee'] = $diffInDay > 0 ? $pay * $diffInDay : 0;
-                } else {
-                    toast('Please set employee salary.', 'warning');
-                    return redirect()->back();
+                    if ($employee->type_work == "61" && $dayType->name =="Week Day"){
+                        $tot_Overtime = $this->timeTot_weekday($overTimes);
+                    }
+                    if ($employee->type_work == "61" && $dayType->name =="Saturday"){
+                        $tot_Overtime = $this->timeTot_61($overTimes,$dayType->name);
+                    }
+                    if ($employee->type_work == "61" && $dayType->name =="Holiday"){
+                        $tot_Overtime = $this->timeTot_61($overTimes,$dayType->name);
+                    }
+                    if ($employee->type_work == "52" && $dayType->name =="Holiday"){
+                        $tot_Overtime = $this->timeTot_52($overTimes);
+                    }
+                    $totFixedAllowance = $this->total_allowance($employee->id);
+
+                    if (!is_null($employee->salary)) {
+                        $overtimePayPerHour     = round(($employee->salary + $totFixedAllowance) /173);
+                        $amount_fee             = round($tot_Overtime * $overtimePayPerHour);
+                         Overtime::create([
+                            'employee_id'        => $employee->id,
+                            'overtime_type_id'   => 0,
+                            'day_type_id'        => $dayType->id,
+                            'start_date'         => $request->start_date,
+                            'amount_fee'         => $amount_fee ,
+                            'status'             => 'Pending',
+                            'duration'           => $overTimes,
+                            'start_time'         => $request->start_time,
+                            'end_time'           => $request->end_time,
+                        ]);
+                        toast('Data success inserted !.', 'success');
+                        return redirect()->back();
+
+                    } else {
+                        toast('Please set employee salary.', 'warning');
+                        return redirect()->back();
+                    }
+                }else{
+
                 }
 
 
 
-                $request['duration'] = $durationToTime;
-                if (Auth::user()->type == 'company') {
-                    $request['created_by']  = Auth::user()->creatorId();
-                    $request['status']      = 'Approved';
-                    $model = Overtime::create($request->all());
-                } else {
-                    $request['created_by']  = Auth::user()->creatorId();
-                    $request['status']      = 'Pending';
-                    $model = Overtime::create($request->all());
-                }
+
+
+
+
+
+
+
+                // if (Auth::user()->type == 'company') {
+                //     $request['created_by']  = Auth::user()->creatorId();
+                //     $request['status']      = 'Approved';
+                //     $model = Overtime::create($request->all());
+                // } else {
+                //     $request['created_by']  = Auth::user()->creatorId();
+                //     $request['status']      = 'Pending';
+                //     $model = Overtime::create($request->all());
+                // }
 
                 // 3 Tier Approval
-                $levels = LevelApproval::where('created_by', Auth::user()->creatorId())->get();
-                foreach ($levels as $key => $value) {
-                    OvertimeApproval::create([
-                        'overtime_id'              => $model->id,
-                        'level'                 => $value->level,
-                        'is_approver_company'   => $value->company_id ? true : false,
-                        'approver_id'           => isset($value->company_id) ? $value->company_id : $value->employee_id,
-                        'status'                => 'Pending',
-                        'created_by'            => Auth::user()->creatorId(),
-                    ]);
-                }
+                // $levels = LevelApproval::where('created_by', Auth::user()->creatorId())->get();
+                // foreach ($levels as $key => $value) {
+                //     OvertimeApproval::create([
+                //         'overtime_id'              => $model->id,
+                //         'level'                 => $value->level,
+                //         'is_approver_company'   => $value->company_id ? true : false,
+                //         'approver_id'           => isset($value->company_id) ? $value->company_id : $value->employee_id,
+                //         'status'                => 'Pending',
+                //         'created_by'            => Auth::user()->creatorId(),
+                //     ]);
+                // }
                 // 3 Tier Approval
 
-                Utility::insertToRequest($model, Auth::user(), 'Overtime');
+                // Utility::insertToRequest($model, Auth::user(), 'Overtime');
 
-                DB::commit();
-                toast('Overtime successfully created.', 'success');
-                return redirect()->route('overtimes.index');
-            } catch (Exception $e) {
-                DB::rollBack();
-                toast('Something went wrong.', 'error');
-                return redirect()->route('overtimes.index');
-            }
-        } else {
-            toast('Permission denied.', 'error');
-            return redirect()->route('overtimes.index');
-        }
+                // DB::commit();
+                // toast('Overtime successfully created.', 'success');
+                // return redirect()->route('overtimes.index');
+        //     } catch (Exception $e) {
+        //         DB::rollBack();
+        //         toast('Something went wrong.', 'error');
+        //         return redirect()->route('overtimes.index');
+        //     }
+        // } else {
+        //     toast('Permission denied.', 'error');
+        //     return redirect()->route('overtimes.index');
+        // }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $overtime = Overtime::find($id);
@@ -222,12 +357,6 @@ class OvertimeController extends Controller
         return view('pages.contents.time-management.overtime.detail-rejected', compact('overtime', 'fileType'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $overtime = Overtime::find($id);
@@ -265,13 +394,7 @@ class OvertimeController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         if (Auth::user()->can('edit overtime')) {

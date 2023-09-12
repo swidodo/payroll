@@ -83,8 +83,9 @@ class AttendanceEmployeeController extends Controller
         }
     }
     public function get_data(Request $request){
-        $data = DB::table('employees')
-                    ->select('employees.name',
+        $data = DB::table('attendance_employees')
+                    ->select('employees.no_employee',
+                            'employees.name',
                             'shift_types.name as shif',
                             'attendance_employees.date',
                             'attendance_employees.status',
@@ -94,12 +95,13 @@ class AttendanceEmployeeController extends Controller
                             'attendance_employees.early_leaving',
                             'attendance_employees.overtime',
                             'attendance_employees.id')
-                    ->leftJoin('attendance_employees','attendance_employees.employee_id','=','employees.id')
+                    ->leftJoin('employees','attendance_employees.employee_id','=','employees.id')
                     ->leftJoin('shift_schedules','shift_schedules.employee_id','=','employees.id')
                     ->leftJoin('shift_types','shift_types.id','=','shift_schedules.shift_id')
-                    ->where('employees.branch_id','=',$request->branch);
-                    if(isset($request->type)){
-                        $data->where('attendance_employees.date','=',$request->date);
+                    ->where('employees.branch_id','=',$request->branch_id);
+                    if($request->type_filter =="monthly"){
+                        $month = date('m',strtotime($request->date));
+                        $data->where(DB::raw("TO_CHAR(attendance_employees.date, 'MM')"),'=',$month);//ubah berdasarkan bulan
                     }else{
                         $data->where('attendance_employees.date','=',$request->date);
                     }
@@ -112,14 +114,14 @@ class AttendanceEmployeeController extends Controller
                         ->addColumn('action', function($row){
                             $btn ='';
                             if(Auth()->user()->canany('edit leave','delete leave')){
-                                $btn .= `<div class="dropdown dropdown-action">
+                                $btn .= '<div class="dropdown dropdown-action">
                                 <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">`;
+                                <div class="dropdown-menu dropdown-menu-right">';
                                 if(Auth()->user()->can('edit attendance')){
-                                    $btn .= '<a  data-url='.route('attendance.edit', $row->id).' id="edit-attendance_btn" class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_attendance"><i class="fa fa-pencil m-r-5"></i> Edit</a>';
+                                    $btn .= '<a  data-url='.route('attendance.edit', $row->id).' id="edit-attendance_btn" class="dropdown-item edit-attendance" href="javascript:void(0)" ><i class="fa fa-pencil m-r-5"></i> Edit</a>';
                                 }
                                 if(Auth()->user()->can('delete attendance')){
-                                    $btn .= '<a id="delete-attendance" data-url='.route('attendance.destroy', $row->id).' class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_attendance"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
+                                    $btn .= '<a id="delete-attendance" data-url='.route('attendance.destroy', $row->id).' class="dropdown-item" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
                                 }
                                     $btn .= '</div></div>';
                                 }
@@ -143,11 +145,8 @@ class AttendanceEmployeeController extends Controller
     public function edit($id)
     {
         if (Auth::user()->can('edit attendance')) {
-            $attendanceEmployee = AttendanceEmployee::where('id', $id)->first();
-            $employees          = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
-
-            // return view('attendance.edit', compact('attendanceEmployee', 'employees'));
-            return response()->json([$employees, $attendanceEmployee]);
+            $attendanceEmployee = AttendanceEmployee::where('id', $id)->with('employee')->get();
+            return response()->json($attendanceEmployee);
         } else {
             toast('Permission denied.', 'error');
             return redirect()->back();
@@ -433,7 +432,7 @@ class AttendanceEmployeeController extends Controller
                     $employeeAttendance->employee_id = $employee->id;
                     $employeeAttendance->created_by  = Auth::user()->creatorId();
                     $employeeAttendance->date          = date("Y-m-d");
-                    $employeeAttendance->status        = $shiftSchedule->is_dayoff ? 'Overtime' : 'Present';
+                    $employeeAttendance->status        = $shiftSchedule->is_dayoff ? 'OVERTIME' : 'PRESENT';
                     $employeeAttendance->clock_in      = $in;
                     $employeeAttendance->clock_out     = '00:00:00';
                     $employeeAttendance->late          = ($late > 0) && $shiftSchedule->is_dayoff != true ? $late : '00:00:00';

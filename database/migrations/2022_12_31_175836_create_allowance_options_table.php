@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('allowance_options', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->string('pay_type');
             $table->integer('created_by');
             $table->timestamps();
         });

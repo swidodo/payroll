@@ -14,6 +14,7 @@ class Loan extends Model
         'loan_type_id',
         'installment',
         'number_of_installment',
+        'tenor',
         'amount',
         'status',
         'created_by',

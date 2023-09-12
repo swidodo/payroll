@@ -42,7 +42,7 @@ class Employee extends Model
         'net_salary',
         'level_approval',
         'created_by',
-
+        'type_work',
         'employee_type',
         'leave_type',
         'marital_status',
@@ -116,10 +116,5 @@ class Employee extends Model
     public function approval()
     {
         return $this->hasOne(LevelApproval::class, 'employee_id');
-    }
-
-    public function departement()
-    {
-        return $this->hasOne(Departement::class, 'department_id');
     }
 }

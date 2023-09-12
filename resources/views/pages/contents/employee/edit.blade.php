@@ -118,8 +118,9 @@
                                     <div class="form-group col-md-6">
                                         <label for="marital_status" class="form-label">Marital Status</label>
                                         <select class="form-control select"  id="marital_status" name="marital_status">
-                                            <option value="single" {{ ($employee->marital_status == "single") ? 'selected':''}}>Single</option>
-                                            <option value="married" {{ ($employee->marital_status == "married") ? 'selected':''}}>Married</option>
+                                            @foreach ($paramPph21 as $param)
+                                            <option value="{{$param->code }}" >{{ $param->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -168,29 +169,28 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
+                                    <label for="leave_type" class="form-label">Work Type</label>
+                                    <select class="form-control select"  id="work_type" name="work_type">
+                                        <option value="">Select Type</option>
+                                        <option value="61" {{($employee->leave_type == '61') ? 'selected' : ''}}>6-1 (6 days Work) </option>
+                                        <option value="52"  {{($employee->leave_type == '52') ? 'selected' : ''}}>5-2 (5 days Work) </option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
                                     <label for="leave_type" class="form-label">Leave Type</label>
                                     <select class="form-control select"  id="leave_type" name="leave_type">
                                         <option value="0">Select Type</option>
-                                        {{-- <option value="monthly">Monthly</option> --}}
                                         <option value="PS" {{($employee->leave_type == 'PS') ? 'selected' : ''}}>Annual Proreta Start</option>
                                         <option value="PE"  {{($employee->leave_type == 'PE') ? 'selected' : ''}}>Annual Proreta End</option>
                                     </select>
                                 </div>
+                                <hr >
                                 <div class="form-group col-md-6">
                                     <label for="branch_id" class="form-label">Branch</label>
                                     <select class="form-control select" name="branch_id">
                                         <option value="" selected>Select Branch</option>
                                         @foreach ($branches as $branch)
                                             <option value="{{$branch->id }}" {{($branch->id == $employee->branch_id) ? 'selected' : ''}}>{{$branch->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="branch_id" class="form-label">Departement</label>
-                                    <select class="form-control select" name="branch_id">
-                                        <option value="" selected>Departement</option>
-                                        @foreach ($departements as $departement)
-                                        <option value="{{$departement->id}}" {{($departement->id == $employee->department_id) ? 'selected' : ''}}>{{$departement->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
