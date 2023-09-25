@@ -476,7 +476,6 @@ class PayrollController extends Controller
                 DB::beginTransaction();
                 $thps = DB::select("SELECT a.*,b.position_id FROM get_take_home_pay('".$request->startdate."','".$request->enddate."','".$request->branch_id."') as a LEFT JOIN employees as b
                     ON a.employee_id = b.id");
-                dd($thps);
                 $data_thp = [];
                 foreach($thps as $thp) {
                     $data = [
