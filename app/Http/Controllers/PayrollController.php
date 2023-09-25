@@ -13,9 +13,11 @@ use App\Models\AllowanceFinance;
 use App\Models\AllowanceOption;
 use App\Models\Master_bpjs;
 use App\Models\Bpjs_value;
+use App\Models\Branch;
 use Carbon\Carbon;
 use Exception;
 use DataTables;
+use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -464,490 +466,158 @@ class PayrollController extends Controller
         }
     }
 
-    public function indexBpjsTk()
-    {
-        if (Auth::user()->can('manage bpjs kesehatan')) {
-            $bpjs_tk = Utility::where('name', 'bpjs_tk')->first();
-
-            $bpjs_tk_val = null;
-            if (!is_null($bpjs_tk)) {
-                $bpjs_tk_val = json_decode($bpjs_tk->value, true);
-            }
-
-            return view('pages.contents.payroll.bpjs-tk.index', compact('bpjs_tk_val'));
-        } else {
-            toast('Permission denied.', 'error');
-            return redirect()->back();
-        }
+    public function run_payroll(){
+        $companyId          = Branch::where('id',Auth::user()->branch_id)->first();
+        $branch['branch']   = Branch::where('company_id',$companyId->company_id)->get();
+        return  view('pages.contents.payroll.run_payroll',$branch);
     }
-
-    public function storeBpjsTk(Request $request)
-    {
-        if (Auth::user()->can('create bpjs kesehatan')) {
-
+    public function generate_run_payroll(Request $request){
             try {
-                DB::beginTransaction();
-                $bpjs_tk = Utility::where('name', 'bpjs_tk')->first();
-
-                if (is_null($bpjs_tk)) {
-                    $data = ['type' => $request->type, 'value' => $request->number_value, 'maximum_salary' => $request->maximum_salary];
-                    $encode = json_encode($data);
-
-                    $utility  = new Utility();
-                    $utility->name = 'bpjs_tk';
-                    $utility->value = $encode;
-                    $utility->created_by = Auth::user()->creatorId();
-                    $utility->save();
-                } else {
-                    $data = ['type' => $request->type, 'value' => $request->number_value, 'maximum_salary' => $request->maximum_salary];
-                    $encode = json_encode($data);
-                    $bpjs_tk->value = $encode;
-                    $bpjs_tk->save();
+                    DB::beginTransaction();
+                $thps = DB::select("SELECT a.*,b.position_id FROM get_take_home_pay('".$request->startdate."','".$request->enddate."','".$request->branch_id."') as a LEFT JOIN employees as b
+                    ON a.employee_id = b.id");
+                $data_thp = [];
+                foreach($thps as $thp) {
+                    $data = [
+                        'date' => date('Y-m-d'),
+                        'employee_id' => $thp->employee_id,
+                        'employee_code' => $thp->employee_code,
+                        'no_employee' => $thp->no_employee,
+                        'name' => $thp->employee_id,
+                        'position' => $thp->position_id,
+                        'level' => '',
+                        'bank_name' => $thp->bank_name,
+                        'account_number' => $thp->account_number,
+                        'basic_salary' => $thp->basic_salary,
+                        'allowance_fixed' => $thp->allowance_fixed,
+                        'allowance_unfixed' => $thp->allowance_unfixed,
+                        'allowance_other' => $thp->allowance_other,
+                        'overtime' => $thp->overtime,
+                        'salary_this_month' => $thp->salary_this_month,
+                        'company_pay_bpjs' => $thp->company_pay_bpjs,
+                        'total_salary' => $thp->total_salary,
+                        'company_pay_bpjs_kesehatan' => $thp->company_pay_bpjs_kesehatan,
+                        'company_pay_bpjs_ketenagakerjaan' => $thp->company_pay_bpjs_ketenagakerjaan,
+                        'employee_pay_bpjs_kesehatan' => $thp->employee_pay_bpjs_kesehatan,
+                        'employee_pay_bpjs_ketenagakerjaan' => $thp->employee_pay_bpjs_ketenagakerjaan,
+                        'company_total_pay_bpjs' => $thp->company_total_pay_bpjs,
+                        'employee_total_pay_bpjs' => $thp->employee_total_pay_bpjs,
+                        'installment' => $thp->installment,
+                        'loans' => $thp->loans,
+                        'total_pay_loans' => $thp->total_pay_loans,
+                        'sanksi_adm' => '0',
+                        'pph21' => $thp->pph21,
+                        'total_deduction' => $thp->total_deduction,
+                        'take_home_pay' => $thp->take_home_pay,
+                        'branch_id' => $request->branch_id,
+                        'startdate' => $request->startdate,
+                        'enddate' => $request->enddate,
+                        'created_at' => date('Y-m-d H:m:s'),
+                    ];
+                    if(!in_array($data,$data_thp)){
+                        array_push($data_thp, $data);
+                    }
                 }
-
+                DB::table('take_home_pay')->insert($data_thp);  
                 DB::commit();
-
-                toast('Successfully saved', 'success');
-                return redirect()->route('setting.bpjs-tk.index');
-            } catch (Exception $th) {
-                DB::rollBack();
-                toast('Something went wrong', 'error');
-                return redirect()->back();
+                $res = [
+                        'status' => 'success',
+                        'msg'    => 'Payroll Successfully Generated !',
+                    ];
+                return response()->json($res);
+            } catch (Exception $e) {
+                 DB::rollBack();
+                    $res = [
+                        'status' => 'error',
+                        'msg'    => 'Payroll Not Success Generated !',
+                    ];
+                return response()->json($res);
             }
-        } else {
-            toast('Permission denied.', 'error');
-            return redirect()->back();
-        }
     }
-
-    public function indexPph21()
-    {
-        if (Auth::user()->can('manage pph21')) {
-            $pph21 = Utility::where('name', 'pph21')->first();
-
-            $pph21_val = null;
-            if (!is_null($pph21)) {
-                $pph21_val = json_decode($pph21->value, true);
-            }
-
-            return view('pages.contents.payroll.pph21.index', compact('pph21_val'));
-        } else {
-            toast('Permission denied.', 'error');
-            return redirect()->back();
-        }
-    }
-
-    public function storePph21(Request $request)
-    {
-        if (Auth::user()->can('edit pph21')) {
-
-            try {
-                DB::beginTransaction();
-                $bpjs_tk = Utility::where('name', 'pph21')->first();
-                $is_paid_by_employee_themselve = Utility::where('name', 'is_paid_by_employee_themselve')->first();
-
-                if (isset($request->is_paid_by_employee_themselve)) {
-                    if ($request->is_paid_by_employee_themselve == 'on') {
-
-                        if (is_null($is_paid_by_employee_themselve)) {
-                            Utility::create([
-                                'name' => 'is_paid_by_employee_themselve',
-                                'value' => true,
-                                'created_by' => Auth::user()->creatorId(),
-                            ]);
-                        } else {
-                            $is_paid_by_employee_themselve->value = true;
-                            $is_paid_by_employee_themselve->save();
+    public function get_run_payroll(Request $request){
+        $data   = DB::table('take_home_pay')
+                    ->select('*')
+                    ->leftJoin('employees','employees.id','=','take_home_pay.employee_id')
+                    ->where('take_home_pay.date',date(NOW()))
+                    ->get();
+        return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action',function($row){
+                    $btn ='';
+                    if(Auth()->user()->canany('edit payroll', 'delete payroll')){
+                        $btn .= '<div class="dropdown dropdown-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                <div class="dropdown-menu dropdown-menu-right">';
+                        if(Auth()->user()->can('edit payroll')){
+                            $btn .= '<a  data-id ="" class="dropdown-item view-payroll" href="javascript:void(0)" ><i class="fa fa-eye m-r-5"></i> View</a>';
+                        }if(Auth()->user()->can('edit payroll')){
+                            $btn .= '<a  data-id ="" class="dropdown-item edit-payroll" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_payroll"><i class="fa fa-pencil m-r-5"></i> Edit</a>';
+                        }
+                        if(Auth()->user()->can('delete payroll')){
+                            $btn .='<a  data-id="" class="dropdown-item delete-data-payroll" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
                         }
                     }
-                } else {
-                    if (is_null($is_paid_by_employee_themselve)) {
-                        Utility::create([
-                            'name' => 'is_paid_by_employee_themselve',
-                            'value' => false,
-                            'created_by' => Auth::user()->creatorId(),
-                        ]);
-                    } else {
-                        $is_paid_by_employee_themselve->value = false;
-                        $is_paid_by_employee_themselve->save();
-                    }
-                }
-
-                if (is_null($bpjs_tk)) {
-                    if (isset($request->pph21)) {
-                        foreach ($request->pph21 as $key => $value) {
-                            if (!is_null($value['income']) && $value['percentage']) {
-                                $arrays[] = ['income' => $value['income'], 'percentage' => $value['percentage']];
-                            }
+                    return $btn;
+                    })
+                ->rawColumns(['action'])
+                ->make(true);
+    }
+   
+   public function data_payroll_final(){
+        $companyId          = Branch::where('id',Auth::user()->branch_id)->first();
+        $branch['branch']   = Branch::where('company_id',$companyId->company_id)->get();
+        return  view('pages.contents.payroll.data_payroll_final',$branch);
+    } 
+    public function get_payroll_final(Request $request){
+       
+        $data   = DB::table('take_home_pay')
+                    ->select('take_home_pay.*',
+                             'employees.name',
+                             'employees.no_employee',
+                             'employees.bank_name',
+                             'employees.account_number'
+                            )
+                    ->leftJoin('employees','employees.id','=','take_home_pay.employee_id')
+                    ->whereBetween('take_home_pay.date',[$request->startdate,$request->enddate])
+                    ->get();
+        return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action',function($row){
+                    $btn ='';
+                    if(Auth()->user()->canany('edit payroll', 'delete payroll')){
+                        $btn .= '<div class="dropdown dropdown-action">
+                                <a href="#"  class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                <div class="dropdown-menu dropdown-menu-right">';
+                        if(Auth()->user()->can('edit payroll')){
+                            $btn .= '<a  data-id ="'.$row->id.'" data-employeeid ="'.$row->employee_id.'" class="dropdown-item view-payroll" href="javascript:void(0)" ><i class="fa fa-eye m-r-5"></i> View</a>';
+                        }
+                        if(Auth()->user()->can('edit payroll')){
+                            $btn .= '<a  data-id ="'.$row->id.'" data-employeeid ="'.$row->employee_id.'" class="dropdown-item cetak-payroll" href="'.route("generate_slip_payroll", ['id'=>$row->id]).'" target="_blank"><i class="fa fa-print m-r-5"></i>Print</a>';
                         }
                     }
-
-
-
-                    $values = json_encode($arrays);
-
-                    $utility  = new Utility();
-                    $utility->name = 'pph21';
-                    $utility->value = $values;
-                    $utility->created_by = Auth::user()->creatorId();
-                    $utility->save();
-                } else {
-                    if (isset($request->pph21)) {
-                        foreach ($request->pph21 as $key => $value) {
-                            if (!is_null($value['income']) && $value['percentage']) {
-                                $arrays[] = ['income' => $value['income'], 'percentage' => $value['percentage']];
-                            }
-                        }
-                    }
-
-                    $values = json_encode($arrays);
-
-                    $bpjs_tk->value = $values;
-                    $bpjs_tk->save();
-                }
-
-                DB::commit();
-
-                toast('Successfully saved', 'success');
-                return redirect()->route('setting.pph21.index');
-            } catch (Exception $th) {
-                DB::rollBack();
-                toast('Something went wrong', 'error');
-                return redirect()->back();
-            }
-        } else {
-            toast('Permission denied.', 'error');
-            return redirect()->back();
-        }
+                    return $btn;
+                    })
+                ->rawColumns(['action'])
+                ->make(true);
     }
+    public function generate_slip(){
 
-    public function indexJht()
-    {
-        if (Auth::user()->can('manage jht')) {
-            $jht = Utility::where('name', 'jht')->first();
-
-            $jht_val = null;
-            if (!is_null($jht)) {
-                $jht_val = json_decode($jht->value, true);
-            }
-
-            return view('pages.contents.payroll.jaminan-hari-tua.index', compact('jht_val'));
-        } else {
-            toast('Permission denied.', 'error');
-            return redirect()->back();
-        }
     }
+    public function generate_slip_payroll($id){
 
-    public function storeJht(Request $request)
-    {
-        if (Auth::user()->can('edit jht')) {
-            try {
-                DB::beginTransaction();
-                $jht = Utility::where('name', 'jht')->first();
-
-                if (is_null($jht)) {
-                    $data = ['type' => $request->name_type, 'value' => $request->number_value];
-                    $encode = json_encode($data);
-
-                    $utility  = new Utility();
-                    $utility->name = 'jht';
-                    $utility->value = $encode;
-                    $utility->created_by = Auth::user()->creatorId();
-                    $utility->save();
-                } else {
-                    $data = ['type' => $request->name_type, 'value' => $request->number_value];
-                    $encode = json_encode($data);
-                    $jht->value = $encode;
-                    $jht->save();
-                }
-
-                DB::commit();
-
-                toast('Successfully saved', 'success');
-                return redirect()->route('setting.jht.index');
-            } catch (Exception $th) {
-                DB::rollBack();
-                toast('Something went wrong', 'error');
-                return redirect()->back();
-            }
-        } else {
-            toast('Permission denied.', 'error');
-            return redirect()->back();
-        }
-    }
-
-    public function indexJkk()
-    {
-        if (Auth::user()->can('manage jkk')) {
-            $jkk = Utility::where('name', 'jkk')->first();
-
-            $jkk_val = null;
-            if (!is_null($jkk)) {
-                $jkk_val = json_decode($jkk->value, true);
-            }
-
-            return view('pages.contents.payroll.jaminan-kecelakaan-kerja.index', compact('jkk_val'));
-        } else {
-            toast('Permission denied.', 'error');
-            return redirect()->back();
-        }
-    }
-
-    public function storeJkk(Request $request)
-    {
-        if (Auth::user()->can('edit jkk')) {
-
-            try {
-                DB::beginTransaction();
-                $jkk = Utility::where('name', 'jkk')->first();
-
-                if (is_null($jkk)) {
-                    if (isset($request->jkk)) {
-                        foreach ($request->jkk as $key => $value) {
-                            if (!is_null($value['risk']) && $value['percentage']) {
-                                $arrays[] = ['risk' => $value['risk'], 'percentage' => $value['percentage']];
-                            }
-                        }
-                    }
-
-                    $values = json_encode($arrays);
-
-                    $utility  = new Utility();
-                    $utility->name = 'jkk';
-                    $utility->value = $values;
-                    $utility->created_by = Auth::user()->creatorId();
-                    $utility->save();
-                } else {
-                    if (isset($request->jkk)) {
-                        foreach ($request->jkk as $key => $value) {
-                            if (!is_null($value['risk']) && $value['percentage']) {
-                                $arrays[] = ['risk' => $value['risk'], 'percentage' => $value['percentage']];
-                            }
-                        }
-                    }
-
-                    $values = json_encode($arrays);
-
-                    $jkk->value = $values;
-                    $jkk->save();
-                }
-
-                DB::commit();
-
-                toast('Successfully saved', 'success');
-                return redirect()->route('setting.jkk.index');
-            } catch (Exception $th) {
-                DB::rollBack();
-                toast('Something went wrong', 'error');
-                return redirect()->back();
-            }
-        } else {
-            toast('Permission denied.', 'error');
-            return redirect()->back();
-        }
-    }
-
-    public function indexJkm()
-    {
-        if (Auth::user()->can('manage jkm')) {
-            $jkm = Utility::where('name', 'jkm')->first();
-
-            $jkm_val = null;
-            if (!is_null($jkm)) {
-                $jkm_val = json_decode($jkm->value, true);
-            }
-
-            return view('pages.contents.payroll.jaminan-kematian.index', compact('jkm_val'));
-        } else {
-            toast('Permission denied.', 'error');
-            return redirect()->back();
-        }
-    }
-
-    public function storeJkm(Request $request)
-    {
-        if (Auth::user()->can('edit jkm')) {
-            try {
-                DB::beginTransaction();
-                $jkm = Utility::where('name', 'jkm')->first();
-
-                if (is_null($jkm)) {
-                    $data = ['type' => $request->type, 'value' => $request->number_value];
-                    $encode = json_encode($data);
-
-                    $utility  = new Utility();
-                    $utility->name = 'jkm';
-                    $utility->value = $encode;
-                    $utility->created_by = Auth::user()->creatorId();
-                    $utility->save();
-                } else {
-                    $data = ['type' => $request->type, 'value' => $request->number_value];
-                    $encode = json_encode($data);
-                    $jkm->value = $encode;
-                    $jkm->save();
-                }
-
-                DB::commit();
-
-                toast('Successfully saved', 'success');
-                return redirect()->route('setting.jkm.index');
-            } catch (Exception $th) {
-                DB::rollBack();
-                toast('Something went wrong', 'error');
-                return redirect()->back();
-            }
-        } else {
-            toast('Permission denied.', 'error');
-            return redirect()->back();
-        }
-    }
-
-    public function indexJp()
-    {
-        if (Auth::user()->can('manage jp')) {
-            $jp = Utility::where('name', 'jp')->first();
-
-            $jp_val = null;
-            if (!is_null($jp)) {
-                $jp_val = json_decode($jp->value, true);
-            }
-
-            return view('pages.contents.payroll.jaminan-pensiun.index', compact('jp_val'));
-        } else {
-            toast('Permission denied.', 'error');
-            return redirect()->back();
-        }
-    }
-
-    // jika pensiun
-    public function storeJp(Request $request)
-    {
-        if (Auth::user()->can('edit jp')) {
-            try {
-                DB::beginTransaction();
-                $jp = Utility::where('name', 'jp')->first();
-
-                if (is_null($jp)) {
-                    $data = ['type' => $request->name_type, 'value' => $request->number_value, 'maximum_limit_value' => $request->maximum_limit_value];
-                    $encode = json_encode($data);
-
-                    $utility  = new Utility();
-                    $utility->name = 'jp';
-                    $utility->value = $encode;
-                    $utility->created_by = Auth::user()->creatorId();
-                    $utility->save();
-                } else {
-                    $data = ['type' => $request->name_type, 'value' => $request->number_value, 'maximum_limit_value' => $request->maximum_limit_value];
-                    $encode = json_encode($data);
-                    $jp->value = $encode;
-                    $jp->save();
-                }
-
-                DB::commit();
-
-                toast('Successfully saved', 'success');
-                return redirect()->route('setting.jp.index');
-            } catch (Exception $th) {
-                DB::rollBack();
-                toast('Something went wrong', 'error');
-                return redirect()->back();
-            }
-        } else {
-            toast('Permission denied.', 'error');
-            return redirect()->back();
-        }
-    }
-
-    public function indexSetBpjsTk()
-    {
-        $datas = SetBpjsTK::where('created_by', Auth::user()->creatorId())->get();
-        $employees = Employee::where('created_by', Auth::user()->creatorId())->get();
-        // $bpjstk = new Collection();
-
-        // foreach ($user->bpjstk as $tk) {
-        //     $bpjstk = $bpjstk->merge($tk->bpjstk_name);
-        // }
-        // $bpjstk = $bpjstk->pluck('name', 'id')->toArray();
-        // dd($datas);
-
-        return view('pages.contents.set-bpjstk.index', compact('datas', 'employees'));
-    }
-    public function storeSetBpjsTk(Request $request)
-    {
-        try {
-            DB::beginTransaction();
-
-            if (isset($request->bpjstk)) {
-                foreach ($request->bpjstk as $key => $value) {
-                    $arrays[] =
-                        $value;
-                }
-            }
-
-            $values = json_encode($arrays);
-
-            $set  = new SetBpjsTK();
-            $set->employee_id = $request->employee_id;
-            $set->bpjstk_name = $values;
-            $set->created_by = Auth::user()->creatorId();
-            $set->save();
-            DB::commit();
-
-            toast('Successfully saved', 'success');
-            return redirect()->route('set-bpjstk.index');
-        } catch (Exception $th) {
-            DB::rollBack();
-            toast('Something went wrong', 'error');
-            return redirect()->back();
-        }
-    }
-
-    public function editSetBpjsTk($id)
-    {
-        $bpjstk = SetBpjsTK::find($id);
-        $decode = json_decode($bpjstk->bpjstk_name, true);
-
-        return response()->json([
-            'id' => $bpjstk->id,
-            'employee_id' => $bpjstk->employee_id,
-            'val_bpjstk'  => $decode
-        ]);
-    }
-
-    public function updateSetBpjsTk(Request $request, $id)
-    {
-        $model = SetBpjsTK::find($id);
-        try {
-            DB::beginTransaction();
-            if (isset($request->bpjstk)) {
-                foreach ($request->bpjstk as $key => $value) {
-                    $arrays[] =
-                        $value;
-                }
-            }
-
-            $values = json_encode($arrays);
-
-            $model->employee_id = $request->employee_id;
-            $model->bpjstk_name = $values;
-            $model->save();
-            DB::commit();
-
-            toast('Successfully updated.', 'success');
-            return redirect()->route('set-bpjstk.index');
-        } catch (Exception $e) {
-            DB::rollBack();
-            toast('Failure occurred.', 'error');
-            return redirect()->back();
-        }
-    }
-
-    public function destroySetBpjstk($id)
-    {
-        $model = SetBpjsTK::find($id);
-        $model->delete();
-
-        toast('Successfully deleted.', 'success');
-        return redirect()->route('set-bpjstk.index');
+        $branch     = Auth::user()->branch_id;
+        $data['salary'] = DB::table('take_home_pay')
+                            ->select('take_home_pay.*','employees.name as employee_name','branches.name as branch_name')
+                            ->leftJoin('employees','employees.id','=','take_home_pay.employee_id')
+                            ->leftJoin('branches','branches.id','=','take_home_pay.branch_id')
+                            ->where('take_home_pay.id',$id)->first();
+        $data['allowance_fixed'] = DB::select("SELECT * from get_allowance_fixed('".$data['salary']->startdate."','".$data['salary']->enddate."','".$branch."') where employeeid = '".$data['salary']->employee_id."'");
+        $data['allowance_unfixed'] = DB::select("SELECT * from getallowance_unfixed('".$data['salary']->startdate."','".$data['salary']->enddate."','".$branch."') where employeeid = '". $data['salary']->employee_id."'");
+        $data['allowance_other'] = DB::select("SELECT * from get_other_allowance('".$data['salary']->startdate."','".$data['salary']->enddate."','".$branch."') where employeeid = '".$data['salary']->employee_id."'");
+        $data['reimbursement'] = DB::select("SELECT * FROM get_reimburstment('".$data['salary']->startdate."','".$data['salary']->enddate."','".$branch."') where employee_id = '".$data['salary']->employee_id."'");
+        $data['deduction'] = DB::table('v_deduction_acumulation')->where('employee_id',$data['salary']->employee_id)->first();
+        $data['attendance'] = DB::select("SELECT * FROM getsalary('".$data['salary']->startdate."','".$data['salary']->enddate."','".$branch."') where employee_id = '". $data['salary']->employee_id."'");
+        $pdf = PDF::loadview('pages.contents.payroll.payslip.pdf',$data);
+        return $pdf->stream('payslip-'.$data['salary']->employee_name.'-'.substr($data['salary']->enddate,0,7));
     }
 }

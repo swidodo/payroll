@@ -45,6 +45,7 @@
                     <table class="table table-striped custom-table" id="tblLeaveEmployee">
                         <thead>
                             <tr>
+                                <th>No</th>
                                 <th>Employee ID</th>
                                 <th>Employee</th>
                                 <th>Leave Type</th>
@@ -218,6 +219,9 @@
                         "url" : 'get-leaves',
                     },
                 columns: [
+                        { data: 'no', name:'id', render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }},
                         {
                             data: 'no_employee',
                             name: 'no_employee'

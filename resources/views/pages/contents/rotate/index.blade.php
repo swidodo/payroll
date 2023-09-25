@@ -80,10 +80,9 @@
                         "url" : 'get-rotation-employee',
                     },
                 columns: [
-                        {
-                            data: 'id',
-                            name: 'id'
-                        },
+                        { data: 'no', name:'id', render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }},
                         {
                             data: 'rotate_date',
                             name: 'rotate_date'

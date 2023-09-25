@@ -249,16 +249,16 @@
                     <tr style="font-weight: 900" >
                         <td class="fs-14" rowspan="2" >
                             <div class="text-center">
-                                <img src="{{ asset('assets/img/logo-pehadir.jpg') }}" width="120px"  alt="">
+                                <img src="{{ asset('assets/img/logo-pehadir.jpg') }}" width="70px"  alt="">
                             </div>
                         </td>
-                        <td class="fs-14">
-                            <h2 class="company text-center">PT. Penukal Jaya Utama</h2>
+                        <td class="fs-5">
+                            <h2 class="text-center">PT. Penukal Integritas Indonesia</h2>
                         </td>
                     </tr>
                     <tr>
                         <td class="">
-                            <h5 class="city text-center">Tangerang</h5>
+                            <h4 class="text-center">Tangerang</h5>
                         </td>
                     </tr>
                 </tbody>
@@ -268,38 +268,37 @@
             <div class="slip mb-2">
                 <div class="row justify-content-center">
                     <div class="col-12 d-flex justify-content-center">
-                        <h4 class="slip-gaji-karyawan">SLIP GAJI KARYAWAN</h4>
+                        <h4 class="">SLIP GAJI KARYAWAN</h4>
                     </div>
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-12 d-flex justify-content-center">
-                        <h4 class="period">Periode {{\Carbon\Carbon::parse($payslipEmployee->salary_month)->format('F Y')}}</h4>
+                        <h4 class="">{{\Carbon\Carbon::parse($salary->enddate)->format('F Y')}}</h4>
                     </div>
                 </div>
             </div>
             <div class="employee-name">
-
                 <table style="width: 90%">
                     <tbody>
                         <tr> 
-                            <td style="width: 18%;font-size: 16px">ID</td>
+                            <td style="width: 18%;font-size: 14px">ID</td>
                             <td style="width: 2%">:</td>
-                            <td style="font-size: 16px;text-align:start;font-weight: 800;">{{$employee->id}}</td>
+                            <td style="font-size: 14px;text-align:start;font-weight: 400;">{{$salary->no_employee}}</td>
                         </tr>
                         <tr> 
-                            <td style="width: 18%;font-size: 16px">Nama</td>
+                            <td style="width: 18%;font-size: 14px">Nama</td>
                             <td style="width: 2%">:</td>
-                            <td style=" font-size: 16px;text-align:start;font-weight: 800;">{{$employee->name}}</td>
+                            <td style=" font-size: 14px;text-align:start;font-weight: 400;">{{ ucwords($salary->employee_name) }}</td>
                         </tr>
                         <tr> 
-                            <td style="width: 18%;font-size: 16px">Branch</td>
+                            <td style="width: 18%;font-size: 14px">Cabang</td>
                             <td style="width: 2%">:</td>
-                            <td style=" font-size: 16px;text-align:start;font-weight: 800;">{{$employee->branch->name}}</td>
+                            <td style=" font-size: 14px;text-align:start;font-weight: 400;">{{ ucwords(strtolower($salary->branch_name)) }}</td>
                         </tr>
                         <tr> 
-                            <td style="width: 18%;font-size: 16px">Jabatan</td>
+                            <td style="width: 18%;font-size: 14px">Jabatan</td>
                             <td style="width: 2%">:</td>
-                            <td style=" font-size: 16px;text-align:start;font-weight: 800;">{{$employee->user->type}}</td>
+                            <td style=" font-size: 14px;text-align:start;font-weight: 400;"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -320,132 +319,81 @@
                 <div style="display: inline-block; width: 50%;">
                     <table style="width: 90%">
                         <tbody>
-                            @foreach ($payslipBasicSalary as $basic_salary)
-                                @php
-                                    $basic_salary = \App\Models\Payroll::find($basic_salary['id']);
-                                @endphp
-                                
+                          
                                 <tr class="fs-14 " style="font-weight: 400">
-                                    <td style="width: 45%">{{$basic_salary->payslip_type->name}}</td>
+                                    <td style="width: 45%">Gaji Pokok</td>
                                     <td>:</td>
-                                    <td class="text-right">{{formatRupiah($basic_salary->amount) }}</td>
+                                    <td class="text-right">{{ ($salary->basic_salary == '') ? 0 : formatRupiah($salary->basic_salary) }}</td>
                                 </tr>
-                            @endforeach
-                            @foreach ($payslipAllowance as $allowance)
-                                @php
-                                    $allowance = \App\Models\AllowanceFinance::find($allowance['id']);
-                                @endphp
-                                
                                 <tr class="fs-14 " style="font-weight: 400">
-                                    <td style="width: 45%">{{$allowance->allowance_type->name}}</td>
+                                    <td style="width: 45%">Overtime</td>
                                     <td>:</td>
-                                    <td class="text-right">{{formatRupiah($allowance->amount) }}</td>
+                                    <td class="text-right">{{ ($salary->overtime == '') ? 0 : formatRupiah($salary->overtime) }}</td>
                                 </tr>
-                            @endforeach
-                            @foreach ($payslipReimburst as $reimburst)
-                                @php
-                                    $reimburst = \App\Models\Reimburst::find($reimburst['id']);
-                                @endphp
-                                
+                               
+                                @foreach($allowance_fixed as $fixed)
                                 <tr class="fs-14 " style="font-weight: 400">
-                                    <td style="width: 45%">{{$reimburst->reimburst_type->name}}</td>
+                                    <td style="width: 45%">{{ $fixed->allowance_name }}</td>
                                     <td>:</td>
-                                    <td class="text-right">{{formatRupiah($reimburst->amount) }}</td>
+                                    <td class="text-right">{{ ($fixed->allowance_amount =='' ) ? 0 : formatRupiah($fixed->allowance_amount) }}</td>
                                 </tr>
-                            @endforeach
-                            @foreach ($payslipOvertime as $overtime)
-                                @php
-                                    $overtime = \App\Models\Overtime::find($overtime['id']);
-                                @endphp
-                                
+                                @endforeach
+                                @foreach($allowance_unfixed as $unfixed)
                                 <tr class="fs-14 " style="font-weight: 400">
-                                    <td style="width: 45%">{{$overtime->overtime_type->name}}</td>
+                                    <td style="width: 45%">{{ $unfixed->allowance_name }}</td>
                                     <td>:</td>
-                                    <td class="text-right">{{formatRupiah($overtime->amount_fee) }}</td>
+                                    <td class="text-right">{{ ($unfixed->amount == '') ? 0 : formatRupiah($unfixed->amount)  }}</td>
                                 </tr>
-                            @endforeach
-                            
-                            @if ($pension > 0)
+                                @endforeach
+                                @foreach($allowance_other as $other)
                                 <tr class="fs-14 " style="font-weight: 400">
-                                    <td style="width: 45%">Jaminan Pensiun</td>
+                                    <td style="width: 45%">{{ $other->allowance_name }}</td>
                                     <td>:</td>
-                                    <td class="text-right">{{formatRupiah($pension) }}</td>
+                                    <td class="text-right">{{ ($other->allowance_amount =='' ) ? 0 : formatRupiah($other->allowance_amount)}}</td>
                                 </tr>
-                            @endif
+                                @endforeach
+                                @foreach($reimbursement as $remburst)
+                                <tr class="fs-14 " style="font-weight: 400">
+                                    <td style="width: 45%">{{ $remburst->reimburst_name}}</td>
+                                    <td>:</td>
+                                    <td class="text-right">{{ ($remburst->reimburst_amount == '' ) ? 0 : formatRupiah($remburst->reimburst_amount) }}</td>
+                                </tr>
+                                @endforeach
                         </tbody>
                     </table>
                 </div>
                 <div style="display: inline-block; width: 49%; float: right">
                     <table style="width: 90%">
                         <tbody>
-                            @foreach ($payslipCashInAdvance as $cash_in_advance)
-                                @php
-                                    $cash_in_advance = \App\Models\Cash::find($cash_in_advance['id']);
-                                @endphp
-                                
+                           
                                 <tr class="fs-14 " style="font-weight: 400">
-                                    <td style="width: 45%">{{$cash_in_advance->loan_type->name}} ({{$cash_in_advance->number_of_installment}})</td>
+                                    <td style="width: 45%">Kasbon</td>
                                     <td>:</td>
-                                    <td class="text-right">{{formatRupiah($cash_in_advance->amount / $cash_in_advance->installment) }}</td>
+                                    <td class="text-right">{{ ($salary->loans =='') ? 0 : formatRupiah($salary->loans) }}</td>
                                 </tr>
-                            @endforeach
-                            @foreach ($payslipLoan as $loan)
-                                @php
-                                    $loan = \App\Models\Loan::find($loan['id']);
-                                @endphp
-                                
+                           
                                 <tr class="fs-14 " style="font-weight: 400">
-                                    <td style="width: 45%">{{$loan->loan_type->name}} ({{$loan->number_of_installment}})</td>
+                                    <td style="width: 45%">Pinjaman(cicilan)</td>
                                     <td>:</td>
-                                    <td class="text-right">{{formatRupiah($loan->amount / $loan->installment) }}</td>
+                                    <td class="text-right">{{ ($salary->installment =='') ? 0 : formatRupiah($salary->installment) }}</td>
                                 </tr>
-                            @endforeach
-                            @foreach ($payslipDenda as $denda)
-                                @php
-                                    $denda = \App\Models\Denda::find($denda['id']);
-                                @endphp
-                                
                                 <tr class="fs-14 " style="font-weight: 400">
-                                    <td style="width: 45%">Terlambat</td>
+                                    <td style="width: 45%">BPJS Kesehatan</td>
                                     <td>:</td>
-                                    <td class="text-right">{{formatRupiah($denda->amount) }}</td>
+                                    <td class="text-right">{{ ($deduction->bpjs_kesehatan =='') ? 0 : formatRupiah($deduction->bpjs_kesehatan) }}</td>
                                 </tr>
-                            @endforeach
-                                @php
-                                    $totalBpjsTkAmount = 0;
-                                    if (!is_null($payslipBpjsK)) {
-                                        if ($payslipBpjsK['type'] == 'Fixed') {
-                                            $totalVal  = $payslipBpjsK['value'];
-                                        } else {
-                                            $totalVal  = (int)$payslipBpjsK['value'] * $employee->salary / 100;
-                                        }
-                                        if ($employee->salary > $payslipBpjsK['maximum_salary']) {
-                                            $totalVal = 1200000;
-                                        }
-                                        $totalBpjsTkAmount += $totalVal;
-                                    }
-                                @endphp
-                                @if (!is_null($payslipBpjsK))
-                                    <tr class="fs-14 " style="font-weight: 400">
-                                        <td style="width: 45%">BPJS Kesehatan</td>
-                                        <td>:</td>
-                                        <td class="text-right">{{formatRupiah($totalBpjsTkAmount) }}</td>
-                                    </tr>
-                                @endif
-                                @if ($payslipPph21 > 0)
-                                    <tr class="fs-14 " style="font-weight: 400">
-                                        <td style="width: 45%">PPH21</td>
-                                        <td>:</td>
-                                        <td class="text-right">{{formatRupiah($payslipPph21) }}</td>
-                                    </tr>
-                                @endif
-                                @if ($payslipBpjsTk > 0)
-                                    <tr class="fs-14 " style="font-weight: 400">
-                                        <td style="width: 45%">BPJS TK</td>
-                                        <td>:</td>
-                                        <td class="text-right">{{formatRupiah($payslipBpjsTk) }}</td>
-                                    </tr>
-                                @endif
+                                <tr class="fs-14 " style="font-weight: 400">
+                                    <td style="width: 45%">BPJS Ketenagakerjaan</td>
+                                    <td>:</td>
+                                    <td class="text-right">{{ ($deduction->bpjs_ketenagakerjaan == '') ? 0 : formatRupiah($deduction->bpjs_ketenagakerjaan) }}</td>
+                                </tr>
+                            
+                                <tr class="fs-14 " style="font-weight: 400">
+                                    <td style="width: 45%">PPH21</td>
+                                    <td>:</td>
+                                    <td class="text-right">{{ ($salary->pph21 =='') ? 0 : formatRupiah($salary->pph21) }}</td>
+                                </tr>
+                               
                             </tbody>
                     </table>
                 </div>
@@ -457,9 +405,9 @@
                 <tbody>
                     <tr style="font-weight: 900">
                         <td class="fs-14" style="width: 36%">Sub Total</td>
-                        <td class=" fs-14">{{formatRupiah($payslipDetail['totalEarning'])}}</td>
-                        <td class=" fs-14" style="width: 39%; padding-left: 15px">Sub Total</td>
-                        <td class=" fs-14">{{formatRupiah($payslipDetail['totalDeduction'])}}</td>
+                        <td class=" fs-14 text-right pr-3">{{ formatRupiah($salary->basic_salary + $salary->overtime + $salary->allowance_fixed + $salary->allowance_unfixed + $salary->allowance_other)}}</td>
+                        <td class=" fs-14" style="width: 39%; padding-left: 35px">Sub Total</td>
+                        <td class=" fs-14 text-center">{{ formatRupiah($salary->total_pay_loans + $salary->employee_pay_bpjs_kesehatan + $salary->employee_pay_bpjs_ketenagakerjaan + $salary->pph21) }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -472,238 +420,57 @@
                     <tbody>
                         <tr class="fs-14 " style="font-weight: 400;">
                             <td class="text-bold">Total Gaji Bersih</td>
-                            <td class="text-right text-bold" style="padding-right: 25px">{{formatRupiah($payslipEmployee->net_payble)}}</td>
+                            <td class="text-right text-bold" style="padding-right: 25px">{{ ($salary->take_home_pay == '') ? 0 : formatRupiah($salary->take_home_pay)  }}</td>
                         </tr>
                         <tr>
-                            <td class="text-italic text-center" colspan="2">Terbilang : <span>{{ucwords( terbilang($payslipEmployee->net_payble)).' Rupiah'}}</span></td>
+                            <td class="text-italic text-center" style="font-size:10pt !important;" colspan="2">Terbilang : <span> {{ucwords(terbilang($salary->take_home_pay))}} Rupiah</span></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            {{-- <div style="margin-top: 15px">
+            <div style="margin-top: 15px;margin-right: 35px;">
                 <table style="width: 100%">
                     <tbody>
                        <tr >
                             <td style="width: 58%; padding: 0;margin:0;"></td>
                             <td class="text-left border-bottom"><p class="m-0 fs-11 text-bold pb-5">Attendance Summary</p></td>
                        </tr>
-                        @php
-                            $is_displayed = false;
-                            foreach ($checklists as $key => $value) {
-                                if ($value->name == 'actual_working_day') {
-                                    $is_displayed = true;
-                                }
-                            } 
-                        @endphp
-                        @if ($is_displayed)
-                            <tr style="padding: 0px; margin: 0px">
-                                <td class="p-0 m-0" style="width: 58%; padding: 0px; margin: 0px"></td>
-                                <td class="clearfix p-0 m-0" style="padding: 0px;padding-top: 8px; margin: 0px" >
-                                    <p class=" text-left m-0 p-0" style="font-size: 9px;float: left;padding: 0px; margin: 0px">Actual Working Day</p>
-                                    <p class=" text-right m-0 p-0" style="font-size: 9px;padding: 0px; margin: 0px">{{$attendanceSummary['actual_work_day']}}</p>
-                                </td>
-                            </tr>
-                        @endif
-
-                        @php
-                            $is_displayed = false;
-                            foreach ($checklists as $key => $value) {
-                                if ($value->name == 'schedule_working_day') {
-                                    $is_displayed = true;
-                                }
-                            } 
-                        @endphp
-                        @if ($is_displayed)
-                            <tr >
-                                <td class="p-0 m-0" style="width: 58%;"></td>
-                                <td class="clearfix m-0 p-0" style="">
-                                    <p class=" text-left m-0 p-0" style="font-size: 9px;float: left;">Schedule Working Day</p>
-                                    <p class=" text-right m-0 p-0" style="font-size: 9px;">{{$attendanceSummary['schedule_work_day']}}</p>
-                                </td>
-                            </tr>
-                        @endif
-                        
-                        @php
-                            $is_displayed = false;
-                            foreach ($checklists as $key => $value) {
-                                if ($value->name == 'dayoff') {
-                                    $is_displayed = true;
-                                }
-                            } 
-                        @endphp
-                        @if ($is_displayed)
-                            <tr>
-                                <td style="width: 58%"></td>
-                                <td class="clearfix">
-                                    <p class=" text-left m-0 " style="font-size: 9px;float: left">Dayoff</p>
-                                    <p class=" text-right m-0 " style="font-size: 9px">{{$attendanceSummary['dayoff']}}</p>
-                                </td>
-                            </tr>
-                        @endif
-
-                        @php
-                            $is_displayed = false;
-                            foreach ($checklists as $key => $value) {
-                                if ($value->name == 'national_holiday') {
-                                    $is_displayed = true;
-                                }
-                            } 
-                        @endphp
-                        @if ($is_displayed)
-                            <tr>
-                                <td style="width: 58%"></td>
-                                <td class="clearfix">
-                                    <p class=" text-left m-0 " style="font-size: 9px;float: left">National Holiday</p>
-                                    <p class=" text-right m-0 " style="font-size: 9px">{{$attendanceSummary['national_holiday']}}</p>
-                                </td>
-                            </tr>
-                        @endif
-
-                        @php
-                            $is_displayed = false;
-                            foreach ($checklists as $key => $value) {
-                                if ($value->name == 'company_holiday') {
-                                    $is_displayed = true;
-                                }
-                            } 
-                        @endphp
-                        @if ($is_displayed)
-                            <tr>
-                                <td style="width: 58%"></td>
-                                <td class="clearfix">
-                                    <p class=" text-left m-0 " style="font-size: 9px;float: left">Company Holiday</p>
-                                    <p class=" text-right m-0 " style="font-size: 9px">{{$attendanceSummary['company_holiday']}}</p>
-                                </td>
-                            </tr>
-                        @endif
-
-                        @php
-                            $is_displayed = false;
-                            foreach ($checklists as $key => $value) {
-                                if ($value->name == 'timeoff_code') {
-                                    $is_displayed = true;
-                                }
-                            } 
-                        @endphp
-                        @if ($is_displayed)
-                            <tr>
-                                <td style="width: 58%"></td>
-                                <td class="clearfix">
-                                    <p class=" text-left m-0 " style="font-size: 9px;float: left">Attendance/Time Off Code</p>
-                                    <p class=" text-right m-0 " style="font-size: 9px">
-                                        @foreach ($timeOffCodes as $code => $value)
-                                            @if ($value > 0)
-                                            {{$code.': '.$value}}
-                                            @endif
-                                        @endforeach
-                                    </p>
-                                </td>
-                            </tr>
-                        @endif
-
+                       @foreach($attendance as $a)
+                        <tr style="padding: 0px; margin: 0px">
+                            <td class="p-0 m-0" style="width: 58%; padding: 0px; margin: 0px"></td>
+                            <td class="clearfix p-0 m-0" style="padding: 0px;padding-top: 8px; margin: 0px" >
+                                <p class=" text-left m-0 p-0" style="font-size: 11px;float: left;padding: 0px; margin: 0px">Actual Working Day</p>
+                                <p class=" text-right m-0 p-0" style="font-size: 11px;padding: 0px; margin: 0px">
+                                    {{ ($a->work_actual_day == null )? 0 : $a->work_actual_day }}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr >
+                            <td class="p-0 m-0" style="width: 58%;"></td>
+                            <td class="clearfix m-0 p-0" style="">
+                                <p class=" text-left m-0 p-0" style="font-size: 11px;float: left;">Schedule Working Day</p>
+                                <p class=" text-right m-0 p-0" style="font-size: 11px;">
+                                    {{ ($a->work_day == null )? 0 : $a->work_day }}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 58%"></td>
+                            <td class="clearfix">
+                                <p class=" text-left m-0 " style="font-size: 11px;float: left">Attendance/Time Off Code  <br />
+                                   Alpa : {{ ($a->alpa == null )? 0 : $a->alpa }},
+                                   Izin : {{ ($a->izin == null )? 0 : $a->izin }},
+                                   Sakit: {{ (($a->sds == null )? 0 : $a->sds) + (($a->sts == null ) ? 0 : $a->sts) }},
+                                   Cuti : {{ ($a->cuti == null )? 0 : $a->cuti }},
+                                   Dispensasi : {{ ($a->disp == null )? 0 : $a->disp }}
+                                </p>
+                            </td>
+                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
-            </div> --}}
-            <div style="margin-top: 15px" class="clearfix">
-                <div class="" style="width: 50%; float: right;">
-                    <span class="text-left" style="float: left;display:inline-block: 0px; font-size: 11px; font-weight: 700;">Attendance Summary</span>
-                    <div class="clear"></div>
-                    <hr style=" margin-bottom: 5px; margin-top:5">
-
-                    @php
-                        $is_displayed = false;
-                        foreach ($checklists as $key => $value) {
-                            if ($value->name == 'actual_working_day') {
-                                $is_displayed = true;
-                            }
-                        } 
-                    @endphp
-                    @if ($is_displayed)
-                        <span class="text-left" style="float: left;display:inline-block: 0px; font-size: 10px">Actual Working Day</span>
-                        <span class="text-right" style="float: right;margin: 0px; font-size: 10px">{{$attendanceSummary['actual_work_day']}}</span>
-                        <div class="clear"></div>
-                    @endif
-                    
-                    @php
-                        $is_displayed = false;
-                        foreach ($checklists as $key => $value) {
-                            if ($value->name == 'schedule_working_day') {
-                                $is_displayed = true;
-                            }
-                        } 
-                    @endphp
-                    @if ($is_displayed)
-                        <span class="text-left" style="float: left;display:inline-block: 0px; font-size: 10px">Schedule Working Day</span>
-                        <span class="text-right" style="float: right;margin: 0px; font-size: 10px">{{$attendanceSummary['schedule_work_day']}}</span>
-                        <div class="clear"></div>
-                    @endif
-                    
-                    @php
-                        $is_displayed = false;
-                        foreach ($checklists as $key => $value) {
-                            if ($value->name == 'dayoff') {
-                                $is_displayed = true;
-                            }
-                        } 
-                    @endphp
-                    @if ($is_displayed)
-                        <span class="text-left" style="float: left;display:inline-block: 0px; font-size: 10px">Dayoff</span>
-                        <span class="text-right" style="float: right;margin: 0px; font-size: 10px">{{$attendanceSummary['dayoff']}}</span>
-                        <div class="clear"></div>
-                    @endif
-                    
-
-                    @php
-                        $is_displayed = false;
-                        foreach ($checklists as $key => $value) {
-                            if ($value->name == 'national_holiday') {
-                                $is_displayed = true;
-                            }
-                        } 
-                    @endphp
-                    @if ($is_displayed)
-                        <span class="text-left" style="float: left;display:inline-block: 0px; font-size: 10px">National Holiday</span>
-                        <span class="text-right" style="float: right;margin: 0px; font-size: 10px">{{$attendanceSummary['national_holiday']}}</span>
-                        <div class="clear"></div>
-                    @endif
-                    
-                    @php
-                        $is_displayed = false;
-                        foreach ($checklists as $key => $value) {
-                            if ($value->name == 'company_holiday') {
-                                $is_displayed = true;
-                            }
-                        } 
-                    @endphp
-                    @if ($is_displayed)
-                        <span class="text-left" style="float: left;display:inline-block: 0px; font-size: 10px">Company Holiday</span>
-                        <span class="text-right" style="float: right;margin: 0px; font-size: 10px">{{$attendanceSummary['company_holiday']}}</span>
-                        <div class="clear"></div>
-                    @endif
-                    
-                    @php
-                        $is_displayed = false;
-                        foreach ($checklists as $key => $value) {
-                            if ($value->name == 'timeoff_code') {
-                                $is_displayed = true;
-                            }
-                        } 
-                    @endphp
-                    @if ($is_displayed)
-                        <span class="text-left" style="float: left;display:inline-block: 0px; font-size: 10px">Attendance/Time Off Code</span>
-                        <span class="text-right" style="float: right;margin: 0px; font-size: 10px">
-                            @foreach ($timeOffCodes as $code => $value)
-                                @if ($value > 0)
-                                {{$code.': '.$value}}
-                                @endif
-                            @endforeach
-                        </span>
-                        <div class="clear"></div>
-                    @endif
-                </div>
-            </div>
-
+            </div> 
             <div class="mt-5" style=" padding: 5px 40px;">
                 <div style="display: block;">
                     <table style="width: 100%">
@@ -717,7 +484,7 @@
                                 <td class="fs-14 text-right"  >
                                     <div class="payroll text-center" style="display: inline-block;width: 90px;">
                                         <p style="margin-bottom: 55px">Diterima Oleh,</p>
-                                        <p class="text-bold">{{$employee->name}}</p>
+                                        <p class="text-bold fs-14">{{ ucwords(strtolower($salary->employee_name)) }}</p>
                                     </div>
                                 </td>
                             </tr>
@@ -729,6 +496,6 @@
            
         </div>
 
-    {{-- </div> --}}
+    </div> 
 </body>
 </html>

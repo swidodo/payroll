@@ -27,16 +27,6 @@
                    </a>
 
                 </li>
-                <li class="submenu">
-                    <a href="#"><i class="la la-table"></i> <span>Master Data</span> <span class="menu-arrow"></span></a>
-                    <ul style="display: none;">
-                        <li class=" {{(request()->routeIs('departement*')) ? 'active' : ''}}">
-                            <a class=" {{(request()->routeIs('departement*')) ? 'active' : ''}}" href="{{route('departement.index')}}"><i class="la la-table"></i> <span>Departement</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
                 @canany(['manage employee', 'view employee', 'edit employee', 'delete employee', 'manage employee profile', 'show employee profile'])
                 <li class="submenu">
                     <a href="#"><i class="la la-clock"></i> <span>Employee</span> <span class="menu-arrow"></span></a>
@@ -169,9 +159,6 @@
                                         @canany(['manage pph21', 'create pph21', 'edit pph21', 'delete pph21'])
                                             <li class="{{(request()->routeIs('get-rekap-pph')) ? 'active' : ''}}"><a class="{{(request()->routeIs('get-rekap-pph')) ? 'active' : ''}}" href="{{ route('get-rekap-pph') }}">PPH21</a></li>
                                         @endcanany
-                                        @canany(['manage pph21', 'create pph21', 'edit pph21', 'delete pph21'])
-                                            <li class="{{(request()->routeIs('setting.pph21*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('setting.pph21*')) ? 'active' : ''}}" href="{{ route('setting.pph21.index') }}">PPH21</a></li>
-                                        @endcanany
 
                                     </ul>
                                 </li>
@@ -185,6 +172,12 @@
                     <ul style="display: none;">
                         @canany(['manage payslip', 'generate payslip'])
                             <li class="{{(request()->routeIs('payslips*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('payslips*')) ? 'active' : ''}}" href="{{ route('payslips.index') }}">Payslip</a></li>
+                        @endcanany
+                        @canany(['manage payslip', 'generate payslip'])
+                            <li class="{{(request()->routeIs('run-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('run-payroll')) ? 'active' : ''}}" href="{{ route('run-payroll') }}">Run payroll</a></li>
+                        @endcanany
+                        @canany(['manage payslip', 'generate payslip'])
+                            <li class="{{(request()->routeIs('salary-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('salary-payroll')) ? 'active' : ''}}" href="{{ route('salary-payroll') }}">Data payroll</a></li>
                         @endcanany
 
 
@@ -293,14 +286,6 @@
                                         <li class="submenu" >
                                             <a style="padding: 9px 10px 9px 44px" href="#"> <span> PPH21 </span> <span class="menu-arrow"></span></a>
                                             <ul style="display: none;">
-
-                                                @canany(['manage set ptkp', 'create set ptkp', 'edit set ptkp', 'delete set ptkp'])
-                                                    <li class=" {{(request()->routeIs('set-ptkp*')) ? 'active' : ''}}">
-                                                        <a class=" {{(request()->routeIs('set-ptkp*')) ? 'active' : ''}}" href="{{route('set-ptkp.index')}}"> Set PTKP
-                                                        </a>
-                                                    </li>
-                                                @endcanany
-
                                                 @canany(['manage ptkp', 'edit ptkp'])
                                                     <li class=" {{(request()->routeIs('setting.ptkp*')) ? 'active' : ''}}">
                                                         <a class=" {{(request()->routeIs('setting.ptkp*')) ? 'active' : ''}}" href="{{route('setting.ptkp.index')}}"> PTKP
@@ -327,6 +312,9 @@
                                             </a>
                                         </li>
                                     @endcanany
+                                    <li class=" {{(request()->routeIs('departement*')) ? 'active' : ''}}">
+                                        <a class=" {{(request()->routeIs('departement*')) ? 'active' : ''}}" href="{{route('departement.index')}}"><span>Departement</span></a>
+                                    </li>
 
                                     @canany(['manage shift type', 'create shift type', 'edit shift type', 'delete shift type'])
                                         <li class=" {{(request()->routeIs('shift-type*')) ? 'active' : ''}}">

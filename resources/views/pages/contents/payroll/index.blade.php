@@ -48,6 +48,7 @@
                     <table class="table table-striped custom-table" id="payrollData">
                         <thead>
                             <tr>
+                                <th>No</th>
                                 <th>Employee Code</th>
                                 <th>Employee ID</th>
                                 <th>Employee Name</th>
@@ -59,36 +60,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- @foreach ($payroll as $payrolls)
-                                <tr>
-                                    <td>
-                                        {{$payrolls->employee->name  ?? '-'}}
-                                    </td>
-                                    <td>
-                                        {{ isset($payrolls->payslip_type) ? $payrolls->payslip_type->name.' ('.ucwords($payrolls->payslip_type->type).')' : '-'}}
-                                    </td>
-                                    <td>
-                                        {{formatRupiah($payrolls->amount) ?? '-' }}
-                                    </td>
-                                    @canany(['edit payroll', 'delete payroll'])
-                                        <td class="text-end">
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    @can('edit payroll')
-                                                        <a  data-url="{{route('payroll.edit', $payrolls->id)}}" data-id ="{{$payrolls->id}}" class="dropdown-item edit-payroll" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_payroll"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                    @endcan
-                                                    @can('delete payroll')
-                                                        <a id="delete-payroll-btn" data-id="{{$payrolls->id}}" class="dropdown-item delete-data-payroll" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                    @endcan
-
-                                                </div>
-                                            </div>
-                                        </td>
-                                    @endcanany
-                                </tr>
-                            @endforeach --}}
                         </tbody>
                     </table>
                 </div>
@@ -252,6 +223,9 @@
                             "data" : {branch_id : branchId,employee_id :employeeId},
                         },
                     columns: [
+                        { data: 'no', name:'id', render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }},
                         {
                             data: 'employee_id',
                             name: 'employee_id'

@@ -42,6 +42,7 @@
                     <table class="table table-striped custom-table" id="tblMasterBpjs" width="100%">
                         <thead>
                             <tr>
+                                <th>No</th>
                                 <th>Bpjs Name</th>
                                 <th>Company %</th>
                                 <th>Employee %</th>
@@ -108,6 +109,9 @@ function getListMasterBpjs(branchId){
                 "data" : {branch_id : branchId},
             },
         columns: [
+            { data: 'no', name:'id', render: function (data, type, row, meta) {
+                return meta.row + meta.settings._iDisplayStart + 1;
+            }},
             {
                 data: 'bpjs_name',
                 name: 'bpjs_name'

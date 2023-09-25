@@ -73,6 +73,7 @@
                 <table class="table table-striped custom-table" id="tblOvertimes" width="100%">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Employee ID</th>
                             <th>Employee</th>
                             <th>Date</th>
@@ -363,6 +364,9 @@
                         "data" : {branch_id : branch_id, date : date},
                     },
                 columns: [
+                        { data: 'no', name:'id', render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }},
                         {
                             data: 'no_employee',
                             name: 'no_employee'

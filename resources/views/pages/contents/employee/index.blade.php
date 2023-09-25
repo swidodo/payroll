@@ -37,6 +37,7 @@
                     <table class="table table-striped custom-table" id="table-empolyees">
                         <thead>
                             <tr>
+                                <th>No</th>
                                 <th>Employee ID</th>
                                 <th>Employee Number</th>
                                 <th>Name</th>
@@ -111,6 +112,9 @@
                         url : "{{route('employees.get-data-employees')}}",
                     },
                     columns: [
+                        { data: 'no', name:'id', render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }},
                         {
                             data: 'view_profile',
                             name: 'employee_id'

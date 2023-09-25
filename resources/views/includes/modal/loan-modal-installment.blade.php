@@ -1,6 +1,6 @@
     <!-- Add overtime Modal -->
     <div id="add_loan" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Create New Installment</h5>
@@ -104,17 +104,16 @@
 
     <!-- Edit Overtime Modal -->
     <div id="edit_loan" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Leave</h5>
+                    <h5 class="modal-title">Edit Installment</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <form action="" id="edit-form-loan" method="POST">
-                        {{-- @method('PUT') --}}
                         @csrf
                         <div class="row">
                             <div class="col-sm-12">

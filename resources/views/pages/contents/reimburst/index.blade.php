@@ -48,6 +48,8 @@
                     <table class="table table-striped custom-table datatable">
                         <thead>
                             <tr>
+                                <th>Employee Code</th>
+                                <th>Employee ID</th>
                                 <th>Employee Name</th>
                                 <th>Type</th>
                                 <th>Amount</th>
@@ -59,6 +61,12 @@
                         <tbody>
                             @foreach ($reimburst as $reimburstes)
                                 <tr>
+                                    <td>
+                                        {{$reimburstes->employee->employee_id  ?? '-'}}
+                                    </td>
+                                    <td>
+                                        {{$reimburstes->employee->no_employee  ?? '-'}}
+                                    </td>
                                     <td>
                                         {{$reimburstes->employee->name  ?? '-'}}
                                     </td>

@@ -168,6 +168,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('update-ptkp', [PtkpController::class, 'update'])
                 ->name('update-ptkp');
         Route::resource('set-ptkp', SetPTKPController::class);
+
         // rekap pph21 new
         Route::get('get-rekap-pph',[Rekap_pph21Controller::class,'index'])->name('get-rekap-pph');
         Route::post('data-rekap-pph',[Rekap_pph21Controller::class,'get_pph21'])->name('data-rekap-pph');
@@ -178,6 +179,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('edit-data-payroll',[PayrollController::class,'edit'])->name('edit-data-payroll');
         Route::post('update-data-payroll',[PayrollController::class,'update'])->name('update-data-payroll');
         Route::post('delete-data-payroll',[PayrollController::class,'destroy'])->name('delete-data-payroll');
+        // payslip new
+        Route::get('salary-payroll',[PayrollController::class,'data_payroll_final'])->name('salary-payroll');
+        Route::get('run-payroll',[PayrollController::class,'run_payroll'])->name('run-payroll');
+        Route::post('get_run_payroll',[PayrollController::class,'get_run_payroll'])->name('get_run_payroll'); 
+        Route::post('generate_run_payroll',[PayrollController::class,'generate_run_payroll'])->name('generate_run_payroll'); 
+        Route::post('payroll-final',[PayrollController::class,'get_payroll_final'])->name('payroll-final');
+        Route::get('generate_slip_payroll/{id}',[PayrollController::class,'generate_slip_payroll'])->name('generate_slip_payroll');
+        Route::post('get-slip',[PayrollController::class,'get_slip'])->name('get-slip');
 
         // Payroll Setting
         Route::get('/setting/bpjs-tk', [PayrollController::class, 'indexBpjsTk'])

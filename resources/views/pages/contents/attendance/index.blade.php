@@ -103,6 +103,7 @@
                             <table class="table table-striped custom-table" id="attandaceList">
                                 <thead>
                                     <tr>
+                                        <th>No</th>
                                         <th>Employee ID</th>
                                         <th>Employee Name</th>
                                         <th>Shift</th>
@@ -234,6 +235,9 @@
                         "data" : {type_filter : type, date :date, branch_id : branchId, employee_id : employeeId},
                     },
                 columns: [
+                    { data: 'no', name:'id', render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }},
                     {
                         data: 'no_employee',
                         name: 'no_employee'

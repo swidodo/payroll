@@ -1,6 +1,6 @@
     <!-- Add overtime Modal -->
     <div id="add_loan" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Create New Loan</h5>
@@ -15,7 +15,7 @@
                             <div class="col-sm-12">
                                 {{-- @if (Auth::user()->type == 'company') --}}
                                 <input type="hidden" name="loan" value="loan">
-                                <input type="text" name="branch_id" value="{{ Auth::user()->branch_id }}">
+                                <input type="hidden" name="branch_id" value="{{ Auth::user()->branch_id }}">
                                     <div class="form-group">
                                         <label>Employee <span class="text-danger">*</span></label>
                                         <select class="form-control select-employee" id="employee_id" name="employee_id">
@@ -82,10 +82,10 @@
 
     <!-- Edit Overtime Modal -->
     <div id="edit_loan" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Leave</h5>
+                    <h5 class="modal-title">Edit Loan</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

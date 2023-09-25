@@ -38,6 +38,7 @@
                     <table class="table table-striped custom-table" id="tblAllowanceother">
                         <thead>
                             <tr>
+                                <th>No</th>
                                 <th>Date</th>
                                 <th>Employee Code</th>
                                 <th>Employee ID</th>
@@ -107,6 +108,9 @@
                     "data" : {branch_id : branchId,employee_id :employeeId},
                 },
             columns: [
+                { data: 'no', name:'id', render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }},
                 {
                     data: 'date',
                     name: 'date'
