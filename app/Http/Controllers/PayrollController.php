@@ -472,7 +472,7 @@ class PayrollController extends Controller
         return  view('pages.contents.payroll.run_payroll',$branch);
     }
     public function generate_run_payroll(Request $request){
-            // try {
+            try {
                 DB::beginTransaction();
                 $thps = DB::select("SELECT a.*,b.position_id FROM get_take_home_pay('".$request->startdate."','".$request->enddate."','".$request->branch_id."') as a LEFT JOIN employees as b
                     ON a.employee_id = b.id");
@@ -526,14 +526,14 @@ class PayrollController extends Controller
                         'msg'    => 'Payroll Successfully Generated !',
                     ];
                 return response()->json($res);
-            // } catch (Exception $e) {
+            } catch (Exception $e) {
                  DB::rollBack();
                     $res = [
                         'status' => 'error',
                         'msg'    => 'Payroll Not Success Generated !',
                     ];
                 return response()->json($e);
-            // }
+            }
     }
     public function get_run_payroll(Request $request){
         $data   = DB::table('take_home_pay')
