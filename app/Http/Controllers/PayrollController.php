@@ -531,7 +531,7 @@ class PayrollController extends Controller
                         'status' => 'error',
                         'msg'    => 'Payroll Not Success Generated !',
                     ];
-                return response()->json($e);
+                return response()->json($res);
             }
     }
     public function get_run_payroll(Request $request){
