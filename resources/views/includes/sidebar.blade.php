@@ -223,6 +223,9 @@
                         @canany(['manage user', 'create user'])
                             <li class="{{(request()->routeIs('reporting-attandance')) ? 'active' : ''}}"><a class="{{(request()->routeIs('reporting-attandance')) ? 'active' : ''}}" href="{{ route('reporting-attandance') }}">Reporting Attandance</a></li>
                         @endcanany
+                        @canany(['manage payroll'])
+                            <li class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}" href="{{ route('rekap-payroll') }}">Rekap Payroll</a></li>
+                        @endcanany
 
                         </ul>
                     </li>

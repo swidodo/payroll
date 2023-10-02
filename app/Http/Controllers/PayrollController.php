@@ -474,7 +474,7 @@ class PayrollController extends Controller
     public function generate_run_payroll(Request $request){
             try {
                 DB::beginTransaction();
-                $thps = DB::select("SELECT a.*,b.position_id FROM get_take_home_pay('".$request->startdate."','".$request->enddate."','".$request->branch_id."') as a LEFT JOIN employees as b
+                $thps = DB::select("SELECT a.*,b.position_id,b.name as emp_name FROM get_take_home_pay('".$request->startdate."','".$request->enddate."','".$request->branch_id."') as a LEFT JOIN employees as b
                     ON a.employee_id = b.id");
                 $data_thp = [];
                 foreach($thps as $thp) {
@@ -483,7 +483,7 @@ class PayrollController extends Controller
                         'employee_id' => $thp->employee_id,
                         'employee_code' => $thp->employee_code,
                         'no_employee' => $thp->no_employee,
-                        'name' => $thp->employee_id,
+                        'name' => $thp->emp_name,
                         'position' => $thp->position_id,
                         'level' => '',
                         'bank_name' => $thp->bank_name,

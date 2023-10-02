@@ -52,6 +52,8 @@ use App\Http\Controllers\CompanyController;
 // report
 use App\Http\Controllers\HRM\EmployeeReportController;
 use App\Http\Controllers\Report\ReportRecapAttendanceController;
+use App\Http\Controllers\Report\RekapPayrollController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -340,7 +342,15 @@ Route::group(['middleware' => 'auth'], function () {
         // deduction bpjs
         Route::get('get-data-bpjs',[DeductionBpjs::class,'index'])->name('get-data-bpjs');
         Route::post('data-bpjs-value',[DeductionBpjs::class,'get_data'])->name('data-bpjs-value');
+        // Reporting
+        Route::get('rekap-payroll',[RekapPayrollController::class,'index'])->name('rekap-payroll');
+        Route::post('get-rekap-payroll',[RekapPayrollController::class,'get_rekap_payroll'])->name('get-rekap-payroll');
+        Route::get('rekap-payroll-pdf',[RekapPayrollController::class,'cetak_pdf'])->name('rekap-payroll-pdf');
+        Route::get('rekap-payroll-excel',[RekapPayrollController::class,'ExportExcel'])->name('rekap-payroll-excel');
     });
+
+
+
 
 /*Route::get('/clear', function() {
 
