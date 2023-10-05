@@ -10,19 +10,20 @@ class Departement extends Model
     use HasFactory;
 
     protected $fillable = [
+        'department_code',
         'name',
-        'departement_head_id',
-        'branch_id',
         'is_active',
+        'branch_id',
         'description',
         'created_by'
     ];
+    protected $table = 'departements';
 
 
-    public function departement_head()
-    {
-        return $this->belongsTo(Employee::class, 'departement_head_id');
-    }
+    // public function departement_head()
+    // {
+    //     return $this->belongsTo(Employee::class, 'departement_head_id');
+    // }
 
     public function branch()
     {

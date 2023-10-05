@@ -170,9 +170,9 @@
                 <li class="submenu">
                     <a href="#"><i class="la la-book"></i> <span> Payroll</span> <span class="menu-arrow"></span></a>
                     <ul style="display: none;">
-                        @canany(['manage payslip', 'generate payslip'])
+                       <!--  @canany(['manage payslip', 'generate payslip'])
                             <li class="{{(request()->routeIs('payslips*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('payslips*')) ? 'active' : ''}}" href="{{ route('payslips.index') }}">Payslip</a></li>
-                        @endcanany
+                        @endcanany -->
                         @canany(['manage payslip', 'generate payslip'])
                             <li class="{{(request()->routeIs('run-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('run-payroll')) ? 'active' : ''}}" href="{{ route('run-payroll') }}">Run payroll</a></li>
                         @endcanany
@@ -222,6 +222,7 @@
                         <ul style="display: none;">
                         @canany(['manage user', 'create user'])
                             <li class="{{(request()->routeIs('reporting-attandance')) ? 'active' : ''}}"><a class="{{(request()->routeIs('reporting-attandance')) ? 'active' : ''}}" href="{{ route('reporting-attandance') }}">Reporting Attandance</a></li>
+                            <li class="{{(request()->routeIs('rekap-attandance')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap-attandance')) ? 'active' : ''}}" href="{{ route('rekap-attandance') }}">Rekap Attandance</a></li>
                         @endcanany
                         @canany(['manage payroll'])
                             <li class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}" href="{{ route('rekap-payroll') }}">Rekap Payroll</a></li>
@@ -315,8 +316,15 @@
                                             </a>
                                         </li>
                                     @endcanany
+
                                     <li class=" {{(request()->routeIs('departement*')) ? 'active' : ''}}">
                                         <a class=" {{(request()->routeIs('departement*')) ? 'active' : ''}}" href="{{route('departement.index')}}"><span>Departement</span></a>
+                                    </li>
+                                    <li class=" {{(request()->routeIs('group-position*')) ? 'active' : ''}}">
+                                        <a class=" {{(request()->routeIs('group-position*')) ? 'active' : ''}}" href="{{route('group-position')}}"><span>Group Position</span></a>
+                                    </li>
+                                    <li class=" {{(request()->routeIs('position*')) ? 'active' : ''}}">
+                                        <a class=" {{(request()->routeIs('position*')) ? 'active' : ''}}" href="{{route('position')}}"><span>Position</span></a>
                                     </li>
 
                                     @canany(['manage shift type', 'create shift type', 'edit shift type', 'delete shift type'])

@@ -96,14 +96,6 @@
                                         <input class="form-control"  name="family_card" type="text" value="{{$employee->family_card ?? ''}}" id="name">
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="identity_card" class="form-label">Bank Account</label>
-                                        <input class="form-control"  name="account_number" type="text" value="{{$employee->account_number ?? ''}}" id="name">
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="identity_card" class="form-label">NPWP Number</label>
-                                        <input class="form-control"  name="npwp_number" type="text" value="{{$employee->npwp_number ?? ''}}" id="name">
-                                    </div>
-                                    <div class="form-group col-md-6">
                                         <label for="religion" class="form-label">Religion</label>
                                         <select class="form-control form-select"  id="religion" name="religion">
                                             <option value="" disabled>-- Select Religion --</option>
@@ -126,6 +118,18 @@
                                     <div class="form-group">
                                         <label for="address" class="form-label">Address</label><span class="text-danger pl-1">*</span>
                                         <textarea class="form-control" rows="2" name="address" cols="50" id="address">{{$employee->address ?? ''}}</textarea>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="bank_name" class="form-label">Bank Name</label>
+                                        <input class="form-control"  name="account_nubank_namember" type="text" value="{{$employee->bank_name ?? ''}}" id="name">
+                                    </div> 
+                                    <div class="form-group col-md-6">
+                                        <label for="account_number" class="form-label">Bank Account</label>
+                                        <input class="form-control"  name="account_number" type="text" value="{{$employee->account_number ?? ''}}" id="name">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="identity_card" class="form-label">NPWP Number</label>
+                                        <input class="form-control"  name="npwp_number" type="text" value="{{$employee->npwp_number ?? ''}}" id="name">
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="marital_status" class="form-label">Status</label>

@@ -46,6 +46,8 @@ use App\Http\Controllers\Master_max_limit_bpjsController;
 use App\Http\Controllers\DeductionBpjs;
 use App\Http\Controllers\Allowance_otherController;
 use App\Http\Controllers\PtkpController;
+use App\Http\Controllers\GroupPositionController;
+use App\Http\Controllers\PositionController;
 // rotate
 use App\Http\Controllers\RotateController;
 use App\Http\Controllers\CompanyController;
@@ -317,8 +319,29 @@ Route::group(['middleware' => 'auth'], function () {
         /** departement */
         Route::resource('departement', DepartementController::class);
         Route::get('get-data-departements',[DepartementController::class,'GetDataDepartements'])->name('departement.get-data-departements');
+        Route::get('add-departement',[DepartementController::class,'create'])->name('add-departement');
+        Route::post('store-departement',[DepartementController::class,'store'])->name('store-departement');
+        Route::post('edit-departement',[DepartementController::class,'edit'])->name('edit-departement');
+        Route::post('update-departement',[DepartementController::class,'update'])->name('update-departement');
+        Route::post('destroy-departement',[DepartementController::class,'destroy'])->name('destroy-departement');
         /** departement */
-
+        // group position
+        Route::get('group-position', [GroupPositionController::class,'index'])->name('group-position');
+        Route::post('get-group-position', [GroupPositionController::class,'get_data'])->name('get-group-position');
+        Route::get('add-group-position', [GroupPositionController::class,'create'])->name('add-group-position');
+        Route::post('get-option', [GroupPositionController::class,'get_option'])->name('get-option');
+        Route::post('store-group-position', [GroupPositionController::class,'store'])->name('store-group-position');
+        Route::post('edit-group-position', [GroupPositionController::class,'edit'])->name('edit-group-position');
+        Route::post('update-group-position', [GroupPositionController::class,'update'])->name('update-group-position');
+        Route::post('destroy-group-position', [GroupPositionController::class,'destroy'])->name('destroy-group-position');
+        // position
+        Route::get('position',[PositionController::class,'index'])->name('position');
+        Route::post('get-position',[PositionController::class,'get_data'])->name('get-position');
+        Route::get('add-position',[PositionController::class,'create'])->name('add-position');
+        Route::post('store-position',[PositionController::class,'store'])->name('store-position');
+        Route::post('edit-position',[PositionController::class,'edit'])->name('edit-position');
+        Route::post('update-position',[PositionController::class,'update'])->name('update-position');
+        Route::post('destroy-position',[PositionController::class,'destroy'])->name('destroy-position');
         // Reporting
         Route::get('reporting-attandance-view',[ReportRecapAttendanceController::class,'index'])->name('reporting-attandance');
         Route::get('get-reporting-attandance',[ReportRecapAttendanceController::class,'get_report_attadance'])->name('get-reporting-attandance');
@@ -342,11 +365,15 @@ Route::group(['middleware' => 'auth'], function () {
         // deduction bpjs
         Route::get('get-data-bpjs',[DeductionBpjs::class,'index'])->name('get-data-bpjs');
         Route::post('data-bpjs-value',[DeductionBpjs::class,'get_data'])->name('data-bpjs-value');
-        // Reporting
+        // Rekap
+        Route::get('rekap-attandance',[ReportRecapAttendanceController::class,'rekap_attendance'])->name('rekap-attandance');
+        Route::post('get-rekap-attendance',[ReportRecapAttendanceController::class,'get_rekap_attendance'])->name('get-rekap-attendance');
+        Route::get('rekap-attendance-pdf',[ReportRecapAttendanceController::class,'cetak_rekap_attendance_pdf'])->name('rekap-attendance-pdf');
+        Route::get('rekap-attendance-excel',[ReportRecapAttendanceController::class,'ExportExcel'])->name('rekap-attendance-excel');
         Route::get('rekap-payroll',[RekapPayrollController::class,'index'])->name('rekap-payroll');
         Route::post('get-rekap-payroll',[RekapPayrollController::class,'get_rekap_payroll'])->name('get-rekap-payroll');
         Route::get('rekap-payroll-pdf',[RekapPayrollController::class,'cetak_pdf'])->name('rekap-payroll-pdf');
-        Route::get('rekap-payroll-excel',[RekapPayrollController::class,'ExportExcel'])->name('rekap-payroll-excel');
+        Route::get('rekap-payroll-pdf',[RekapPayrollController::class,'cetak_pdf'])->name('rekap-payroll-pdf');
     });
 
 

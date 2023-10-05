@@ -1,6 +1,6 @@
 @extends('pages.dashboard')
 
-@section('title', 'Departement Management')
+@section('title', 'position')
 
 @section('dashboard-content')
 <div class="page-wrapper">
@@ -12,14 +12,14 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Manage Departements</h3>
+                    <h3 class="page-title">Manage Position</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Departement</li>
+                        <li class="breadcrumb-item active">Position</li>
                     </ul>
                 </div>
                 <div class="col-auto float-end ms-auto">
-                    <a href="javascript:void(0);" class="btn add-btn" id="addDepartment"><i class="fa fa-plus"></i> Departement</a>
+                    <a href="javascript:void(0);" class="btn add-btn" id="add_position"><i class="fa fa-plus"></i>Position</a>
                 </div>
             </div>
         </div>
@@ -37,14 +37,13 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="table-responsive">
-                    <table class="table table-striped custom-table" id="table-departements">
+                    <table class="table table-striped custom-table" id="table-position">
                         <thead>
                             <tr>
-                                <th>Departement Code</th>
-                                <th>Departement Name</th>
-                                <th>Description</th>
                                 <th>Branch</th>
-                                <th>Status</th>
+                                <th>Position Code</th>
+                                <th>Position Name</th>
+                                <th>Description</th>
                                 <th class="text-end">Action</th>
                             </tr>
                         </thead>
@@ -88,8 +87,8 @@
     </div>
     <!-- /Delete User Modal -->
 </div>
- @include('includes.modal.departments.add_department')
- @include('includes.modal.departments.edit_department')
+ @include('includes.modal.position.add_position')
+ @include('includes.modal.position.edit_position')
 @endsection
 
 @push('addon-style')
@@ -118,41 +117,30 @@
             $.ajaxSetup({
             headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
         });
-            var table = $('#table-departements').DataTable({
+            var table = $('#table-position').DataTable({
                 processing: true,
                 serverSide: true,
                 destroy: true,
                 ajax : {
-                    url : "{{route('departement.get-data-departements')}}",
+                    url : "get-position",
+                    type : 'post',
                 },
                 columns: [
                     {
-                        data: 'departement_code',
-                        name: 'departement_code'
+                        data: 'branch_name',
+                        name: 'branch_name'
                     },
                     {
-                        data: 'name',
-                        name: 'name'
+                        data: 'position_code',
+                        name: 'position_code'
                     },
+                    {
+                        data: 'position_name',
+                        name: 'position_name'
+                    }, 
                     {
                         data: 'description',
                         name: 'description'
-                    },
-                    {
-                        data: 'branch.name',
-                        name: 'branch.name'
-                    },
-                    {
-                        data: 'is_active',
-                        render : function(data,type,row){
-                            var status='';
-                            if(data == '1'){
-                                status = 'Active';
-                            }else{
-                                status = 'Non Active';
-                            }
-                            return status;
-                       }
                     },
                     {
                         data: 'action',
@@ -161,14 +149,10 @@
                 ],
 
             });
-            $('body').on('click', '#delete-departement', function(){
-                const deleteURL = $(this).data('url');
-                $('#form-delete-departement').attr('action', deleteURL);
-            })
-            $('#addDepartment').on('click', function(e){
+            $('#add_position').on('click', function(e){
                 e.preventDefault();
                 $.ajax({
-                    url : 'add-departement',
+                    url : 'add-position',
                     type : 'get',
                     dataType : 'json',
                     beforeSend : function(){
@@ -180,16 +164,17 @@
                             branch += `<option value="`+val.id+`">`+val.name+`</option>`
                         })
                         $('#branchId').html(branch);
-                        $('#add_department').modal('show');
+                        $('#add_modal_position').modal('show');
                     }
                 })
             })
-            $('#addFormDepartement').on('submit', function(e){
+           
+            $('#addFormPosition').on('submit', function(e){
                 e.preventDefault()
-                var data = $('#addFormDepartement').serialize();
+                var data = $('#addFormPosition').serialize();
 
                 $.ajax({
-                    url : 'store-departement',
+                    url : 'store-position',
                     type : 'post',
                     data : data,
                     dataType : 'json',
@@ -198,7 +183,7 @@
                     },
                     success : function(respon){
                         if (respon.status == "success"){
-                            $('#add_department').modal('hide');
+                            $('#add_modal_position').modal('hide');
                             table.ajax.reload();
                         }
                         swal.fire({
@@ -211,11 +196,11 @@
                     }
                 })
             })
-            $(document).on('click','.edit-departement',function(e){
+            $(document).on('click','.edit-position',function(e){
                e.preventDefault();
                var id = $(this).attr('data-id')
                 $.ajax({
-                    url : 'edit-departement',
+                    url : 'edit-position',
                     type : 'post',
                     data : {id : id},
                     dataType : 'json',
@@ -223,37 +208,22 @@
 
                     },
                     success : function(respon){
-                        var branch = '';
-                        $.each(respon.branch, function(key,val){
-                            if (respon.departement.branch_id == val.id){
-                                 branch += `<option value="`+val.id+`" selected>`+val.name+`</option>`
-                            }
-                            branch += `<option value="`+val.id+`">`+val.name+`</option>`
-                        })
-                        $('#editbranchId').html(branch);
-                        $('#id').val(respon.departement.id);
-                        $('#editdepartement_code').val(respon.departement.departement_code)
-                        $('#editname').val(respon.departement.name)
-                        $('#editdescription').val(respon.departement.description)
-                        var status ='';
-                        if (respon.is_active == '1'){
-                            status = `<option value="1" selected>Active</option>
-                                            <option value="0">Not Active</option>`;
-                        }else{
-                             status = `<option value="1">Active</option>
-                                            <option value="0"  selected>Not Active</option>`;
-                        }
-                         $('#editstatus').html(status)
-                        $('#edit_departement').modal('show');
+                        $('#id').val(respon.data.id);
+                        $('#editBranchId').val(respon.data.branch_id);
+                        $('#editBranchName').val(respon.data.branch_name);
+                        $('#editPositionCode').val(respon.data.position_code);
+                        $('#editPositionName').val(respon.data.position_name);
+                        $('#editDescription').html(respon.data.description)
+                       
+                        $('#edit_position').modal('show');
                     }
                 })
             })
-            $('#updateFormDepartement').on('submit', function(e){
+            $('#updateFormPotision').on('submit', function(e){
                 e.preventDefault()
-                var data = $('#updateFormDepartement').serialize();
-
+                var data = $('#updateFormPotision').serialize();
                 $.ajax({
-                    url : 'update-departement',
+                    url : 'update-position',
                     type : 'post',
                     data : data,
                     dataType : 'json',
@@ -262,7 +232,7 @@
                     },
                     success : function(respon){
                         if (respon.status == "success"){
-                            $('#edit_departement').modal('hide');
+                            $('#edit_position').modal('hide');
                             table.ajax.reload();
                         }
                         swal.fire({
@@ -275,7 +245,7 @@
                     }
                 })
             })
-            $(document).on('click','.delete-departement',function(e){
+            $(document).on('click','.delete-position',function(e){
                 e.preventDefault()
                 var id = $(this).attr('data-id')
                 Swal.fire({
@@ -289,7 +259,7 @@
                         }).then(function(confirm){
                         if (confirm.value == true){
                             $.ajax({
-                                url : 'destroy-departement',
+                                url : 'destroy-position',
                                 type :'post',
                                 data : {id : id},
                                 dataType : 'json',

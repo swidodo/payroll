@@ -1,6 +1,6 @@
 @extends('pages.dashboard')
 
-@section('title', 'Departement Management')
+@section('title', 'group position')
 
 @section('dashboard-content')
 <div class="page-wrapper">
@@ -12,14 +12,14 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Manage Departements</h3>
+                    <h3 class="page-title">Manage Group Position</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Departement</li>
+                        <li class="breadcrumb-item active">Group Position</li>
                     </ul>
                 </div>
                 <div class="col-auto float-end ms-auto">
-                    <a href="javascript:void(0);" class="btn add-btn" id="addDepartment"><i class="fa fa-plus"></i> Departement</a>
+                    <a href="javascript:void(0);" class="btn add-btn" id="add_groupPosition"><i class="fa fa-plus"></i> Group Position</a>
                 </div>
             </div>
         </div>
@@ -37,14 +37,14 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="table-responsive">
-                    <table class="table table-striped custom-table" id="table-departements">
+                    <table class="table table-striped custom-table" id="table-group-position">
                         <thead>
                             <tr>
+                                <th>Employee Name</th>
+                                <th>Position</th>
                                 <th>Departement Code</th>
                                 <th>Departement Name</th>
-                                <th>Description</th>
                                 <th>Branch</th>
-                                <th>Status</th>
                                 <th class="text-end">Action</th>
                             </tr>
                         </thead>
@@ -88,8 +88,8 @@
     </div>
     <!-- /Delete User Modal -->
 </div>
- @include('includes.modal.departments.add_department')
- @include('includes.modal.departments.edit_department')
+ @include('includes.modal.group_position.add_groupPosition')
+ @include('includes.modal.group_position.edit_groupPosition')
 @endsection
 
 @push('addon-style')
@@ -118,42 +118,36 @@
             $.ajaxSetup({
             headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
         });
-            var table = $('#table-departements').DataTable({
+            var table = $('#table-group-position').DataTable({
                 processing: true,
                 serverSide: true,
                 destroy: true,
                 ajax : {
-                    url : "{{route('departement.get-data-departements')}}",
+                    url : "get-group-position",
+                    type : 'post',
                 },
                 columns: [
+                    {
+                        data: 'employee_name',
+                        name: 'employee_name'
+                    },
+                     {
+                        data: 'position_name',
+                        name: 'position_name'
+                    }, 
+                    
                     {
                         data: 'departement_code',
                         name: 'departement_code'
                     },
                     {
-                        data: 'name',
-                        name: 'name'
+                        data: 'departement_name',
+                        name: 'departement_name'
                     },
-                    {
-                        data: 'description',
-                        name: 'description'
-                    },
-                    {
-                        data: 'branch.name',
-                        name: 'branch.name'
-                    },
-                    {
-                        data: 'is_active',
-                        render : function(data,type,row){
-                            var status='';
-                            if(data == '1'){
-                                status = 'Active';
-                            }else{
-                                status = 'Non Active';
-                            }
-                            return status;
-                       }
-                    },
+                   {
+                        data: 'branch_name',
+                        name: 'branch_name'
+                    }, 
                     {
                         data: 'action',
                         name : 'action'
@@ -161,14 +155,10 @@
                 ],
 
             });
-            $('body').on('click', '#delete-departement', function(){
-                const deleteURL = $(this).data('url');
-                $('#form-delete-departement').attr('action', deleteURL);
-            })
-            $('#addDepartment').on('click', function(e){
+            $('#add_groupPosition').on('click', function(e){
                 e.preventDefault();
                 $.ajax({
-                    url : 'add-departement',
+                    url : 'add-group-position',
                     type : 'get',
                     dataType : 'json',
                     beforeSend : function(){
@@ -176,20 +166,61 @@
                     },
                     success : function(respon){
                         var branch = '';
+                        var employee = '<option value="" selected></option>';
+                        var departement = '<option value="" selected></option>';
+                        var position = '<option value="" selected></option>';
                         $.each(respon.branch, function(key,val){
                             branch += `<option value="`+val.id+`">`+val.name+`</option>`
                         })
+                        $.each(respon.position, function(key,val){
+                            position += `<option value="`+val.id+`">`+val.position_name+`</option>`
+                        })
+                        $.each(respon.employee, function(key,val){
+                            employee += `<option value="`+val.id+`">`+val.name+`</option>`
+                        }) 
+                        $.each(respon.departement, function(key,val){
+                            departement += `<option value="`+val.id+`">`+val.name+`</option>`
+                        })
                         $('#branchId').html(branch);
-                        $('#add_department').modal('show');
+                        $('#employeeId').html(employee);
+                        $('#departementId').html(departement);
+                        $('#positionId').html(position);
+                        $('#addGroupPosition').modal('show');
                     }
                 })
             })
-            $('#addFormDepartement').on('submit', function(e){
+            $('#branchId').on('change',function(){
+                var branch_id = $(this).val();
+                $.ajax({
+                    url : 'get-option',
+                    type : 'post',
+                    data : {branch_id : branch_id},
+                    dataType : 'json',
+                    success : function(respon){
+                        var position = '<option value="" selected></option>';
+                        var departement = '<option value="" selected></option>';
+                        var employee = '<option value="" selected></option>';
+                        $.each(respon.position, function(key,val){
+                            position += `<option value="`+val.id+`">`+val.position_name +`</option>`
+                        })
+                        $.each(respon.employee, function(key,val){
+                            employee += `<option value="`+val.id+`">`+val.name+`</option>`
+                        }) 
+                        $.each(respon.departement, function(key,val){
+                            departement += `<option value="`+val.id+`">`+val.name+`</option>`
+                        })
+                        $('#employeeId').html(employee);
+                        $('#departementId').html(departement);
+                        $('#positionId').html(position);
+                    }
+                })
+            })
+            $('#addFormGroupPosition').on('submit', function(e){
                 e.preventDefault()
-                var data = $('#addFormDepartement').serialize();
+                var data = $('#addFormGroupPosition').serialize();
 
                 $.ajax({
-                    url : 'store-departement',
+                    url : 'store-group-position',
                     type : 'post',
                     data : data,
                     dataType : 'json',
@@ -198,7 +229,7 @@
                     },
                     success : function(respon){
                         if (respon.status == "success"){
-                            $('#add_department').modal('hide');
+                            $('#addGroupPosition').modal('hide');
                             table.ajax.reload();
                         }
                         swal.fire({
@@ -211,11 +242,11 @@
                     }
                 })
             })
-            $(document).on('click','.edit-departement',function(e){
+            $(document).on('click','.edit-group-position',function(e){
                e.preventDefault();
                var id = $(this).attr('data-id')
                 $.ajax({
-                    url : 'edit-departement',
+                    url : 'edit-group-position',
                     type : 'post',
                     data : {id : id},
                     dataType : 'json',
@@ -223,37 +254,39 @@
 
                     },
                     success : function(respon){
-                        var branch = '';
-                        $.each(respon.branch, function(key,val){
-                            if (respon.departement.branch_id == val.id){
-                                 branch += `<option value="`+val.id+`" selected>`+val.name+`</option>`
+                        var departement = '';
+                        var position = '';
+                        $.each(respon.departement, function(key,val){
+                            if (respon.data.departement_id == val.id){
+                                 departement += `<option value="`+val.id+`" selected>`+val.name+`</option>`
+                            }else{
+                                departement += `<option value="`+val.id+`">`+val.name+`</option>`
                             }
-                            branch += `<option value="`+val.id+`">`+val.name+`</option>`
+                        }) 
+                        $.each(respon.position, function(key,val){
+                            if (respon.data.position_id == val.id){
+                                 position += `<option value="`+val.id+`" selected>`+val.position_name+`</option>`
+                            }else {
+                                position += `<option value="`+val.id+`">`+val.position_name+`</option>`
+                            }
                         })
-                        $('#editbranchId').html(branch);
-                        $('#id').val(respon.departement.id);
-                        $('#editdepartement_code').val(respon.departement.departement_code)
-                        $('#editname').val(respon.departement.name)
-                        $('#editdescription').val(respon.departement.description)
-                        var status ='';
-                        if (respon.is_active == '1'){
-                            status = `<option value="1" selected>Active</option>
-                                            <option value="0">Not Active</option>`;
-                        }else{
-                             status = `<option value="1">Active</option>
-                                            <option value="0"  selected>Not Active</option>`;
-                        }
-                         $('#editstatus').html(status)
-                        $('#edit_departement').modal('show');
+                        $('#id').val(respon.data.id);
+                        $('#editBranchId').val(respon.data.branch_id);
+                        $('#editBranchName').val(respon.data.branch_name);
+                        $('#editEmployeeId').val(respon.data.employee_id);
+                        $('#editEmployeeName').val(respon.data.employee_name);
+                        $('#editDepartementId').html(departement)
+                        $('#editPositionId').html(position)
+                      
+                        $('#edit_groupPosition').modal('show');
                     }
                 })
             })
-            $('#updateFormDepartement').on('submit', function(e){
+            $('#updateFormGroupPotision').on('submit', function(e){
                 e.preventDefault()
-                var data = $('#updateFormDepartement').serialize();
-
+                var data = $('#updateFormGroupPotision').serialize();
                 $.ajax({
-                    url : 'update-departement',
+                    url : 'update-group-position',
                     type : 'post',
                     data : data,
                     dataType : 'json',
@@ -262,7 +295,7 @@
                     },
                     success : function(respon){
                         if (respon.status == "success"){
-                            $('#edit_departement').modal('hide');
+                            $('#edit_groupPosition').modal('hide');
                             table.ajax.reload();
                         }
                         swal.fire({
@@ -275,7 +308,7 @@
                     }
                 })
             })
-            $(document).on('click','.delete-departement',function(e){
+            $(document).on('click','.delete-group-position',function(e){
                 e.preventDefault()
                 var id = $(this).attr('data-id')
                 Swal.fire({
@@ -289,7 +322,7 @@
                         }).then(function(confirm){
                         if (confirm.value == true){
                             $.ajax({
-                                url : 'destroy-departement',
+                                url : 'destroy-group-position',
                                 type :'post',
                                 data : {id : id},
                                 dataType : 'json',

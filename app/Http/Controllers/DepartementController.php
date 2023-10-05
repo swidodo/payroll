@@ -14,11 +14,6 @@ use Illuminate\Support\Facades\Validator;
 
 class DepartementController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
             return view('pages.contents.departement.index');
@@ -29,21 +24,18 @@ class DepartementController extends Controller
     {
         try {
             /** Departement */
-            $departements = Departement::query()->where('created_by', Auth::user()->creatorId())->with('branch','departement_head');
-            $response = datatables()->eloquent($departements)
-                ->addColumn('action', function ($d) {
-                    $view = '';
+            $departements   = Departement::query()->where('branch_id', 1)->with('branch');
+            $response       = datatables()->eloquent($departements)
+                            ->addColumn('action', function ($d) {
+                        $view = '';
                         $view = '<td class="text-end" >
                                         <div class="dropdown dropdown-action" >
-                                            <a href = "#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons"> more_vert</i></a>
+                                            <a href ="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons"> more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">';
                         /** edit */
-                        $url_edit = route('departement.edit', $d->id);
-                        $view .= '<a data-url="" id="edit-departement" class="dropdown-item" href="'.$url_edit.'"><i class="fa fa-pencil m-r-5" ></i> Edit</a>';
-                        /** edit */
+                        $view .= '<a href="#" data-id = "'.$d->id.'" class="dropdown-item edit-departement"><i class="fa fa-pencil m-r-5" ></i> Edit</a>';
                         /** delete */
-                        $url_delete = route('departement.destroy', $d->id);
-                        $view .= '<a id="delete-departement" data-url="'.$url_delete.'" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_departement"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
+                        $view .= '<a data-id="'.$d->id.'" class="dropdown-item delete-departement" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
                         /** delete */
                         $view .= '</div></div></td>';
                     return $view;
@@ -71,31 +63,24 @@ class DepartementController extends Controller
         }
         return $response;
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        $branch = Branch::all();
-        $departement_head = Employee::all();
-        return view('pages.contents.departement.create',compact('branch','departement_head'));
-    }
+        $initial = Auth::user()->initial;
+        if ($initial == "HO"){
+            $companiId = Branch::select('company_id')->where('id',Auth::user()->branch_id)->first();
+            $data['branch'] = Branch::where('company_id',$companyId)->get();
+        }else{
+            $data['branch'] = Branch::where('id',Auth::user()->branch_id)->get();
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+        return response()->json($data);
+    }
     public function store(Request $request)
     {
             $validator = Validator::make(
                 $request->all(),
                 [
-                    'departement_head_id'   => 'required',
+                    'departement_code'      => 'required',
                     'branch_id'             => 'required',
                     'name'                  => 'required'
                 ]
@@ -109,64 +94,56 @@ class DepartementController extends Controller
                 DB::beginTransaction();
 
                 $data = [
-                    'departement_head_id'=>$request->departement_head_id,
+                    'departement_code'   =>$request->departement_code,
                     'branch_id'          =>$request->branch_id,
                     'name'               =>$request->name,
                     'description'        =>$request->description,
                     'is_active'          =>$request->is_active,
-                    'created_by'         =>Auth::user()->creatorId()
+                    'create_by'          =>Auth::user()->creatorId()
                 ];
 
                 Departement::Insert($data);
                 DB::commit();
-                toast('Departement successfully created.', 'success');
-                return redirect()->route('departement.index');
+                $res = [
+                    'status' => 'success',
+                    'msg'    => 'Departement successfully created !'
+                ];
+                return response()->json($res);
+
             } catch (Exception $e) {
                 DB::rollBack();
-                toast('Something went wrong.', 'error');
-                return redirect()->back();
+                 $res = [
+                    'status' => 'error',
+                    'msg'    => 'Somting went wrong !'
+                ];
+                return response()->json($res);
             }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
        //
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        $branch = Branch::all();
-        $departement_head = Employee::all();
-        $departement =  Departement::with('branch','departement_head')->where('id',$id)->first();
+        $initial = Auth::user()->initial;
+        if ($initial == "HO"){
+            $companiId = Branch::select('company_id')->where('id',Auth::user()->branch_id)->first();
+            $data['branch'] = Branch::where('company_id',$companyId)->get();
+        }else{
+            $data['branch'] = Branch::where('id',Auth::user()->branch_id)->get();
+        }
 
-        return view('pages.contents.departement.edit', compact('branch', 'departement_head', 'departement'));
+        $data['departement'] =  Departement::where('id',$request->id)->first();
+
+        return response()->json($data);
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         $validator = Validator::make(
             $request->all(),
             [
-                'departement_head_id'   => 'required',
+                'departement_code'      => 'required',
                 'branch_id'             => 'required',
                 'name'                  => 'required'
             ]
@@ -179,38 +156,46 @@ class DepartementController extends Controller
         try {
             DB::beginTransaction();
             $data = [
-                'departement_head_id'=>$request->departement_head_id,
+                'departement_code'   =>$request->departement_code,
                 'branch_id'          =>$request->branch_id,
                 'name'               =>$request->name,
                 'description'        =>$request->description,
                 'is_active'          =>$request->is_active
             ];
 
-            Departement::where('id', $id)->update($data);
+            Departement::where('id', $request->id)->update($data);
 
             DB::commit();
-            toast('Departement successfully updated.', 'success');
-            return redirect()->route('departement.index');
+             $res = [
+                    'status' => 'success',
+                    'msg'    => 'Departement successfully updated !'
+                ];
+                return response()->json($res);
         } catch (Exception $e) {
             DB::rollBack();
-            toast('Something went wrong.', 'error');
-            return redirect()->back();
+             $res = [
+                    'status' => 'error',
+                    'msg'    => 'Something went wrong !'
+                ];
+                return response()->json($res);
         }
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-            $delete = Departement::findOrFail($id);
-            $delete->delete();
-
-            toast('Departement successfully deleted.', 'success');
-            return redirect()->route('departement.index', $id);
+        try{
+             $del = Departement::destroy($request->id);
+             $res = [
+                    'status' => 'success',
+                    'msg'    => 'Departement successfully Deleted !'
+                ];
+            return response()->json($res);
+        }catch(Exception $e){
+            $res = [
+                    'status' => 'error',
+                    'msg'    => 'Somting went wrong !'
+                ];
+                return response()->json($res);
+        }
     }
 
 }

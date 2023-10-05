@@ -132,7 +132,7 @@
                                     <td  class="borderless">{{$employeesId ?? 'Detail Employee'}}</td>
                                 </tr>
                                 <tr>
-                                    <td width="40" class="borderless">EmployeeId</td>
+                                    <td width="40" class="borderless">Employee ID</td>
                                     <td width="1" class="borderless">:</td>
                                     <td  class="borderless">{{$employee->no_employee ?? ''}}</td>
                                 </tr>

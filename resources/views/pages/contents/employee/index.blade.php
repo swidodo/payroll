@@ -38,8 +38,8 @@
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Employee Code</th>
                                 <th>Employee ID</th>
-                                <th>Employee Number</th>
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Phone</th>
