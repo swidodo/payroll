@@ -818,7 +818,6 @@ class EmployeeController extends Controller
                         "status"                =>$row[21],
                          "company_doj"          => $doj,
                         "company_doe"           => $doe,
-                        "out_date"              =>$out_date,
                         "branch_id"             =>$branchId->id,
                         "employee_id"           =>User::employeeIdFormat($branchId->id, self::employeeNumber(Auth::user()->creatorId())),
                         "user_id"               =>$userId,
