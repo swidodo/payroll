@@ -751,7 +751,6 @@ class EmployeeController extends Controller
         // update new
         $filpath = public_path('/uploads/'.$nama_file);
         $data  = $this->read_files($filpath);
-        dd( $data);
         $employee_arr = [];
         $users        = [];
         foreach ($data as $key => $row) {
