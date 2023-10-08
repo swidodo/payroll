@@ -479,7 +479,7 @@ class EmployeeController extends Controller
         if (Auth::user()->can('delete employee')) {
             $employee      = Employee::findOrFail($id);
             $user          = User::where('id', '=', $employee->user_id)->first();
-            $emp_documents = EmployeeDocument::where('employee_id', $employee->employee_id)->get();
+            $emp_documents = EmployeeDocument::where('employee_id', $employee->id)->get();
             $employee->delete();
             $user->delete();
             $dir = storage_path('uploads/document/');
