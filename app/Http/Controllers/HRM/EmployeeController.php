@@ -770,15 +770,14 @@ class EmployeeController extends Controller
                 if($positionId != null){
                     $positId = $positionId->id;
                 }
-                $check = DB::select("select name,dob
+                $check = DB::select("select no_employee
                                     from employees
-                                    where LOWER(name) = '$name'
-                                    and dob='$row[4]'
-                                    and email='$row[10]'");
+                                    where no_employee ='$row[11]'");
                 $checkUser = DB::select("select id,email,name
                                     from users
                                     where LOWER(name) = '$name'
                                     and email='$row[10]'");
+                if (count($check) <= 0) {
                     $user = new User();
                     $user->name     = $row[0];
                     $user->email    = $row[10];
@@ -827,6 +826,7 @@ class EmployeeController extends Controller
                         "updated_at"            => date('Y-m-d h:m:s'),
                     ];
                     array_push($employee_arr,$employee);
+                }
                 }
             }
         }
