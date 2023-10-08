@@ -67,9 +67,9 @@ class EmployeeController extends Controller
                     $view .= '<h2 class="table-avatar">';
                     if (Auth()->user()->can('show employee profile')) {
                         $url_view = route('employees.show',$d->id);
-                        $view .= '<a href="'.$url_view.'" class="btn btn-outline-primary">'.$d->employee_id.'</a>';
+                        $view .= '<a href="'.$url_view.'" class="btn btn-outline-primary">'.$d->no_employee.'</a>';
                     }else {
-                        $view .= '<a href="#" class="avatar"><img src ="https://ui-avatars.com/api/?name='.$d->employee_id.'" alt =""></a><a href = "#" class="btn btn-outline-primary">'.$d->employee_id.'</a>';
+                        $view .= '<a href="#" class="avatar"><img src ="https://ui-avatars.com/api/?name='.$d->no_employee.'" alt =""></a><a href = "#" class="btn btn-outline-primary">'.$d->no_employee.'</a>';
                     }
                     $view .= '</h2>';
                     return $view;

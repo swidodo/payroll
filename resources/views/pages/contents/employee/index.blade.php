@@ -38,7 +38,6 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Employee Code</th>
                                 <th>Employee ID</th>
                                 <th>Name</th>
                                 <th>Email</th>
@@ -117,10 +116,6 @@
                         }},
                         {
                             data: 'view_profile',
-                            name: 'employee_id'
-                        },
-                        {
-                            data: 'no_employee',
                             name: 'no_employee'
                         },
                         {
