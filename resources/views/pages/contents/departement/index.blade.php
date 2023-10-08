@@ -1,6 +1,6 @@
 @extends('pages.dashboard')
 
-@section('title', 'Departement Management')
+@section('title', 'Department Management')
 
 @section('dashboard-content')
 <div class="page-wrapper">
@@ -12,14 +12,14 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Manage Departements</h3>
+                    <h3 class="page-title">Manage Department</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Departement</li>
+                        <li class="breadcrumb-item active">Department</li>
                     </ul>
                 </div>
                 <div class="col-auto float-end ms-auto">
-                    <a href="javascript:void(0);" class="btn add-btn" id="addDepartment"><i class="fa fa-plus"></i> Departement</a>
+                    <a href="javascript:void(0);" class="btn add-btn" id="addDepartment"><i class="fa fa-plus"></i> Department</a>
                 </div>
             </div>
         </div>
@@ -40,8 +40,8 @@
                     <table class="table table-striped custom-table" id="table-departements">
                         <thead>
                             <tr>
-                                <th>Departement Code</th>
-                                <th>Departement Name</th>
+                                <th>Department Code</th>
+                                <th>Department Name</th>
                                 <th>Description</th>
                                 <th>Branch</th>
                                 <th>Status</th>

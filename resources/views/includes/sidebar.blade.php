@@ -318,7 +318,7 @@
                                     @endcanany
 
                                     <li class=" {{(request()->routeIs('departement*')) ? 'active' : ''}}">
-                                        <a class=" {{(request()->routeIs('departement*')) ? 'active' : ''}}" href="{{route('departement.index')}}"><span>Departement</span></a>
+                                        <a class=" {{(request()->routeIs('departement*')) ? 'active' : ''}}" href="{{route('departement.index')}}"><span>Department</span></a>
                                     </li>
                                     <li class=" {{(request()->routeIs('group-position*')) ? 'active' : ''}}">
                                         <a class=" {{(request()->routeIs('group-position*')) ? 'active' : ''}}" href="{{route('group-position')}}"><span>Group Position</span></a>
