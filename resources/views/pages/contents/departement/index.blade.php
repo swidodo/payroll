@@ -199,6 +199,7 @@
                     success : function(respon){
                         if (respon.status == "success"){
                             $('#add_department').modal('hide');
+                            $('#addFormDepartement')[0].reset()
                             table.ajax.reload();
                         }
                         swal.fire({
