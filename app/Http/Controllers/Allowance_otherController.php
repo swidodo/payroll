@@ -24,7 +24,7 @@ class Allowance_otherController extends Controller
         $branch  = Auth::user()->branch_id;
         $branchs = Branch::where('id',$branch)->first();
         $data   = Allowance_other::where('branch_id','=',$branchs->id)->with('employee','allowance_type')->get();
-
+        dd($data);
         return DataTables::of($data)
                         ->addIndexColumn()
                         ->addColumn('action', function($row){
