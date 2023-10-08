@@ -757,7 +757,7 @@ class EmployeeController extends Controller
             if ($key > 0){
             $branchId = DB::table('branches')
                             ->select('id')
-                            ->where('alias','=',$row[25])
+                            ->where('alias','=',$row[24])
                             ->get()->first();
             // $active = (strtolower($row[24]) === "true") ? true : false;
             if ($branchId != null){
@@ -786,7 +786,6 @@ class EmployeeController extends Controller
                     $user->type     = 'user'; //default
                     $doj            = ($row[22] != "" ) ? $row[22] : '0000-00-00';
                     $doe            = ($row[23] != "" ) ? $row[23] : '0000-00-00';
-                    $out_date       = ($row[24] != "" ) ? $row[24] : '0000-00-00';
                     $dob            = ($row[4] !="") ? $row[4] : '0000-00-00';
                     if (count($checkUser) <= 0 ){
                         $data = $user->save();
