@@ -119,8 +119,8 @@
                     name: 'no_employee'
                 },
                 {
-                    data: 'employee.name',
-                    name: 'employee.name'
+                    data: 'employee_name',
+                    name: 'employee_name'
                 },
                 {
                     data: 'allowance_name',
