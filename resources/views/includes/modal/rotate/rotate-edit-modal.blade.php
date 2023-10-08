@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Create Employee Rotation</h5>
+                <h5 class="modal-title">Edit Employee Rotation</h5>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -26,7 +26,7 @@
                                 <select name="employee_id" class="form-control mb-3" id="editEmployeeId" readonly>
                                 </select>
                                 <label>Position</label>
-                                <select name="position_id" class="form-control mb-3" id="editpositionId">
+                                <select name="position_id" class="form-control form-select mb-3" id="editpositionId">
                                     <option></option>
                                 </select>
                             </div>
@@ -40,10 +40,10 @@
                                 <input type="hidden" name="branch_id" id="editBranchId">
                                 <input type="hidden" name="branch_name" id="editBranchName">
                                 <label>From Department</label>
-                                <select name="from_department" class="form-control mb-3" id="editFromDepartment" readonly>
+                                <select name="from_department" class="form-control form-select mb-3" id="editFromDepartment" readonly>
                                 </select>
                                 <label>To Department</label>
-                                <select name="to_department" class="form-control mb-3" id="editToDepartment">
+                                <select name="to_department" class="form-control form-select mb-3" id="editToDepartment">
                                     <option></option>
                                 </select> 
 
@@ -51,7 +51,7 @@
                         </div>
                         <div class="d-flex justify-content-end">
                             <button class="btn btn-primary me-3">Save</button>
-                            <button class="btn btn-warning">Cancel</button>
+                            <a href="#" class="btn btn-warning" id="closedbtn">Cancel</a>
                         </div>
                     </form>
                 </div>

@@ -277,5 +277,9 @@
             })
         })
     })
+    $('#closedbtn').click(function(e){
+        e.preventDefault();
+        $('#editRotate').modal('hide')
+    })
 </script>
 @endpush
