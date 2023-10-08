@@ -5,6 +5,7 @@
 @section('dashboard-content')
 @push('addon-style')
 <link rel="stylesheet" href="{{asset('assets/css/dataTables.bootstrap4.min.css')}}">
+<link rel="stylesheet" href="{{asset('assets/plugins/sweetalert2/sweetalert2.min.css')}}">
 @endpush
 <div class="page-wrapper">
     <!-- Page Content -->
@@ -39,11 +40,11 @@
                         <thead>
                             <th>No</th>
                             <th>Rotation Date</th>
+                            <th>Rotation Name</th>
                             <th>Employee Name</th>
-                            <th>Job Level</th>
+                            <th>Position</th>
                             <th>From Department</th>
                             <th>To Department</th>
-                            <th>Company Office</th>
                             <th>Branch Name</th>
                             <th>Action</th>
                         </thead>
@@ -63,7 +64,7 @@
 <script src="{{asset('assets/js/select2.min.js')}}"></script>
 <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
-
+<script src="{{asset('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
 
 <script>
     $.ajaxSetup({
@@ -86,14 +87,18 @@
                         {
                             data: 'rotate_date',
                             name: 'rotate_date'
+                        }, 
+                        {
+                            data: 'rotate_name',
+                            name: 'rotate_name'
                         },
                         {
                             data: 'employee_name',
                             name : 'employee_name'
                         },
                         {
-                            data: 'job_level',
-                            name : 'job_level'
+                            data: 'position_name',
+                            name : 'position_name'
                         },
                         {
                             data: 'from_department_name',
@@ -106,10 +111,6 @@
                         {
                             data: 'branch_name',
                             name : 'branch_name'
-                        },
-                        {
-                            data: 'company_name',
-                            name : 'company_name'
                         },
                         {
                             data: 'id',
@@ -135,19 +136,24 @@
                    $('#branch').val(respon.branch[0].name);
                    $('#branchName').val(respon.branch[0].name);
                    $('#branchId').val(respon.branch[0].id);
-                   var html ='';
-                   var html2='';
+                   var html =`<option value=""></option>`;
+                   var html2=`<option value=""></option>`;
                    $.each(respon.department,function(key,val){
                         html += `<option value="`+val.id+`">`+val.department_name+`</option>`;
                         html2 += `<option value="`+val.id+`">`+val.department_name+`</option>`;
-                   })
-                   $('#fromDepartment').html(html);
-                   $('#toDepartment').html(html2);
-                   var emp = '';
-                   $.each(respon.employee,function(key,val){
+                   }) 
+                    var emp = `<option value=""></option>`;
+                    $.each(respon.employee,function(key,val){
                         emp += `<option value="`+val.id+`">`+val.name+`</option>`;
                    })
+                     var position =`<option value=""></option>`;
+                   $.each(respon.position,function(key,val){
+                        position += `<option value="`+val.id+`">`+val.position_name+`</option>`;
+                    })
+                   $('#fromDepartment').html(html);
+                   $('#toDepartment').html(html2);
                    $('#employeeId').html(emp);
+                   $('#position_id').html(position);
                 }
             })
             $('#addRotate').modal('show')
@@ -176,13 +182,17 @@
 
                 },
                 success : function(respon){
-                    $('#addRotate').modal('hide')
-                    $('#formRotation')[0].reset();
-                    table.ajax.reload(null,true);
-                    // swal.fire({
-                    //     icon :respon.status,
-                    //     text :respon.msg,
-                    // })
+                    if(respon.status == 'success'){
+                        $('#addRotate').modal('hide')
+                        $('#formRotation')[0].reset();
+                        table.ajax.reload(null,true);
+                    }
+                   
+                    swal.fire({
+                        icon :respon.status,
+                        text :respon.msg,
+                    })
+                     
                 },
                 error : function(){
                     alert('Terjadi kesalahan, Silahkan coba kembali !');
@@ -213,12 +223,27 @@
                    var html =`<option value="`+respon.rotation.from_department_id+`" selected>`+ respon.rotation.from_department_name +`</option>`;
                    var html2=`<option value="`+respon.rotation.to_department_id+`" selected>`+ respon.rotation.to_department_name+`</option>`;
                    $.each(respon.department,function(key,val){
-                        html2 += `<option value="`+val.id+`">`+val.department_name+`</option>`;
+                    if(respon.rotation.to_department_id == val.id ){
+                         html2 += `<option value="`+val.id+`" selected>`+val.name+`</option>`;
+                    }else{
+
+                        html2 += `<option value="`+val.id+`">`+val.name+`</option>`;
+                    }
                    })
                    $('#editFromDepartment').html(html);
                    $('#editToDepartment').html(html2);
                    var emp = `<option value="`+respon.rotation.employee_id+`" selected>`+ respon.rotation.employee_name +`</option>`;
                    $('#editEmployeeId').html(emp);
+                   var position ='';
+                    $.each(respon.position,function(key,val){
+                        if(val.id == respon.rotation.position_id){
+                            position += `<option value="`+val.id+`" selected>`+val.position_name+`</option>`;
+                        }else{
+
+                        position += `<option value="`+val.id+`">`+val.position_name+`</option>`;
+                        }
+                   })
+                    $('#editpositionId').html(position);
                 },
                 error : function(){
                     alert('Terjadi kesalahan, silahkan coba kembali !')
@@ -237,9 +262,16 @@
                 beforeSend : function(){
 
                 },
-                success : function(){
-                    $('#editRotate').modal('hide')
-                    table.ajax.reload(null,true);
+                success : function(respon){
+                    if (respon.status == 'success'){
+                        $('#editRotate').modal('hide')
+                        table.ajax.reload(null,true);
+                    }
+                    swal.fire({
+                        icon : respon.status,
+                        text : respon.msg
+                    })
+                    
                 }
 
             })

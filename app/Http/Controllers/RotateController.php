@@ -25,8 +25,9 @@ class RotateController extends Controller
                     ->where('id',$user->branch_id)
                     ->get();
         $data   = DB::table('rotates')
-                    ->select('*')
-                    ->orderBy('id','DESC')
+                    ->leftJoin('position','position.id','=','rotates.position_id')
+                    ->select('rotates.*','position.position_name')
+                    ->orderBy('rotates.id','DESC')
                     ->get();
         return DataTables::of($data)->make(true);
     }
@@ -34,63 +35,63 @@ class RotateController extends Controller
     {
 
     }
-    public function store(Request $request)
-    {
-        DB::beginTransaction();
-        $employee_name = Employee::select('employee_name')
-                                    ->where('employee_id',$request->employee_id)
-                                    ->where('branch_id',$request->branch_id)
-                                    ->where('company_id',$request->company_id)
-                                    ->first();
-        $branch_id = Branch::select('branch_name')
-                                ->where('branch_id',$request->branch_id)
-                                ->where('company_id',$request->company_id)
-                                ->first();
-        $company_id = Company::select('company_name')
-                                ->where('company_id',$request->company_id)
-                                ->first();
-        $from_department_id = Department::select('department_name')
-                                        ->where('branch_id',$request->branch_id)
-                                        ->where('company_id',$request->company_id)
-                                        ->where('from_department_id',$request->department_id)
-                                        ->first();
-        $to_department_id = Department::select('department_name')
-                                    ->where('to_department_id',$request->department_id)
-                                    ->where('branch_id',$request->branch_id)
-                                    ->where('company_id',$request->company_id)
-                                    ->first();
+    // public function store(Request $request)
+    // {
+      
+    //     try {
+    //     DB::beginTransaction();
+    //     $employee = Employee::select('name')
+    //                             ->where('employee_id',$request->employee_id)
+    //                             ->where('branch_id',$request->branch_id)
+    //                             ->first();
+    //     $company_id = Company::select('company_name')
+    //                             ->where('company_id',$request->company_id)
+    //                             ->first();
+    //     $from_department = Departement::select('name')
+    //                             ->where('branch_id',$request->branch_id)
+    //                             ->where('id',$request->from_department)
+    //                             ->first();
+    //     $to_department = Departement::select('name')
+    //                             ->where('id',$request->to_department)
+    //                             ->where('branch_id',$request->branch_id)
+    //                             ->first();
 
-        try {
-            $data = [
-                'employee_id'           => $request->employee_id,
-                'branch_id'             => $request->branch_id,
-                'company_id'            => $request->company_id,
-                'from_department_id'    => $request->from_department_id,
-                'to_department_id'      => $request->to_department_id,
-                'employee_name'         => $employee_name,
-                'branch_name'           => $branch_name,
-                'from_department_name'  => $from_name,
-                'to_department_name'    => $to_name,
-                'updated_at'            => $update,
-            ];
-            $data_employee = [
-                'department_id' =>$request->to_department_id,
-            ];
-            Rotate::insert($data);
-            DB::table('employee')->where('id',$request->employee_id)->update($data_employee);
-            $response = [
-                'status' => 'success',
-                'msg'    => 'Insert data success !',
-            ];
-            DB::commit();
-            return reponse()->json($response);
+       
+    //         $data = [
+    //             'employee_id'           => $request->employee_id,
+    //             'branch_id'             => $request->branch_id,
+    //             'company_id'            => $request->company_id,
+    //             'from_department_id'    => $request->from_department_id,
+    //             'to_department_id'      => $request->to_department_id,
+    //             'employee_name'         => $employee->name,
+    //             'branch_name'           => $request->branch_name,
+    //             'from_department_name'  => $from_department,
+    //             'to_department_name'    => $to_department,
+    //             'updated_at'            => date('Y-m-d h:m:s'),
+    //         ];
+    //         $data_employee = [
+    //             'department_id' =>$request->to_department_id,
+    //         ];
+    //         Rotate::insert($data);
+    //         DB::table('employee')->where('id',$request->employee_id)->update($data_employee);
+    //         DB::commit();
+    //          $response = [
+    //             'status' => 'success',
+    //             'msg'    => 'Insert data successfuly !',
+    //         ];
+    //         return reponse()->json($response);
 
-        }
-        catch (Exception $e) {
-            DB::rollBack();
-        }
+    //     }
+    //     catch (Exception $e) {
+    //         DB::rollBack();
+    //         $response = [
+    //             'status' => 'success',
+    //             'msg'    => 'Someting went wrong !',
+    //         ];
+    //          return reponse()->json($response);
+    //     }
 
-    }
+    // }
     public function show($id)
     {
         $rotate = Rotate::where('employee_id',$id)->get();
@@ -108,12 +109,16 @@ class RotateController extends Controller
                     ->select('id','name')
                     ->where('id',$branch[0]->company_id)
                     ->get();
-        $department = DB::table('departments')
-                         ->select('id','department_name')
+        $department = DB::table('departements')
+                         ->select('id','name')
                          ->where('branch_id',$user->branch_id)
                          ->get();
         $employee = DB::table('employees')
                         ->select('id','name')
+                        ->where('branch_id',$user->branch_id)
+                        ->get();
+         $position = DB::table('position')
+                        ->select('id','position_name')
                         ->where('branch_id',$user->branch_id)
                         ->get();
         $rotate = DB::table('rotates')
@@ -122,6 +127,7 @@ class RotateController extends Controller
             'branch'        => $branch,
             'company'       => $company,
             'department'    => $department,
+            'position'      => $position,
             'employee'      => $employee,
             'rotation'      => $rotate
         ];
@@ -132,36 +138,39 @@ class RotateController extends Controller
         DB::beginTransaction();
         try {
             $user = Auth::user();
-            $dt_from_depart = DB::table('departments')
-                                ->select('department_name')
+            $dt_from_depart = DB::table('departements')
+                                ->select('name')
                                 ->where('id',$request->from_department)
                                 ->get();
-            $dt_to_depart = DB::table('departments')
-                                ->select('department_name')
+            $dt_to_depart = DB::table('departements')
+                                ->select('name')
                                 ->where('id',$request->to_department)
                                 ->get();
             $employee = DB::table('employees')
                                 ->select('name')
                                 ->where('id',$request->employee_id)
                                 ->get();
+
             $data = [
                     'rotate_date'           => $request->rotate_date,
                     'rotate_name'           => $request->rotate_name,
                     'employee_id'           => $request->employee_id,
                     'employee_name'         => $employee[0]->name,
                     'from_department_id'    => $request->from_department,
-                    'from_department_name'  => $dt_from_depart[0]->department_name,
+                    'from_department_name'  => $dt_from_depart[0]->name,
                     'to_department_id'      => $request->to_department,
-                    'to_department_name'    => $dt_to_depart[0]->department_name,
+                    'to_department_name'    => $dt_to_depart[0]->name,
                     'branch_id'             => $request->branch_id,
                     'branch_name'           => $request->branch_name,
                     'company_id'            => $request->company_id,
                     'company_name'          => $request->company_name,
-                    'job_level'             => $request->job_level,
+                    'position_id'           => $request->position_id,
                     'update_by'             => $user->id,
+                    'updated_at'            => date('Y-m-d h:m:s')
                 ];
                 $update = [
                     'department_id' => $request->to_department,
+                    'position_id'   => $request->position_id,
                 ];
                 DB::table('employees')
                     ->where ('id',$request->employee_id)
@@ -201,8 +210,12 @@ class RotateController extends Controller
                     ->select('id','name')
                     ->where('id',$branch[0]->company_id)
                     ->get();
-        $department = DB::table('departments')
-                         ->select('id','department_name')
+        $department = DB::table('departements')
+                         ->select('id','name as department_name')
+                         ->where('branch_id',$user->branch_id)
+                         ->get(); 
+        $position = DB::table('position')
+                         ->select('id','position_name')
                          ->where('branch_id',$user->branch_id)
                          ->get();
         $employee = DB::table('employees')
@@ -213,7 +226,8 @@ class RotateController extends Controller
             'branch'        => $branch,
             'company'       => $company,
             'department'    => $department,
-            'employee'      => $employee
+            'employee'      => $employee,
+            'position'      => $position
         ];
         return response()->json($data);
     }
@@ -225,39 +239,44 @@ class RotateController extends Controller
         return response()->json($employee);
     }
     public function save_rotation(Request $request){
-        DB::beginTransaction();
-        $user = Auth::user();
+      
         try {
-                $dt_from_depart = DB::table('departments')
-                                    ->select('department_name')
+             // DB::beginTransaction();
+             $user = Auth::user();
+                $dt_from_depart = DB::table('departements')
+                                    ->select('name')
                                     ->where('id',$request->from_department)
-                                    ->get();
-                $dt_to_depart = DB::table('departments')
-                                    ->select('department_name')
+                                    ->first();
+
+                $dt_to_depart = DB::table('departements')
+                                    ->select('name')
                                     ->where('id',$request->to_department)
-                                    ->get();
+                                    ->first();
                 $employee = DB::table('employees')
                                     ->select('name')
                                     ->where('id',$request->employee_id)
-                                    ->get();
+                                    ->first();
                 $data = [
                     'rotate_date'           => $request->rotate_date,
                     'rotate_name'           => $request->rotate_name,
                     'employee_id'           => $request->employee_id,
-                    'employee_name'         => $employee[0]->name,
+                    'employee_name'         => $employee->name,
                     'from_department_id'    => $request->from_department,
-                    'from_department_name'  => $dt_from_depart[0]->department_name,
+                    'from_department_name'  => $dt_from_depart->name,
                     'to_department_id'      => $request->to_department,
-                    'to_department_name'    => $dt_to_depart[0]->department_name,
+                    'to_department_name'    => $dt_to_depart->name,
                     'branch_id'             => $request->branch_id,
                     'branch_name'           => $request->branch_name,
                     'company_id'            => $request->company_id,
                     'company_name'          => $request->company_name,
-                    'job_level'             => $request->job_level,
+                    'position_id'           => $request->position_id,
                     'create_by'             => $user->id,
+                    'created_at'            => date('Y-m-d h:m:s')
                 ];
+
                 $update = [
                     'department_id' => $request->to_department,
+                    'position_id'   => $request->position_id,
                 ];
                 DB::table('employees')
                     ->where ('id',$request->employee_id)
@@ -267,11 +286,18 @@ class RotateController extends Controller
                 DB::commit();
                 $response = [
                     'status' => 'success',
-                    'msg'    => 'Insert data success !',
+                    'msg'    => 'Insert data successfuly !',
                 ];
                 return $response;
         }catch (Exception $e) {
-            DB::rollBack();
+             $response = [
+                    'status' => 'error',
+                    // 'msg'    => 'Something went wrong !',
+                    'msg'    => $e,
+                ];
+                return $response;
+            // DB::rollBack();
+           
         }
     }
 }

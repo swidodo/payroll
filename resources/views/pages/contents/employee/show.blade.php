@@ -95,7 +95,7 @@
                                 <tr>
                                     <td width="40" class="borderless">Marital Status</td>
                                     <td width="1" class="borderless">:</td>
-                                    <td class="borderless">{{ucwords($employee->marital_status)  ?? ''}}</td>
+                                    <td class="borderless">{{ucwords($employee->marital_name)  ?? ''}}</td>
                                 </tr>
                                 <tr>
                                     <td width="40" class="borderless">Status</td>

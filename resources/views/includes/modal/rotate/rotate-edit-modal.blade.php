@@ -25,8 +25,10 @@
                                 <label>Employee Name</label>
                                 <select name="employee_id" class="form-control mb-3" id="editEmployeeId" readonly>
                                 </select>
-                                <label>Job Level</label>
-                                <input type="text" name="job_level" id="editjobLevel" class="form-control mb-3">
+                                <label>Position</label>
+                                <select name="position_id" class="form-control mb-3" id="editpositionId">
+                                    <option></option>
+                                </select>
                             </div>
                             <div class="col-md-6">
                                 <label>Central Office</label>
@@ -43,7 +45,8 @@
                                 <label>To Department</label>
                                 <select name="to_department" class="form-control mb-3" id="editToDepartment">
                                     <option></option>
-                                </select>
+                                </select> 
+
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">

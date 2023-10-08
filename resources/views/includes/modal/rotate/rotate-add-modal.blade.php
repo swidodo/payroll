@@ -22,10 +22,12 @@
                                     <option>Demotion</option>
                                 </select>
                                 <label>Employee Name</label>
-                                <select name="employee_id" class="form-control form-select mb-3" id="employeeId">
+                                <select name="employee_id" class="form-control form-select mb-3" id="employeeId" required>
                                 </select>
-                                <label>Job Level</label>
-                                <input type="text" name="job_level" class="form-control mb-3" required>
+                                <label>Position</label>
+                                <select name="position_id" class="form-control form-select mb-3" id="position_id" required>
+                                    <option></option>
+                                </select>
                             </div>
                             <div class="col-md-6">
                                 <label>Central Office</label>

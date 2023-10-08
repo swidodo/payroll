@@ -99,12 +99,12 @@
                                         <label for="religion" class="form-label">Religion</label>
                                         <select class="form-control form-select"  id="religion" name="religion">
                                             <option value="" disabled>-- Select Religion --</option>
-                                            <option value="ISLAM">Islam</option>
-                                            <option value="KATHOLIK">Katholik</option>
-                                            <option value="KRISTEN">Kristen</option>
-                                            <option value="HINDU">Hindu</option>
-                                            <option value="BUDHA">Budha</option>
-                                            <option value="LAIN">Lainnya</option>
+                                            <option value="ISLAM" {{ (strtoupper($employee->religion) =="ISLAM") ? 'selected' : '' }} >Islam</option>
+                                            <option value="KATHOLIK" {{ (strtoupper($employee->religion) =="KATHOLIK")? 'selected' : ''}}>Katholik</option>
+                                            <option value="KRISTEN" {{ (strtoupper($employee->religion) =="KRISTEN")? 'selected' : ''}}>Kristen</option>
+                                            <option value="HINDU" {{ (strtoupper($employee->religion) =="HINDU")? 'selected' : ''}}>Hindu</option>
+                                            <option value="BUDHA" {{ (strtoupper($employee->religion) =="BUDHA")? 'selected' : ''}}>Budha</option>
+                                            <option value="OTHER" {{ (strtoupper($employee->religion) =="OTHER")? 'selected' : ''}}>Other</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-md-6">
@@ -176,8 +176,8 @@
                                     <label for="leave_type" class="form-label">Work Type</label>
                                     <select class="form-control select"  id="work_type" name="work_type">
                                         <option value="">Select Type</option>
-                                        <option value="61" {{($employee->leave_type == '61') ? 'selected' : ''}}>6-1 (6 days Work) </option>
-                                        <option value="52"  {{($employee->leave_type == '52') ? 'selected' : ''}}>5-2 (5 days Work) </option>
+                                        <option value="61" {{($employee->work_type == '61') ? 'selected' : ''}}>6-1 (6 days Work) </option>
+                                        <option value="52"  {{($employee->work_type == '52') ? 'selected' : ''}}>5-2 (5 days Work) </option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
@@ -203,7 +203,7 @@
                                     <input class="form-control" value="{{$employee->company_doj  ?? ''}}"   name="company_doj" type="date" id="company_doj">
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="company_doe\" class="form-label">Company Date End</label>
+                                    <label for="company_doe" class="form-label">Company Date End</label>
                                     <input class="form-control" value="{{$employee->company_doe  ?? ''}}"   name="company_doe" type="date" id="company_doj">
                                 </div>
                             </div>

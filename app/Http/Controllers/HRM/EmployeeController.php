@@ -162,7 +162,7 @@ class EmployeeController extends Controller
             // $departments  = Department::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
             // $designations = Designation::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
-            $employee           = Employee::where('id', $empId)->first();
+            $employee           = Employee::select('employees.*','parameter_pph21s.name as marital_name')->where('employees.id', $empId)->leftJoin('parameter_pph21s','parameter_pph21s.code','=','employees.marital_status')->first();
             $employement        = Employement::find($employee->id);
             $employeeEducations  = EmployeeEducation::where('employee_id', $employee->id)->get();
             $employeeExperience = EmployeeExperience::find($employee->id);
@@ -739,100 +739,107 @@ class EmployeeController extends Controller
     }
     // import data
     public function import_data(Request $request){
-
-       // validasi
-		// $this->validate($request, [
-		// 	'upload_file' => 'required|mimes:csv,xls,xlsx'
-		// ]);
-
 		// menangkap file excel
 		$file = $request->file('upload_file');
 		// membuat nama file unik
 		$nama_file = rand().str_replace(" ","-",$file->getClientOriginalName());
-		// upload ke folder file_siswa di dalam folder public
+		// upload ke folder file_upload di dalam folder public
 		$file->move('public/uploads',$nama_file);
         chmod(public_path('uploads/'.$nama_file), 777);
 
 
         // update new
         $filpath = public_path('/uploads/'.$nama_file);
-        $arr_dataApi =[];
-        $pengajuan = [];
-        $success = 0;
-        $fail = 0;
         $data  = $this->read_files($filpath);
         $employee_arr = [];
         $users        = [];
-        $error        = 0;
-        $success      = 0;
         foreach ($data as $key => $row) {
             if ($key > 0){
-                $branchId = DB::table('branches')
-                                ->select('id')
-                                ->where('alias',$row[11])
-                                ->get()->first();
-                $active = (strtolower($row[24]) === "true") ? true : false;
-                if ($branchId != null){
-                    $name = strtolower($row[0]);
-                    $check = DB::select("select name,dob
-                                        from employees
-                                        where LOWER(name) = '$name'
-                                        and dob='$row[4]'
-                                        and email='$row[10]'");
-                    if(count($check) <= 0){
-                        $user = new User();
-                        $user->name     = $row[0];
-                        $user->email    = $row[10];
-                        $user->password = 'phadir123';//default
-                        $user->type     = 'user'; //default
-                        $doj            = ($row[14] != "" ) ? $row[14] : '0000-00-00';
-                        $doe            = ($row[15] != "" ) ? $row[15] : '0000-00-00';
-                        $out_date       = ($row[22] != "" ) ? $row[22] : '0000-00-00';
-                        if($user->save()){
-                            $employee = [
-                                "name"                  =>$row[0],
-                                "identity_card"         =>$row[1],
-                                "family_card"           =>$row[2],
-                                "npwp_number"           =>$row[3],
-                                "dob"                   =>$row[4],
-                                "gender"                =>$row[5],
-                                "religion"              =>$row[6],
-                                "marital_status"        =>$row[7],//value harus sesuai format yang aaaada dioptionnya
-                                "phone"                 =>$row[8],
-                                "address"               =>$row[9],
-                                "email"                 =>$row[10],
-                                "department_id"         =>$row[12],//belum diget
-                                "no_employee"           =>$row[13],//belum diget
-                                "company_doj"           => $doj,
-                                "company_doe"           => $doe,
-                                "account_holder_name"   =>$row[16],
-                                "account_number"        =>$row[17],
-                                "bank_name"             =>$row[18],
-                                "bank_identifier_code"  =>$row[19],
-                                "branch_location"       =>$row[20],
-                                "employee_type"         =>$row[21],//value harus sama dengan optionnya
-                                "out_date"              =>$out_date,
-                                "status"                =>$row[23],
-                                "user_id"               =>$user->id,
-                                "branch_id"             =>$branchId->id,
-                                "employee_id"           =>User::employeeIdFormat($branchId->id, self::employeeNumber(Auth::user()->creatorId())),
-                                "is_active"             =>$active,
-                                "created_by"            =>Auth::user()->creatorId(),
-                            ];
-                            array_push($employee_arr,$employee);
-                        }
+            $branchId = DB::table('branches')
+                            ->select('id')
+                            ->where('alias','=',$row[25])
+                            ->get()->first();
+            // $active = (strtolower($row[24]) === "true") ? true : false;
+            if ($branchId != null){
+                $name = strtolower($row[0]);
+                $departementId = DB::table('departements')->select("id")->where('departement_code',$row[14])->first();
+                if($departementId != null){
+                    $departId = $departementId->id;
+                }
+                $positionId = DB::table('position')->select("id")->where('position_code',$row[15])->first();
+                if($positionId != null){
+                    $positId = $positionId->id;
+                }
+                $check = DB::select("select name,dob
+                                    from employees
+                                    where LOWER(name) = '$name'
+                                    and dob='$row[4]'
+                                    and email='$row[10]'");
+                $checkUser = DB::select("select id,email,name
+                                    from users
+                                    where LOWER(name) = '$name'
+                                    and email='$row[10]'");
+                    $user = new User();
+                    $user->name     = $row[0];
+                    $user->email    = $row[10];
+                    $user->password = 'pehadir123';
+                    $user->type     = 'user'; //default
+                    $doj            = ($row[22] != "" ) ? $row[22] : '0000-00-00';
+                    $doe            = ($row[23] != "" ) ? $row[23] : '0000-00-00';
+                    $out_date       = ($row[24] != "" ) ? $row[24] : '0000-00-00';
+                    $dob            = ($row[4] !="") ? $row[4] : '0000-00-00';
+                    if (count($checkUser) <= 0 ){
+                        $data = $user->save();
+                        $userId = $user->id;
+                    }else{
+                        $userId = $checkUser[0]->id;
                     }
+                    $employee = [
+                        "name"                  =>$row[0],
+                        "identity_card"         =>$row[1],
+                        "family_card"           =>$row[2],
+                        "npwp_number"           =>$row[3],
+                        "dob"                   =>$dob,
+                        "gender"                =>$row[5],
+                        "religion"              =>$row[6],
+                        "marital_status"        =>$row[7],
+                        "phone"                 =>$row[8],
+                        "address"               =>$row[9],
+                        "email"                 =>$row[10],
+                        "no_employee"           =>$row[11],
+                        "employee_type"         =>$row[12],
+                        "work_type"             =>$row[13],
+                        "department_id"         =>$departId,
+                        "position_id"           =>$positId,
+                        "account_holder_name"   =>$row[16],
+                        "bank_name"             =>$row[17],
+                        "account_number"        =>$row[18],
+                        "bank_identifier_code"  =>$row[19],
+                        "branch_location"       =>$row[20],
+                        "status"                =>$row[21],
+                         "company_doj"          => $doj,
+                        "company_doe"           => $doe,
+                        "out_date"              =>$out_date,
+                        "branch_id"             =>$branchId->id,
+                        "employee_id"           =>User::employeeIdFormat($branchId->id, self::employeeNumber(Auth::user()->creatorId())),
+                        "user_id"               =>$userId,
+                        // "is_active"             =>$active,
+                        "created_by"            =>Auth::user()->creatorId(),
+                        "created_at"            => date('Y-m-d h:m:s'),
+                        "updated_at"            => date('Y-m-d h:m:s'),
+                    ];
+                    array_push($employee_arr,$employee);
                 }
             }
         }
-        Employee::Insert($employee_arr);
-   return redirect('/employees');
+        $insert = Employee::Insert($employee_arr);
+        return redirect('/employees');
     }
     public function read_files($filename)
     {
        if (($open = fopen($filename, "r")) !== FALSE) {
 			$array = [];
-            while (($data = fgetcsv($open, 100000, ";")) !== FALSE) {
+            while (($data = fgetcsv($open, 100000, ",")) !== FALSE) {
 				if(count($data) > 0 ){
                 	$array[] = $data;
 				}
