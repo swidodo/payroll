@@ -40,7 +40,6 @@
                             <tr>
                                 <th>No</th>
                                 <th>Date</th>
-                                <th>Employee Code</th>
                                 <th>Employee ID</th>
                                 <th>Employee Name</th>
                                 <th>Type</th>
@@ -116,20 +115,16 @@
                     name: 'date'
                 },
                 {
-                    data: 'employee.employee_id',
-                    name: 'employee.employee_id'
-                },
-                {
-                    data: 'employee.no_employee',
-                    name: 'employee.no_employee'
+                    data: 'no_employee',
+                    name: 'no_employee'
                 },
                 {
                     data: 'employee.name',
                     name: 'employee.name'
                 },
                 {
-                    data: 'allowance_type.name',
-                    name: 'allowance_type.name'
+                    data: 'allowance_name',
+                    name: 'allowance_name'
                 },
                 {
                     data: 'amount',

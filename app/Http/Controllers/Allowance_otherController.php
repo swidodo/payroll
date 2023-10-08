@@ -23,7 +23,9 @@ class Allowance_otherController extends Controller
      public function get_data(){
         $branch  = Auth::user()->branch_id;
         $branchs = Branch::where('id',$branch)->first();
-        $data   = Allowance_other::where('branch_id','=',$branchs->id)->with('employee','allowance_type')->get();
+        $data   = Allowance_other::select('allowances.*','employees.name as employee_name','employees.no_employee','allowance_options.name as allowance_name')->where('branch_id','=',$branchs->id)
+                                ->leftJoin('employees','employees.id','=','allowances.employee_id')
+                                ->leftJoin('allowance_options','allowance_options.id','=','allowances.allowance_option_id')->get();
         dd($data);
         return DataTables::of($data)
                         ->addIndexColumn()
