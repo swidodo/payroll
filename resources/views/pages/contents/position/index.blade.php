@@ -184,6 +184,7 @@
                     success : function(respon){
                         if (respon.status == "success"){
                             $('#add_modal_position').modal('hide');
+                            $('#addFormPosition')[0].reset()
                             table.ajax.reload();
                         }
                         swal.fire({
