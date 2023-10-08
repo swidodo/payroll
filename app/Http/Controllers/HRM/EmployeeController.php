@@ -839,7 +839,7 @@ class EmployeeController extends Controller
     {
        if (($open = fopen($filename, "r")) !== FALSE) {
 			$array = [];
-            while (($data = fgetcsv($open, 100000, ",")) !== FALSE) {
+            while (($data = fgetcsv($open, 100000, ";")) !== FALSE) {
 				if(count($data) > 0 ){
                 	$array[] = $data;
 				}
