@@ -34,7 +34,7 @@
     @foreach ($employee as $employ)
         <tr>
             <td>{{$employ->name}}</td>
-            <td>{{$employ->identity_card}}</td>
+            <td>{{"'".$employ->identity_card."'"}}</td>
             <td>{{$employ->family_card}}</td>
             <td>{{$employ->npwp_number}}</td>
             <td>{{$employ->dob}}</td>
