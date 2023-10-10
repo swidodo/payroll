@@ -50,10 +50,6 @@
                         name: 'sds'
                     },
                     {
-                        data: 'sts',
-                        name: 'sts'
-                    },
-                    {
                         data: 'cuti',
                         name: 'cuti'
                     },
