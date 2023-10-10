@@ -519,7 +519,6 @@ class PayrollController extends Controller
                         array_push($data_thp, $data);
                     }
                 }
-                dd($data_thp);
                 DB::table('take_home_pay')->insert($data_thp);  
                 DB::commit();
                 $res = [
