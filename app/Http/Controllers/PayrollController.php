@@ -589,10 +589,7 @@ class PayrollController extends Controller
                                 <a href="#"  class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                 <div class="dropdown-menu dropdown-menu-right">';
                         if(Auth()->user()->can('edit payroll')){
-                            $btn .= '<a  data-id ="'.$row->id.'" data-employeeid ="'.$row->employee_id.'" class="dropdown-item view-payroll" href="javascript:void(0)" ><i class="fa fa-eye m-r-5"></i> View</a>';
-                        }
-                        if(Auth()->user()->can('edit payroll')){
-                            $btn .= '<a  data-id ="'.$row->id.'" data-employeeid ="'.$row->employee_id.'" class="dropdown-item cetak-payroll" href="'.route("generate_slip_payroll", ['id'=>$row->id]).'" target="_blank"><i class="fa fa-print m-r-5"></i>Print</a>';
+                            $btn .= '<a  data-id ="'.$row->id.'" data-employeeid ="'.$row->employee_id.'" class="dropdown-item cetak-payroll" href="'.route("generate_slip_payroll", ['id'=>$row->id]).'" target="_blank"><i class="fa fa-print m-r-5"></i>Print Payslip</a>';
                         }
                     }
                     return $btn;
