@@ -347,14 +347,14 @@
                                 @endforeach
                                 @foreach($allowance_other as $other)
                                 <tr class="fs-14 " style="font-weight: 400">
-                                    <td style="width: 45%">{{ Ucwords($other->allowance_name) }}</td>
+                                    <td style="width: 45%">{{ strtolower(Ucwords($other->allowance_name)) }}</td>
                                     <td>:</td>
                                     <td class="text-right">{{ ($other->allowance_amount =='' ) ? 0 : formatRupiah($other->allowance_amount)}}</td>
                                 </tr>
                                 @endforeach
                                 @foreach($reimbursement as $remburst)
                                 <tr class="fs-14 " style="font-weight: 400">
-                                    <td style="width: 45%">{{ Ucwords($remburst->reimburst_name) }}</td>
+                                    <td style="width: 45%">{{ strtolower(Ucwords($remburst->reimburst_name)) }}</td>
                                     <td>:</td>
                                     <td class="text-right">{{ ($remburst->reimburst_amount == '' ) ? 0 : formatRupiah($remburst->reimburst_amount) }}</td>
                                 </tr>
