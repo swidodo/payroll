@@ -48,6 +48,7 @@
                         <div class="row justify-content-end">
                                     <div class="col-md-3">
                                         <div class="btn-box">
+                                            <button class="btn btn-primary">Attendance</button>
                                         </div>
                                     </div>
 

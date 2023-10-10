@@ -120,9 +120,9 @@ class AttendanceEmployeeController extends Controller
                                 if(Auth()->user()->can('edit attendance')){
                                     $btn .= '<a  data-url='.route('attendance.edit', $row->id).' id="edit-attendance_btn" class="dropdown-item edit-attendance" href="javascript:void(0)" ><i class="fa fa-pencil m-r-5"></i> Edit</a>';
                                 }
-                                if(Auth()->user()->can('delete attendance')){
-                                    $btn .= '<a id="delete-attendance" data-url='.route('attendance.destroy', $row->id).' class="dropdown-item" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
-                                }
+                                // if(Auth()->user()->can('delete attendance')){
+                                //     $btn .= '<a id="delete-attendance" data-url='.route('attendance.destroy', $row->id).' class="dropdown-item" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
+                                // }
                                     $btn .= '</div></div>';
                                 }
                                 return $btn;
@@ -153,8 +153,9 @@ class AttendanceEmployeeController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
+        $id = $request->id;
         $employeeId      = !empty(Auth::user()->employee) ? Auth::user()->employee->id : 0;
         // $todayAttendance = AttendanceEmployee::where('employee_id', '=', $employeeId)->where('date', date('Y-m-d'))->first();
         // if(!empty($todayAttendance) && $todayAttendance->clock_out == '00:00:00')
@@ -206,8 +207,8 @@ class AttendanceEmployeeController extends Controller
             $hours = floor($totalLateSeconds / 3600);
             $mins  = floor($totalLateSeconds / 60 % 60);
             $secs  = floor($totalLateSeconds % 60);
-            $late  = sprintf('%02d:%02d:%02d', $hours, $mins, $secs);
-
+            $late  = substr(sprintf('%02d:%02d:%02d', $hours, $mins, $secs),0,8);
+            
             //early Leaving
             $totalEarlyLeavingSeconds = strtotime($date . $endTime) - strtotime($request->clock_out);
             $hours                    = floor($totalEarlyLeavingSeconds / 3600);
@@ -236,10 +237,21 @@ class AttendanceEmployeeController extends Controller
             $attendanceEmployee->early_leaving = ($earlyLeaving > 0) ? $earlyLeaving : '00:00:00';
             $attendanceEmployee->overtime      = $overtime;
             $attendanceEmployee->total_rest    = '00:00:00';
+            $attendanceEmployee->status    = $request->status;
 
-            $attendanceEmployee->save();
-
-            return redirect()->back()->with('success', 'Employee attendance successfully updated.');
+            $saveData = $attendanceEmployee->save();
+            if($saveData){
+                 $res = [
+                       'status' => 'success',
+                       'msg'    => 'Employee attendance successfully updated.',
+                    ];
+            }else{
+                $res = [
+                       'status' => 'error',
+                       'msg'    => 'Someting went wrong !.',
+                    ];
+            }
+            return response()->json($res);
         }
         // }
         // else
@@ -633,58 +645,7 @@ class AttendanceEmployeeController extends Controller
         // dd($sheetData);
         foreach ($sheetData as $key => $value) {
             if ($key > 0) :
-                // if (is_string($value[1]) && $value[1] == 'No. ID') {
-                //     $dataEmployee = [];
-                //     $attendaceData = [];
-                // }
-                // if (is_integer($value[5])) {
-                //     $dataEmployee['employeeId'] = (int)$value[5];
-                // } elseif (is_string($value[5])) {
-                //     $dataEmployee['employeeName'] = $value[5];
-                // } elseif (!is_integer($value[0]) && $date = DateTime::createFromFormat('d/m/Y', $value[0])) {
-                //     $attendaceData['date']          = $date;
-                //     $attendaceData['start_time'] = isset($value[7]) ? $value[7] : null;
-                //     $attendaceData['end_time'] = isset($value[10]) ? $value[10] : null;
-                //     $attendaceData['clock_in']      = $value[13];
-                //     $attendaceData['clock_out']     = $value[15];
-                //     $attendaceData['late']          = isset($value[16]) ? $value[16] : null;
-                //     $attendaceData['early_leaving'] = isset($value[17]) ? $value[17] : null;
-                //     $attendaceData['overtime'] = isset($value[19]) ? $value[19] : null;
-
-
-                //     $startTime = Carbon::parse($attendaceData['start_time'])->format('H:i:s');
-                //     $endTime = Carbon::parse($attendaceData['end_time'])->format('H:i:s');
-                //     $shiftType = ShiftType::where('start_time', $startTime)->where('end_time', $endTime)->first();
-                //     $shiftType = is_null($shiftType);
-
-                //     if (is_null($shiftType)) {
-                //         toast('Shift does not match the system, please set the shift type first', 'warning');
-                //         return redirect()->back();
-                //     }
-
-                //     $status = AttendanceEmployee::insertToAttendanceEmployeeLeave($dataEmployee, 'Present', null, null, $attendaceData);
-                // } elseif (!is_integer($value[0]) && $date = DateTime::createFromFormat('d-M-y', $value[0])) {
-
-                    // $attendaceData['date']          = $date;
-                    // $attendaceData['start_time'] = isset($value[7]) ? $value[7] : null;
-                    // $attendaceData['end_time'] = isset($value[10]) ? $value[10] : null;
-                    // $attendaceData['clock_in']      = $value[13];
-                    // $attendaceData['clock_out']     = $value[15];
-                    // $attendaceData['late']          = isset($value[16]) ? $value[16] : null;
-                    // $attendaceData['early_leaving'] = isset($value[17]) ? $value[17] : null;
-                    // $attendaceData['overtime'] = isset($value[19]) ? $value[19] : null;
-
-                    // $startTime = Carbon::parse($attendaceData['start_time'])->format('H:i:s');
-                    // $endTime = Carbon::parse($attendaceData['end_time'])->format('H:i:s');
-                    // $shiftType = ShiftType::where('start_time', $startTime)->where('end_time', $endTime)->first();
-                    // $shiftType = is_null($shiftType);
-                    // if (is_null($shiftType)) {
-                    //     toast('Shift does not match the system, please set the shift type first', 'warning');
-                    //     return redirect()->back();
-                    // }
-
-                    // $status = AttendanceEmployee::insertToAttendanceEmployeeLeave($dataEmployee, 'Present', null, null, $attendaceData);
-                // }
+               rtToAttendanceEmployeeLeave($dataEmployee, 'Present', null, null, $attendaceData);
                 $employeeId = employee::where('no_employee',$value[1])->first();
                 if (ucwords($value[9]) == 'Present' || 
                     ucwords($value[9]) == 'Alpha' || 

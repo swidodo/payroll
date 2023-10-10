@@ -87,7 +87,12 @@
                                 <div class="row">
                                     <div class="col-auto ">
                                         <button type="button" class="btn btn-primary" id="btnSerach">search <span class="btn-inner--icon"><i class="la la-search"></i></span></button>
-                                    </div>
+                                    </div> 
+                                </div>
+                            </div>
+                            <div class="col-4 mt-3 d-flex justify-content-start">
+                                <div class="col-auto ">
+                                    <button type="button" class="btn btn-primary" id="btnAdjustment">Adjustment <span class="btn-inner--icon"><i class="la la-gear"></i></span></button>
                                 </div>
                             </div>
                         </div>
@@ -134,6 +139,7 @@
 
     @include('includes.modal.attendance.attendance-modal')
     @include('includes.modal.attendance.attendance-employee')
+    @include('includes.modal.attendance.attendance-adjusment')
 
 </div>
 @endsection
@@ -159,10 +165,12 @@
     <!-- Datetimepicker JS -->
     <script src="{{asset('assets/js/moment.min.js')}}"></script>
     <script src="{{asset('assets/js/bootstrap-datetimepicker.min.js')}}"></script>
+    <link rel="stylesheet" href="{{asset('assets/plugins/sweetalert2/sweetalert2.min.css')}}">
 
     <!-- Datatable JS -->
     <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
 
 
     <script>
@@ -178,13 +186,10 @@
                    $('#date-edit').val(data[0].date);
                    $('#clock_in').val(data[0].clock_in);
                    $('#clock_out').val(data[0].clock_out);
+                   $('#EmployeeId').val(data[0].employee_id);
+                   $('#Id').val(data[0].id);
                 })
                 $('#edit_attendance').modal('show')
-            })
-            $('#edit-form-attendance').on('submit',function(e){
-                e.preventDefault();
-                alert();
-
             })
             $(document).on('click','.delete-attendance',function(e){
                 e.preventDefault();
@@ -343,51 +348,58 @@
             var branchId = $('#branch').val();
             loadData(type,date,branchId,employeeId)
         })
-        $('#edit-form-attendance').on('subbmit',function(e){
+        $('#edit-form-attendance').on('submit',function(e){
             e.preventDefault();
-            var employee_id = $('#noEmployee').val();
-            var date = $('#date-edit').val();
-            var clock_in = $('#clock_in').val();
-            var clock_out = $('#clock_out').val();
-            var editStatus = $('#editStatus').val();
-            var editFileUpload = $('#editFileUpload')[0].files[0];
-
-            var formData = new FormData();
-            formData.append('employee_id', employee_id);
-            formData.append('date', date);
-            formData.append('clock_in', clock_in);
-            formData.append('clock_out', clock_out);
-            formData.append('editStatus', editStatus);
-            formData.append('editStatus', editStatus);
-            // Attach file
-            formData.append('image', editFileUpload);
-
+            var type = $('#monthly').val();
+            var date = $('#dateId').val();
+            var branchId = $('#branch').val();
+            var data = $('#edit-form-attendance').serialize();
             $.ajax({
                     url: 'update-employee-attendance',
-                    data: formData,
+                    data: data,
                     type: 'POST',
-                    contentType: false, 
-                    processData: false, 
-                    data : formData,
+                    dataType : 'json',
                     beforeSend : function(){
 
                     },
-                    success : function(){
-
+                    success : function(e){
+                        swal.fire({
+                            icon : e.status,
+                            text : e.msg
+                        })
+                        $('#edit_attendance').modal('hide')
+                        loadData(type,date,branchId,employeeId="")
                     },
                     error : function(){
-
+                        alert('Someting went Wrong !')
                     }
                 });
         })
-        $(document).on('click','.delete-attendance',function(e){
-            e.privateDefault();
-            var id = $(this).attr('data-id');
-
-            $.ajax({
-
-            })
+        $('#btnAdjustment').on('click',function(e){
+            $('#adjustment').modal('show')
         })
-
+        $('#btnAddinput').on('click', function(e){
+             e.preventDefault();
+            $('#item1').append(`
+                <div class="items">
+                <hr />
+                <label>Date</label>
+                <input type="date" name="date" class="form-control mb-3">
+                <label>Clock In</label>
+                <input type="date" name="clock_in" class="form-control mb-3">
+                <label>Clock Out</label>
+                <input type="date" name="clock_out" class="form-control mb-3">
+                <label>Status</label>
+                <select class="form-control form-select mb-3">
+                    <option></option>
+                    <option></option>
+                    <option></option>
+                </select>
+                <hr /></div>`);
+        })
+        $('#formAjusment').on('submit',function(e){
+             e.preventDefault();
+              $('.items').remove();
+        })
     </script>
 @endpush

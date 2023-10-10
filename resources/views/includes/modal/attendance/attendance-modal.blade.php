@@ -50,13 +50,13 @@
                 </div>
                 <div class="modal-body">
                     <form action="#" id="edit-form-attendance" method="POST">
-                        @csrf
-                        @method('PUT')
                         <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="religion" class="control-label" required>Employee ID </label>
                                         <input type="text" class="form-control " name="no_employee" id="noEmployee" readonly>
+                                        <input type="hidden" name="id" id="Id">
+                                        <input type="hidden" name="employee_id" id="EmployeeId">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -102,17 +102,18 @@
                                             <option value="Present">Present</option>
                                             <option value="Alpha">Alpha</option>
                                             <option value="Leave">Leave</option>
-                                            <option value="Sick With Letter">Sick With Letter</option>
-                                            <option value="Sick Without Letter">Sick Without Letter</option>
+                                            <option value="Sick">Sick</option>
+                                            <option value="Permit">Permit</option>
+                                            <option value="Dispensation">Dispensation</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                               <!--  <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="religion" class="control-label" required>upload file</label>
                                         <input type="file" class="form-control" name="upload_file" id="editFileUpload">
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         <div class="submit-section">
                             <button type="submit" class="btn btn-primary submit-btn">Submit</button>
