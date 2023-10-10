@@ -380,7 +380,13 @@
                                 <tr class="fs-14 " style="font-weight: 400">
                                     <td style="width: 45%">BPJS Kesehatan</td>
                                     <td>:</td>
-                                    <td class="text-right">{{ isset($deduction->bpjs_kesehatan) ? (($deduction->bpjs_kesehatan =='') ? 0 : formatRupiah($deduction->bpjs_kesehatan) : 0) }}</td>
+                                    <td class="text-right">
+                                        @if (isset($deduction->bpjs_kesehatan))
+                                        {{ ($deduction->bpjs_kesehatan =='') ? 0 : formatRupiah($deduction->bpjs_kesehatan) }}
+                                        @else
+                                        {{ '0' }}
+                                        @endif
+                                    </td>
                                 </tr>
                                 <tr class="fs-14 " style="font-weight: 400">
                                     <td style="width: 45%">BPJS Ketenagakerjaan</td>
