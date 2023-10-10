@@ -49,7 +49,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="" id="edit-form-attendance" method="POST">
+                    <form action="#" id="edit-form-attendance" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="row">
@@ -98,7 +98,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="religion" class="control-label" required>Status</label>
-                                        <select class="form-control form-select" id="status" name="status">
+                                        <select class="form-control form-select" id="editStatus" name="status">
                                             <option value="Present">Present</option>
                                             <option value="Alpha">Alpha</option>
                                             <option value="Leave">Leave</option>
@@ -110,7 +110,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="religion" class="control-label" required>upload file</label>
-                                        <input type="file" class="form-control" name="upload_file" id="fileUpload">
+                                        <input type="file" class="form-control" name="upload_file" id="editFileUpload">
                                     </div>
                                 </div>
                             </div>

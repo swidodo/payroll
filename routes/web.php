@@ -286,6 +286,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('attendance', AttendanceEmployeeController::class);
         Route::post('data-attendance-employee', [AttendanceEmployeeController::class,'get_data'])->name('data-attendance-employee');
         Route::post('getList-employee-attendance', [AttendanceEmployeeController::class,'get_list_employee'])->name('getList-employee-attendance');
+        Route::post('update-employee-attendance', [AttendanceEmployeeController::class,'update'])->name('update-employee-attendance');
         Route::get('bulk-attendance', [AttendanceEmployeeController::class, 'bulkAttendance'])->name('bulk-attendance.index');
         Route::post('bulk-attendance', [AttendanceEmployeeController::class, 'bulkAttendanceData'])->name('bulk-attendance.index');
         Route::post('clock-in-out', [AttendanceEmployeeController::class, 'clockStore'])->name('clock_store');

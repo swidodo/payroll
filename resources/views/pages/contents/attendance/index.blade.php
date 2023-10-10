@@ -343,5 +343,51 @@
             var branchId = $('#branch').val();
             loadData(type,date,branchId,employeeId)
         })
+        $('#edit-form-attendance').on('subbmit',function(e){
+            e.preventDefault();
+            var employee_id = $('#noEmployee').val();
+            var date = $('#date-edit').val();
+            var clock_in = $('#clock_in').val();
+            var clock_out = $('#clock_out').val();
+            var editStatus = $('#editStatus').val();
+            var editFileUpload = $('#editFileUpload')[0].files[0];
+
+            var formData = new FormData();
+            formData.append('employee_id', employee_id);
+            formData.append('date', date);
+            formData.append('clock_in', clock_in);
+            formData.append('clock_out', clock_out);
+            formData.append('editStatus', editStatus);
+            formData.append('editStatus', editStatus);
+            // Attach file
+            formData.append('image', editFileUpload);
+
+            $.ajax({
+                    url: 'update-employee-attendance',
+                    data: formData,
+                    type: 'POST',
+                    contentType: false, 
+                    processData: false, 
+                    data : formData,
+                    beforeSend : function(){
+
+                    },
+                    success : function(){
+
+                    },
+                    error : function(){
+
+                    }
+                });
+        })
+        $(document).on('click','.delete-attendance',function(e){
+            e.privateDefault();
+            var id = $(this).attr('data-id');
+
+            $.ajax({
+
+            })
+        })
+
     </script>
 @endpush

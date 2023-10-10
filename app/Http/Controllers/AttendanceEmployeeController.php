@@ -686,14 +686,12 @@ class AttendanceEmployeeController extends Controller
                     // $status = AttendanceEmployee::insertToAttendanceEmployeeLeave($dataEmployee, 'Present', null, null, $attendaceData);
                 // }
                 $employeeId = employee::where('no_employee',$value[1])->first();
-                if ($value[6] == 'PRESENT' || 
-                    $value[6] == 'ALPHA' || 
-                    $value[6] == 'PERMISSION' || 
-                    $value[6] == 'SICK WITH LETTER' ||
-                    $value[6] == 'SICK WITHOUT LETTER' ||
-                    $value[6] == 'SICK WITHOUT LETTER' ||
-                    $value[6] == 'LEAVE' ||
-                    $value[6] == 'DISPENSATION'
+                if (ucwords($value[9]) == 'Present' || 
+                    ucwords($value[9]) == 'Alpha' || 
+                    ucwords($value[9]) == 'Permit' || 
+                    ucwords($value[9]) == 'Sick' ||
+                    ucwords($value[9]) == 'Leave' ||
+                    ucwords($value[9]) == 'Dispensation'
                      )
                 {
                     $status = $value[9];
@@ -709,7 +707,7 @@ class AttendanceEmployeeController extends Controller
                     'late'              => $value[6],
                     'early_leaving'     => $value[7],
                     'overtime'          => $value[8],
-                    'status'            => $status,
+                    'status'            => ucwords($status),
                     'total_rest'        => '00:00:00',
                     'created_at'        => date('Y-m-d h:m:s'),
                     'updated_at'        => date('Y-m-d h:m:s'),
