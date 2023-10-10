@@ -199,12 +199,20 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="company_doj" class="form-label">Company Date Of Joining</label>
+                                    <label for="company_doj" class="form-label">Join Date</label>
                                     <input class="form-control" value="{{$employee->company_doj  ?? ''}}"   name="company_doj" type="date" id="company_doj">
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="company_doe" class="form-label">Company Date End</label>
+                                    <label for="company_doe" class="form-label">End Date</label>
                                     <input class="form-control" value="{{$employee->company_doe  ?? ''}}"   name="company_doe" type="date" id="company_doj">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="branch_id" class="form-label">Department Name</label>
+                                     <input class="form-control" value="{{$employee->departement_name  ?? ''}}"   name="department_id" type="text" id="departementId" readonly>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="branch_id" class="form-label">Position Name</label>
+                                     <input class="form-control" value="{{$employee->position_name  ?? ''}}"   name="position_id" type="text" id="positionId" readonly>
                                 </div>
                             </div>
                         </div>

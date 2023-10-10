@@ -152,16 +152,26 @@
                                     <td  class="borderless">{{ucwords($employee->total_leave) ?? ''}}</td>
                                 </tr>
                                 <tr>
-                                    <td  class="borderless">Start Date</td>
+                                    <td  class="borderless">Join Start</td>
                                     <td  class="borderless">:</td>
-                                    <td  class="borderless">{{$employement != null ? $employement->employee->company_doj ? date("F jS, Y", strtotime($employement->employee->company_doj)) : '' : ''}}</td>
+                                    <td  class="borderless">{{ $employee->company_doj }}</td>
                                 </tr>
                                 <tr>
                                     <td  class="borderless">End Date</td>
                                     <td  class="borderless">:</td>
-                                    <td  class="borderless">{{$employement != null ? $employement->employee->company_doe ? date("F jS, Y", strtotime($employement->employee->company_doe)) : '' : ''}}</td>
+                                    <td  class="borderless">{{ $employee->company_doe }}</td>
                                 </tr>
                                 <tr>
+                                    <td  class="borderless">Departement Name</td>
+                                    <td  class="borderless">:</td>
+                                    <td  class="borderless">{{ $employee->department_name }}</td>
+                                </tr> 
+                                <tr>
+                                    <td  class="borderless">Position Name</td>
+                                    <td  class="borderless">:</td>
+                                    <td  class="borderless">{{ $employee->position_name }}</td>
+                                </tr>
+                               <!--  <tr>
                                     <td  class="borderless">Movement Type </td>
                                     <td  class="borderless">:</td>
                                     <td  class="borderless">{{ $employement->movement_type ?? ''}}</td>
@@ -170,12 +180,12 @@
                                     <td  class="borderless">Employee Area </td>
                                     <td  class="borderless">:</td>
                                     <td  class="borderless">{{$employement->area ?? ''}}</td>
-                                </tr>
-                                <tr>
+                                </tr> -->
+                               <!--  <tr>
                                     <td  class="borderless">Note </td>
                                     <td  class="borderless">:</td>
                                     <td  class="borderless">{{$employement->note ?? ''}}</td>
-                                </tr>
+                                </tr> -->
                                 </tbody>
                             </table>
                         </div>
@@ -227,7 +237,7 @@
                                     <tr class="borderless">
                                         <td width="40" class="borderless">Branch</td>
                                         <td width="1" class="borderless">:</td>
-                                        <td class="borderless">{{$employee->branch->name ?? ''}}</td>
+                                        <td class="borderless">{{$employee->branch_name ?? ''}}</td>
                                     </tr>
                                     <tr class="borderless">
                                         <td width="40" class="borderless">Join Date</td>

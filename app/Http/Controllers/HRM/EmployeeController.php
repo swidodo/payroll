@@ -22,6 +22,7 @@ use App\Models\Travel;
 use App\Models\User;
 use App\Models\Utility;
 use App\Models\Parameter_pph21;
+use App\Models\Departement;
 use Carbon\Carbon;
 use DataTables;
 use Exception;
@@ -158,12 +159,21 @@ class EmployeeController extends Controller
         if (Auth::user()->can('view employee')) {
             $empId        = $id;
             $documents    = Document::where('created_by', Auth::user()->creatorId())->get();
-            $branches     = Branch::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
-            // $departments  = Department::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
+            // $branches     = Branch::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $departments  = DB::table('group_positions')->select('departements.name as departement_name','position.position_name')
+                                                        ->leftJoin('departements','departements.id','=','employees.department_id')
+                                                        ->leftJoin('position','position.id','=','employees.position_id')
+                                                        ->where('group_positions.employee_id',$id);
             // $designations = Designation::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
-            $employee           = Employee::select('employees.*','parameter_pph21s.name as marital_name')->where('employees.id', $empId)->leftJoin('parameter_pph21s','parameter_pph21s.code','=','employees.marital_status')->first();
-            $employement        = Employement::find($employee->id);
+            $employee           = Employee::select('employees.*',
+                                                    'parameter_pph21s.name as marital_name',
+                                                    'branches.name as branch_name')
+                                            ->where('employees.id', $empId)
+                                            ->leftJoin('parameter_pph21s','parameter_pph21s.code','=','employees.marital_status')
+                                            ->leftJoin('branches','branches.id','=','employees.branch_id')
+                                            ->first();
+            // $employement        = Employement::find($employee->id);
             $employeeEducations  = EmployeeEducation::where('employee_id', $employee->id)->get();
             $employeeExperience = EmployeeExperience::find($employee->id);
             $employeeExperiences = EmployeeExperience::where('employee_id', $employee->id)->get();
@@ -173,8 +183,7 @@ class EmployeeController extends Controller
             $employeesId  = $employee->employee_id;
 
 
-            return view('pages.contents.employee.show', compact('employee', 'employeesId', 'branches', 'employement', 'employeeEducations', 'employeeExperience', 'employeeExperiences', 'documents', 'employeeFamilies', 'employeeMedical'));
-            // return view('pages.contents.employee.show', compact('employee', 'employeesId', 'branches', 'departments', 'designations', 'documents'));
+            return view('pages.contents.employee.show', compact('employee', 'employeesId', 'employeeEducations', 'employeeExperience', 'employeeExperiences', 'documents', 'employeeFamilies', 'employeeMedical'));
         } else {
             toast('Permission denied.', 'error');
             return redirect()->back();
@@ -194,10 +203,10 @@ class EmployeeController extends Controller
             $documents    = Document::where('created_by', Auth::user()->creatorId())->get();
             $branches     = Branch::where('created_by', Auth::user()->creatorId())->get();
             $paramPph21   = Parameter_pph21::get();
-            // $departments  = Department::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
-            // $designations = Designation::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
-
-            $employee           = Employee::where('id', $empId)->first();
+            $employee     = Employee::select('employees.*','departements.name as departement_name','position.position_name')
+                                        ->where('employees.id', $empId)
+                                        ->leftJoin('departements','departements.id','=','employees.department_id')
+                                        ->leftJoin('position','position.id','=','employees.position_id')->first();
 
             if (is_null($employee)) {
                 return view('pages.contents.employee.edit');
