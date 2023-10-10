@@ -34,11 +34,13 @@
                         <div class="row d-flex align-items-center">
                             <div class="col-md-2">
                                 <label>start Date</label>
-                                <input type="date" id="startdate" class="form-control" name="datestart" value="{{ date('Y-m-d') }}">
+                                <input type="date" id="startdate" class="form-control" name="datestart" >
+                                <input type="hidden" id="startdateId" value="{{ date('Y-m-d') }}">
                             </div>
                             <div class="col-md-2">
                                 <label>End Date</label>
-                                <input type="date" id="enddate" class="form-control" name="dateend" value="{{ date('Y-m-d') }}">
+                                <input type="date" id="enddate" class="form-control" name="dateend">
+                                <input type="date" id="enddateId" value="{{ date('Y-m-d') }}">
                             </div>
                             <div class="col-md-3">
                                 <label>branch</label>
@@ -144,8 +146,8 @@
             headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
         });
             $(document).ready(function () {
-                var startdate       = $('#startdate').val();
-                var enddate        = $('#enddate').val();
+                var startdate       = $('#startdateId').val();
+                var enddate        = $('#enddateId').val();
                 var branch_id   = $('#branch_id').val();
                 loadData(startdate,enddate,branch_id)
                 $('#generate_run_payroll').on('click',function(){
