@@ -391,7 +391,13 @@
                                 <tr class="fs-14 " style="font-weight: 400">
                                     <td style="width: 45%">BPJS Ketenagakerjaan</td>
                                     <td>:</td>
-                                    <td class="text-right">{{ ($deduction->bpjs_ketenagakerjaan == '') ? 0 : formatRupiah($deduction->bpjs_ketenagakerjaan) }}</td>
+                                    <td class="text-right">{{ 
+                                        @if(isset($deduction->bpjs_ketenagakerjaan))
+                                        {{ ($deduction->bpjs_ketenagakerjaan == '') ? 0 : formatRupiah($deduction->bpjs_ketenagakerjaan) }}
+                                        @else
+                                        {{ '0' }}
+                                        @endif
+                                    </td>
                                 </tr>
                             
                                 <tr class="fs-14 " style="font-weight: 400">
