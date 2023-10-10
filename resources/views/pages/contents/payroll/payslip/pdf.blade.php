@@ -293,7 +293,7 @@
                         <tr> 
                             <td style="width: 18%;font-size: 14px">Cabang</td>
                             <td style="width: 2%">:</td>
-                            <td style=" font-size: 14px;text-align:start;font-weight: 400;">{{ ucwords(strtolower($salary->branch_name)) }}</td>
+                            <td style=" font-size: 14px;text-align:start;font-weight: 400;">{{ strtoupper($salary->branch_name) }}</td>
                         </tr>
                         <tr> 
                             <td style="width: 18%;font-size: 14px">Jabatan</td>
