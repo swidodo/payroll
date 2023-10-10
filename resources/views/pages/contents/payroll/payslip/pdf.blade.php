@@ -333,14 +333,14 @@
                                
                                 @foreach($allowance_fixed as $fixed)
                                 <tr class="fs-14 " style="font-weight: 400">
-                                    <td style="width: 45%">{{ $fixed->allowance_name }}</td>
+                                    <td style="width: 45%">{{ Ucwords(strtolower($fixed->allowance_name)) }}</td>
                                     <td>:</td>
                                     <td class="text-right">{{ ($fixed->allowance_amount =='' ) ? 0 : formatRupiah($fixed->allowance_amount) }}</td>
                                 </tr>
                                 @endforeach
                                 @foreach($allowance_unfixed as $unfixed)
                                 <tr class="fs-14 " style="font-weight: 400">
-                                    <td style="width: 45%">{{ $unfixed->allowance_name }}</td>
+                                    <td style="width: 45%">{{ Ucwords(strtolower($unfixed->allowance_name)) }}</td>
                                     <td>:</td>
                                     <td class="text-right">{{ ($unfixed->amount == '') ? 0 : formatRupiah($unfixed->amount)  }}</td>
                                 </tr>
