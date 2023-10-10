@@ -162,12 +162,12 @@
                                     <td  class="borderless">{{ $employee->company_doe }}</td>
                                 </tr>
                                 <tr>
-                                    <td  class="borderless">Departement Name</td>
+                                    <td  class="borderless">Departement</td>
                                     <td  class="borderless">:</td>
                                     <td  class="borderless">{{ $employee->department_name }}</td>
                                 </tr> 
                                 <tr>
-                                    <td  class="borderless">Position Name</td>
+                                    <td  class="borderless">Position</td>
                                     <td  class="borderless">:</td>
                                     <td  class="borderless">{{ $employee->position_name }}</td>
                                 </tr>

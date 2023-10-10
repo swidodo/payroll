@@ -207,11 +207,11 @@
                                     <input class="form-control" value="{{$employee->company_doe  ?? ''}}"   name="company_doe" type="date" id="company_doj">
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="branch_id" class="form-label">Department Name</label>
+                                    <label for="branch_id" class="form-label">Department </label>
                                      <input class="form-control" value="{{$employee->departement_name  ?? ''}}"   name="department_id" type="text" id="departementId" readonly>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="branch_id" class="form-label">Position Name</label>
+                                    <label for="branch_id" class="form-label">Position </label>
                                      <input class="form-control" value="{{$employee->position_name  ?? ''}}"   name="position_id" type="text" id="positionId" readonly>
                                 </div>
                             </div>
