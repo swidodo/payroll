@@ -148,11 +148,11 @@
             $(document).ready(function () {
                 var nowstart       = $('#startdateId').val();
                 var nowend        = $('#enddateId').val();
-                var startdate       = $('#startdate').val();
-                var enddate        = $('#enddate').val();
                 var branch_id   = $('#branch_id').val();
                 loadData(nowstart,nowend,branch_id)
                 $('#generate_run_payroll').on('click',function(){
+                    var startdate       = $('#startdate').val();
+                    var enddate        = $('#enddate').val();
                     $.ajax({
                         url : 'generate_run_payroll',
                         type : 'post',
