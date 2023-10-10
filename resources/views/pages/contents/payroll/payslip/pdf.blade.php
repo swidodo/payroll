@@ -347,7 +347,7 @@
                                 @endforeach
                                 @foreach($allowance_other as $other)
                                 <tr class="fs-14 " style="font-weight: 400">
-                                    <td style="width: 45%">{{ Ucwords(strtolower($other->allowance_name)) }}</td>
+                                    <td style="width: 45%">{{ strtolower($other->allowance_name) }}</td>
                                     <td>:</td>
                                     <td class="text-right">{{ ($other->allowance_amount =='' ) ? 0 : formatRupiah($other->allowance_amount)}}</td>
                                 </tr>
