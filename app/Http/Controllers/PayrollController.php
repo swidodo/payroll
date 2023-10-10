@@ -604,9 +604,11 @@ class PayrollController extends Controller
 
         $branch     = Auth::user()->branch_id;
         $data['salary'] = DB::table('take_home_pay')
-                            ->select('take_home_pay.*','employees.name as employee_name','branches.name as branch_name')
+                            ->select('take_home_pay.*','employees.name as employee_name','branches.name as branch_name','position_name')
                             ->leftJoin('employees','employees.id','=','take_home_pay.employee_id')
                             ->leftJoin('branches','branches.id','=','take_home_pay.branch_id')
+                            ->leftJoin('position','position.id','=','take_home_pay.position_id')
+                            ->leftJoin('companies','companies.id','=','branches.company_id')
                             ->where('take_home_pay.id',$id)->first();
         $data['allowance_fixed'] = DB::select("SELECT * from get_allowance_fixed('".$data['salary']->startdate."','".$data['salary']->enddate."','".$branch."') where employeeid = '".$data['salary']->employee_id."'");
         $data['allowance_unfixed'] = DB::select("SELECT * from getallowance_unfixed('".$data['salary']->startdate."','".$data['salary']->enddate."','".$branch."') where employeeid = '". $data['salary']->employee_id."'");

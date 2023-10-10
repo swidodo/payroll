@@ -62,15 +62,14 @@
                             <thead>
                                 <tr>
                                     <th>Employee ID</th>
-                                    <th>Employee Name</th>
+                                    <th>Employee</th>
                                     <th>Work Day</th>
                                     <th>Work Day Actual</th>
                                     <th>Alpha</th>
-                                    <th>Ijin</th>
-                                    <th>Sakit Dengan Surat</th>
-                                    <th>Sakit Tanpa Surat</th>
-                                    <th>Cuti</th>
-                                    <th>Dispensasi</th>
+                                    <th>Permit</th>
+                                    <th>Sick</th>
+                                    <th>Leave</th>
+                                    <th>Dispensation</th>
                                 </tr>
                             </thead>
                             <tbody>
