@@ -159,19 +159,16 @@ class EmployeeController extends Controller
         if (Auth::user()->can('view employee')) {
             $empId        = $id;
             $documents    = Document::where('created_by', Auth::user()->creatorId())->get();
-            // $branches     = Branch::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $departments  = DB::table('group_positions')->select('departements.name as departement_name','position.position_name')
-                                                        ->leftJoin('departements','departements.id','=','employees.department_id')
-                                                        ->leftJoin('position','position.id','=','employees.position_id')
-                                                        ->where('group_positions.employee_id',$id);
-            // $designations = Designation::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
-
             $employee           = Employee::select('employees.*',
                                                     'parameter_pph21s.name as marital_name',
-                                                    'branches.name as branch_name')
+                                                    'branches.name as branch_name',
+                                                    'departements.name as department_name',
+                                                    'position.position_name')
                                             ->where('employees.id', $empId)
                                             ->leftJoin('parameter_pph21s','parameter_pph21s.code','=','employees.marital_status')
                                             ->leftJoin('branches','branches.id','=','employees.branch_id')
+                                            ->leftJoin('departements','departements.id','=','employees.department_id')
+                                            ->leftJoin('position','position.id','=','employees.position_id')
                                             ->first();
             // $employement        = Employement::find($employee->id);
             $employeeEducations  = EmployeeEducation::where('employee_id', $employee->id)->get();
@@ -224,8 +221,7 @@ class EmployeeController extends Controller
 
 
             return view('pages.contents.employee.edit', compact('employee', 'employeesId', 'branches', 'employement', 'employeeEducation', 'employeeExperience', 'employeeExperiences', 'branches', 'employeeEducations', 'documents', 'employeeFamilies', 'employeeMedical', 'currentDate','paramPph21'));
-            // return view('pages.contents.employee.show', compact('employee', 'employeesId', 'branches', 'departments', 'designations', 'documents'));
-        } else {
+         } else {
             toast('Permission denied.', 'error');
             return redirect()->back();
         }
