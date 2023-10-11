@@ -184,22 +184,44 @@ class PayrollController extends Controller
                 if(isset($request->bpjs)){
                     $array_bpjs = [];
                     $salary_gross = $request->amount_salary + $allowance->allowance;
+
                     foreach($request->bpjs as $bpjs){
                         $getName     = Master_bpjs::where('id','=',$bpjs)->first();
+                        
 
                         if($request->nominal_bpjs_kes > 0 && $getName->bpjs_code == 'KSHT'){
-                            $val_comp   = round(($request->nominal_bpjs_kes + $allowance->allowance) * $getName->is_company / 100 );
-                            $val_emp    = round(($request->nominal_bpjs_kes + $allowance->allowance) * $getName->is_employee / 100 );
-                            $salary_kes = round($request->nominal_bpjs_kes + $allowance->allowance);
-                            $value_kes  = round($request->nominal_bpjs_kes);
+                            $max_bpjs = DB::table('master_limit_max_bpjs')->select('value')->where('bpjs_code','KSHT')->first();
+                             if ($max_bpjs !=null){
+                                    $ksht = $max_bpjs->value;
+                                }else{
+                                    $ksht = $request->nominal_bpjs_kes;
+                                }
+                            // $val_comp   = round(($request->nominal_bpjs_kes + $allowance->allowance) * $getName->is_company / 100 );
+                            // $val_emp    = round(($request->nominal_bpjs_kes + $allowance->allowance) * $getName->is_employee / 100 );
+                            // $salary_kes = round($request->nominal_bpjs_kes + $allowance->allowance);
+                            // $value_kes  = round($request->nominal_bpjs_kes);
+                             $val_comp   = round(($ksht + $allowance->allowance) * $getName->is_company / 100 );
+                            $val_emp    = round(($ksht + $allowance->allowance) * $getName->is_employee / 100 );
+                            $salary_kes = round($ksht + $allowance->allowance);
+                            $value_kes  = round($ksht);
                             $total      = round($val_comp + $val_emp);
                             $salary_tk_jp = 0;
                             $value_tk_jp = 0;
                         }else if($request->nominal_bpjs_jp > 0 & $getName->bpjs_code ==="JP"){
-                            $val_comp   = round(($request->nominal_bpjs_jp + $allowance->allowance) * $getName->is_company / 100 );
-                            $val_emp    = round(($request->nominal_bpjs_jp + $allowance->allowance) * $getName->is_employee / 100 );
-                            $salary_tk_jp = round($request->nominal_bpjs_jp + $allowance->allowance);
-                            $value_tk_jp = round($request->nominal_bpjs_jp);
+                            $max_bpjs = DB::table('master_limit_max_bpjs')->select('value')->where('bpjs_code','JP')->first();
+                             if ($max_bpjs !=null){
+                                    $jp = $max_bpjs->value;
+                                }else{
+                                    $jp = $request->nominal_bpjs_jp;
+                                }
+                            // $val_comp   = round(($request->nominal_bpjs_jp + $allowance->allowance) * $getName->is_company / 100 );
+                            // $val_emp    = round(($request->nominal_bpjs_jp + $allowance->allowance) * $getName->is_employee / 100 );
+                            // $salary_tk_jp = round($request->nominal_bpjs_jp + $allowance->allowance);
+                            // $value_tk_jp = round($request->nominal_bpjs_jp); 
+                                $val_comp   = round(($jp + $allowance->allowance) * $getName->is_company / 100 );
+                            $val_emp    = round(($jp + $allowance->allowance) * $getName->is_employee / 100 );
+                            $salary_tk_jp = round($jp + $allowance->allowance);
+                            $value_tk_jp = round($jp);
                             $total      = round($val_comp + $val_emp);
                             $value_kes  = 0;
                             $salary_kes = 0;
