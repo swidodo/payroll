@@ -686,8 +686,7 @@ class AttendanceEmployeeController extends Controller
         // dd($sheetData);
         foreach ($sheetData as $key => $value) {
             if ($key > 0) :
-               rtToAttendanceEmployeeLeave($dataEmployee, 'Present', null, null, $attendaceData);
-                $employeeId = employee::where('no_employee',$value[1])->first();
+               $employeeId = employee::where('no_employee',$value[1])->first();
                 if (ucwords($value[9]) == 'Present' || 
                     ucwords($value[9]) == 'Alpha' || 
                     ucwords($value[9]) == 'Permit' || 
