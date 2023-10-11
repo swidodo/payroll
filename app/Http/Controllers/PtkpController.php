@@ -43,7 +43,7 @@ class PtkpController extends Controller
          
        $save = PTKP::create([
                 'name'   => $request->name,
-                'code'   => $request->name,
+                'code'   => $request->code,
                 'value'  => $request->value,
             ]);
        if ($save){
