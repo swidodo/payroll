@@ -34,7 +34,7 @@ class PayrollController extends Controller
      */
     public function index()
     {
-        DB::table('attendance_employees')->delete();
+        // DB::table('attendance_employees')->delete();
         if (Auth::user()->can('manage payroll')) {
             if (Auth::user()->type != 'company') {
                 $user     = Auth::user();
