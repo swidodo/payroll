@@ -34,7 +34,7 @@ class PayrollController extends Controller
      */
     public function index()
     {
-        DB::table('bpjs_value')->delete();
+        // DB::table('bpjs_value')->delete()
         if (Auth::user()->can('manage payroll')) {
             if (Auth::user()->type != 'company') {
                 $user     = Auth::user();
