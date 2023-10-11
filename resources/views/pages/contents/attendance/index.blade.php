@@ -83,7 +83,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-2 mt-3 d-flex justify-content-start">
+                            <div class="col-3 mt-3 d-flex justify-content-start">
                                 <div class="row">
                                     <div class="col-auto ">
                                         <button type="button" class="btn btn-primary" id="btnSerach">search <span class="btn-inner--icon"><i class="la la-search"></i></span></button>
@@ -92,7 +92,7 @@
                             </div>
                             <div class="col-4 mt-3 d-flex justify-content-start">
                                 <div class="col-auto ">
-                                    <button type="button" class="btn btn-primary" id="btnAdjustment">Adjustment <span class="btn-inner--icon"><i class="la la-gear"></i></span></button>
+                                    <button type="button" class="btn btn-primary ms-1 mt-1" id="btnAdjustment">Adjustment <span class="btn-inner--icon"><i class="la la-gear"></i></span></button>
                                 </div>
                             </div>
                         </div>
@@ -110,7 +110,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Employee ID</th>
-                                        <th>Employee Name</th>
+                                        <th>Employee</th>
                                         <th>Shift</th>
                                         <th>Date</th>
                                         <th>Status</th>
@@ -376,30 +376,88 @@
                 });
         })
         $('#btnAdjustment').on('click',function(e){
-            $('#adjustment').modal('show')
+            var branchId = $('#branch').val();
+            $.ajax({
+                url : 'get-employee-adjustment',
+                type : 'post',
+                data : {branch_id : branchId },
+                dataType :'json',
+                beforeSend :function(){
+
+                },
+                success : function(respon){
+                    var html = '<option value="">-- employee --</option>';
+                    $.each(respon.employee, function(key,val){
+                        html += `<option value="`+val.id+`">`+val.name+`</option>`;
+                    })
+                    $('#employeAjustment').html(html)
+                    $('#adjustment').modal('show')
+                },
+                error :function(){
+                    alert('Someting went Wrong !')
+                }
+            })
         })
         $('#btnAddinput').on('click', function(e){
              e.preventDefault();
             $('#item1').append(`
                 <div class="items">
                 <hr />
-                <label>Date</label>
-                <input type="date" name="date" class="form-control mb-3">
-                <label>Clock In</label>
-                <input type="date" name="clock_in" class="form-control mb-3">
-                <label>Clock Out</label>
-                <input type="date" name="clock_out" class="form-control mb-3">
-                <label>Status</label>
-                <select class="form-control form-select mb-3">
-                    <option></option>
-                    <option></option>
-                    <option></option>
-                </select>
+                 <div class="row">
+                    <div class="col-md-6">
+                        <label>Date</label>
+                        <input type="date" name="date[]" class="form-control mb-3" required>
+                        <label>Status</label>
+                        <select class="form-control form-select mb-3" name="status[]" required>
+                            <option value="Present" selected>Present</option>
+                            <option value="Alpha">Alpha</option>
+                            <option value="Leave">Leave</option>
+                            <option value="Sick">Sick</option>
+                            <option value="Permit">Permit</option>
+                            <option value="Dispensation">Dispensation</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Clock In</label>
+                        <input type="time" name="clock_in[]" class="form-control mb-3" required>
+                        <label>Clock Out</label>
+                        <input type="time" name="clock_out[]" class="form-control mb-3" required>
+                   </div>
+                </div>
                 <hr /></div>`);
         })
         $('#formAjusment').on('submit',function(e){
              e.preventDefault();
-              $('.items').remove();
+            var type = $('#monthly').val();
+            var date = $('#dateId').val();
+            var branchId = $('#branch').val();
+            var data = $('#formAjusment').serialize();
+             $.ajax({
+                url :'ajdusment-attendance',
+                type : 'post',
+                data :data,
+                dataType :'json',
+                beforeSend : function(){
+
+                },
+                success : function(respon){
+                    loadData(type,date,branchId,employeeId="")
+                    if (respon.status == 'success'){
+                         $('#adjustment').modal('hide')
+                        $('#formAjusment')[0].reset();
+                        $('.items').remove();
+
+                    }
+                    swal.fire({
+                        icon : respon.status,
+                        text : respon.msg
+                    })
+                },
+                error: function(){
+
+                }
+             })
+              
         })
     </script>
 @endpush

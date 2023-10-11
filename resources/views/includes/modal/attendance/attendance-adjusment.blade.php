@@ -5,30 +5,36 @@
                     <div class="card-header mb-3"><h4>Ajustment Attendance</h4> </div>
                     <form id="formAjusment">
                          <label>Employee</label>
-                         <select class="form-control form-select mt-3 mb-3">
-                            <option></option>
-                            <option></option>
-                            <option></option>
+                         <select class="form-control form-select mt-3 mb-3 select" id="employeAjustment" name="employee_id" required>
+                            <option value="">--Pilih employee --</option>
+                            <option value="test">--employee --</option>
                         </select>
-                        <label>Date</label>
-                        <input type="date" name="date[]" class="form-control mb-3">
-                        <label>Clock In</label>
-                        <input type="date" name="clock_in[]" class="form-control mb-3">
-                        <label>Clock Out</label>
-                        <input type="date" name="clock_out[]" class="form-control mb-3">
-                        <label>Status</label>
-                        <select class="form-control form-select mb-3" name="status[]">
-                            <option value="Present" selected>Present</option>
-                            <option value="Alpha">Alpha</option>
-                            <option value="Leave">Leave</option>
-                            <option value="Sick">Sick</option>
-                            <option value="Permit">Permit</option>
-                            <option value="Dispensation">Dispensation</option>
-                        </select>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Date</label>
+                                <input type="date" name="date[]" class="form-control mb-3" required>
+                                <label>Status</label>
+                                <select class="form-control form-select mb-3" name="status[]" required>
+                                    <option value="Present" selected>Present</option>
+                                    <option value="Alpha">Alpha</option>
+                                    <option value="Leave">Leave</option>
+                                    <option value="Sick">Sick</option>
+                                    <option value="Permit">Permit</option>
+                                    <option value="Dispensation">Dispensation</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Clock In</label>
+                                <input type="time" name="clock_in[]" class="form-control mb-3" required>
+                                <label>Clock Out</label>
+                                <input type="time" name="clock_out[]" class="form-control mb-3" required>
+                            </div>
+                        </div>
+                        
                         <hr/>
                         <div id="item1"></div>
                         <button type="submit" class="btn btn-primary float-end">Save</button>
-                        <button type="button" class="btn btn-primary float-end me-1" id="btnAddinput">+</button>
+                        <button type="button" class="btn btn-warning float-end me-1" id="btnAddinput">+</button>
                     </form>
                 </div>
             </div>

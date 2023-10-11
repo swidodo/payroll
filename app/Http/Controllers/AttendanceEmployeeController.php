@@ -623,7 +623,48 @@ class AttendanceEmployeeController extends Controller
             return redirect()->route('dashboard');
         }
     }
-
+    public function get_employee_adustment(Request $request){
+        $branch = $request->branch_id;
+        $data['employee'] = Employee::select('id','name')->where('branch_id',$branch)->get();
+        return response()->json($data);
+    }
+    public function ajdustment(Request $request){
+        $i = 0;
+        $attendance = [];
+        foreach($request->date as $date){
+            $data = [
+                'employee_id' => $request->employee_id,
+                'date'        => $date,
+                'clock_in'    => $request->clock_in[$i],
+                'clock_out'   => $request->clock_out[$i],
+                'status'      => $request->status[$i],
+                'late'        => '00:00:00',
+                'early_leaving'=> '00:00:00',
+                'overtime'     => '00:00:00',
+                'total_rest'     => '00:00:00',
+                'created_at'  => date('Y-m-d h:m:s'),
+                'updated_at'  => date('Y-m-d h:m:s'),
+                'created_by'  => Auth::user()->id,
+            ];
+            $i++;
+            if (!in_array($data,$attendance)){
+                array_push($attendance, $data);
+            }
+        }
+       $insert =  AttendanceEmployee::insert($attendance);
+       if ($insert){
+            $res = [
+                'status' => 'success',
+                'msg'    => 'Data successfully ajdustmented !'
+            ];
+       }else{
+            $res = [
+                'status' => 'success',
+                'msg'    => 'Someting went Wrong !'
+            ];
+       }
+       return response()->json($res);
+    }
     public function importExcel()
     {
         $file_extension = request()->file('file-excel')->extension();

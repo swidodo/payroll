@@ -41,7 +41,7 @@
                                 <th>No</th>
                                 <th>Date</th>
                                 <th>Employee ID</th>
-                                <th>Employee Name</th>
+                                <th>Employee</th>
                                 <th>Type</th>
                                 <th>Amount</th>
                                 @if(Auth::user()->can('edit allowance') || Auth::user()->can('delete allowance'))

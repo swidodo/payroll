@@ -73,7 +73,6 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Employee Code</th>
                                 <th>Employee ID</th>
                                 <th>Employee</th>
                                 <th>Installment Name</th>
@@ -88,55 +87,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- @foreach ($loans as $loan)
-                                <tr>
-                                    <td>
-                                        {{$loan->employee->no_employee  ?? '-'}}
-                                    </td>
-                                    <td>
-                                        {{$loan->employee->name  ?? '-'}}
-                                    </td>
-                                    <td>
-                                        {{$loan->loan_type->name ?? '-'}}
-                                    </td>
-                                    <td>
-                                        {{formatRupiah($loan->amount)  ?? '-' }}
-                                    </td>
-                                    <td>
-                                        {{$loan->installment ?? '-'}}
-                                    </td>
-                                    <td>
-                                        {{$loan->number_of_installment ?? '-'}}
-                                    </td>
-                                    <td>
-                                        {{$loan->tenor ?? '-'}}
-                                    </td>
-                                    <td>
-                                        @if($loan->status=="ongoing")
-                                            <div class="status_badge badge bg-warning p-2 px-3 rounded">{{ ucwords($loan->status) ?? '-'}}</div>
-                                        @elseif($loan->status=="paid off")
-                                            <div class="status_badge badge bg-success p-2 px-3 rounded">{{ ucwords($loan->status) ?? '-'}}</div>
-                                        @endif
-                                    </td>
-                                    @canany(['edit loan', 'delete loan'])
-                                        <td class="text-end">
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    @can('edit loan')
-                                                        <a  data-url="{{route('loans.edit', $loan->id)}}" id="edit-loan" class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_loan"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                    @endcan
-                                                    @can('delete loan')
-                                                        <a id="delete-loan" data-url="{{route('loans.destroy', $loan->id)}}" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_loan"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                    @endcan
-
-                                                </div>
-                                            </div>
-                                        </td>
-                                    @endcanany
-                                </tr>
-                            @endforeach --}}
                         </tbody>
                     </table>
                 </div>
@@ -279,10 +229,6 @@
                         { data: 'no', name:'id', render: function (data, type, row, meta) {
                             return meta.row + meta.settings._iDisplayStart + 1;
                         }},
-                        {
-                            data: 'employee.employee_id',
-                            name: 'employee.employee_id'
-                        },
                         {
                             data: 'employee.no_employee',
                             name: 'employee.no_employee'

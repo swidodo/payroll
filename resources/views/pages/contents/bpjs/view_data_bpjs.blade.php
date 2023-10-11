@@ -38,9 +38,8 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Employee Code</th>
                                 <th>Employee ID</th>
-                                <th>Employee Name</th>
+                                <th>Employee</th>
                                 <th>Bpjs Kesehatan</th>
                                 <th>Bpjs Ketenagakerjaan</th>
                                 <th>Amount</th>
@@ -104,10 +103,6 @@ function getListMasterBpjs(branchId){
             { data: 'no', name:'id', render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }},
-            {
-                data: 'employee_code',
-                name: 'employee_code'
-            },
             {
                 data: 'employee_no',
                 name: 'employee_no'

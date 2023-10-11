@@ -73,7 +73,6 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Employee Code</th>
                                 <th>Employee ID</th>
                                 <th>Employee</th>
                                 <th>Nominal</th>
@@ -224,10 +223,6 @@
                         { data: 'no', name:'id', render: function (data, type, row, meta) {
                             return meta.row + meta.settings._iDisplayStart + 1;
                         }},
-                        {
-                            data: 'employee.employee_id',
-                            name: 'employee.employee_id'
-                        },
                         {
                             data: 'employee.no_employee',
                             name: 'employee.no_employee'
