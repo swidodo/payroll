@@ -26,7 +26,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Ptkp Code <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" name="code" id="edit-code" readonly>
+                                <input class="form-control" type="text" name="code" id="edit-code">
 
                                 <div class="text-danger" role="alert">
                                     <small><strong></strong></small>
