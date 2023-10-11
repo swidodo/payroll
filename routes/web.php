@@ -170,7 +170,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('edit-ptkp', [PtkpController::class, 'edit'])
                 ->name('edit-ptkp');
         Route::post('update-ptkp', [PtkpController::class, 'update'])
-                ->name('update-ptkp');
+                ->name('update-ptkp'); 
+        Route::post('save-ptkp', [PtkpController::class, 'store'])
+                ->name('save-ptkp');
         Route::resource('set-ptkp', SetPTKPController::class);
 
         // rekap pph21 new

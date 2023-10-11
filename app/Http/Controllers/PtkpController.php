@@ -15,46 +15,34 @@ class PtkpController extends Controller
     public function get_data(){
         $data = PTKP::all();
         return DataTables::of($data)
-                        ->addIndexColumn()
-                        ->addColumn('action', function($row){
-                            $btn ='';
-                            // if(Auth()->user()->canany('edit allowance')){
-                                $btn .= '<div class="dropdown dropdown-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">';
-                                // if(Auth()->user()->can('edit allowance')){
-                                    $btn .= '<a  data-id='.$row->id.' class="dropdown-item edit-ptkp" href="javascript:void(0)" ><i class="fa fa-pencil m-r-5"></i> Edit</a></div></div>';
-                                // }
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $btn ='';
+                    // if(Auth()->user()->canany('edit allowance')){
+                        $btn .= '<div class="dropdown dropdown-action">
+                        <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                        <div class="dropdown-menu dropdown-menu-right">';
+                        // if(Auth()->user()->can('edit allowance')){
+                            $btn .= '<a  data-id='.$row->id.' class="dropdown-item edit-ptkp" href="javascript:void(0)" ><i class="fa fa-pencil m-r-5"></i> Edit</a></div></div>';
+                        // }
 
-                                return $btn;
-                            })
-                        ->rawColumns(['action'])
-                        ->make(true);
+                        return $btn;
+                    })
+                ->rawColumns(['action'])
+                ->make(true);
     }
     public function store(Request $request){
-        $validate = $this->validate($request, [
-            'name'   => 'required|string',
-            'value'  => 'required|number',
-        ]);
-        if($validate == false){
-            return response()->json($validate);
-        }
-        $checked = PTKP::where('code',$request->employee_id)->count(); 
+        $checked = PTKP::where('code',$request->code)->count(); 
         if($checked > 0 ){
             $res = [
                 'status' => 'info',
-                'msg'    => 'Data already !'
+                'msg'    => 'Data PTKP already !'
             ];
             return response()->json($res);
         }
-         if($checked > 0 ){
-            $res = [
-                'status' => 'info',
-                'msg'    => 'Data already !'
-            ];
-            return response()->json($res);
-        }
+         
        $save = PTKP::create([
+                'name'   => $request->name,
                 'name'   => $request->name,
                 'value'  => $request->value,
             ]);
