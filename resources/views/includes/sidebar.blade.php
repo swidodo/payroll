@@ -245,9 +245,9 @@
                                 <li class="{{(request()->routeIs('roles*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('roles*')) ? 'active' : ''}}" href="{{route('roles.index')}}">Roles</a></li>
                             @endcanany
 
-                            @canany(['manage level approval', 'edit level approval'])
+                            <!-- @canany(['manage level approval', 'edit level approval'])
                                 <li class="{{(request()->routeIs('level-approvals*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('level-approvals*')) ? 'active' : ''}}" href="{{ route('level-approvals.index') }}">Set Level Approval </a></li>
-                            @endcanany
+                            @endcanany -->
 
                             @canany(['manage denda', 'create denda', 'edit denda', 'delete denda', 'manage bpjs kesehatan', 'create bpjs kesehatan', 'edit bpjs kesehatan', 'delete bpjs kesehatan', 'manage pph21', 'edit pph21', 'manage jht', 'create jht', 'manage jkk', 'create jkk', 'manage jkm', 'create jkm', 'manage jp', 'create jp', 'manage payslip code pin', 'manage payslip checklist attendance summary'])
                                 <li class="submenu" >
@@ -258,9 +258,9 @@
                                             <li class="{{(request()->routeIs('checklist-attendance-summary*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('checklist-attendance-summary*')) ? 'active' : ''}}" href="{{ route('checklist-attendance-summary.index') }}">Checklist Attendance Summary</a></li>
                                         @endcanany
 
-                                        @canany(['manage payslip code pin', 'edit payslip code pin'])
+                                       <!--  @canany(['manage payslip code pin', 'edit payslip code pin'])
                                             <li class="{{(request()->routeIs('payslip-code-pin*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('payslip-code-pin*')) ? 'active' : ''}}" href="{{ route('payslip-code-pin.index') }}">Payslip Code PIN</a></li>
-                                        @endcanany
+                                        @endcanany -->
 
                                         @canany(['manage denda', 'create denda', 'edit denda', 'delete denda'])
                                             <li class="{{(request()->routeIs('denda*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('denda*')) ? 'active' : ''}}" href="{{ route('denda.index') }}">Deduction</a></li>
