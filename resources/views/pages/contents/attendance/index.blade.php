@@ -178,6 +178,9 @@
             headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
         });
         $(document).ready(function () {
+            $('.employee-select').select2({
+                dropdownParent: $("#adjustment")
+            });
             $(document).on('click','.edit-attendance',function(){
                 var url = $(this).attr('data-url');
                 $.get(url,(data)=>{

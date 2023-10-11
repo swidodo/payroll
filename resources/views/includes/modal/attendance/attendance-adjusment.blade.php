@@ -3,16 +3,19 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="card-header mb-3"><h4>Ajustment Attendance</h4> </div>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                     <form id="formAjusment">
                          <label>Employee</label>
-                         <select class="form-control form-select mt-3 mb-3 select" id="employeAjustment" name="employee_id" required>
+                         <select class="form-control form-select mt-3 mb-3 employee-select" id="employeAjustment" name="employee_id" style="width:100%;" required>
                             <option value="">--Pilih employee --</option>
                             <option value="test">--employee --</option>
                         </select>
                         <div class="row">
                             <div class="col-md-6">
-                                <label>Date</label>
-                                <input type="date" name="date[]" class="form-control mb-3" required>
+                                <label class="mt-3">Date</label>
+                                <input type="date" name="date[]" class="form-control  mb-3" required>
                                 <label>Status</label>
                                 <select class="form-control form-select mb-3" name="status[]" required>
                                     <option value="Present" selected>Present</option>
@@ -24,7 +27,7 @@
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label>Clock In</label>
+                                <label class="mt-3">Clock In</label>
                                 <input type="time" name="clock_in[]" class="form-control mb-3" required>
                                 <label>Clock Out</label>
                                 <input type="time" name="clock_out[]" class="form-control mb-3" required>
