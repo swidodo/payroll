@@ -386,8 +386,11 @@
                 })
             })
 $(document).on('change','.editItemBpjs',function(){
-    if($(this).prop("checked",false)) {
-        alert('lost checklis data');
+    var id = $(this).attr('data-id');
+    var empId = $(this).attr('data-empId')
+
+    if(!($(this).prop("checked"))) {
+        alert();
     }
 })
             $('#update-payroll').on('submit',function(e){
