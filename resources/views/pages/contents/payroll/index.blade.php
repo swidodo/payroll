@@ -386,7 +386,7 @@
                 })
             })
 $(document).on('change','.editItemBpjs',function(){
-    if($(this).prop("checked")) {
+    if($(this).prop("checked",false)) {
         alert('lost checklis data');
     }
 })
