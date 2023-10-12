@@ -298,15 +298,17 @@
                             var html ='';
                             var totallowance = 0;
                             $.each(respon.valAllowance,function(key,val){
+                                var va = val.amount;
                                 html += `<tr>
                                 <td width="50%">`+val.allowance_type.name+`</td>
                                 <td>:</td>
-                                <td>`+val.amount+`</td>
+                                <td>`+ va.toLocaleString('en-US')+`</td>
                                 </tr>`;
                                 totallowance += val.amount; 
                             })
                             $('#allowanceDtl').html(html)
-                            $('#total').html(respon.payroll.amount + totallowance)
+                            var tot = respon.payroll.amount + totallowance;
+                            $('#total').html(tot.toLocaleString('en-US'))
                         }else{
                             $('#allowanceDtl').html('<tr><td>No Data</td></tr>')
                         }
