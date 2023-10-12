@@ -3,7 +3,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Create New Payroll</h5>
+                    <h5 class="modal-title">Create Set Payroll</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -115,16 +115,6 @@
                                             </div>
                                         @endforeach
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-6 mt-4">
-                                                <label>Nominal BPJS Kesahatan</label>
-                                                <input type="number" class="form-control" name="nominal_bpjs_kes" placeholder="0">
-                                            </div>
-                                            <div class="col-md-6 mt-4">
-                                                <label>Nominal BPJS TK JP</label>
-                                                <input type="number" class="form-control" name="nominal_bpjs_jp" placeholder="0">
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -144,7 +134,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Leave</h5>
+                    <h5 class="modal-title">Edit Set Payroll</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -212,16 +202,6 @@
                                             <div class="row mx-4">
                                                 <div class="row" id="bpjs-list">
 
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6 mt-4">
-                                                        <label>Nominal BPJS Kesahatan</label>
-                                                        <input type="number" class="form-control" name="nominal_bpjs_kes" placeholder="0" id="nominal_bpjs_kes_edit">
-                                                    </div>
-                                                    <div class="col-md-6 mt-4">
-                                                        <label>Nominal BPJS TK JP</label>
-                                                        <input type="number" class="form-control" name="nominal_bpjs_jp" placeholder="0" id="nominal_bpjs_jp_edit">
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

@@ -44,7 +44,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="table-responsive" style="overflow-x: visible">
+                <div class="table-responsive">
                     <table class="table table-striped custom-table" id="payrollData">
                         <thead>
                             <tr>
@@ -186,23 +186,6 @@
                         dropdownParent: $('#edit_reimburst')
                     });
                 }
-
-                    // $('body').on('click', '#edit-payroll', function () {
-                    //     const editUrl = $(this).data('url');
-
-                    //     $.get(editUrl, (data) => {
-                    //         $('#amount_edit').val(data.amount)
-
-                    //         $('#employee_id_edit option[value='+ data.employee_id +']').attr('selected','selected');
-                    //         $('#employee_id_edit').val(data.employee_id ? data.employee_id : 0).trigger('change');
-
-                    //         $('#payslip_type_id_edit option[value='+ data.payslip_type_id +']').attr('selected','selected');
-                    //         $('#payslip_type_id_edit').val(data.payslip_type_id ? data.payslip_type_id : 0).trigger('change');
-
-                    //         const urlNow = '{{ Request::url() }}'
-                    //         $('#edit-form-payroll').attr('action', urlNow + '/' + data.id);
-                    //     })
-                    // });
 
                 $('body').on('click', '#delete-payroll-btn', function(){
                     const deleteURL = $(this).data('url');
@@ -386,10 +369,6 @@
                                                     </div>
                                                 </div>`;
                         })
-
-
-
-
 
                         $('#employee_id_edit').html('<option value="'+respon.payroll.employee_id+'" selected>'+respon.payroll.employee.name+'</option>')
                         $('#payslip_type_id_edit').html(payslip)
