@@ -343,13 +343,13 @@ class PayrollController extends Controller
                         $max_bpjs = DB::table('master_limit_max_bpjs')->select('value')->where('bpjs_code',$getName->bpjs_code)->first();
                             
                         if ($getName->bpjs_code == 'KSHT' || $getName->bpjs_code == 'JP'){
-                            if ($max_bpjs->value <  $request->amount_salary){
-                                $val_comp   = round(($max_bpjs->value + $allowance->allowance) * $getName->is_company / 100 );
-                                $val_emp    = round(($max_bpjs->value + $allowance->allowance) * $getName->is_employee / 100 );
+                            if ($max_bpjs->value <  $salary_gross ){
+                                $val_comp   = round($max_bpjs->value * $getName->is_company / 100 );
+                                $val_emp    = round($max_bpjs->value * $getName->is_employee / 100 );
                                 $total      = round($val_comp + $val_emp);
                             }else{
-                                $val_comp   = round(($salary_gross + $allowance->allowance) * $getName->is_company / 100 );
-                                $val_emp    = round(($salary_gross + $allowance->allowance) * $getName->is_employee / 100 );
+                                $val_comp   = round($salary_gross * $getName->is_company / 100 );
+                                $val_emp    = round($salary_gross * $getName->is_employee / 100 );
                                 $total      = round($val_comp + $val_emp);
                             }
                         }else{
