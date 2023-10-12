@@ -386,10 +386,9 @@
                 })
             })
 $(document).on('change','.editItemBpjs',function(){
-    if($(this).prop("unchecked")) {
+    if($(this).prop("checked")) {
         alert('lost checklis data');
     }
-    alert();
 })
             $('#update-payroll').on('submit',function(e){
                 e.preventDefault();
