@@ -385,6 +385,11 @@
                     }
                 })
             })
+$(document).on('change',function(){
+    if($(this).is(":unchecked")) {
+        alert('lost checklis data');
+    }
+})
             $('#update-payroll').on('submit',function(e){
                 e.preventDefault();
                 var data = $('#update-payroll').serialize();
