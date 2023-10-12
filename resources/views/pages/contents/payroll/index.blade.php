@@ -386,14 +386,24 @@
                 })
             })
 $(document).on('change','.editItemBpjs',function(){
-    var id = $(this).attr('data-id');
+    var id = $(this).attr('data-code');
     var empId = $(this).attr('data-empId');
     var data = { 
         'id': id,
         'employee_id': empId
     }
     var bpjs =[];
-    if(!($(this).prop("checked"))) {
+    if(($(this).prop("checked"))) {
+
+        if (bpjs.includes(id)){
+            obj = {key : id }
+            delete obj["key"];
+        }
+        if (bpjs.includes(empId)){
+
+        }
+        
+    }else{
         bpjs.push(data)
     }
     console.log(bpjs);
