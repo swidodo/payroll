@@ -473,7 +473,7 @@
                                 <p class=" text-left m-0 " style="font-size: 11px;float: left">Attendance/Time Off Code  <br />
                                    Alpa : {{ ($a->alpa == null )? 0 : $a->alpa }},
                                    Izin : {{ ($a->izin == null )? 0 : $a->izin }},
-                                   Sakit: {{ (($a->sds == null )? 0 : $a->sds) + (($a->sts == null ) ? 0 : $a->sts) }},
+                                   Sakit: {{ (($a->sds == null )? 0 : $a->sds) }},
                                    Cuti : {{ ($a->cuti == null )? 0 : $a->cuti }},
                                    Dispensasi : {{ ($a->disp == null )? 0 : $a->disp }}
                                 </p>
