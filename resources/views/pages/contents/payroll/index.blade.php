@@ -338,7 +338,7 @@
                         var checked = (bpjsChecked.includes(val.id)) ? 'checked' : '';
                         bpjs += ` <div class="col-md-6">
                                         <div class="form-check col-md-6 mb-3">
-                                            <input class="form-check-input itemBpjs" data-id="`+val.id+`" type="checkbox" name="bpjs[]" value="`+val.id+`" id="flexCheckDefault" `+checked+`>
+                                            <input class="form-check-input itemBpjs editItemBpjs" data-id="`+val.id+`" type="checkbox" name="bpjs[]" value="`+val.id+`" id="flexCheckDefault" `+checked+`>
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 `+val.bpjs_name+`
                                             </label>
@@ -385,7 +385,7 @@
                     }
                 })
             })
-$(document).on('change',function(){
+$(document).on('change','.editItemBpjs',function(){
     if($(this).is(":unchecked")) {
         alert('lost checklis data');
     }
