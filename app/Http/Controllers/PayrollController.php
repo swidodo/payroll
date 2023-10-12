@@ -159,13 +159,11 @@ class PayrollController extends Controller
                     AllowanceFinance::Insert($data_array);
                 }
                 DB::commit();
-                $allowance = AllowanceFinance::select(DB::raw('sum(amount) as allowance'))
-                                              ->leftJoin('allowance_options','allowance_options.id','=','allowance_type_id')
-                                              ->where('employee_id',$request->employee_id)
+                $allowance = AllowanceFinance::select(DB::raw('sum(allowance_finances.amount) as allowance'))
+                                              ->leftJoin('allowance_options','allowance_options.id','=','allowance_finances.allowance_type_id')
+                                              ->where('allowance_finances.employee_id',$request->employee_id)
                                               ->where('allowance_options.pay_type','=','fixed')
                                               ->first();
-                $a = 0;
-
                 if(isset($request->bpjs)){
                     $array_bpjs = [];
                     $salary_gross = $request->amount_salary + $allowance->allowance;
