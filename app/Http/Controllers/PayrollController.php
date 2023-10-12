@@ -178,8 +178,8 @@ class PayrollController extends Controller
                                 $val_emp    = round($max_bpjs->value * $getName->is_employee / 100 );
                                 $total      = round($val_comp + $val_emp);
                             }else{
-                                $val_comp   = round(($salary_gross * $getName->is_company / 100 );
-                                $val_emp    = round(($salary_gross * $getName->is_employee / 100 );
+                                $val_comp   = round($salary_gross * $getName->is_company / 100 );
+                                $val_emp    = round($salary_gross * $getName->is_employee / 100 );
                                 $total      = round($val_comp + $val_emp);
                             }
                         }else{
