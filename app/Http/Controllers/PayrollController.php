@@ -27,11 +27,6 @@ use Illuminate\Support\Facades\Validator;
 
 class PayrollController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         // DB::table('attendance_employees')->delete();
@@ -94,17 +89,6 @@ class PayrollController extends Controller
                 ->make(true);
     }
 
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         if (Auth::user()->can('create payroll')) {
@@ -188,54 +172,23 @@ class PayrollController extends Controller
 
                     foreach($request->bpjs as $bpjs){
                         $getName     = Master_bpjs::where('id','=',$bpjs)->first();
-                        
-
-                        if($request->nominal_bpjs_kes > 0 && $getName->bpjs_code == 'KSHT'){
-                            $max_bpjs = DB::table('master_limit_max_bpjs')->select('value')->where('bpjs_code','KSHT')->first();
-                             if ($max_bpjs !=null){
-                                    $ksht = $max_bpjs->value;
-                                }else{
-                                    $ksht = $request->nominal_bpjs_kes;
-                                }
-                            // $val_comp   = round(($request->nominal_bpjs_kes + $allowance->allowance) * $getName->is_company / 100 );
-                            // $val_emp    = round(($request->nominal_bpjs_kes + $allowance->allowance) * $getName->is_employee / 100 );
-                            // $salary_kes = round($request->nominal_bpjs_kes + $allowance->allowance);
-                            // $value_kes  = round($request->nominal_bpjs_kes);
-                             $val_comp   = round(($ksht + $allowance->allowance) * $getName->is_company / 100 );
-                            $val_emp    = round(($ksht + $allowance->allowance) * $getName->is_employee / 100 );
-                            $salary_kes = round($ksht + $allowance->allowance);
-                            $value_kes  = round($ksht);
-                            $total      = round($val_comp + $val_emp);
-                            $salary_tk_jp = 0;
-                            $value_tk_jp = 0;
-                        }else if($request->nominal_bpjs_jp > 0 & $getName->bpjs_code ==="JP"){
-                            $max_bpjs = DB::table('master_limit_max_bpjs')->select('value')->where('bpjs_code','JP')->first();
-                             if ($max_bpjs !=null){
-                                    $jp = $max_bpjs->value;
-                                }else{
-                                    $jp = $request->nominal_bpjs_jp;
-                                }
-                            // $val_comp   = round(($request->nominal_bpjs_jp + $allowance->allowance) * $getName->is_company / 100 );
-                            // $val_emp    = round(($request->nominal_bpjs_jp + $allowance->allowance) * $getName->is_employee / 100 );
-                            // $salary_tk_jp = round($request->nominal_bpjs_jp + $allowance->allowance);
-                            // $value_tk_jp = round($request->nominal_bpjs_jp); 
-                                $val_comp   = round(($jp + $allowance->allowance) * $getName->is_company / 100 );
-                            $val_emp    = round(($jp + $allowance->allowance) * $getName->is_employee / 100 );
-                            $salary_tk_jp = round($jp + $allowance->allowance);
-                            $value_tk_jp = round($jp);
-                            $total      = round($val_comp + $val_emp);
-                            $value_kes  = 0;
-                            $salary_kes = 0;
+                        $max_bpjs = DB::table('master_limit_max_bpjs')->select('value')->where('bpjs_code',$getName->bpjs_code)->first();
+                            
+                        if ($getName->bpjs_code == 'KSHT' || $getName->bpjs_code == 'JP'){
+                            if ($max_bpjs->value <  $request->amount_salary){
+                                $val_comp   = round(($max_bpjs->value + $allowance->allowance) * $getName->is_company / 100 );
+                                $val_emp    = round(($max_bpjs->value + $allowance->allowance) * $getName->is_employee / 100 );
+                                $total      = round($val_comp + $val_emp);
+                            }else{
+                                $val_comp   = round(($salary_gross + $allowance->allowance) * $getName->is_company / 100 );
+                                $val_emp    = round(($salary_gross + $allowance->allowance) * $getName->is_employee / 100 );
+                                $total      = round($val_comp + $val_emp);
+                            }
                         }else{
                             $val_comp   = round($salary_gross * $getName->is_company / 100 );
                             $val_emp    = round($salary_gross * $getName->is_employee / 100 );
                             $total      = round($val_comp + $val_emp);
-                            $salary_kes = 0;
-                            $value_kes  = 0;
-                            $salary_tk_jp = 0;
-                            $value_tk_jp = 0;
                         }
-
                         $check = Bpjs_value::where('employee_id','=',$request->employee_id)->where('bpjs_id','=',$bpjs)->count();
                         if ($check <= 0){
                             $databpjs = [
@@ -245,10 +198,10 @@ class PayrollController extends Controller
                                 'is_employee'   => $val_emp,
                                 'is_total'      => $total,
                                 'salary_gross'  => $salary_gross,
-                                'salary_kes'    => $salary_kes,
-                                'salary_tk_jp'  => $salary_tk_jp,
-                                'value_kes'     => $value_kes,
-                                'value_tk_jp'   => $value_tk_jp,
+                                'salary_kes'    => 0,
+                                'salary_tk_jp'  => 0,
+                                'value_kes'     => 0,
+                                'value_tk_jp'   => 0,
                                 'employee_id'   => $request->employee_id,
                                 'branch_id'     => Auth::user()->branch_id,
                                 'created_at'    => date("Y-m-d H:i:s"),
