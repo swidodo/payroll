@@ -117,7 +117,7 @@ function getListMasterBpjs(branchId){
                                 var base = new String(data).substring(data.lastIndexOf('/') + 1);
                                     if(base.lastIndexOf(".") != -1)
                                         base = base.substring(0, base.lastIndexOf("."));
-                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                             }
             },
             {
@@ -126,7 +126,7 @@ function getListMasterBpjs(branchId){
                                 var base = new String(data).substring(data.lastIndexOf('/') + 1);
                                     if(base.lastIndexOf(".") != -1)
                                         base = base.substring(0, base.lastIndexOf("."));
-                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                             }
             },
             {
@@ -135,7 +135,7 @@ function getListMasterBpjs(branchId){
                                 var base = new String(data).substring(data.lastIndexOf('/') + 1);
                                     if(base.lastIndexOf(".") != -1)
                                         base = base.substring(0, base.lastIndexOf("."));
-                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                             }
             },
         ],

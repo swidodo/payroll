@@ -70,7 +70,7 @@
                                         {{$reimburstes->reimburst_type->name ?? '-'}}
                                     </td>
                                     <td>
-                                        {{formatRupiah($reimburstes->amount)  ?? '-' }}
+                                        {{ number_format($reimburstes->amount)  ?? '-' }}
                                     </td>
                                     @canany(['edit reimburst', 'delete reimburst'])
                                         <td class="text-end">

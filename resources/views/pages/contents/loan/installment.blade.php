@@ -243,11 +243,15 @@
                         },
                         {
                             data: 'amount',
-                            name: 'amount'
+                            render : function(data, type, row){
+                                return data.toLocaleString('en-US');
+                            }
                         },
                         {
                             data: 'installment',
-                            name: 'installment'
+                            render : function(data, type, row){
+                                return data.toLocaleString('en-US');
+                            }
                         },
                         {
                             data: 'number_of_installment',

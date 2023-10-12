@@ -233,7 +233,9 @@
                         },
                         {
                             data: 'amount',
-                            name: 'amount'
+                            render : function(data, type, row){
+                                return data.toLocaleString('en-US');
+                            }
                         },
                         {
                             data: 'status',

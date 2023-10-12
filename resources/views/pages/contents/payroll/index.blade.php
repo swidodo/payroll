@@ -288,12 +288,13 @@
 
                     },
                     success : function(respon){
+                        var bs = respon.payroll.amount;
                         $('#view_payroll').modal('show');
                         $('#empCode').html(respon.payroll.employee.employee_id)
                         $('#empID').html(respon.payroll.employee.no_employee)
                         $('#empName').html(respon.payroll.employee.name)
                         $('#empSalaryType').html(respon.payroll.payslip_type.name)
-                        $('#empSalary').html(respon.payroll.amount)
+                        $('#empSalary').html(bs.toLocaleString('en-US'))
                         if(respon.valAllowance.length > 0 ){
                             var html ='';
                             var totallowance = 0;
