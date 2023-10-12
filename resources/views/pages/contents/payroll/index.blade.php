@@ -240,7 +240,7 @@
                         {
                             data: 'salary',
                             render : function(data,type,row){
-                                return data.toFixed(5);
+                                return data.toLocaleString('en-US');
                             }
                         },
                         {
