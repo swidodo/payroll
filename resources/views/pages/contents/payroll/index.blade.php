@@ -389,6 +389,7 @@ $(document).on('change','.editItemBpjs',function(){
     if($(this).prop("unchecked")) {
         alert('lost checklis data');
     }
+    alert();
 })
             $('#update-payroll').on('submit',function(e){
                 e.preventDefault();
