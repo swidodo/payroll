@@ -338,7 +338,7 @@
                         var checked = (bpjsChecked.includes(val.id)) ? 'checked' : '';
                         bpjs += ` <div class="col-md-6">
                                         <div class="form-check col-md-6 mb-3">
-                                            <input class="form-check-input itemBpjs editItemBpjs" data-id="`+val.id+`" type="checkbox" name="bpjs[]" value="`+val.id+`" id="flexCheckDefault" `+checked+`>
+                                            <input class="form-check-input itemBpjs editItemBpjs" data-id="`+val.id+`" data-empId ="`+val.employee_id+`" type="checkbox" name="bpjs[]" value="`+val.id+`" id="flexCheckDefault" `+checked+`>
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 `+val.bpjs_name+`
                                             </label>
