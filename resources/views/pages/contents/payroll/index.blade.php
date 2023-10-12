@@ -388,10 +388,10 @@
 $(document).on('change','.editItemBpjs',function(){
     var id = $(this).attr('data-id');
     var empId = $(this).attr('data-empId');
-    var data = [
-        'id' => id,
-        'employee_id' => empId
-    ];
+    var data = { 
+        'id': id,
+        'employee_id': empId
+    }
     var bpjs =[];
     if(!($(this).prop("checked"))) {
         bpjs.push(data)
