@@ -239,7 +239,9 @@
                         },
                         {
                             data: 'salary',
-                            name: 'salary'
+                            render : function(data,type,row){
+                                return data.toFixed(5);
+                            }
                         },
                         {
                             data: 'action',

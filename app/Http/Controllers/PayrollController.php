@@ -561,10 +561,7 @@ class PayrollController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
     }
-    public function generate_slip(){
-
-    }
-    public function generate_slip_payroll($id){
+   public function generate_slip_payroll($id){
 
         $branch     = Auth::user()->branch_id;
         $data['salary'] = DB::table('take_home_pay')

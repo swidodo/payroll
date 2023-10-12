@@ -452,8 +452,8 @@
                         <tr style="padding: 0px; margin: 0px">
                             <td class="p-0 m-0" style="width: 58%; padding: 0px; margin: 0px"></td>
                             <td class="clearfix p-0 m-0" style="padding: 0px;padding-top: 8px; margin: 0px" >
-                                <p class=" text-left m-0 p-0" style="font-size: 11px;float: left;padding: 0px; margin: 0px">Actual Working Day</p>
-                                <p class=" text-right m-0 p-0" style="font-size: 11px;padding: 0px; margin: 0px">
+                                <p class=" text-left m-0 p-0" style="font-size: 11px;float: left;padding: 0px;  margin-bottom: -5px;">Actual Working Day</p>
+                                <p class="text-right m-0 p-0" style="font-size: 11px;padding: 0px; margin-bottom: -5px;">
                                     {{ ($a->work_actual_day == null )? 0 : $a->work_actual_day }}
                                 </p>
                             </td>
@@ -461,8 +461,8 @@
                         <tr >
                             <td class="p-0 m-0" style="width: 58%;"></td>
                             <td class="clearfix m-0 p-0" style="">
-                                <p class=" text-left m-0 p-0" style="font-size: 11px;float: left;">Schedule Working Day</p>
-                                <p class=" text-right m-0 p-0" style="font-size: 11px;">
+                                <p class=" text-left m-0 p-0" style="font-size: 11px;float: left; margin-bottom: -5px;">Schedule Working Day</p>
+                                <p class=" text-right m-0 p-0" style="font-size: 11px;  margin-bottom: -5px;">
                                     {{ ($a->work_day == null )? 0 : $a->work_day }}
                                 </p>
                             </td>
