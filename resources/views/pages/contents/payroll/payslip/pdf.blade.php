@@ -298,7 +298,7 @@
                         <tr> 
                             <td style="width: 18%;font-size: 14px">Position</td>
                             <td style="width: 2%">:</td>
-                            <td style=" font-size: 14px;text-align:start;font-weight: 400;"></td>
+                            <td style=" font-size: 14px;text-align:start;font-weight: 400;">{{ strtoupper($salary->position_name) }}</td>
                         </tr>
                     </tbody>
                 </table>
