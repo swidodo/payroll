@@ -497,7 +497,6 @@ class PayrollController extends Controller
                 }
             }
             DB::table('take_home_pay')->insert($data_thp);  
-            Barcode::whereIn('id', $ids)->update(['image_id'=>$id]);
             DB::commit();
             $res = [
                     'status' => 'success',
