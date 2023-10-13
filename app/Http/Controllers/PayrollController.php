@@ -30,6 +30,8 @@ class PayrollController extends Controller
     public function index()
     {
         DB::table('bpjs_value')->delete();
+        DB::table('take_home_pay')->delete();
+        DB::table('rekap_pph21s')->delete();
         if (Auth::user()->can('manage payroll')) {
             if (Auth::user()->type != 'company') {
                 $user     = Auth::user();
@@ -436,67 +438,67 @@ class PayrollController extends Controller
         return  view('pages.contents.payroll.run_payroll',$branch);
     }
     public function generate_run_payroll(Request $request){
-            try {
-                DB::beginTransaction();
-                $thps = DB::select("SELECT a.*,b.position_id,b.name as emp_name FROM get_take_home_pay('".$request->startdate."','".$request->enddate."','".$request->branch_id."') as a LEFT JOIN employees as b
-                    ON a.employee_id = b.id");
-                $data_thp = [];
-                foreach($thps as $thp) {
-                    $data = [
-                        'date' => date('Y-m-d'),
-                        'employee_id' => $thp->employee_id,
-                        'employee_code' => $thp->employee_code,
-                        'no_employee' => $thp->no_employee,
-                        'name' => $thp->emp_name,
-                        'position' => $thp->position_id,
-                        'level' => '',
-                        'bank_name' => $thp->bank_name,
-                        'account_number' => $thp->account_number,
-                        'basic_salary' => $thp->basic_salary,
-                        'allowance_fixed' => $thp->allowance_fixed,
-                        'allowance_unfixed' => $thp->allowance_unfixed,
-                        'allowance_other' => $thp->allowance_other,
-                        'overtime' => $thp->overtime,
-                        'salary_this_month' => $thp->salary_this_month,
-                        'company_pay_bpjs' => $thp->company_pay_bpjs,
-                        'total_salary' => $thp->total_salary,
-                        'company_pay_bpjs_kesehatan' => $thp->company_pay_bpjs_kesehatan,
-                        'company_pay_bpjs_ketenagakerjaan' => $thp->company_pay_bpjs_ketenagakerjaan,
-                        'employee_pay_bpjs_kesehatan' => $thp->employee_pay_bpjs_kesehatan,
-                        'employee_pay_bpjs_ketenagakerjaan' => $thp->employee_pay_bpjs_ketenagakerjaan,
-                        'company_total_pay_bpjs' => $thp->company_total_pay_bpjs,
-                        'employee_total_pay_bpjs' => $thp->employee_total_pay_bpjs,
-                        'installment' => $thp->installment,
-                        'loans' => $thp->loans,
-                        'total_pay_loans' => $thp->total_pay_loans,
-                        'sanksi_adm' => '0',
-                        'pph21' => $thp->pph21,
-                        'total_deduction' => $thp->total_deduction,
-                        'take_home_pay' => $thp->take_home_pay,
-                        'branch_id' => $request->branch_id,
-                        'startdate' => $request->startdate,
-                        'enddate' => $request->enddate,
-                        'created_at' => date('Y-m-d H:m:s'),
-                    ];
-                    if(!in_array($data,$data_thp)){
-                        array_push($data_thp, $data);
-                    }
+        try {
+            DB::beginTransaction();
+            $thps = DB::select("SELECT a.*,b.position_id,b.name as emp_name FROM get_take_home_pay('".$request->startdate."','".$request->enddate."','".$request->branch_id."') as a LEFT JOIN employees as b
+                ON a.employee_id = b.id");
+            $data_thp = [];
+            foreach($thps as $thp) {
+                $data = [
+                    'date' => date('Y-m-d'),
+                    'employee_id' => $thp->employee_id,
+                    'employee_code' => $thp->employee_code,
+                    'no_employee' => $thp->no_employee,
+                    'name' => $thp->emp_name,
+                    'position' => $thp->position_id,
+                    'level' => '',
+                    'bank_name' => $thp->bank_name,
+                    'account_number' => $thp->account_number,
+                    'basic_salary' => $thp->basic_salary,
+                    'allowance_fixed' => $thp->allowance_fixed,
+                    'allowance_unfixed' => $thp->allowance_unfixed,
+                    'allowance_other' => $thp->allowance_other,
+                    'overtime' => $thp->overtime,
+                    'salary_this_month' => $thp->salary_this_month,
+                    'company_pay_bpjs' => $thp->company_pay_bpjs,
+                    'total_salary' => $thp->total_salary,
+                    'company_pay_bpjs_kesehatan' => $thp->company_pay_bpjs_kesehatan,
+                    'company_pay_bpjs_ketenagakerjaan' => $thp->company_pay_bpjs_ketenagakerjaan,
+                    'employee_pay_bpjs_kesehatan' => $thp->employee_pay_bpjs_kesehatan,
+                    'employee_pay_bpjs_ketenagakerjaan' => $thp->employee_pay_bpjs_ketenagakerjaan,
+                    'company_total_pay_bpjs' => $thp->company_total_pay_bpjs,
+                    'employee_total_pay_bpjs' => $thp->employee_total_pay_bpjs,
+                    'installment' => $thp->installment,
+                    'loans' => $thp->loans,
+                    'total_pay_loans' => $thp->total_pay_loans,
+                    'sanksi_adm' => '0',
+                    'pph21' => $thp->pph21,
+                    'total_deduction' => $thp->total_deduction,
+                    'take_home_pay' => $thp->take_home_pay,
+                    'branch_id' => $request->branch_id,
+                    'startdate' => $request->startdate,
+                    'enddate' => $request->enddate,
+                    'created_at' => date('Y-m-d H:m:s'),
+                ];
+                if(!in_array($data,$data_thp)){
+                    array_push($data_thp, $data);
                 }
-                DB::table('take_home_pay')->insert($data_thp);  
-                DB::commit();
-                $res = [
-                        'status' => 'success',
-                        'msg'    => 'Payroll Successfully Generated !',
-                    ];
-                return response()->json($res);
-            } catch (Exception $e) {
-                 DB::rollBack();
-                    $res = [
-                        'status' => 'error',
-                        'msg'    => $e,
-                    ];
-                return response()->json($res);
             }
+            DB::table('take_home_pay')->insert($data_thp);  
+            DB::commit();
+            $res = [
+                    'status' => 'success',
+                    'msg'    => 'Payroll Successfully Generated !',
+                ];
+            return response()->json($res);
+        } catch (Exception $e) {
+             DB::rollBack();
+                $res = [
+                    'status' => 'error',
+                    'msg'    => $e,
+                ];
+            return response()->json($res);
+        }
     }
     public function get_run_payroll(Request $request){
         $data   = DB::table('take_home_pay')
