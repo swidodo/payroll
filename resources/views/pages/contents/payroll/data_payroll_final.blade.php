@@ -279,6 +279,7 @@
                             render : function(data,type,row){
                                 return data.toLocaleString('en-US');
                             }
+                        },
                         {
                             data: 'installment',
                             render : function(data,type,row){
