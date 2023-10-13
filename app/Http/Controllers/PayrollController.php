@@ -440,6 +440,18 @@ class PayrollController extends Controller
     public function generate_run_payroll(Request $request){
         try {
             DB::beginTransaction();
+            $tochecked = DB::table('take_home_pay')->select('*')
+                                    ->where('branch_id',$request->branch_id)
+                                    ->where('startdate','>=',$request->startdate)
+                                    ->where('enddate','<=',$request->enddate)
+                                    ->get();
+            if($tochecked !=null){
+                DB::table('take_home_pay')
+                ->where('startdate','>=',$request->startdate)
+                ->where('enddate','<=',$request->enddate)
+                ->delete();
+            }
+
             $thps = DB::select("SELECT a.*,b.position_id,b.name as emp_name FROM get_take_home_pay('".$request->startdate."','".$request->enddate."','".$request->branch_id."') as a LEFT JOIN employees as b
                 ON a.employee_id = b.id");
             $data_thp = [];
@@ -485,6 +497,7 @@ class PayrollController extends Controller
                 }
             }
             DB::table('take_home_pay')->insert($data_thp);  
+            Barcode::whereIn('id', $ids)->update(['image_id'=>$id]);
             DB::commit();
             $res = [
                     'status' => 'success',
@@ -495,7 +508,7 @@ class PayrollController extends Controller
              DB::rollBack();
                 $res = [
                     'status' => 'error',
-                    'msg'    => $e,
+                    'msg'    => 'Sameting went Wrong !',
                 ];
             return response()->json($res);
         }
