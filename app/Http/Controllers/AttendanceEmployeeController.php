@@ -686,7 +686,28 @@ class AttendanceEmployeeController extends Controller
         // dd($sheetData);
         foreach ($sheetData as $key => $value) {
             if ($key > 0) :
-               $employeeId = employee::where('no_employee',$value[1])->first();
+                $employeeId = employee::where('no_employee',$value[1])->first();
+                if ($employeeId != null ):
+                    $checked = AttendanceEmployee::where('employee_id',$employeeId->id)->where('date',$value[3])->first();
+                    if ($checked !=null):
+                        $data = [
+                            'employee_id'       => $employeeId->id,
+                            'date'              => $value[3],
+                            'clock_in'          => $value[4],
+                            'clock_out'         => $value[5],
+                            'late'              => $value[6],
+                            'early_leaving'     => $value[7],
+                            'overtime'          => $value[8],
+                            'status'            => ucwords($status),
+                            'total_rest'        => '00:00:00',
+                            'created_at'        => date('Y-m-d h:m:s'),
+                            'updated_at'        => date('Y-m-d h:m:s'),
+                            'created_by'        => Auth::user()->id,
+                        ];
+                        $status = AttendanceEmployee::update($dataEmployee);
+                        return true;
+                    endif;
+                endif;
                 if (ucwords($value[9]) == 'Present' || 
                     ucwords($value[9]) == 'Alpha' || 
                     ucwords($value[9]) == 'Permit' || 
