@@ -296,10 +296,6 @@
                                                         </a>
                                                     </li>
                                                 @endcanany
-
-                                                @canany(['manage pph21', 'create pph21', 'edit pph21', 'delete pph21'])
-                                                    <li class="{{(request()->routeIs('setting.pph21*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('setting.pph21*')) ? 'active' : ''}}" href="{{ route('setting.pph21.index') }}">PPH21</a></li>
-                                                @endcanany
                                             </ul>
                                         </li>
                                     </ul>
