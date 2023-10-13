@@ -417,7 +417,7 @@
                 <tbody>
                     <tr style="font-weight: 900">
                         <td class="fs-14" style="width: 36%">Sub Total</td>
-                        <td class=" fs-14 text-right pr-3">{{ formatRupiah($salary->basic_salary + $salary->overtime + $salary->allowance_fixed + $salary->allowance_unfixed + $salary->allowance_other)}}</td>
+                        <td class=" fs-14 text-right pr-3" style="padding-right: 20px">{{ formatRupiah($salary->basic_salary + $salary->overtime + $salary->allowance_fixed + $salary->allowance_unfixed + $salary->allowance_other)}}</td>
                         <td class=" fs-14" style="width: 39%; padding-left: 35px">Sub Total</td>
                         <td class=" fs-14 text-center" style="padding-right: 20px">{{ formatRupiah($salary->total_pay_loans + $salary->employee_pay_bpjs_kesehatan + $salary->employee_pay_bpjs_ketenagakerjaan + $salary->pph21) }}</td>
                     </tr>
@@ -452,8 +452,8 @@
                         <tr style="padding: 0px; margin: 0px">
                             <td class="p-0 m-0" style="width: 58%; padding: 0px; margin: 0px"></td>
                             <td class="clearfix p-0 m-0" style="padding: 0px;padding-top: 8px; margin: 0px" >
-                                <p class=" text-left m-0 p-0" style="font-size: 11px;float: left;padding: 0px;  margin-bottom: -15px;">Actual Working Day</p>
-                                <p class="text-right m-0 p-0" style="font-size: 11px;padding: 0px; margin-bottom: -15px;">
+                                <p class=" text-left m-0 p-0" style="font-size: 11px;float: left;padding: 0px;  margin-bottom: -8px;">Actual Working Day</p>
+                                <p class="text-right m-0 p-0" style="font-size: 11px;padding: 0px; margin-bottom: -8px;">
                                     {{ ($a->work_actual_day == null )? 0 : $a->work_actual_day }}
                                 </p>
                             </td>
@@ -461,8 +461,8 @@
                         <tr >
                             <td class="p-0 m-0" style="width: 58%;"></td>
                             <td class="clearfix m-0 p-0" style="">
-                                <p class=" text-left m-0 p-0" style="font-size: 11px;float: left; margin-bottom: -15px;">Schedule Working Day</p>
-                                <p class=" text-right m-0 p-0" style="font-size: 11px;  margin-bottom: -15px;">
+                                <p class=" text-left m-0 p-0" style="font-size: 11px;float: left; margin-bottom: -8px;">Schedule Working Day</p>
+                                <p class=" text-right m-0 p-0" style="font-size: 11px;  margin-bottom: -8px;">
                                     {{ ($a->work_day == null )? 0 : $a->work_day }}
                                 </p>
                             </td>
