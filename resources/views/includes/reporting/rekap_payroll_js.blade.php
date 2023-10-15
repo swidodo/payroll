@@ -109,8 +109,11 @@
                     }, 
                     {
                         data: 'pph21',
-                        render : function(data,type,row){
-                                return data.toLocaleString('en-US');
+                        render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                                    if(base.lastIndexOf(".") != -1)
+                                        base = base.substring(0, base.lastIndexOf("."));
+                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                             }
                     },
                     {
