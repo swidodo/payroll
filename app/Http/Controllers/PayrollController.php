@@ -501,34 +501,34 @@ class PayrollController extends Controller
                     ->where('status','ongoing')
                     ->where('to_char(updated_at::date,"yyyy-mm")','to_char(now()::date,"yyyy-mm")')
                     ->get();
-                    if ($loans !=null){
-                        foreach($loans as $empLoans){
-                            if ($empLoans->installment != 0 && $empLoans->number_of_installment < $empLoans->tenor){
-                                $numberInstallment = $empLoans->number_of_installment - 1;
-                                if ($empLoans->tenor == $numberInstallment){
-                                    $status = 'paid off';
-                                }else{
-                                    $status = 'ongoing';
-                                }
-                                $dataLoans = [
-                                    'status' =>  $status,
-                                    'number_of_installment' => $numberInstallment,
-                                    'updated_at' => date('Y-m-d h:m:s'),
-                                ];
-                                DB::table('loans')->where('employee_id',$empLoans->employee_id)
-                                                 ->where('installment','!=',0)
-                                                 ->update($dataLoans);
-                            }else if($empLoans->installment == 0){
-                                $dataLoans = [
-                                    'status' =>'paid off',
-                                    'updated_at' => date('Y-m-d h:m:s'),
-                                ];
-                                DB::table('loans')->where('employee_id',$empLoans->employee_id)
-                                                 ->where('installment','=',0)
-                                                 ->update($dataLoans);
-                            }
-                        }
-                    }
+                    // if ($loans !=null){
+                    //     foreach($loans as $empLoans){
+                    //         if ($empLoans->installment != 0 && $empLoans->number_of_installment < $empLoans->tenor){
+                    //             $numberInstallment = $empLoans->number_of_installment - 1;
+                    //             if ($empLoans->tenor == $numberInstallment){
+                    //                 $status = 'paid off';
+                    //             }else{
+                    //                 $status = 'ongoing';
+                    //             }
+                    //             $dataLoans = [
+                    //                 'status' =>  $status,
+                    //                 'number_of_installment' => $numberInstallment,
+                    //                 'updated_at' => date('Y-m-d h:m:s'),
+                    //             ];
+                    //             DB::table('loans')->where('employee_id',$empLoans->employee_id)
+                    //                              ->where('installment','!=',0)
+                    //                              ->update($dataLoans);
+                    //         }else if($empLoans->installment == 0){
+                    //             $dataLoans = [
+                    //                 'status' =>'paid off',
+                    //                 'updated_at' => date('Y-m-d h:m:s'),
+                    //             ];
+                    //             DB::table('loans')->where('employee_id',$empLoans->employee_id)
+                    //                              ->where('installment','=',0)
+                    //                              ->update($dataLoans);
+                    //         }
+                    //     }
+                    // }
             }
             DB::table('take_home_pay')->insert($data_thp);  
             DB::commit();
