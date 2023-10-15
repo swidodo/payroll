@@ -510,7 +510,7 @@ class PayrollController extends Controller
                     if ($loans !=null){
                         foreach($loans as $empLoans){
                             if ($empLoans->installment != 0 && $empLoans->number_of_installment < $empLoans->tenor){
-                                $numberInstallment = $empLoans->number_of_installment - 1;
+                                $numberInstallment = $empLoans->number_of_installment + 1;
                                 if ($empLoans->tenor == $numberInstallment){
                                     $status = 'paid off';
                                 }else{
