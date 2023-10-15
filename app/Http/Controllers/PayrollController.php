@@ -496,11 +496,8 @@ class PayrollController extends Controller
                     array_push($data_thp, $data);
                 }
                $loans =  DB::table('loans')
-                    ->select('loans.*')
-                    ->leftJoin('loan_options','loan_options.id','loans.loan_type_id')
-                    ->where('loans.employee_id',$thp->employee_id)
-                    ->where('loans.status','ongoing')
-                    ->whereRaw("to_char(loans.updated_at::date,'yyyy-mm')","to_char(now()::date,'yyyy-mm')")
+                    ->select("SELECT * from loans left join loan_options ON loans.loan_type_id = loan_options.id
+where to_char(loans.updated_at,'yyyy-mm') = to_char(now(),'yyyy-mm')")
                     ->get();
                     // if ($loans !=null){
                     //     foreach($loans as $empLoans){
