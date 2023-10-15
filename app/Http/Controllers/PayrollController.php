@@ -495,12 +495,12 @@ class PayrollController extends Controller
                 if(!in_array($data,$data_thp)){
                     array_push($data_thp, $data);
                 }
-               $loans =  DB::table('loans')
-                    ->leftJoin('loan_option','.loan_options.id','loans.loan_type_id')
-                    ->where('employee_id',$thp->employee_id)
-                    ->where('status','ongoing')
-                    ->where('to_char(updated_at::date,"yyyy-mm")','to_char(now()::date,"yyyy-mm")')
-                    ->get();
+               // $loans =  DB::table('loans')
+               //      ->leftJoin('loan_option','.loan_options.id','loans.loan_type_id')
+               //      ->where('employee_id',$thp->employee_id)
+               //      ->where('status','ongoing')
+               //      ->where('to_char(updated_at::date,"yyyy-mm")','to_char(now()::date,"yyyy-mm")')
+               //      ->get();
                     // if ($loans !=null){
                     //     foreach($loans as $empLoans){
                     //         if ($empLoans->installment != 0 && $empLoans->number_of_installment < $empLoans->tenor){
