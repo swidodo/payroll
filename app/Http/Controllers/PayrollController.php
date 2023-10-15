@@ -501,39 +501,40 @@ class PayrollController extends Controller
                     ->select('loans.*')
                     ->leftJoin('loan_options','loan_options.id','loans.loan_type_id')
                     ->where('loans.employee_id',$thp->employee_id)
+                    ->where('loans.branch_id',$request->branch_id)
                     ->where('loans.status','ongoing')
                     ->whereMonth('loans.updated_at', $month)
                     ->whereYear('loans.updated_at', $year)
                     ->get();
 
-                    // if ($loans !=null){
-                    //     foreach($loans as $empLoans){
-                    //         if ($empLoans->installment != 0 && $empLoans->number_of_installment < $empLoans->tenor){
-                    //             $numberInstallment = $empLoans->number_of_installment - 1;
-                    //             if ($empLoans->tenor == $numberInstallment){
-                    //                 $status = 'paid off';
-                    //             }else{
-                    //                 $status = 'ongoing';
-                    //             }
-                    //             $dataLoans = [
-                    //                 'status' =>  $status,
-                    //                 'number_of_installment' => $numberInstallment,
-                    //                 'updated_at' => date('Y-m-d h:m:s'),
-                    //             ];
-                    //             DB::table('loans')->where('employee_id',$empLoans->employee_id)
-                    //                              ->where('installment','!=',0)
-                    //                              ->update($dataLoans);
-                    //         }else if($empLoans->installment == 0){
-                    //             $dataLoans = [
-                    //                 'status' =>'paid off',
-                    //                 'updated_at' => date('Y-m-d h:m:s'),
-                    //             ];
-                    //             DB::table('loans')->where('employee_id',$empLoans->employee_id)
-                    //                              ->where('installment','=',0)
-                    //                              ->update($dataLoans);
-                    //         }
-                    //     }
-                    // }
+                    if ($loans !=null){
+                        foreach($loans as $empLoans){
+                            if ($empLoans->installment != 0 && $empLoans->number_of_installment < $empLoans->tenor){
+                                $numberInstallment = $empLoans->number_of_installment - 1;
+                                if ($empLoans->tenor == $numberInstallment){
+                                    $status = 'paid off';
+                                }else{
+                                    $status = 'ongoing';
+                                }
+                                $dataLoans = [
+                                    'status' =>  $status,
+                                    'number_of_installment' => $numberInstallment,
+                                    'updated_at' => date('Y-m-d h:m:s'),
+                                ];
+                                DB::table('loans')->where('employee_id',$empLoans->employee_id)
+                                                 ->where('installment','!=',0)
+                                                 ->update($dataLoans);
+                            }else if($empLoans->installment == 0){
+                                $dataLoans = [
+                                    'status' =>'paid off',
+                                    'updated_at' => date('Y-m-d h:m:s'),
+                                ];
+                                DB::table('loans')->where('employee_id',$empLoans->employee_id)
+                                                 ->where('installment','=',0)
+                                                 ->update($dataLoans);
+                            }
+                        }
+                    }
             }
             DB::table('take_home_pay')->insert($data_thp);  
             DB::commit();
