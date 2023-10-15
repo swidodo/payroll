@@ -14,7 +14,7 @@
             content: none;
         }
 
-        .dropdown-menu {
+        .dropdown-menu-chart {
             height: 200px !important;
             overflow-y: scroll;
             width: 1px !important;
@@ -163,7 +163,7 @@
                                     <div class="dropdown dropstart dropdown-action">
                                         <a href="#" class="action-icon dropdown-toggle filter_1"
                                             aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                        <ul class="dropdown-menu shadow-lg" id="result_filter_1">
+                                        <ul class="dropdown-menu dropdown-menu-chart shadow-lg" id="result_filter_1">
                                         </ul>
                                     </div>
                                 </div>
@@ -183,7 +183,7 @@
                                     <div class="dropdown dropstart dropdown-action">
                                         <a href="#" class="action-icon dropdown-toggle filter_2"
                                             aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                        <ul class="dropdown-menu shadow-lg" id="result_filter_2">
+                                        <ul class="dropdown-menu dropdown-menu-chart shadow-lg" id="result_filter_2">
                                         </ul>
                                     </div>
                                 </div>
@@ -203,7 +203,7 @@
                                     <div class="dropdown dropstart dropdown-action">
                                         <a href="#" class="action-icon dropdown-toggle filter_3"
                                             aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                        <ul class="dropdown-menu shadow-lg" id="result_filter_3">
+                                        <ul class="dropdown-menu dropdown-menu-chart shadow-lg" id="result_filter_3">
                                         </ul>
                                     </div>
                                 </div>
@@ -223,7 +223,7 @@
                                     <div class="dropdown dropstart dropdown-action">
                                         <a href="#" class="action-icon dropdown-toggle filter_4"
                                             aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                        <ul class="dropdown-menu shadow-lg" id="result_filter_4">
+                                        <ul class="dropdown-menu dropdown-menu-chart shadow-lg" id="result_filter_4">
                                         </ul>
                                     </div>
                                 </div>
