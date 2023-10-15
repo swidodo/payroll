@@ -502,6 +502,7 @@ class PayrollController extends Controller
                     ->where('loans.status','ongoing')
                     ->where("to_char(updated_at::date,'yyyy-mm')","to_char(now()::date,'yyyy-mm')")
                     ->get();
+                    dd($loans);
                     // if ($loans !=null){
                     //     foreach($loans as $empLoans){
                     //         if ($empLoans->installment != 0 && $empLoans->number_of_installment < $empLoans->tenor){
