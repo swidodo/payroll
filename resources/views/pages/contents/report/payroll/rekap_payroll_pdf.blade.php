@@ -71,11 +71,6 @@
             <th class="border-top border-left">Allowance Other</th>
             <th class="border-top border-left">Overtime</th>
             <th class="border-top border-left">Salary This Month</th>
-            <th class="border-top border-left">Company Pay BPJS</th>
-            <th class="border-top border-left">Total Salary</th>
-            <th class="border-top border-left">Company Pay BPJS Kesehatan</th>
-            <th class="border-top border-left">Company Pay BPJS Ketenagakerjaan</th>
-            <th class="border-top border-left">Total Company Pay BPJS</th> 
             <th class="border-top border-left">Employee Pay BPJS Kesehatan</th>
             <th class="border-top border-left">Employee Pay BPJS Ketenagakerjaan</th>
             <th class="border-top border-left">Total Employee Pay BPJS</th>
@@ -100,11 +95,6 @@
             <td align="right" class="border-top border-right border-bottom">{{ number_format($row->allowance_other) }}</td>
             <td align="right" class="border-top border-right border-left border-bottom">{{ number_format($row->overtime) }}</td>
             <td align="right" class="border-top border-right border-left border-bottom">{{ number_format($row->salary_this_month) }}</td>
-            <td align="right" class="border-top border-right border-left border-bottom">{{ number_format($row->company_pay_bpjs) }}</td>
-            <td align="right" class="border-top border-right border-left border-bottom">{{ number_format($row->total_salary) }}</td>
-            <td align="right" class="border-top border-right border-left border-bottom">{{ number_format($row->company_pay_bpjs_kesehatan) }}</td>
-            <td align="right" class="border-top border-right border-left border-bottom">{{ number_format($row->company_pay_bpjs_ketenagakerjaan) }}</td>
-            <td align="right" class="border-top border-right border-left border-bottom">{{ number_format($row->company_total_pay_bpjs) }}</td>
             <td align="right" class="border-top border-right border-left border-bottom">{{ number_format($row->employee_pay_bpjs_kesehatan) }}</td>
             <td align="right" class="border-top border-right border-left border-bottom">{{ number_format($row->employee_pay_bpjs_ketenagakerjaan) }}</td>
             <td align="right" class="border-top border-right border-left border-bottom">{{ number_format($row->employee_total_pay_bpjs) }}</td>
