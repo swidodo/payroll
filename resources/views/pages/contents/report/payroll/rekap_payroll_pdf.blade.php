@@ -105,7 +105,7 @@
             <td align="right" class="border-top border-right border-left border-bottom">{{ number_format($row->take_home_pay) }}</td>
         </tr>
         @endforeach
-        <tr><td  colspan="23" class="border-top border-right border-left border-bottom">Total</td><td class="border-top border-left border-right border-bottom" align="right">{{ number_format($total->total) }}</td></tr>
+        <tr><td  colspan="18" class="border-top border-right border-left border-bottom">Total</td><td class="border-top border-left border-right border-bottom" align="right">{{ number_format($total->total) }}</td></tr>
 
     </tbody>
 </table>
