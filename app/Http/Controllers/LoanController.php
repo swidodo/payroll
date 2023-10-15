@@ -210,6 +210,7 @@ class LoanController extends Controller
                 }
             } catch (Exception $e) {
                 DB::rollBack();
+                dd($e);
                 toast('Something went wrong.', 'error');
                 if ($request->loan == "installment"){
                     return redirect()->route('loan_cash_receipt');
