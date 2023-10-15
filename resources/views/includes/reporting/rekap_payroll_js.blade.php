@@ -43,59 +43,87 @@
                     },
                     {
                         data: 'basic_salary',
-                        name: 'basic_salary'
+                        render : function(data,type,row){
+                                return data.toLocaleString('en-US');
+                            }
                     },
                     {
                         data: 'allowance_fixed',
-                        name: 'allowance_fixed'
+                        render : function(data,type,row){
+                                return data.toLocaleString('en-US');
+                            }
                     },
                     {
                         data: 'allowance_unfixed',
-                        name: 'allowance_unfixed'
+                        render : function(data,type,row){
+                                return data.toLocaleString('en-US');
+                            }
                     },
                     {
                         data: 'allowance_other',
-                        name: 'allowance_other'
+                        render : function(data,type,row){
+                                return data.toLocaleString('en-US');
+                            }
                     },
                     {
                         data: 'overtime',
-                        name: 'overtime'
+                        render : function(data,type,row){
+                                return data.toLocaleString('en-US');
+                            }
                     },
                     {
                         data: 'salary_this_month',
-                        name: 'salary_this_month'
+                        render : function(data,type,row){
+                                return data.toLocaleString('en-US');
+                            }
                     }, 
                     {
                         data: 'employee_pay_bpjs_kesehatan',
-                        name: 'employee_pay_bpjs_kesehatan'
+                        render : function(data,type,row){
+                                return data.toLocaleString('en-US');
+                            }
                     },
                     {
                         data: 'employee_pay_bpjs_ketenagakerjaan',
-                        name: 'employee_pay_bpjs_ketenagakerjaan'
+                        render : function(data,type,row){
+                                return data.toLocaleString('en-US');
+                            }
                     },
                     {
                         data: 'employee_total_pay_bpjs',
-                        name: 'employee_total_pay_bpjs'
+                        render : function(data,type,row){
+                                return data.toLocaleString('en-US');
+                            }
                     }, 
                     {
                         data: 'installment',
-                        name: 'installment'
+                        render : function(data,type,row){
+                                return data.toLocaleString('en-US');
+                            }
                     }, 
                     {
                         data: 'loans',
-                        name: 'loans'
+                        render : function(data,type,row){
+                                return data.toLocaleString('en-US');
+                            }
                     }, 
                     {
                         data: 'pph21',
-                        name: 'pph21'
+                        render : function(data,type,row){
+                                return data.toLocaleString('en-US');
+                            }
                     },
                     {
                         data: 'total_deduction',
-                        name: 'total_deduction'
+                        render : function(data,type,row){
+                                return data.toLocaleString('en-US');
+                            }
                     },
                     {
                         data: 'take_home_pay',
-                        name: 'take_home_pay'
+                        render : function(data,type,row){
+                                return data.toLocaleString('en-US');
+                            }
                     }, 
                  ],
             });
