@@ -71,9 +71,9 @@
             <th class="border-top border-left">Allowance Other</th>
             <th class="border-top border-left">Overtime</th>
             <th class="border-top border-left">Salary This Month</th>
-            <th class="border-top border-left">Employee Pay BPJS Kesehatan</th>
-            <th class="border-top border-left">Employee Pay BPJS Ketenagakerjaan</th>
-            <th class="border-top border-left">Total Employee Pay BPJS</th>
+            <th class="border-top border-left">BPJS Kesehatan</th>
+            <th class="border-top border-left">BPJS Ketenagakerjaan</th>
+            <th class="border-top border-left">Total BPJS</th>
             <th class="border-top border-left">Installment</th>
             <th class="border-top border-left">Loans</th>
             <th class="border-top border-left">Pph21</th>
