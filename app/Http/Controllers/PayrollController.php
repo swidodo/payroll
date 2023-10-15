@@ -502,10 +502,10 @@ class PayrollController extends Controller
                     ->leftJoin('loan_options','loan_options.id','loans.loan_type_id')
                     ->where('loans.employee_id',$thp->employee_id)
                     ->where('loans.status','ongoing')
-                    ->whereMonth('updated_at', $month)
-                    ->whereYear('updated_at', $year)
+                    ->whereMonth('loans.updated_at', $month)
+                    ->whereYear('loans.updated_at', $year)
                     ->get();
-                    print_r($loans);die();
+
                     // if ($loans !=null){
                     //     foreach($loans as $empLoans){
                     //         if ($empLoans->installment != 0 && $empLoans->number_of_installment < $empLoans->tenor){
