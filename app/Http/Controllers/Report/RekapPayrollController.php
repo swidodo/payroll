@@ -38,7 +38,7 @@ class RekapPayrollController extends Controller
         $date = date('Ymd');
          if ($request->from_date !== null && $request->to_date !== null){
             $data = DB::table('take_home_pay')->select('take_home_pay.*','position.position_name')
-                                            ->leftJoin('position','position','=','take_home_pay.position_id')
+                                            ->leftJoin('position','position.id','=','take_home_pay.position')
                                             ->where('branch_id','=',$request->branch_id)
                                             ->where('startdate','>=',$request->from_date)
                                             ->where('enddate','<=',$request->to_date)
