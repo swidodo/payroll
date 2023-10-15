@@ -179,9 +179,6 @@ class LoanController extends Controller
                 $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
 
                 $loan    = new Loan();
-                if (Auth::user()->type == "employee") {
-                   
-               
                 if ($request->loan == "installment"){
                     $loan->employee_id          = $employee->id;
                     $loan->loan_type_id         = $request->loan_type_id;
