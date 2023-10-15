@@ -499,7 +499,7 @@ class PayrollController extends Controller
                     ->leftJoin('loan_option','.loan_options.id','loans.loan_type_id')
                     ->where('employee_id',$thp->employee_id)
                     ->where('status','ongoing')
-                    ->where(to_char('updated_at'::date,'yyyy-mm'),to_char(now()::date,'yyyy-mm'))
+                    ->where('to_char(updated_at::date,"yyyy-mm")','to_char(now()::date,"yyyy-mm")')
                     ->get();
                     if ($loans !=null){
                         foreach($loans as $empLoans){
