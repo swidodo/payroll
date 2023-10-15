@@ -30,8 +30,8 @@
                         name: 'name'
                     },
                     {
-                        data: 'position_name',
-                        name: 'position_name'
+                        data: 'position',
+                        name: 'position'
                     },
                     {
                         data: 'bank_name',
