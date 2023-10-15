@@ -85,7 +85,7 @@
         @foreach ($pay as $row)
         <tr>
             <td align="center" class="border-top border-left border-bottom">{{ $row->no_employee }}</td>
-            <td align="center" class="border-top border-left border-bottom">{{ $row->name }}</td>
+            <td align="left" class="border-top border-left border-bottom">{{ $row->name }}</td>
             <td align="center" class="border-top border-left border-bottom">{{ $row->position }}</td>
             <td align="center" class="border-top border-left border-bottom">{{ $row->bank_name }}</td>
             <td align="center" class="border-top border-left border-bottom">{{ $row->account_number }}</td>
