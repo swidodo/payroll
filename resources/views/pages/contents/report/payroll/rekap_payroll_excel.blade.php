@@ -46,7 +46,7 @@
             <td align="center" class="border-top border-left border-right border-bottom">{{ $row->take_home_pay }}</td>
         </tr>
         @endforeach
-        <tr><td  colspan="23" class="border-top border-left border-right border-bottom">Total</td><td class="border-top border-left border-right border-bottom">{{ $total->total }}</td></tr>
+        <tr><td  colspan="18" class="border-top border-left border-right border-bottom">Total</td><td class="border-top border-left border-right border-bottom">{{ $total->total }}</td></tr>
 
     </tbody>
 </table>
