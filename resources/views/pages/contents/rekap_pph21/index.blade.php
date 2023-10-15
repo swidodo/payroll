@@ -113,11 +113,7 @@ function getRekapPph21(branchId){
                 data: 'date',
                 name: 'date'
             },
-            {
-                data: 'employee->employee_id',
-                name: 'employee->employee_id'
-            },
-            {
+           {
                 data: 'employee->no_employee',
                 name: 'employee->no_employee'
             },
