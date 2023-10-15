@@ -495,8 +495,8 @@ class PayrollController extends Controller
                 if(!in_array($data,$data_thp)){
                     array_push($data_thp, $data);
                 }
-                $month = date('m',$request->enddate);
-                $year = date('Y',$request->enddate);
+                $month = date('m',strtotime($request->enddate));
+                $year = date('Y',strtotime($request->enddate));
                 $loans =  DB::table('loans')
                     ->select('loans.*')
                     ->leftJoin('loan_options','loan_options.id','loans.loan_type_id')
