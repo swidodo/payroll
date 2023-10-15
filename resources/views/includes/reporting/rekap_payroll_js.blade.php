@@ -66,26 +66,6 @@
                         name: 'salary_this_month'
                     }, 
                     {
-                        data: 'company_pay_bpjs',
-                        name: 'company_pay_bpjs'
-                    },
-                    {
-                        data: 'total_salary',
-                        name: 'total_salary'
-                    },
-                    {
-                        data: 'company_pay_bpjs_kesehatan',
-                        name: 'company_pay_bpjs_kesehatan'
-                    },
-                    {
-                        data: 'company_pay_bpjs_ketenagakerjaan',
-                        name: 'company_pay_bpjs_ketenagakerjaan'
-                    },
-                    {
-                        data: 'company_total_pay_bpjs',
-                        name: 'company_total_pay_bpjs'
-                    },
-                    {
                         data: 'employee_pay_bpjs_kesehatan',
                         name: 'employee_pay_bpjs_kesehatan'
                     },

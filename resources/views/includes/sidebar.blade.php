@@ -71,12 +71,12 @@
                                 <li class="{{(request()->routeIs('timesheets*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('timesheets*')) ? 'active' : ''}}" href="{{ route('timesheets.index') }}">Timesheet</a></li>
                             @endcanany
 
-                            @canany(['show employee request'])
+                            <!-- @canany(['show employee request'])
                                 <li class=" {{(request()->routeIs('employee.request')) ? 'active' : ''}}">
                                     <a class="{{(request()->routeIs('employee.request*')) ? 'active' : ''}}" href="{{route('employee.request')}}"> Employee Request
                                 </a>
                                 </li>
-                            @endcanany
+                            @endcanany -->
 
                             @canany(['manage on duty', 'create on duty', 'edit on duty', 'delete on duty'])
                                 <li class="{{(request()->routeIs('travels*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('travels*')) ? 'active' : ''}}" href="{{ route('travels.index') }}">On Duty</a></li>
@@ -103,13 +103,13 @@
                                     </ul>
                                 </li>
                             @endcanany
-
+                             @canany(['manage company holiday', 'create company holiday'])
+                                <li class="{{(request()->routeIs('request-employee*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('request-employee*')) ? 'active' : ''}}" href="{{ route('request-employee') }}">Request</a></li>
+                            @endcanany 
 
                         </ul>
                     </li>
                 @endcanany
-
-
 
                 @canany(['manage performance review', 'create performance review', 'edit performance review', 'delete performance review', 'manage project', 'create project'])
                     <li class="submenu">
@@ -152,12 +152,6 @@
                                         @endcanany
                                         @canany(['manage loan', 'create loan'])
                                             <li class="{{(request()->routeIs('loans*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('loans*')) ? 'active' : ''}}" href="{{route('loan_cash_receipt')}}">Installment</a></li>
-                                        @endcanany
-                                        @canany(['manage bpjs kesehatan', 'create bpjs kesehatan', 'edit bpjs kesehatan', 'delete bpjs kesehatan'])
-                                            <li class="{{(request()->routeIs('get-data-bpjs*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('get-data-bpjs*')) ? 'active' : ''}}" href="{{ route('get-data-bpjs') }}">BPJS</a></li>
-                                        @endcanany
-                                        @canany(['manage pph21', 'create pph21', 'edit pph21', 'delete pph21'])
-                                            <li class="{{(request()->routeIs('get-rekap-pph')) ? 'active' : ''}}"><a class="{{(request()->routeIs('get-rekap-pph')) ? 'active' : ''}}" href="{{ route('get-rekap-pph') }}">PPH21</a></li>
                                         @endcanany
 
                                     </ul>
@@ -227,6 +221,12 @@
                         @canany(['manage payroll'])
                             <li class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}" href="{{ route('rekap-payroll') }}">Rekap Payroll</a></li>
                         @endcanany
+                         @canany(['manage bpjs kesehatan', 'create bpjs kesehatan', 'edit bpjs kesehatan', 'delete bpjs kesehatan'])
+                            <li class="{{(request()->routeIs('get-data-bpjs*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('get-data-bpjs*')) ? 'active' : ''}}" href="{{ route('get-data-bpjs') }}">BPJS</a></li>
+                        @endcanany
+                        @canany(['manage pph21', 'create pph21', 'edit pph21', 'delete pph21'])
+                            <li class="{{(request()->routeIs('get-rekap-pph')) ? 'active' : ''}}"><a class="{{(request()->routeIs('get-rekap-pph')) ? 'active' : ''}}" href="{{ route('get-rekap-pph') }}">PPH21</a></li>
+                        @endcanany
 
                         </ul>
                     </li>
@@ -261,10 +261,10 @@
                                        <!--  @canany(['manage payslip code pin', 'edit payslip code pin'])
                                             <li class="{{(request()->routeIs('payslip-code-pin*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('payslip-code-pin*')) ? 'active' : ''}}" href="{{ route('payslip-code-pin.index') }}">Payslip Code PIN</a></li>
                                         @endcanany -->
-
-                                        @canany(['manage denda', 'create denda', 'edit denda', 'delete denda'])
+                                        <!-- denda sementara di hidden -->
+                                       <!--  @canany(['manage denda', 'create denda', 'edit denda', 'delete denda'])
                                             <li class="{{(request()->routeIs('denda*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('denda*')) ? 'active' : ''}}" href="{{ route('denda.index') }}">Deduction</a></li>
-                                        @endcanany
+                                        @endcanany -->
 
                                         @canany(['manage jht', 'create jht', 'manage jkk', 'create jkk', 'manage jkm', 'create jkm', 'manage jp', 'create jp'])
                                         <li class="submenu" >

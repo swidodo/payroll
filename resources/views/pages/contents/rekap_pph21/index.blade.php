@@ -29,7 +29,6 @@
                             <tr>
                                 <th>No</th>
                                 <th>Date</th>
-                                <th>Employee Code</th>
                                 <th>Employee ID</th>
                                 <th>Employee Name</th>
                                 <th>Basic Salary</th>
@@ -38,10 +37,10 @@
                                 <th>Allowance other</th>
                                 <th>Overtime</th>
                                 <th>Salary In Month</th>
-                                <th>Company Payed Bpjs</th>
+                                <th>Company Bpjs</th>
                                 <th>Salary Brutto</th>
                                 <th>Position Allowance</th>
-                                <th>Employee Payed Bpjs</th>
+                                <th>Employee Bpjs</th>
                                 <th>Total Subtraction</th>
                                 <th>Salary Netto</th>
                                 <th>Salary 1 Year</th>

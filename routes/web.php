@@ -51,6 +51,9 @@ use App\Http\Controllers\PositionController;
 // rotate
 use App\Http\Controllers\RotateController;
 use App\Http\Controllers\CompanyController;
+// request && approval
+use App\Http\Controllers\RequestController;
+
 // report
 use App\Http\Controllers\HRM\EmployeeReportController;
 use App\Http\Controllers\Report\ReportRecapAttendanceController;
@@ -379,6 +382,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('get-rekap-payroll',[RekapPayrollController::class,'get_rekap_payroll'])->name('get-rekap-payroll');
         Route::get('rekap-payroll-pdf',[RekapPayrollController::class,'cetak_pdf'])->name('rekap-payroll-pdf');
         Route::get('rekap-payroll-pdf',[RekapPayrollController::class,'cetak_pdf'])->name('rekap-payroll-pdf');
+        Route::get('request-employee',[RequestController::class,'index'])->name('request-employee');
     });
 
 

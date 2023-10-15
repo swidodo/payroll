@@ -18,8 +18,7 @@ class DayTypeController extends Controller
     public function index()
     {
         if (Auth::user()->can('manage day type')) {
-            $dayTypes = DayType::where('created_by', '=', Auth::user()->creatorId())->get();
-
+            $dayTypes = DayType::where('created_by', '=', Auth::user()->branch_id())->get();
             return view('pages.contents.day-type.index', compact('dayTypes'));
         } else {
             toast('Permission denied.', 'error');
@@ -46,7 +45,6 @@ class DayTypeController extends Controller
     public function store(Request $request)
     {
         if (Auth::user()->can('create day type')) {
-
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -58,9 +56,10 @@ class DayTypeController extends Controller
                 return redirect()->back()->with('errors', $validator->messages());
             }
 
-            $dayType             = new DayType();
-            $dayType->name       = $request->name;
-            $dayType->created_by = Auth::user()->creatorId();
+            $dayType                = new DayType();
+            $dayType->name          = $request->name;
+            $dayType->created_by    = Auth::user()->creatorId();
+            $dayType->branch_id     = Auth::user()->baranch_id();
             $dayType->save();
 
             return redirect()->route('day-type.index')->with('success', 'Day Type ' . $dayType->name . ' successfully created.');

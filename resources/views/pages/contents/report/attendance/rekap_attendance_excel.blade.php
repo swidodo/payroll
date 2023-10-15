@@ -6,11 +6,10 @@
             <th class="border-top border-left">Work Day</th>
             <th class="border-top border-left">Work Day Actual</th>
             <th class="border-top border-left">Alpha</th>
-            <th class="border-top border-left">Ijin</th>
-            <th class="border-top border-left">Sakit Dengan Surat</th>
-            <th class="border-top border-left">Sakit Tanpa Surat</th>
-            <th class="border-top border-left">Cuti</th>
-            <th class="border-top border-left">Dispensasi</th>
+            <th class="border-top border-left">Permit</th>
+            <th class="border-top border-left">Sick</th>
+            <th class="border-top border-left">Leave</th>
+            <th class="border-top border-left">Dispensation</th>
         </tr>
     </thead>
     <tbody>
@@ -23,8 +22,7 @@
             <td align="center" class="border-top border-left border-bottom">{{ $row->alpha }}</td>
             <td align="center" class="border-top border-left border-bottom">{{ $row->izn }}</td>
             <td align="center" class="border-top border-left border-bottom">{{ $row->sds }}</td>
-            <td align="center" class="border-top border-left border-bottom">{{ $row->sts }}</td>
-            <td align="center" class="border-top border-left border-bottom">{{ $row->cuti }}</td>
+           <td align="center" class="border-top border-left border-bottom">{{ $row->cuti }}</td>
             <td align="center" class="border-top border-left border-right border-bottom">{{ $row->disp }}</td>
         </tr>
         @endforeach

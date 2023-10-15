@@ -72,11 +72,6 @@
                                     <th>Allowance Other</th>
                                     <th>Overtime</th>
                                     <th>Salary This Month</th>
-                                    <th>Company Pay BPJS</th>
-                                    <th>Total Salary</th>
-                                    <th>Company Pay BPJS Kesehatan</th>
-                                    <th>Company Pay BPJS Ketenagakerjaan</th>
-                                    <th>Total Company Pay BPJS</th> 
                                     <th>Employee Pay BPJS Kesehatan</th>
                                     <th>Employee Pay BPJS Ketenagakerjaan</th>
                                     <th>Total Employee Pay BPJS</th>
