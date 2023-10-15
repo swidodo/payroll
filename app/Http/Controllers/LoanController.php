@@ -179,8 +179,12 @@ class LoanController extends Controller
                 $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
 
                 $loan    = new Loan();
+                if (Auth::user()->type == "employee") {
+                    $loan->employee_id = $employee->id;
+                } else {
+                    $loan->employee_id = $request->employee_id;
+                }
                 if ($request->loan == "installment"){
-                    $loan->employee_id          = $employee->id;
                     $loan->loan_type_id         = $request->loan_type_id;
                     $loan->amount               = $request->amount;
                     $loan->installment          = $request->installment;
@@ -190,7 +194,6 @@ class LoanController extends Controller
                     $loan->branch_id            = $request->branch_id;
                     $loan->created_by           = Auth::user()->creatorId();
                 }else{
-                    $loan->employee_id          = $employee->id;
                     $loan->loan_type_id         = $request->loan_type_id;
                     $loan->amount               = $request->amount;
                     $loan->installment          = 0;
@@ -210,7 +213,6 @@ class LoanController extends Controller
                 }
             } catch (Exception $e) {
                 DB::rollBack();
-                dd($e);
                 toast('Something went wrong.', 'error');
                 if ($request->loan == "installment"){
                     return redirect()->route('loan_cash_receipt');
