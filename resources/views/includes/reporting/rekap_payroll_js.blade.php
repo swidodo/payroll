@@ -43,68 +43,101 @@
                     },
                     {
                         data: 'basic_salary',
-                        render : function(data,type,row){
-                                return data.toLocaleString('en-US');
+                        render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                                    if(base.lastIndexOf(".") != -1)
+                                        base = base.substring(0, base.lastIndexOf("."));
+                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                             }
                     },
                     {
                         data: 'allowance_fixed',
-                        render : function(data,type,row){
-                                return data.toLocaleString('en-US');
+                        render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                                    if(base.lastIndexOf(".") != -1)
+                                        base = base.substring(0, base.lastIndexOf("."));
+                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                             }
                     },
                     {
                         data: 'allowance_unfixed',
-                        render : function(data,type,row){
-                                return data.toLocaleString('en-US');
+                        render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                                    if(base.lastIndexOf(".") != -1)
+                                        base = base.substring(0, base.lastIndexOf("."));
+                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                             }
                     },
                     {
                         data: 'allowance_other',
-                        render : function(data,type,row){
-                                return data.toLocaleString('en-US');
+                        render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                                    if(base.lastIndexOf(".") != -1)
+                                        base = base.substring(0, base.lastIndexOf("."));
+                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                             }
                     },
                     {
                         data: 'overtime',
-                        render : function(data,type,row){
-                                return data.toLocaleString('en-US');
+                        render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                                    if(base.lastIndexOf(".") != -1)
+                                        base = base.substring(0, base.lastIndexOf("."));
+                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                             }
                     },
                     {
                         data: 'salary_this_month',
-                        render : function(data,type,row){
-                                return data.toLocaleString('en-US');
+                        render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                                    if(base.lastIndexOf(".") != -1)
+                                        base = base.substring(0, base.lastIndexOf("."));
+                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                             }
                     }, 
                     {
                         data: 'employee_pay_bpjs_kesehatan',
-                        render : function(data,type,row){
-                                return data.toLocaleString('en-US');
+                        render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                                    if(base.lastIndexOf(".") != -1)
+                                        base = base.substring(0, base.lastIndexOf("."));
+                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                             }
                     },
                     {
                         data: 'employee_pay_bpjs_ketenagakerjaan',
-                        render : function(data,type,row){
-                                return data.toLocaleString('en-US');
+                        render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                                    if(base.lastIndexOf(".") != -1)
+                                        base = base.substring(0, base.lastIndexOf("."));
+                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                             }
                     },
                     {
                         data: 'employee_total_pay_bpjs',
-                        render : function(data,type,row){
-                                return data.toLocaleString('en-US');
+                        render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                                    if(base.lastIndexOf(".") != -1)
+                                        base = base.substring(0, base.lastIndexOf("."));
+                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                             }
                     }, 
                     {
                         data: 'installment',
-                        render : function(data,type,row){
-                                return data.toLocaleString('en-US');
+                        render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                                    if(base.lastIndexOf(".") != -1)
+                                        base = base.substring(0, base.lastIndexOf("."));
+                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                             }
                     }, 
                     {
                         data: 'loans',
-                        render : function(data,type,row){
-                                return data.toLocaleString('en-US');
+                        render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                                    if(base.lastIndexOf(".") != -1)
+                                        base = base.substring(0, base.lastIndexOf("."));
+                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                             }
                     }, 
                     {
@@ -118,14 +151,20 @@
                     },
                     {
                         data: 'total_deduction',
-                        render : function(data,type,row){
-                                return data.toLocaleString('en-US');
+                        render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                                    if(base.lastIndexOf(".") != -1)
+                                        base = base.substring(0, base.lastIndexOf("."));
+                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                             }
                     },
                     {
                         data: 'take_home_pay',
-                        render : function(data,type,row){
-                                return data.toLocaleString('en-US');
+                        render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                                    if(base.lastIndexOf(".") != -1)
+                                        base = base.substring(0, base.lastIndexOf("."));
+                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                             }
                     }, 
                  ],
