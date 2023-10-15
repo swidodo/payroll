@@ -57,7 +57,7 @@
     </tr>
 </table>
 <hr />
-<table class="table table-bordered">
+<table class="table table-bordered" width="100%">
     <thead>
         <tr style="background:#cccccc;">
             <th class="border-top border-left">Employee ID</th>
