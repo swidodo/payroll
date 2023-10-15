@@ -496,7 +496,7 @@ class PayrollController extends Controller
                     array_push($data_thp, $data);
                 }
                $loans =  DB::table('loans')
-                    ->leftJoin('loan_option','.loan_options.id','loans.loan_type_id')
+                    ->leftJoin('loan_options','.loan_options.id','loans.loan_type_id')
                     ->where('employee_id',$thp->employee_id)
                     ->where('status','ongoing')
                     // ->where('to_char(updated_at::date,"yyyy-mm")','to_char(now()::date,"yyyy-mm")')
