@@ -555,7 +555,7 @@ class PayrollController extends Controller
                         'pay_bpjs_employee'=> $pph21->pay_bpjs_employee, 
                         'total_pengurangan'=> $pph21->total_pengurangan,
                         'salary_netto'=> $pph21->salary_netto,
-                        'salary_1_year'=> $pph21->salary_1_year, 
+                        'salary_1_tahun'=> $pph21->salary_1_year, 
                         'ptkp_1_tahun'=> $pph21->ptkp_1_tahun,
                         'pph21_terhutang_1_tahun'=> $pph21->pph21_terhutang_1_tahun, 
                         'pph21_terhutang_1_bulan'=> $pph21->pph21_terhutang_1_bulan,
