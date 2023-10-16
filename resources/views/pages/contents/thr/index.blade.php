@@ -19,7 +19,7 @@
                     </ul>
                 </div>
                 <div class="col-auto float-end ms-auto">
-                    <a href="javascript:void(0);" class="btn add-btn" id="add_position"><i class="fa fa-plus"></i>THR</a>
+                    <a href="javascript:void(0);" class="btn add-btn" id="add_position"><i class="fa fa-plus"></i>Generate THR</a>
                 </div>
             </div>
         </div>

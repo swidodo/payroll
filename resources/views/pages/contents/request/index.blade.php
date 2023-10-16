@@ -19,7 +19,7 @@
                     </ul>
                 </div>
                 <div class="col-auto float-end ms-auto">
-                    <a href="javascript:void(0);" class="btn add-btn" id="add_position"><i class="fa fa-plus"></i>Request Employee</a>
+                    <a href="{{route('add-request')}}" class="btn add-btn" id="add_position"><i class="fa fa-plus"></i>Request</a>
                 </div>
             </div>
         </div>

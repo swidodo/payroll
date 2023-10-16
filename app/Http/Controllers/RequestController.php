@@ -31,4 +31,7 @@ class RequestController extends Controller
     public function get_data(){
         // $data = DB::()
     }
+    public function create(){
+        return view('pages.contents.request.create');
+    }
 }
