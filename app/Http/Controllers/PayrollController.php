@@ -439,7 +439,7 @@ class PayrollController extends Controller
     }
     public function generate_run_payroll(Request $request){
         try {
-            DB::beginTransaction();
+            // DB::beginTransaction();
             $tochecked = DB::table('take_home_pay')->select('*')
                                     ->where('branch_id',$request->branch_id)
                                     ->where('startdate','>=',$request->startdate)
@@ -521,6 +521,7 @@ class PayrollController extends Controller
                                     'number_of_installment' => $numberInstallment,
                                     'updated_at' => date('Y-m-d h:m:s'),
                                 ];
+                                dd($dataLoans);
                                 DB::table('loans')->where('employee_id',$empLoans->employee_id)
                                                  ->where('installment','!=',0)
                                                  ->update($dataLoans);
@@ -537,7 +538,7 @@ class PayrollController extends Controller
                     }
             }
             DB::table('take_home_pay')->insert($data_thp);  
-            DB::commit();
+            // DB::commit();
             $res = [
                     'status' => 'success',
                     'msg'    => 'Payroll Successfully Generated !',
