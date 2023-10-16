@@ -117,7 +117,6 @@ class LoanController extends Controller
         }
         $data = Loan::where('branch_id','=',$branchId)
                     ->where('installment','<>',0)
-                    ->where('number_of_installment','<>',0)
                     ->where('status','=',$status)
                     ->with('loan_type','employee')
                     ->get();
