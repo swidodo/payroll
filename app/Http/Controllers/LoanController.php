@@ -69,7 +69,7 @@ class LoanController extends Controller
                 $loans = Loan::where('branch_id', '=', Auth::user()->branch_id)->get();
                 $employee  = Employee::where('branch_id', '=', Auth::user()->branch_id)->get();
                 $loanType = LoanOption::where('name','<>','KASBON')->get();
-                dd($branch);
+                // dd($branch);
                 return view('pages.contents.loan.installment', compact('employee', 'loanType','branch'));
             }
         } else {
