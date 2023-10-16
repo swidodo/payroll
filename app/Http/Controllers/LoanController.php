@@ -31,7 +31,7 @@ class LoanController extends Controller
                 if ($user->initial == "HO"){
                     $branch = Branch::select('name','id')->where('company_id',$getranch->company_id);
                 }else{
-                    $branch = $getBranch;
+                    $branch = Branch::select('name','id')->where('id',$user->branch_id)->get();
                 }
                 $loans = Loan::where('branch_id', '=', Auth::user()->branch_id)->get();
                 $employee  = Employee::where('branch_id', '=', Auth::user()->branch_id)->get();
