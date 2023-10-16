@@ -538,8 +538,8 @@ class PayrollController extends Controller
             }
             DB::table('take_home_pay')->insert($data_thp);  
 
-            $pph = DB::select("SELECT a.* from get_rekap_pph21_final('".$request->startdate."','".$request->enddate."','".$request->branch_id."')")->get();
-                $pph21Final = [];
+            // $pph = DB::select("SELECT a.* from get_rekap_pph21_final('".$request->startdate."','".$request->enddate."','".$request->branch_id."')")->get();
+            //     $pph21Final = [];
                 // foreach($pph as $pph21){
                 //     $pphData = [
                 //         'employee_id' => $pph21->employee_id, 
