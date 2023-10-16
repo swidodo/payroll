@@ -26,10 +26,17 @@ class LoanController extends Controller
 
                 return view('pages.contents.loan.index', compact('loans', 'employee', 'loanType'));
             } else {
+                $user = Auth::user();
+                $getBranch = Branch::select('name','id','company_id')->where('id',$user->branch_id)->first();
+                if ($user->initial == "HO"){
+                    $branch = Branch::select('name','id')->where('company_id',$getranch->company_id)
+                }else{
+                    $branch = $getBranch;
+                }
                 $loans = Loan::where('created_by', '=', Auth::user()->creatorId())->get();
                 $employee  = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
                 $loanType = LoanOption::where('created_by', '=', Auth::user()->creatorId())->get();
-                $branch   = Branch::where('id','=',Auth::user()->branch_id)->get();
+                // $branch   = Branch::where('id','=',Auth::user()->branch_id)->get();
 
                 return view('pages.contents.loan.index', compact('employee', 'loanType','branch'));
             }
