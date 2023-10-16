@@ -22,6 +22,40 @@
         </div>
         <!-- /Page Header -->
         <div class="row">
+             <div class="card">
+                <div class="card-header">
+                    <div class="card-title-sm">
+                        filter Periode
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-2">
+                            <select class="form-control " id="branch_id" name="branch_id">
+                                @foreach($branch as $branches)
+                                <option value="{{ $branches->id }}">{{ $branches->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <input type="date" name="from_date" id="from_date" class="form-control">
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <input type="date" name="to_date" id="to_date" class="form-control">
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <select class="form-control form-select" name="type" id="type_print">
+                                <option value="PDF">PDF</option>
+                                <option value="EXCEL">EXCEL</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex justify-content-start mb-2">
+                            <button type="button" id="filter_rekap_pph21" class="btn btn-success btn-sm me-1"><span class="fa fa-filter"></span> Filter</button>
+                            <button type="button" id="print_rekap_pph21" class="btn btn-primary btn-sm"> <span class="fa fa-print"></span> Print</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-12">
                 <div class="table-responsive">
                     <table class="table table-striped custom-table" id="tblRekapPph21" width="100%">
@@ -92,8 +126,10 @@
 $.ajaxSetup({
     headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
 });
-var employee_id = '103';
-var date ='2023-09-10';
+var branch      = $('#branch_id').val();
+var from_date   = $('#from_date').val();
+var to_date     = $('#to_date').val();
+
 getRekapPph21(employee_id,date);
 function getRekapPph21(branchId){
     $('#tblRekapPph21').DataTable({
@@ -103,7 +139,7 @@ function getRekapPph21(branchId){
         ajax : {
                 "url" : 'data-rekap-pph',
                 "type" : 'POST',
-                "data" : {employee_id : employee_id,date : date},
+                "data" : {branch_id : branch, startdate : from_date, enddate :to_date},
             },
         columns: [
             { data: 'no', name:'id', render: function (data, type, row, meta) {
@@ -114,12 +150,12 @@ function getRekapPph21(branchId){
                 name: 'date'
             },
            {
-                data: 'employee->no_employee',
-                name: 'employee->no_employee'
+                data: 'no_employee',
+                name: 'no_employee'
             },
             {
-                data: 'employee->name',
-                name: 'employee->name'
+                data: 'name',
+                name: 'name'
             },
             {
                 data: 'salary_pokok',
@@ -193,6 +229,30 @@ function getRekapPph21(branchId){
         ],
 
     })
+    $('#filter_rekap_pph21').on('click',function(e){
+            e.preventDefault();
+            var branch_id = $('#branch_id').val();
+            var start_date = $('#from_date').val();
+            var end_date = $('#to_date').val();
+            getData(branch_id,start_date,end_date);
+        })
+         $('#print_rekap_pph21').on('click',function(){
+            var branch_id = $('#branch_id').val();
+            var from_date = $('#from_date').val();
+            var to_date = $('#to_date').val();
+            var type = $('#type_print').val();
+
+            if (from_date =='' || to_date ==''){
+                alert('Sorry, from date and to date empty !');
+                return false;
+            }
+            if (type == 'PDF'){
+                window.open('rekap-payroll-pdf?from_date='+from_date+'&to_date='+to_date+'&branch_id='+branch_id)
+            }
+            else if (type == 'EXCEL'){
+                window.location.href = 'rekap-payroll-excel?from_date='+from_date+'&to_date='+to_date+'&branch_id='+branch_id;
+            }
+        })
 }
 </script>
 @endpush

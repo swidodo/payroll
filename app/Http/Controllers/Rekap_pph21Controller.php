@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Support\Facades\Auth;
@@ -13,20 +11,21 @@ class Rekap_pph21Controller extends Controller
 {
     public function index(){
         $user = Auth::user();
-        $branch['branch'] = Branch::where('id',$user->branch_id)->get();
+        if ($user->initial == "HO"){
+            $branchId           = Branch::where('id',$user->branch_id)->first();
+            $branch['branch']   = Branch::where('company_id',$branchId->company_id)->get();
+        }else{
+            $branch['branch']   = Branch::where('id',$user->branch_id)->get();
+        }
         return view('pages.contents.rekap_pph21.index', $branch);
     }
     public function get_pph21(Request $request){
-        $branch  = Auth::user()->branch_id;
-        $branch = Branch::where('id',$branch)->first();
-        $data   = Rekap_pph21::where('branch_id','=',$branch->id);
-        if ($request->employee_id !=""){
-            $data->where('employee_id','=',$request->employee_id);
-        }
-        if($request->date !=""){
-            $data->where('date','=',$request->date);
-        }
-        $data->with('employees')->get();
+        $data   = Rekap_pph21::select('rekap_pph21s.*','employees.name','employees.no_employee')
+                                ->where('branch_id','=',$request->branch_id)
+                                ->where('startdate','>=',$request->startdate)
+                                ->where('enddate','<=',$request->enddate)
+                                ->leftJoin('employees','employees.id','=','rekap_pph21s.employee_id')
+                                ->get();
         return DataTables::of($data)->make(true);
     }
 }
