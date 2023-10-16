@@ -506,6 +506,7 @@ class PayrollController extends Controller
                     ->whereMonth('loans.updated_at', $month)
                     ->whereYear('loans.updated_at', $year)
                     ->get();
+                    dd($loans);
 
                     if ($loans !=null){
                         foreach($loans as $empLoans){
@@ -521,7 +522,6 @@ class PayrollController extends Controller
                                     'number_of_installment' => $numberInstallment,
                                     'updated_at' => date('Y-m-d h:m:s'),
                                 ];
-                                dd($dataLoans);
                                 DB::table('loans')->where('employee_id',$empLoans->employee_id)
                                                  ->where('installment','!=',0)
                                                  ->update($dataLoans);
