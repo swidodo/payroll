@@ -158,6 +158,10 @@ function getRekapPph21(branchId,start_date,end_date){
                 name: 'name'
             },
             {
+                data: 'position_name',
+                name: 'position_name'
+            },
+            {
                 data: 'salary_pokok',
                 render : function(data, type, row){
                                 var base = new String(data).substring(data.lastIndexOf('/') + 1);
