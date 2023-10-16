@@ -167,67 +167,147 @@ function getRekapPph21(branchId,start_date,end_date){
             },
             {
                 data: 'total_allowance_fixed',
-                name: 'total_allowance_fixed'
+                render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                        if(base.lastIndexOf(".") != -1)
+                            base = base.substring(0, base.lastIndexOf("."));
+                        return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
             },
             {
                 data: 'total_allowance_unfixed',
-                name: 'total_allowance_unfixed'
+                render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                        if(base.lastIndexOf(".") != -1)
+                            base = base.substring(0, base.lastIndexOf("."));
+                        return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
             },
             {
                 data: 'total_allowance_other',
-                name: 'total_allowance_other'
+               render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                        if(base.lastIndexOf(".") != -1)
+                            base = base.substring(0, base.lastIndexOf("."));
+                        return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
             },
             {
                 data: 'total_overtime',
-                name: 'total_overtime'
+                render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                        if(base.lastIndexOf(".") != -1)
+                            base = base.substring(0, base.lastIndexOf("."));
+                        return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
             },
             {
                 data: 'salary_in_month',
-                name: 'salary_in_month'
+                render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                        if(base.lastIndexOf(".") != -1)
+                            base = base.substring(0, base.lastIndexOf("."));
+                        return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
             },
             {
                 data: 'pay_bpjs_company',
-                name: 'pay_bpjs_company'
+                render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                        if(base.lastIndexOf(".") != -1)
+                            base = base.substring(0, base.lastIndexOf("."));
+                        return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
             },
             {
                 data: 'salary_brutto',
-                name: 'salary_brutto'
+                render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                        if(base.lastIndexOf(".") != -1)
+                            base = base.substring(0, base.lastIndexOf("."));
+                        return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
             },
             {
                 data: 'biaya_jabatan',
-                name: 'biaya_jabatan'
+                render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                        if(base.lastIndexOf(".") != -1)
+                            base = base.substring(0, base.lastIndexOf("."));
+                        return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
             },
             {
                 data: 'pay_bpjs_employee',
-                name: 'pay_bpjs_employee'
+                render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                        if(base.lastIndexOf(".") != -1)
+                            base = base.substring(0, base.lastIndexOf("."));
+                        return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
             },
             {
                 data: 'total_pengurangan',
-                name: 'total_pengurangan'
+                render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                        if(base.lastIndexOf(".") != -1)
+                            base = base.substring(0, base.lastIndexOf("."));
+                        return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
             },
             {
                 data: 'salary_netto',
-                name: 'salary_netto'
+                render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                        if(base.lastIndexOf(".") != -1)
+                            base = base.substring(0, base.lastIndexOf("."));
+                        return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
             },
             {
                 data: 'salary_1_tahun',
-                name: 'salary_1_tahun'
+                render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                        if(base.lastIndexOf(".") != -1)
+                            base = base.substring(0, base.lastIndexOf("."));
+                        return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
             },
             {
                 data: 'ptkp_1_tahun',
-                name: 'ptkp_1_tahun'
+                render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                        if(base.lastIndexOf(".") != -1)
+                            base = base.substring(0, base.lastIndexOf("."));
+                        return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
             },
             {
                 data: 'pkp',
-                name: 'pkp'
+                render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                        if(base.lastIndexOf(".") != -1)
+                            base = base.substring(0, base.lastIndexOf("."));
+                        return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
             },
             {
                 data: 'pph21_terhutang_1_tahun',
-                name: 'pph21_terhutang_1_tahun'
+                render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                        if(base.lastIndexOf(".") != -1)
+                            base = base.substring(0, base.lastIndexOf("."));
+                        return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
             },
             {
                 data: 'pph21_terhutang_1_bulan',
-                name: 'pph21_terhutang_1_bulan'
+                render : function(data, type, row){
+                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                        if(base.lastIndexOf(".") != -1)
+                            base = base.substring(0, base.lastIndexOf("."));
+                        return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
             },
             
         ],
