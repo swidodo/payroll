@@ -144,7 +144,7 @@
             });
             var branch = $('#branch-filter').val();
             var status = $('#status-filter').val();
-            loadData(branch,status)
+            loadData('','')
             /* When click show user */
 
             $('select#status_edit').change(function(){
