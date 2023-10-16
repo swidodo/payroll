@@ -446,10 +446,10 @@ class PayrollController extends Controller
                                     ->where('enddate','<=',$request->enddate)
                                     ->get();
             if($tochecked !=null){
-                DB::table('take_home_pay')
-                ->where('startdate','>=',$request->startdate)
-                ->where('enddate','<=',$request->enddate)
-                ->delete();
+                // DB::table('take_home_pay')
+                // ->where('startdate','>=',$request->startdate)
+                // ->where('enddate','<=',$request->enddate)
+                // ->delete();
             }
 
             $thps = DB::select("SELECT a.*,b.position_id,b.name as emp_name FROM get_take_home_pay('".$request->startdate."','".$request->enddate."','".$request->branch_id."') as a LEFT JOIN employees as b
@@ -536,7 +536,7 @@ class PayrollController extends Controller
                         }
                     }
             }
-            DB::table('take_home_pay')->insert($data_thp);  
+            // DB::table('take_home_pay')->insert($data_thp);  
 
             $pph = DB::select("SELECT * from get_rekap_pph21_final('".$request->startdate."','".$request->enddate."','".$request->branch_id."')");
                 $pph21Final = [];
@@ -566,13 +566,13 @@ class PayrollController extends Controller
                         array_push($pph21Final,$pphData);
                     }
                 }
-                // if (count($pph21Final) > 0){
-                //     $checkPayrollpph = DB::table('rekap_pph21s')->where('startdate','<=',$request->startdate)->where('enddate','>=',$request->enddate)->get();
-                //     if ($checkPayrollpph !=null){
-                //         DB::table('rekap_pph21s')->where('startdate','>=',$request->startdate)->where('enddate','<=',$request->enddate)->delete();
-                //     }
-                //     DB::table('rekap_pph21s')->insert($pph21Final);
-                // }
+                if (count($pph21Final) > 0){
+                    // $checkPayrollpph = DB::table('rekap_pph21s')->where('startdate','<=',$request->startdate)->where('enddate','>=',$request->enddate)->get();
+                    // if ($checkPayrollpph !=null){
+                    //     DB::table('rekap_pph21s')->where('startdate','>=',$request->startdate)->where('enddate','<=',$request->enddate)->delete();
+                    // }
+                    DB::table('rekap_pph21s')->insert($pph21Final);
+                }
             DB::commit();
             $res = [
                     'status' => 'success',
