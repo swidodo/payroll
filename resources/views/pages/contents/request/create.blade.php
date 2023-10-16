@@ -72,7 +72,7 @@
                                         <label for="religion" class="control-label" required>Employee ID </label>
                                         <select  class="form-control select-employee" name="employee_id" id="employee_id_add" required>
                                            
-                                                        <option value="{{$e->id}}"  selected></option>
+                                                        <option value=""  selected></option>
                                                   
                                                
                                         </select>
@@ -117,7 +117,7 @@
                                         <label for="religion" class="control-label" required>Overtime Type </label>
                                         <select class="form-control  select-overtime" name="overtime_type_id" id="overtime_id_add" required >
                                             <option value="" selected>Change Overtime Type</option>
-                                            <option value="{{$type->id}}"></option>
+                                            <option value=""></option>
                                             
                                         </select>
 
