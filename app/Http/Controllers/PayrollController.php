@@ -500,16 +500,15 @@ class PayrollController extends Controller
                 $loans =  DB::table('loans')
                     ->select('loans.*')
                     ->leftJoin('loan_options','loan_options.id','loans.loan_type_id')
-                    ->where('loans.employee_id',$thp->employee_id)
-                    ->where('loans.branch_id',$request->branch_id)
+                    ->where('loans.employee_id',9)
+                    ->where('loans.branch_id',1)
                     ->where('loans.status','ongoing')
-                    // ->whereMonth('loans.updated_at', $month)
-                    // ->whereYear('loans.updated_at', $year)
+                    ->whereMonth('loans.updated_at', $month)
+                    ->whereYear('loans.updated_at', $year)
                     ->get();
 
-
+                    dd($loans);
                     if ($loans !=null){
-                         dd($loans);
                         foreach($loans as $empLoans){
                             if ($empLoans->installment != 0 && $empLoans->number_of_installment < $empLoans->tenor){
                                 $numberInstallment = $empLoans->number_of_installment + 1;
