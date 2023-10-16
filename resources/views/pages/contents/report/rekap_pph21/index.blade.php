@@ -65,6 +65,7 @@
                                 <th>Date</th>
                                 <th>Employee ID</th>
                                 <th>Employee Name</th>
+                                <th>Position</th>
                                 <th>Basic Salary</th>
                                 <th>Allowance Fixed</th>
                                 <th>Allowance unfixed</th>
