@@ -593,8 +593,14 @@ class PayrollController extends Controller
     }
     public function get_run_payroll(Request $request){
         $data   = DB::table('take_home_pay')
-                    ->select('*')
+                    ->select('take_home_pay.*',
+                             'employees.name',
+                             'employees.no_employee',
+                             'employees.bank_name',
+                             'employees.account_number',
+                             'position.position_name')
                     ->leftJoin('employees','employees.id','=','take_home_pay.employee_id')
+                    ->leftJoin('position','position.id','=','take_home_pay.position_id')
                     ->where('take_home_pay.date',date(NOW()))
                     ->get();
         return DataTables::of($data)
