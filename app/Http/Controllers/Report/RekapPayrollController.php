@@ -25,11 +25,12 @@ class RekapPayrollController extends Controller
         return view('pages.contents.report.payroll.rekap_payroll',$data);
     }
     public function get_rekap_payroll(Request $request){
-        $data = DB::table('take_home_pay')->select('*')
-                                        ->where('branch_id','=',$request->branch_id);
+        $data = DB::table('take_home_pay')->select('take_home_pay.*','position.position_name')
+                                        ->leftJoin('position','position.id','=','take_home_pay.position')
+                                        ->where('take_home_pay.branch_id','=',$request->branch_id);
                                         if ($request->start_date !== null && $request->end_date !== null){
-                                            $data->where('startdate','>=',$request->start_date);
-                                            $data->where('enddate','<=',$request->end_date);
+                                            $data->where('take_home_pay.startdate','>=',$request->start_date);
+                                            $data->where('take_home_pay.enddate','<=',$request->end_date);
                                         }
                                         $data->get();
         return DataTables::of($data)->make(true);
@@ -39,9 +40,9 @@ class RekapPayrollController extends Controller
          if ($request->from_date !== null && $request->to_date !== null){
             $data = DB::table('take_home_pay')->select('take_home_pay.*','position.position_name')
                                             ->leftJoin('position','position.id','=','take_home_pay.position')
-                                            ->where('branch_id','=',$request->branch_id)
-                                            ->where('startdate','>=',$request->from_date)
-                                            ->where('enddate','<=',$request->to_date)
+                                            ->where('take_home_pay.branch_id','=',$request->branch_id)
+                                            ->where('take_home_pay.startdate','>=',$request->from_date)
+                                            ->where('take_home_pay.enddate','<=',$request->to_date)
                                             ->get(); 
             $total = DB::table('take_home_pay')->select(DB::raw('sum(take_home_pay) as total'))
                                             ->where('branch_id','=',$request->branch_id)
