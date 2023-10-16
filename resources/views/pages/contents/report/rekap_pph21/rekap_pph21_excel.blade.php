@@ -30,9 +30,9 @@
             <td align="center" class="border-top border-left border-bottom">{{ $row->name }}</td>
             <td align="center" class="border-top border-left border-bottom">{{ $row->position_name }}</td>
             <td align="center" class="border-top border-left border-bottom">{{ $row->salary_pokok }}</td>
-            <td align="center" class="border-top border-left border-bottom">{{ $row->allowance_fixed }}</td>
-            <td align="center" class="border-top border-left border-bottom">{{ $row->allowance_unfixed }}</td>
-            <td align="center" class="border-top border-left border-bottom">{{ $row->allowance_other }}</td>
+            <td align="center" class="border-top border-left border-bottom">{{ $row->total_allowance_fixed }}</td>
+            <td align="center" class="border-top border-left border-bottom">{{ $row->total_allowance_unfixed }}</td>
+            <td align="center" class="border-top border-left border-bottom">{{ $row->total_allowance_other }}</td>
             <td align="center" class="border-top border-left border-right border-bottom">{{ $row->total_overtime }}</td>
             <td align="center" class="border-top border-left border-right border-bottom">{{ $row->salary_in_month }}</td>
             <td align="center" class="border-top border-left border-right border-bottom">{{ $row->pay_bpjs_company }}</td>
