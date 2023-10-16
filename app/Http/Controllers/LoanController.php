@@ -49,30 +49,20 @@ class LoanController extends Controller
     public function installment()
     {
         if (Auth::user()->can('manage loan')) {
-            if (Auth::user()->type != 'company') {
-                $user       = Auth::user();
-                $employee   = Employee::where('user_id', '=', $user->id)->get();
-                $loans      = Loan::where('employee_id', '=', $user->employee->id)->get();
-                $loanType   = LoanOption::where('created_by', '=', Auth::user()->creatorId())->get();
-                $branch     = Branch::find(Auth::user()->branch_id);
-
-                return view('pages.contents.loan.index', compact('loans', 'employee', 'loanType','branch'));
-            } else {
-                $user = Auth::user();
-                $getBranch = Branch::select('name','id','company_id')->where('id',$user->branch_id)->first();
-                $branch ='';
-                if ($user->initial == "HO"){
-                    $branch = Branch::select('name','id')->where('company_id',$getranch->company_id)->get();
-                }else{
-                    $branch = $getBranch;
-                }
-                $loans = Loan::where('branch_id', '=', Auth::user()->branch_id)->get();
-                $employee  = Employee::where('branch_id', '=', Auth::user()->branch_id)->get();
-                $loanType = LoanOption::where('name','<>','KASBON')->get();
-                // dd($branch);
-                return view('pages.contents.loan.installment', compact('employee', 'loanType','branch'));
+            $user = Auth::user();
+            $getBranch = Branch::select('name','id','company_id')->where('id',$user->branch_id)->first();
+            $branch ='';
+            if ($user->initial == "HO"){
+                $branch = Branch::select('name','id')->where('company_id',$getranch->company_id)->get();
+            }else{
+                $branch = $getBranch;
             }
-        } else {
+            $loans = Loan::where('branch_id', '=', Auth::user()->branch_id)->get();
+            $employee  = Employee::where('branch_id', '=', Auth::user()->branch_id)->get();
+            $loanType = LoanOption::where('name','<>','KASBON')->get();
+            // dd($branch);
+            return view('pages.contents.loan.installment', compact('employee', 'loanType','branch'));
+     } else {
             toast('Permission denied.', 'error');
             return redirect()->back();
         }
