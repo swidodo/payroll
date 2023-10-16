@@ -560,9 +560,9 @@ class PayrollController extends Controller
                         'pph21_terhutang_1_tahun'=> $pph21->pph21_terhutang_1_tahun, 
                         'pph21_terhutang_1_bulan'=> $pph21->pph21_terhutang_1_bulan,
                     ];
-                    if (!in_array($pphData,$pph21Final)){
-                        array_push($pph21Final,$pphData);
-                    }
+                    // if (!in_array($pphData,$pph21Final)){
+                    //     array_push($pph21Final,$pphData);
+                    // }
                 }
                 // if (count($pph21Final) > 0){
                 //     $checkPayrollpph = DB::table('rekap_pph21s')->where('startdate','<=',$request->startdate)->where('enddate','>=',$request->enddate)->get();
