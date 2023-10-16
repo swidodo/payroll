@@ -144,8 +144,8 @@
                             </li>
                             @endcanany
                             @canany(['manage allowance', 'create allowance'])
-                            <li class=" {{(request()->routeIs('allowance-other')) ? 'active' : ''}}">
-                                <a class=" {{(request()->routeIs('allowance-other')) ? 'active' : ''}}" href="{{route('allowance-other')}}"> THR
+                            <li class=" {{(request()->routeIs('thr')) ? 'active' : ''}}">
+                                <a class=" {{(request()->routeIs('thr')) ? 'active' : ''}}" href="{{route('thr')}}"> THR
                                 </a>
                             </li>
                             @endcanany

@@ -53,6 +53,7 @@ use App\Http\Controllers\RotateController;
 use App\Http\Controllers\CompanyController;
 // request && approval
 use App\Http\Controllers\RequestController;
+use App\Http\Controllers\ThrController;
 
 // report
 use App\Http\Controllers\HRM\EmployeeReportController;
@@ -376,6 +377,8 @@ Route::group(['middleware' => 'auth'], function () {
         // deduction bpjs
         Route::get('get-data-bpjs',[DeductionBpjs::class,'index'])->name('get-data-bpjs');
         Route::post('data-bpjs-value',[DeductionBpjs::class,'get_data'])->name('data-bpjs-value');
+        // THR
+        Route::get('thr',[ThrController::class,'index'])->name('thr')
         // Rekap
         Route::get('rekap-attandance',[ReportRecapAttendanceController::class,'rekap_attendance'])->name('rekap-attandance');
         Route::post('get-rekap-attendance',[ReportRecapAttendanceController::class,'get_rekap_attendance'])->name('get-rekap-attendance');
