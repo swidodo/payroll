@@ -233,12 +233,12 @@ function getRekapPph21(branchId){
 
     })
     $('#filter_rekap_pph21').on('click',function(e){
-            e.preventDefault();
-            var branch_id = $('#branch_id').val();
-            var start_date = $('#from_date').val();
-            var end_date = $('#to_date').val();
-            getRekapPph21(branch_id,start_date,end_date);
-        })
+        e.preventDefault();
+        var branch_id = $('#branch_id').val();
+        var start_date = $('#from_date').val();
+        var end_date = $('#to_date').val();
+        getRekapPph21(branch_id,start_date,end_date);
+    })
          $('#print_rekap_pph21').on('click',function(){
             var branch_id = $('#branch_id').val();
             var from_date = $('#from_date').val();

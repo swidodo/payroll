@@ -22,10 +22,12 @@ class Rekap_pph21Controller extends Controller
     public function get_pph21(Request $request){
         $data   = Rekap_pph21::select('rekap_pph21s.*','employees.name','employees.no_employee')
                                 ->leftJoin('employees','employees.id','=','rekap_pph21s.employee_id')
-                                ->where('rekap_pph21s.branch_id','=',$request->branch_id)
-                                ->where('rekap_pph21s.startdate','>=',$request->startdate)
-                                // ->where('enddate','<=',$request->enddate)
-                                ->get();
+                                ->where('rekap_pph21s.branch_id','=',$request->branch_id);
+                                 if ($request->startdate !== null && $request->enddate !== null){
+                                    $data->where('rekap_pph21s.startdate','>=',$request->startdate);
+                                    $data->where('rekap_pph21s.enddate','<=',$request->enddate);
+                                }
+                                $data->get();
         return DataTables::of($data)->make(true);
     }
 }
