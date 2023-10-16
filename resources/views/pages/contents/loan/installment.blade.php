@@ -41,7 +41,8 @@
                         <label for="attendance" class="form-label">Branch</label>
                         <select class="form-control form-control-sm select" id="branch-filter" name="branch">
                             @foreach ($branch as $branchs)
-                                <option value="{{$branchs->id}}" {{($branchs->id == Auth::user()->branch_id) ? 'selected':''}}>{{$branchs->name}}</option>
+                           
+                                <option value="{{$branchs->id}}" {{($branchs->id == Auth::user()->branch_id) ? 'selected':''}}> @php print_r($bbranchs); @endphp{{$branchs->name}}</option>
                             @endforeach
                         </select>
                     </div>
