@@ -564,13 +564,13 @@ class PayrollController extends Controller
                         array_push($pph21Final,$pphData);
                     }
                 }
-                if (count($pph21Final) > 0){
-                    $checkPayrollpph = DB::table('rekap_pph21s')->where('startdate','<=',$request->startdate)->where('enddate','>=',$request->enddate)->get();
-                    if ($checkPayrollpph !=null){
-                        DB::table('rekap_pph21s')->where('startdate','>=',$request->startdate)->where('enddate','<=',$request->enddate)->delete();
-                    }
-                    DB::table('rekap_pph21s')->insert($pph21Final);
-                }
+                // if (count($pph21Final) > 0){
+                //     $checkPayrollpph = DB::table('rekap_pph21s')->where('startdate','<=',$request->startdate)->where('enddate','>=',$request->enddate)->get();
+                //     if ($checkPayrollpph !=null){
+                //         DB::table('rekap_pph21s')->where('startdate','>=',$request->startdate)->where('enddate','<=',$request->enddate)->delete();
+                //     }
+                //     DB::table('rekap_pph21s')->insert($pph21Final);
+                // }
             DB::commit();
             $res = [
                     'status' => 'success',
