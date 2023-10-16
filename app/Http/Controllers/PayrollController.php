@@ -632,9 +632,11 @@ class PayrollController extends Controller
                              'employees.name',
                              'employees.no_employee',
                              'employees.bank_name',
-                             'employees.account_number'
+                             'employees.account_number',
+                             'position.position_name'
                             )
                     ->leftJoin('employees','employees.id','=','take_home_pay.employee_id')
+                    ->leftJoin('position','position.id','=','take_home_pay.position_id')
                     ->whereBetween('take_home_pay.date',[$request->startdate,$request->enddate])
                     ->get();
         return DataTables::of($data)

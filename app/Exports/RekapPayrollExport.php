@@ -19,10 +19,11 @@ class RekapPayrollExport implements FromView
     }
     public function view(): View
     {
-         $data = DB::table('take_home_pay')->select('*')
-                                            ->where('branch_id','=',$this->request->branch_id)
-                                            ->where('startdate','>=',$this->request->from_date)
-                                            ->where('enddate','<=',$this->request->to_date)
+         $data = DB::table('take_home_pay')->select('take_home_pay.*','position.position_name')
+                                            ->leftJoin('position','position.id','=','take_home_pay.position_id')
+                                            ->where('take_home_pay.branch_id','=',$this->request->branch_id)
+                                            ->where('take_home_pay.startdate','>=',$this->request->from_date)
+                                            ->where('take_home_pay.enddate','<=',$this->request->to_date)
                                             ->get(); 
         $total = DB::table('take_home_pay')->select(DB::raw('sum(take_home_pay) as total'))
                                             ->where('branch_id','=',$this->request->branch_id)
