@@ -194,8 +194,8 @@ function getRekapPph21(branchId){
                 name: 'biaya_jabatan'
             },
             {
-                data: 'pay_bpj_employee',
-                name: 'pay_bpj_employee'
+                data: 'pay_bpjs_employee',
+                name: 'pay_bpjs_employee'
             },
             {
                 data: 'total_pengurangan',
