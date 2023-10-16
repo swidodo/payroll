@@ -38,15 +38,15 @@ class Rekap_pph21Controller extends Controller
                         ->select('rekap_pph21s.*','employees.name','employees.no_employee','position.position_name')
                         ->leftJoin('employees','employees.id','=','rekap_pph21s.employee_id')
                         ->leftJoin('position','position.id','=','employees.position_id')
-                        ->where('rekap_pph21s.branch_id','=',$this->request->branch_id)
-                        ->where('rekap_pph21s.startdate','>=',$this->request->from_date)
-                        ->where('rekap_pph21s.enddate','<=',$this->request->to_date)
+                        ->where('rekap_pph21s.branch_id','=',$request->branch_id)
+                        ->where('rekap_pph21s.startdate','>=',$request->from_date)
+                        ->where('rekap_pph21s.enddate','<=',$request->to_date)
                         ->get(); 
             $total = DB::table('rekap_pph21s')
                         ->select(DB::raw('sum(pph21_terhutang_1_bulan) as total'))
-                        ->where('branch_id','=',$this->request->branch_id)
-                        ->where('startdate','>=',$this->request->from_date)
-                        ->where('enddate','<=',$this->request->to_date)
+                        ->where('branch_id','=',$request->branch_id)
+                        ->where('startdate','>=',$request->from_date)
+                        ->where('enddate','<=',$request->to_date)
                         ->first();
             $dat['branch']      = Branch::where('id',$request->branch_id)->first();
             $dat['start_date']  = $request->from_date;
