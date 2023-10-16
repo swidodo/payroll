@@ -507,7 +507,7 @@ class PayrollController extends Controller
                     ->whereYear('loans.updated_at', $year)
                     ->get();
 
-                    dd($month);
+                    dd($year);
                     if ($loans !=null){
                         foreach($loans as $empLoans){
                             if ($empLoans->installment != 0 && $empLoans->number_of_installment < $empLoans->tenor){
