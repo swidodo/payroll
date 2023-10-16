@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Branch;
 use App\Models\Rekap_pph21;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\RekapPayrollExport;
 
 class Rekap_pph21Controller extends Controller
 {
