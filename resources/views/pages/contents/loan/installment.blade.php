@@ -48,7 +48,8 @@
                     <div class="col-md-4">
                         <label for="attendance" class="form-label">Status</label>
                         <select class="form-control form-control-sm select" id="status-filter" name="status-filter">
-                            <option value="">Ongoing</option>
+                            <option value="ongoing">Ongoing</option>
+                            <option value="paid off">Paid off</option>
                         </select>
                     </div>
                     <div class="col-md-4 d-flex align-items-center">
