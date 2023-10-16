@@ -129,7 +129,7 @@ $.ajaxSetup({
 var to_date     = $('#to_date').val();
 
 getRekapPph21(branch_id,from_date="",to_date="");
-function getRekapPph21(branchId,from_date,to_date){
+function getRekapPph21(branchId){
     $('#tblRekapPph21').DataTable({
         processing: true,
         serverSide: true,
@@ -137,7 +137,7 @@ function getRekapPph21(branchId,from_date,to_date){
         ajax : {
                 "url" : 'data-rekap-pph',
                 "type" : 'POST',
-                "data" : { branch_id : branchId},
+                "data" : { branch_id : branchId, startdate : from_date, enddate :to_date},
             },
         columns: [
             { data: 'no', name:'id', render: function (data, type, row, meta) {
