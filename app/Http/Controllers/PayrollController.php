@@ -569,7 +569,7 @@ class PayrollController extends Controller
                     if ($checkPayrollpph !=null){
                         DB::table('rekap_pph21s')->where('startdate','<=',$request->startdate)->where('enddate','>=',$request->enddate)->delete();
                     }
-                    DB::table('rekap_pph21s')->insert();
+                    DB::table('rekap_pph21s')->insert($pph21Final);
                 }
             DB::commit();
             $res = [
