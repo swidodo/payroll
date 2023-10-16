@@ -126,11 +126,9 @@
 $.ajaxSetup({
     headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
 });
-var branch      = $('#branch_id').val();
-var from_date   = $('#from_date').val();
 var to_date     = $('#to_date').val();
 
-getRekapPph21(branch_id,from_date,to_date);
+getRekapPph21(branch_id,from_date=null,to_date=null);
 function getRekapPph21(branchId,from_date,to_date){
     $('#tblRekapPph21').DataTable({
         processing: true,
@@ -139,7 +137,7 @@ function getRekapPph21(branchId,from_date,to_date){
         ajax : {
                 "url" : 'data-rekap-pph',
                 "type" : 'POST',
-                "data" : { branch_id : branchId, startdates : from_date, enddates :to_date},
+                "data" : { branch_id : branchId, startdate : from_date, enddate :to_date},
             },
         columns: [
             { data: 'no', name:'id', render: function (data, type, row, meta) {
