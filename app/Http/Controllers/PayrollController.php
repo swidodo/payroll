@@ -583,7 +583,7 @@ class PayrollController extends Controller
              DB::rollBack();
                 $res = [
                     'status' => 'error',
-                    'msg'    => 'Sameting went Wrong !',
+                    'msg'    => $e,
                 ];
             return response()->json($res);
         }
