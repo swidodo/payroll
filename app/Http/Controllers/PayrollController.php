@@ -503,8 +503,8 @@ class PayrollController extends Controller
                     ->where('loans.employee_id',$thp->employee_id)
                     ->where('loans.branch_id',$request->branch_id)
                     ->where('loans.status','ongoing')
-                    ->whereMonth('loans.updated_at', $month)
-                    ->whereYear('loans.updated_at', $year)
+                    // ->whereMonth('loans.updated_at', $month)
+                    // ->whereYear('loans.updated_at', $year)
                     ->get();
                     dd($loans);
 
