@@ -29,7 +29,9 @@
                                     <div class="form-group">
                                         <label>Branch  <span class="text-danger">*</span></label>
                                         <select class="form-control form-select" id="branchId" name="branch_id" required>
-                                            <option value="0">Select Branch</option>
+                                            @foreach($branch as $branchs)
+                                            <option value="{{ $branchs->id }}">{{ $branchs->name }}</option>
+                                            @endforeach
                                         </select>
                                         <div class="text-danger" role="alert">
                                         </div>
@@ -38,7 +40,9 @@
                                      <div class="form-group">
                                         <label>Employee<span class="text-danger">*</span></label>
                                         <select class="form-control form-select" id="branchId" name="branch_id" required>
-                                            <option value="0">Select Branch</option>
+                                            @foreach($employee as $employees)
+                                            <option value="{{ $employees->id }}">{{ $employees->name }}</option>
+                                            @endforeach
                                         </select>
                                         <div class="text-danger" role="alert">
                                         </div>

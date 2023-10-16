@@ -32,6 +32,15 @@ class RequestController extends Controller
         // $data = DB::()
     }
     public function create(){
-        return view('pages.contents.request.create');
+        $user = Auth::user()->initial;
+        if ($user == "HO"){
+            $branch = Branch::where('id',Auth::user()->branch_id)->first();
+            $data['branch'] = Branch::where('company_id',$branch->company_id)->get();
+            $data['employee'] = Employee::where('branch_id',Auth::user()->branch_id)->get();
+        }else{
+            $data['branch'] = Branch::where('id',Auth::user()->branch_id)->get();
+            $data['employee'] = Employee::where('user_id',Auth::user()->id)->get();
+        }
+        return view('pages.contents.request.create',$data);
     }
 }
