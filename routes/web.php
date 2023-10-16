@@ -181,6 +181,9 @@ Route::group(['middleware' => 'auth'], function () {
         // rekap pph21 new
         Route::get('get-rekap-pph',[Rekap_pph21Controller::class,'index'])->name('get-rekap-pph');
         Route::post('data-rekap-pph',[Rekap_pph21Controller::class,'get_pph21'])->name('data-rekap-pph');
+        Route::get('rekap-pph-pdf',[Rekap_pph21Controller::class,'cetak_pdf'])->name('rekap-pph-pdf');
+        Route::get('rekap-pph-excel',[Rekap_pph21Controller::class,'ExportExcel'])->name('rekap-pph-excel');
+        
 
         // payroll new
         Route::post('get-data-payroll',[PayrollController::class,'get_data'])->name('get-data-payroll');

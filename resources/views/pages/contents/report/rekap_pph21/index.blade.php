@@ -331,10 +331,10 @@ function getRekapPph21(branchId,start_date,end_date){
                 return false;
             }
             if (type == 'PDF'){
-                window.open('rekap-payroll-pdf?from_date='+from_date+'&to_date='+to_date+'&branch_id='+branch_id)
+                window.open('rekap-pph-pdf?from_date='+from_date+'&to_date='+to_date+'&branch_id='+branch_id)
             }
             else if (type == 'EXCEL'){
-                window.location.href = 'rekap-payroll-excel?from_date='+from_date+'&to_date='+to_date+'&branch_id='+branch_id;
+                window.location.href = 'rekap-pph-excel?from_date='+from_date+'&to_date='+to_date+'&branch_id='+branch_id;
             }
         })
 }
