@@ -603,27 +603,7 @@ class PayrollController extends Controller
                     ->leftJoin('position','position.id','=','take_home_pay.position_id')
                     ->where('take_home_pay.date',date(NOW()))
                     ->get();
-        return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action',function($row){
-                    $btn ='';
-                    if(Auth()->user()->canany('edit payroll', 'delete payroll')){
-                        $btn .= '<div class="dropdown dropdown-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">';
-                        if(Auth()->user()->can('edit payroll')){
-                            $btn .= '<a  data-id ="" class="dropdown-item view-payroll" href="javascript:void(0)" ><i class="fa fa-eye m-r-5"></i> View</a>';
-                        }if(Auth()->user()->can('edit payroll')){
-                            $btn .= '<a  data-id ="" class="dropdown-item edit-payroll" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_payroll"><i class="fa fa-pencil m-r-5"></i> Edit</a>';
-                        }
-                        if(Auth()->user()->can('delete payroll')){
-                            $btn .='<a  data-id="" class="dropdown-item delete-data-payroll" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
-                        }
-                    }
-                    return $btn;
-                    })
-                ->rawColumns(['action'])
-                ->make(true);
+        return DataTables::of($data)->make(true);
     }
    
    public function data_payroll_final(){

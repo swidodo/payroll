@@ -33,7 +33,7 @@
                     <div class="card-body">
                         <div class="row d-flex align-items-center">
                             <div class="col-md-2">
-                                <label>start Date</label>
+                                <label>Start Date</label>
                                 <input type="date" id="startdate" class="form-control" name="datestart" >
                                 <input type="date" id="nowstart" value="{{ date('Y-m-d') }}" hidden>
                             </div>
@@ -43,7 +43,7 @@
                                 <input type="date" id="nowend" value="{{ date('Y-m-d') }}" hidden>
                             </div>
                             <div class="col-md-3">
-                                <label>branch</label>
+                                <label>Branch</label>
                                 <select class="form-select form-control" id="branch_id">
                                     @foreach($branch as $br)
                                     <option value="{{ $br->id }} ">{{ $br->name }}</option>
@@ -87,9 +87,6 @@
                                 <th>Pph21</th>
                                 <th>Total Deduction</th>
                                 <th>Take Home Pay</th>
-                                @if(Auth::user()->can('edit payroll') || Auth::user()->can('delete payroll'))
-                                    <th class="text-end">Action</th>
-                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -392,10 +389,6 @@
                                         base = base.substring(0, base.lastIndexOf("."));
                                     return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                             }
-                        },
-                        {
-                            data: 'action',
-                            name: 'action'
                         },
                     ],
                 })

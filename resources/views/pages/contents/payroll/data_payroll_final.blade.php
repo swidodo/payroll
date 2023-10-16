@@ -41,7 +41,7 @@
                                 <input type="date" id="enddate" class="form-control" name="dateend" value="{{ date('Y-m-d') }}">
                             </div>
                             <div class="col-md-3">
-                                <label>branch</label>
+                                <label>Branch</label>
                                 <select class="form-select form-control" id="branch_id">
                                     @foreach($branch as $br)
                                     <option value="{{ $br->id }} ">{{ $br->name }}</option>
@@ -145,20 +145,6 @@
                 var enddate = $('#enddate').val();
                 var branch_id = $('#branch_id').val();
                 loadData(startdate,enddate,branch_id)
-                // $(document).on('click','.cetak-payroll',function(e){
-                //     e.preventDefault();
-                //     var id          = $(this).attr('data-id');
-                //     var employeeId  = $(this).attr('data-employeeid');
-                //     $.ajax({
-                //         url : 'generate_slip_payroll',
-                //         type : 'post',
-                //         data : {startdate:startdate,enddate:enddate,id:id,employee_id : employeeId},
-                //         dataType : 'json',
-                //         success : function(e){
-                //             window.location
-                //         }
-                //     })
-                // })
             });
             function loadData(startdate,enddate,branch_id){
                 $('#payrollDataFinal').DataTable({
