@@ -126,9 +126,6 @@
 $.ajaxSetup({
     headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
 });
-let currentDate = new Date().toJSON().slice(0, 10);
-$('#from_date').val(currentDate);
-$('#to_date').val(currentDate);
 var branch      = $('#branch_id').val();
 var from_date   = $('#from_date').val();
 var to_date     = $('#to_date').val();
