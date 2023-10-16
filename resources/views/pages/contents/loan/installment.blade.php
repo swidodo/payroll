@@ -141,7 +141,9 @@
             $.ajaxSetup({
                 headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
             });
-            loadData("","")
+            var branch = $('#branch-filter').val();
+            var status = $('#status-filter').val();
+            loadData(branch,status)
             /* When click show user */
 
             $('select#status_edit').change(function(){
@@ -290,6 +292,8 @@
         })
         $('#edit-form-loan').on('submit', function(e){
             e.preventDefault()
+            var branch = $('#branch-filter').val();;
+            var status = $('#status-filter').val();;
             var data = $('#edit-form-loan').serialize();
             $.ajax({
                 url : 'update-loan-installment',
@@ -300,7 +304,7 @@
 
                 },
                 success : function(respon){
-                    loadData("","")
+                    loadData(branch,status)
                     swal.fire({
                         icon : respon.status,
                         text : respon.msg
@@ -315,6 +319,8 @@
         $(document).on('click','.delete-installment',function(e){
             e.preventDefault();
             var id = $(this).attr('data-id');
+            var branch = $('#branch-filter').val();;
+            var status = $('#status-filter').val();;
             Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -338,7 +344,7 @@
                                     icon : respon.status,
                                     text : respon.msg,
                                 })
-                                loadData("","")
+                                loadData(branch,status)
                             },
                             error : function(){
                                 alert('There is an error !, please try again')
