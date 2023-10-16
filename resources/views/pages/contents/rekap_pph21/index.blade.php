@@ -139,7 +139,7 @@ function getRekapPph21(branchId,from_date,to_date){
         ajax : {
                 "url" : 'data-rekap-pph',
                 "type" : 'POST',
-                "data" : {branch_id : branchId, startdate : from_date, enddate :to_date},
+                "data" : { branch_id : branchId, startdates : from_date, enddates :to_date},
             },
         columns: [
             { data: 'no', name:'id', render: function (data, type, row, meta) {
