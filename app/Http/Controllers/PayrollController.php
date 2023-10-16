@@ -462,7 +462,7 @@ class PayrollController extends Controller
                     'employee_code' => $thp->employee_code,
                     'no_employee' => $thp->no_employee,
                     'name' => $thp->emp_name,
-                    'position' => $thp->position_id,
+                    'position_id' => $thp->position_id,
                     'level' => '',
                     'bank_name' => $thp->bank_name,
                     'account_number' => $thp->account_number,

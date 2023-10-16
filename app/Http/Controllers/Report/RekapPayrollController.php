@@ -26,7 +26,7 @@ class RekapPayrollController extends Controller
     }
     public function get_rekap_payroll(Request $request){
         $data = DB::table('take_home_pay')->select('take_home_pay.*','position.position_name')
-                                        ->leftJoin('position','position.id','=','take_home_pay.position')
+                                        ->leftJoin('position','position.id','=','take_home_pay.position_id')
                                         ->where('take_home_pay.branch_id','=',$request->branch_id);
                                         if ($request->start_date !== null && $request->end_date !== null){
                                             $data->where('take_home_pay.startdate','>=',$request->start_date);
@@ -39,7 +39,7 @@ class RekapPayrollController extends Controller
         $date = date('Ymd');
          if ($request->from_date !== null && $request->to_date !== null){
             $data = DB::table('take_home_pay')->select('take_home_pay.*','position.position_name')
-                                            ->leftJoin('position','position.id','=','take_home_pay.position')
+                                            ->leftJoin('position','position.id','=','take_home_pay.position_id')
                                             ->where('take_home_pay.branch_id','=',$request->branch_id)
                                             ->where('take_home_pay.startdate','>=',$request->from_date)
                                             ->where('take_home_pay.enddate','<=',$request->to_date)
