@@ -542,6 +542,8 @@ class PayrollController extends Controller
                 $pph21Final = [];
                 foreach($pph as $pph21){
                     $pphData = [
+                        'date' => date('Y-m-d'),
+                        'branch_id' => $request->branch_id,
                         'employee_id' => $pph21->employee_id, 
                         'salary_pokok' => $pph21->salary_pokok, 
                         'total_allowance_fixed'=> $pph21->total_allowance_fixed,
@@ -557,6 +559,7 @@ class PayrollController extends Controller
                         'salary_netto'=> $pph21->salary_netto,
                         'salary_1_tahun'=> $pph21->salary_1_year, 
                         'ptkp_1_tahun'=> $pph21->ptkp_1_tahun,
+                        'pkp'=> $pph21->ptkp_1_tahun,
                         'pph21_terhutang_1_tahun'=> $pph21->pph21_terhutang_1_tahun, 
                         'pph21_terhutang_1_bulan'=> $pph21->pph21_terhutang_1_bulan,
                         'startdate' => $request->startdate,
