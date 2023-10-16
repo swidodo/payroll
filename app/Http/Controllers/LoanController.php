@@ -93,10 +93,8 @@ class LoanController extends Controller
                                             if(Auth()->user()->can('edit loan')){
                                                 $btn .= ' <a  data-url="'.route('loans.edit', $row->id).'" id="edit-loan" class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_loan"><i class="fa fa-pencil m-r-5"></i> Edit</a>';
                                             }
-                                            if ($row->status =="ongoing" && $row->number_of_installment == 0 ){
-                                                if(Auth()->user()->can('delete loan')){
-                                                    $btn .= '<a data-id='.$row->id.' class="dropdown-item delete-loan" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
-                                                }
+                                            if(Auth()->user()->can('delete loan')){
+                                                $btn .= '<a data-id='.$row->id.' class="dropdown-item delete-loan" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
                                             }
                                 $btn .= '</div></div>';
                             }
