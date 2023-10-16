@@ -128,7 +128,7 @@ $.ajaxSetup({
 });
 var to_date     = $('#to_date').val();
 
-getRekapPph21(branch_id,from_date=null,to_date=null);
+getRekapPph21(branch_id,from_date="",to_date="");
 function getRekapPph21(branchId,from_date,to_date){
     $('#tblRekapPph21').DataTable({
         processing: true,
