@@ -126,10 +126,9 @@
 $.ajaxSetup({
     headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
 });
-var to_date     = $('#to_date').val();
-
-getRekapPph21(branch_id,from_date="",to_date="");
-function getRekapPph21(branchId){
+var branch      = $('#branch_id').val();
+getRekapPph21(branch_id,from_date=null,to_date=null);
+function getRekapPph21(branchId,from_date,to_date){
     $('#tblRekapPph21').DataTable({
         processing: true,
         serverSide: true,
