@@ -559,18 +559,20 @@ class PayrollController extends Controller
                         'ptkp_1_tahun'=> $pph21->ptkp_1_tahun,
                         'pph21_terhutang_1_tahun'=> $pph21->pph21_terhutang_1_tahun, 
                         'pph21_terhutang_1_bulan'=> $pph21->pph21_terhutang_1_bulan,
+                        'startdate' => $request->startdate,
+                        'enddate' => $request->enddate,
                     ];
                     if (!in_array($pphData,$pph21Final)){
                         array_push($pph21Final,$pphData);
                     }
                 }
-                if (count($pph21Final) > 0){
-                    $checkPayrollpph = DB::table('rekap_pph21s')->where('startdate','<=',$request->startdate)->where('enddate','>=',$request->enddate)->get();
-                    if ($checkPayrollpph !=null){
-                        DB::table('rekap_pph21s')->where('startdate','>=',$request->startdate)->where('enddate','<=',$request->enddate)->delete();
-                    }
-                    DB::table('rekap_pph21s')->insert($pph21Final);
-                }
+                // if (count($pph21Final) > 0){
+                //     $checkPayrollpph = DB::table('rekap_pph21s')->where('startdate','<=',$request->startdate)->where('enddate','>=',$request->enddate)->get();
+                //     if ($checkPayrollpph !=null){
+                //         DB::table('rekap_pph21s')->where('startdate','>=',$request->startdate)->where('enddate','<=',$request->enddate)->delete();
+                //     }
+                //     DB::table('rekap_pph21s')->insert($pph21Final);
+                // }
             DB::commit();
             $res = [
                     'status' => 'success',
