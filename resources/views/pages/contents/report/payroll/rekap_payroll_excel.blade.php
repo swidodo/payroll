@@ -25,25 +25,25 @@
     <tbody>
          @foreach ($pay as $row)
         <tr>
-            <td align="center" class="border-top border-left border-bottom">{{ $row->no_employee }}</td>
-            <td align="center" class="border-top border-left border-bottom">{{ $row->name }}</td>
-            <td align="center" class="border-top border-left border-bottom">{{ $row->position_name }}</td>
-            <td align="center" class="border-top border-left border-bottom">{{ $row->bank_name }}</td>
-            <td align="center" class="border-top border-left border-bottom">{{ $row->account_number }}</td>
-            <td align="center" class="border-top border-left border-bottom">{{ $row->basic_salary }}</td>
-            <td align="center" class="border-top border-left border-bottom">{{ $row->allowance_fixed }}</td>
-            <td align="center" class="border-top border-left border-bottom">{{ $row->allowance_unfixed }}</td>
-            <td align="center" class="border-top border-left border-bottom">{{ $row->allowance_other }}</td>
-            <td align="center" class="border-top border-left border-right border-bottom">{{ $row->overtime }}</td>
-            <td align="center" class="border-top border-left border-right border-bottom">{{ $row->salary_this_month }}</td>
-            <td align="center" class="border-top border-left border-right border-bottom">{{ $row->employee_pay_bpjs_kesehatan }}</td>
-            <td align="center" class="border-top border-left border-right border-bottom">{{ $row->employee_pay_bpjs_ketenagakerjaan }}</td>
-            <td align="center" class="border-top border-left border-right border-bottom">{{ $row->employee_total_pay_bpjs }}</td>
-            <td align="center" class="border-top border-left border-right border-bottom">{{ $row->installment }}</td>
-            <td align="center" class="border-top border-left border-right border-bottom">{{ $row->loans }}</td>
-            <td align="center" class="border-top border-left border-right border-bottom">{{ $row->pph21 }}</td>
-            <td align="center" class="border-top border-left border-right border-bottom">{{ $row->total_deduction }}</td>
-            <td align="center" class="border-top border-left border-right border-bottom">{{ $row->take_home_pay }}</td>
+            <td align="left" class="border-top border-left border-bottom">{{ $row->no_employee }}</td>
+            <td align="left" class="border-top border-left border-bottom">{{ $row->name }}</td>
+            <td align="left" class="border-top border-left border-bottom">{{ $row->position_name }}</td>
+            <td align="right" class="border-top border-left border-bottom">{{ $row->bank_name }}</td>
+            <td align="right" class="border-top border-left border-bottom">{{ $row->account_number }}</td>
+            <td align="right" class="border-top border-left border-bottom">{{ $row->basic_salary }}</td>
+            <td align="right" class="border-top border-left border-bottom">{{ $row->allowance_fixed }}</td>
+            <td align="right" class="border-top border-left border-bottom">{{ $row->allowance_unfixed }}</td>
+            <td align="right" class="border-top border-left border-bottom">{{ $row->allowance_other }}</td>
+            <td align="right" class="border-top border-left border-right border-bottom">{{ $row->overtime }}</td>
+            <td align="right" class="border-top border-left border-right border-bottom">{{ $row->salary_this_month }}</td>
+            <td align="right" class="border-top border-left border-right border-bottom">{{ $row->employee_pay_bpjs_kesehatan }}</td>
+            <td align="right" class="border-top border-left border-right border-bottom">{{ $row->employee_pay_bpjs_ketenagakerjaan }}</td>
+            <td align="right" class="border-top border-left border-right border-bottom">{{ $row->employee_total_pay_bpjs }}</td>
+            <td align="right" class="border-top border-left border-right border-bottom">{{ $row->installment }}</td>
+            <td align="right" class="border-top border-left border-right border-bottom">{{ $row->loans }}</td>
+            <td align="right" class="border-top border-left border-right border-bottom">{{ $row->pph21 }}</td>
+            <td align="right" class="border-top border-left border-right border-bottom">{{ $row->total_deduction }}</td>
+            <td align="right" class="border-top border-left border-right border-bottom">{{ $row->take_home_pay }}</td>
         </tr>
         @endforeach
         <tr><td  colspan="18" class="border-top border-left border-right border-bottom">Total</td><td class="border-top border-left border-right border-bottom">{{ $total->total }}</td></tr>

@@ -143,6 +143,12 @@
                                 </a>
                             </li>
                             @endcanany
+                            @canany(['manage allowance', 'create allowance'])
+                            <li class=" {{(request()->routeIs('allowance-other')) ? 'active' : ''}}">
+                                <a class=" {{(request()->routeIs('allowance-other')) ? 'active' : ''}}" href="{{route('allowance-other')}}"> THR
+                                </a>
+                            </li>
+                            @endcanany
                             @canany(['manage jht', 'create jht', 'manage jkk', 'create jkk', 'manage jkm', 'create jkm', 'manage jp', 'create jp'])
                                 <li class="submenu" >
                                     <a style="padding: 9px 10px 9px 44px" href="#"> <span> Deduction</span> <span class="menu-arrow"></span></a>
