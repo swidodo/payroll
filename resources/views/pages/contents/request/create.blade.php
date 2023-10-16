@@ -19,8 +19,11 @@
             </div>
         </div>
         <div class="row">
-            <div class="modal-body">
-                    <form id="addFormPosition" method="POST">
+            <div class="d-flex justify-content-center">
+                <div class="card col-md-7">
+                    <div class="card-header"></div>
+                    <div class="modal-body">
+                        <form id="addFormPosition" method="POST">
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
@@ -55,11 +58,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="submit-section">
-                                <button type="submit" class="btn btn-primary submit-btn">Submit</button>
-                            </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
+            </div>
         </div>
     </div>
 </div>
