@@ -23,8 +23,8 @@ class Rekap_pph21Controller extends Controller
         $data   = Rekap_pph21::select('rekap_pph21s.*','employees.name','employees.no_employee')
                                 ->leftJoin('employees','employees.id','=','employee_id')
                                 ->where('branch_id','=',$request->branch_id)
-                                ->where('startdate','>=',$request->startdate)
-                                ->where('enddate','<=',$request->enddate)
+                                // ->where('startdate','>=',$request->startdate)
+                                // ->where('enddate','<=',$request->enddate)
                                 ->get();
         return DataTables::of($data)->make(true);
     }
