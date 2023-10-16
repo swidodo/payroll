@@ -36,8 +36,6 @@ class LoanController extends Controller
                 $loans = Loan::where('branch_id', '=', Auth::user()->branch_id)->get();
                 $employee  = Employee::where('branch_id', '=', Auth::user()->branch_id)->get();
                 $loanType = LoanOption::where('name','=','KASBON')->get();
-                // $branch   = Branch::where('id','=',Auth::user()->branch_id)->get();
-
                 return view('pages.contents.loan.index', compact('employee', 'loanType','branch'));
             }
         } else {
@@ -55,12 +53,11 @@ class LoanController extends Controller
             if ($user->initial == "HO"){
                 $branch = Branch::select('name','id')->where('company_id',$getranch->company_id)->get();
             }else{
-                $branch = $getBranch;
+                $branch = Branch::select('name','id')->where('id',$user->branch_id)->get();;
             }
             $loans = Loan::where('branch_id', '=', Auth::user()->branch_id)->get();
             $employee  = Employee::where('branch_id', '=', Auth::user()->branch_id)->get();
             $loanType = LoanOption::where('name','<>','KASBON')->get();
-            // dd($branch);
             return view('pages.contents.loan.installment', compact('employee', 'loanType','branch'));
      } else {
             toast('Permission denied.', 'error');
