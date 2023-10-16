@@ -33,9 +33,9 @@ class LoanController extends Controller
                 }else{
                     $branch = $getBranch;
                 }
-                $loans = Loan::where('created_by', '=', Auth::user()->creatorId())->get();
-                $employee  = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
-                $loanType = LoanOption::where('created_by', '=', Auth::user()->creatorId())->get();
+                $loans = Loan::where('branch_id', '=', Auth::user()->branch_id)->get();
+                $employee  = Employee::where('branch_id', '=', Auth::user()->branch_id)->get();
+                $loanType = LoanOption::get();
                 // $branch   = Branch::where('id','=',Auth::user()->branch_id)->get();
 
                 return view('pages.contents.loan.index', compact('employee', 'loanType','branch'));
