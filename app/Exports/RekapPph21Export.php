@@ -33,6 +33,6 @@ class RekapPph21Export implements FromView
                                             ->first();
         $dat ['pph'] = $data;
         $dat ['total'] = $total;
-        return view('pages.contents.report.rekap_pph21s.rekap_pph21_excel',$dat);
+        return view('pages.contents.report.rekap_pph21.rekap_pph21_excel',$dat);
     }
 }
