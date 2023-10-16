@@ -8,7 +8,7 @@ use App\Models\Rekap_pph21;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\RekapPayrollExport;
+use App\Exports\RekapPph21Export;
 
 class Rekap_pph21Controller extends Controller
 {
@@ -64,6 +64,6 @@ class Rekap_pph21Controller extends Controller
     public function ExportExcel(Request $request){
         $date = date('Ymd');
         $fileName = 'Rekap_pph21_'.$date.'.xlsx';
-        return Excel::download(new RekapPayrollExport($request), $fileName);
+        return Excel::download(new RekapPph21Export($request), $fileName);
     }
 }

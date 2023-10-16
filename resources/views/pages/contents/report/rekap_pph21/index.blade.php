@@ -1,6 +1,6 @@
 @extends('pages.dashboard')
 
-@section('title', 'Deduction PPH21')
+@section('title', 'Rekap PPH21')
 
 @section('dashboard-content')
 
@@ -12,10 +12,10 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Deduction PPH21</h3>
+                    <h3 class="page-title">Rekap PPH21</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Deduction PPH21</li>
+                        <li class="breadcrumb-item active">Rekap PPH21</li>
                     </ul>
                 </div>
             </div>
@@ -25,7 +25,7 @@
              <div class="card">
                 <div class="card-header">
                     <div class="card-title-sm">
-                        filter Periode
+                        Filter Periode
                     </div>
                 </div>
                 <div class="card-body">
