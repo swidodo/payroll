@@ -71,18 +71,10 @@
                                     <div class="form-group">
                                         <label for="religion" class="control-label" required>Employee ID </label>
                                         <select  class="form-control select-employee" name="employee_id" id="employee_id_add" required>
-                                            @if ( !is_null(Auth::user()->employee) )
-                                                @foreach ($employee as $e)
-                                                    @if ($e->id == Auth::user()->employee->id)
-                                                        <option value="{{$e->id}}"  selected>{{$e->name}}</option>
-                                                    @endif
-                                                @endforeach
-                                            @else
-                                                <option value="0">Change Employee</option>
-                                                @foreach ($employee as $e)
-                                                    <option value="{{$e->id}}">{{$e->no_employee." - ".$e->name}}</option>
-                                                @endforeach
-                                            @endif
+                                           
+                                                        <option value="{{$e->id}}"  selected></option>
+                                                  
+                                               
                                         </select>
 
                                         @if ($errors->has('employee_id'))
@@ -125,9 +117,8 @@
                                         <label for="religion" class="control-label" required>Overtime Type </label>
                                         <select class="form-control  select-overtime" name="overtime_type_id" id="overtime_id_add" required >
                                             <option value="" selected>Change Overtime Type</option>
-                                            @foreach ($overtimeTypes as $type)
-                                            <option value="{{$type->id}}">{{$type->name}}</option>
-                                            @endforeach
+                                            <option value="{{$type->id}}"></option>
+                                            
                                         </select>
 
                                         @if ($errors->has('overtime_type_id'))
@@ -169,9 +160,7 @@
                                         <label for="religion" class="control-label" required="">Day type </label>
                                         <select class="form-control  select-day-type" name="day_type_id" id="daytype_id_add" required >
                                             <option value="" selected>Change Day Type</option>
-                                            @foreach ($dayTypes as $type)
-                                            <option value="{{$type->id}}">{{$type->name}}</option>
-                                            @endforeach
+                                            
                                         </select>
 
                                         @if ($errors->has('day_type_id'))
