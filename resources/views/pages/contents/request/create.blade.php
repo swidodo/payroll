@@ -63,7 +63,7 @@
                                 </div>
                             </div>
                         </form>
-                        <div id="overtimeForm" class="hidden">
+                        <div id="overtimeForm" class="hidden" hidden>
                         <form action="{{route('overtimes.store')}}" method="POST">
                             @csrf
                             <div class="row">
