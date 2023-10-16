@@ -237,7 +237,7 @@ function getRekapPph21(branchId){
             var branch_id = $('#branch_id').val();
             var start_date = $('#from_date').val();
             var end_date = $('#to_date').val();
-            getData(branch_id,start_date,end_date);
+            getRekapPph21(branch_id,start_date,end_date);
         })
          $('#print_rekap_pph21').on('click',function(){
             var branch_id = $('#branch_id').val();
