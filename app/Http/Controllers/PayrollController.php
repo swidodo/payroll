@@ -439,7 +439,7 @@ class PayrollController extends Controller
     }
     public function generate_run_payroll(Request $request){
         try {
-            // DB::beginTransaction();
+            DB::beginTransaction();
             $tochecked = DB::table('take_home_pay')->select('*')
                                     ->where('branch_id',$request->branch_id)
                                     ->where('startdate','>=',$request->startdate)
@@ -537,7 +537,41 @@ class PayrollController extends Controller
                     }
             }
             DB::table('take_home_pay')->insert($data_thp);  
-            // DB::commit();
+
+            $pph = DB::select("SELECT a.* from get_rekap_pph21_final('".$request->startdate."','".$request->enddate."','".$request->branch_id."')")->get();
+                $pph21Final = [];
+                foreach($pph as $pph21){
+                    $pphData = [
+                        'employee_id' => $pph21->employee_id, 
+                        'salary_pokok' => $pph21->salary_pokok, 
+                        'total_allowance_fixed'=> $pph21->total_allowance_fixed,
+                        'total_allowance_unfixed'=> $pph21->total_allowance_unfixed,
+                        'total_allowance_other'=> $pph21->total_allowance_other,
+                        'total_overtime'=> $pph21->total_overtime,
+                        'salary_in_month'=> $pph21->salary_in_month, 
+                        'pay_bpjs_company'=> $pph21->pay_bpjs_company, 
+                        'salary_brutto'=> $pph21->salary_brutto,
+                        'biaya_jabatan'=> $pph21->biaya_jabatan,
+                        'pay_bpjs_employee'=> $pph21->pay_bpjs_employee, 
+                        'total_pengurangan'=> $pph21->total_pengurangan,
+                        'salary_netto'=> $pph21->salary_netto,
+                        'salary_1_year'=> $pph21->salary_1_year, 
+                        'ptkp_1_tahun'=> $pph21->ptkp_1_tahun,
+                        'pph21_terhutang_1_tahun'=> $pph21->pph21_terhutang_1_tahun, 
+                        'pph21_terhutang_1_bulan'=> $pph21->pph21_terhutang_1_bulan,
+                    ];
+                    if (!in_array($pphData,$pph21Final)){
+                        array_push($pph21Final,$pphData);
+                    }
+                }
+                if (count($pph21Final) > 0){
+                    $checkPayrollpph = DB::table('rekap_pph21s')->where('startdate','<=',$request->startdate)->where('enddate','>=',$request->enddate)->get();
+                    if ($checkPayrollpph !=null){
+                        DB::table('rekap_pph21s')->where('startdate','<=',$request->startdate)->where('enddate','>=',$request->enddate)->delete();
+                    }
+                    DB::table('rekap_pph21s')->insert();
+                }
+            DB::commit();
             $res = [
                     'status' => 'success',
                     'msg'    => 'Payroll Successfully Generated !',
