@@ -130,7 +130,7 @@ var branch      = $('#branch_id').val();
 var from_date   = $('#from_date').val();
 var to_date     = $('#to_date').val();
 
-getRekapPph21(employee_id,date);
+getRekapPph21(branch_id,startdate,enddate);
 function getRekapPph21(branchId){
     $('#tblRekapPph21').DataTable({
         processing: true,
