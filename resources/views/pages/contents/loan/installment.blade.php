@@ -42,7 +42,7 @@
                         <select class="form-control form-control-sm select" id="branch-filter" name="branch">
                             @foreach ($branch as $branchs)
 
-                                <option value=""> @php print_r($branchs); @endphp{{$branchs->name}}</option>
+                                <option value=""}>{{$branchs->name}}</option>
                             @endforeach
                         </select>
                     </div>
