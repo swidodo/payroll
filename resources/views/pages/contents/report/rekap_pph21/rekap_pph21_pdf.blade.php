@@ -87,7 +87,7 @@
         <tr>
             <td align="center" class="border-top border-left border-bottom">{{ $row->no_employee }}</td>
             <td align="center" class="border-top border-left border-bottom">{{ $row->name }}</td>
-            <td align="center" class="border-top border-left border-bottom">{{ $row->position }}</td>
+            <td align="center" class="border-top border-left border-bottom">{{ $row->position_name }}</td>
             <td align="center" class="border-top border-left border-bottom">{{ $row->salary_pokok }}</td>
             <td align="center" class="border-top border-left border-bottom">{{ $row->allowance_fixed }}</td>
             <td align="center" class="border-top border-left border-bottom">{{ $row->allowance_unfixed }}</td>
