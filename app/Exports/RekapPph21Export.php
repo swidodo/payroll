@@ -19,7 +19,7 @@ class RekapPph21Export implements FromView
     }
     public function view(): View
     {
-        $data = DB::table('rekap_pph21s')->select('rekap_pph21s.*','employees.name','employees.no_employee',,'position.position_name')
+        $data = DB::table('rekap_pph21s')->select('rekap_pph21s.*','employees.name','employees.no_employee','position.position_name')
                                             ->leftJoin('employees','employees.id','=','rekap_pph21s.employee_id')
                                             ->leftJoin('position','position.id','=','employees.position_id')
                                             ->where('rekap_pph21s.branch_id','=',$this->request->branch_id)

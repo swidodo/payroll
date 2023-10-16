@@ -35,7 +35,7 @@ class Rekap_pph21Controller extends Controller
         $date = date('Ymd');
          if ($request->from_date !== null && $request->to_date !== null){
             $data = DB::table('rekap_pph21s')
-                        ->select('rekap_pph21s.*','employees.name','employees.no_employee',,'position.position_name')
+                        ->select('rekap_pph21s.*','employees.name','employees.no_employee','position.position_name')
                         ->leftJoin('employees','employees.id','=','rekap_pph21s.employee_id')
                         ->leftJoin('position','position.id','=','employees.position_id')
                         ->where('rekap_pph21s.branch_id','=',$this->request->branch_id)
