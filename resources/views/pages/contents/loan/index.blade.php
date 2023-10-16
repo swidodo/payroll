@@ -48,7 +48,8 @@
                     <div class="col-md-4">
                         <label for="attendance" class="form-label">Status</label>
                         <select class="form-control form-control-sm select" id="status-filter" name="status-filter">
-                            <option value="">Ongoing</option>
+                            <option value="ongoing" selected>Ongoing</option>
+                            <option value="paid off">Paid Off</option>
                         </select>
                     </div>
                     <div class="col-md-4 d-flex align-items-center">
@@ -207,6 +208,8 @@
                     const deleteURL = $(this).data('url');
                     $('#form-delete-loan').attr('action', deleteURL);
                 })
+                var branch = $('#branch-filter').val();
+                var status = $('#status-filter').val();
                 loadData(branch="",status="")
             });
             function loadData(branch,status){
