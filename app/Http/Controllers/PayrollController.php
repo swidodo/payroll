@@ -30,7 +30,7 @@ class PayrollController extends Controller
     public function index()
     {
         // DB::table('bpjs_value')->delete();
-        DB::table('take_home_pay')->delete();
+        // DB::table('take_home_pay')->delete();
         // DB::table('rekap_pph21s')->delete();
         if (Auth::user()->can('manage payroll')) {
             if (Auth::user()->type != 'company') {
