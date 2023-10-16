@@ -270,7 +270,7 @@
                                  var bg ='';
                                 if (data === "ongoing"){
                                     bg = "badge-warning";
-                                }else if (data === "lunas"){
+                                }else if (data === "paid off"){
                                     bg = "badge-success";
                                 }else{
                                     bg = "badge-danger";
