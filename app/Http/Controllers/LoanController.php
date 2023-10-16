@@ -60,6 +60,7 @@ class LoanController extends Controller
             } else {
                 $user = Auth::user();
                 $getBranch = Branch::select('name','id','company_id')->where('id',$user->branch_id)->first();
+                $branch ='';
                 if ($user->initial == "HO"){
                     $branch = Branch::select('name','id')->where('company_id',$getranch->company_id);
                 }else{
@@ -67,8 +68,8 @@ class LoanController extends Controller
                 }
                 $loans = Loan::where('branch_id', '=', Auth::user()->branch_id)->get();
                 $employee  = Employee::where('branch_id', '=', Auth::user()->branch_id)->get();
-                 $loanType = LoanOption::where('name','=','KASBON')->get();
-
+                $loanType = LoanOption::where('name','<>','KASBON')->get();
+                dd($branch);
                 return view('pages.contents.loan.installment', compact('employee', 'loanType','branch'));
             }
         } else {
