@@ -57,7 +57,7 @@ class Rekap_pph21Controller extends Controller
             $dat['pph']         = $data;                           
             $dat['total']       = $total;
            }                     
-        $pdf = PDF::loadview('pages.contents.report.rekap_pph21.rekap_pph21_pdf',$dat)->setPaper('A4','landscape');
+        $pdf = PDF::loadview('pages.contents.report.rekap_pph21.rekap_pph21_pdf',$dat)->setPaper('A3','landscape');
         ob_get_clean();
         return $pdf->stream('Rekap_pph21_'.$date.'');
     }
