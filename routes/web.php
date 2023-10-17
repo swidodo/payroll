@@ -390,7 +390,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('rekap-payroll-excel',[RekapPayrollController::class,'ExportExcel'])->name('rekap-payroll-excel');
         // request
         Route::get('request-employee',[RequestController::class,'index'])->name('request-employee');
+        Route::post('get-request',[RequestController::class,'get_data'])->name('get-request');
         Route::get('add-request-employee',[RequestController::class,'create'])->name('add-request');
+        Route::post('store-request',[RequestController::class,'store'])->name('store-request');
     });
 
 
