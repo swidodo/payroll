@@ -274,6 +274,19 @@
                                         @endif
                                         </div>
                                     </div>
+                                     <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="religion" class="control-label" required="">Day type </label>
+                                            <select class="form-control  select-day-type" name="day_type_id" id="daytype_id_overtime"  required>
+                                            </select>
+
+                                            @if ($errors->has('day_type_id'))
+                                            <div class="text-danger" role="alert">
+                                                <small><strong>{{ $errors->get('day_type_id')[0] }}</strong></small>
+                                            </div>
+                                        @endif
+                                        </div>
+                                    </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Start Time </label>
@@ -295,19 +308,6 @@
                                             @if ($errors->has('end_time'))
                                             <div class="text-danger" role="alert">
                                                 <small><strong>{{ $errors->get('end_time')[0] }}</strong></small>
-                                            </div>
-                                        @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="religion" class="control-label" required="">Day type </label>
-                                            <select class="form-control  select-day-type" name="day_type_id" id="daytype_id_overtime"  required>
-                                            </select>
-
-                                            @if ($errors->has('day_type_id'))
-                                            <div class="text-danger" role="alert">
-                                                <small><strong>{{ $errors->get('day_type_id')[0] }}</strong></small>
                                             </div>
                                         @endif
                                         </div>
