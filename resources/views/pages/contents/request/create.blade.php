@@ -421,6 +421,7 @@
         </div>
     </div>
 </div>
+@endsection
 
 @push('addon-style')
     <!-- Datatable CSS -->
