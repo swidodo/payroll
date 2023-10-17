@@ -18,7 +18,7 @@ class DayTypeController extends Controller
     public function index()
     {
         if (Auth::user()->can('manage day type')) {
-            $dayTypes = DayType::where('created_by', '=', Auth::user()->branch_id())->get();
+            $dayTypes = DayType:all();
             return view('pages.contents.day-type.index', compact('dayTypes'));
         } else {
             toast('Permission denied.', 'error');
