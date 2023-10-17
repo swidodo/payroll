@@ -245,7 +245,8 @@ class RequestController extends Controller
                 
             }else if($request->request_type =="overtime"){
                 $employee       = Employee::where('id', $request->employee_id)->first();
-                $dayType        = DayType::where('id', $request->daytype_id)->first();
+                // $dayType        = DayType::where('id', $request->daytype_id)->first();
+                $dayType        = DayType::where('id', 1)->first();
                 $diffInHour     = Carbon::parse($request->end_time)->diffInHours(Carbon::parse($request->start_time));
                 $typeCompany = 'default';
                 $data_id ='';
@@ -253,19 +254,19 @@ class RequestController extends Controller
                     // overtime calculation
                     // ini belum untuk pengurangan tanggal dan waktu
                     $overTimes = (int)$diffInHour - (int)$this->break_time($diffInHour);
-                    if ($employee->type_work == "52" && $dayType->name =="Week Day"){
+                    if ($employee->work_type == "52" && $dayType->name =="Week Day"){
                         $tot_Overtime = $this->timeTot_weekday($overTimes);
                     }
-                    if ($employee->type_work == "61" && $dayType->name =="Week Day"){
+                    if ($employee->work_type == "61" && $dayType->name =="Week Day"){
                         $tot_Overtime = $this->timeTot_weekday($overTimes);
                     }
-                    if ($employee->type_work == "61" && $dayType->name =="Saturday"){
+                    if ($employee->work_type == "61" && $dayType->name =="Saturday"){
                         $tot_Overtime = $this->timeTot_61($overTimes,$dayType->name);
                     }
-                    if ($employee->type_work == "61" && $dayType->name =="Holiday"){
+                    if ($employee->work_type == "61" && $dayType->name =="Holiday"){
                         $tot_Overtime = $this->timeTot_61($overTimes,$dayType->name);
                     }
-                    if ($employee->type_work == "52" && $dayType->name =="Holiday"){
+                    if ($employee->work_type == "52" && $dayType->name =="Holiday"){
                         $tot_Overtime = $this->timeTot_52($overTimes);
                     }
                     $totFixedAllowance = $this->total_allowance($employee->id);
@@ -316,5 +317,9 @@ class RequestController extends Controller
             return response()->json($res);
         }
 
+    }
+    public function get_daytype(){
+        $data['day_type'] = DayType::all();
+        return response()->json($data);;
     }
 }

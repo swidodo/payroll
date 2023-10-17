@@ -302,9 +302,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="religion" class="control-label" required="">Day type </label>
-                                            <select class="form-control  select-day-type" name="day_type_id" id="daytype_id_overtime"  >
-                                                <option value="" selected>Change Day Type</option>
-                                                
+                                            <select class="form-control  select-day-type" name="day_type_id" id="daytype_id_overtime"  required>
                                             </select>
 
                                             @if ($errors->has('day_type_id'))
@@ -481,6 +479,21 @@
                     $('#timesheetForm').attr('hidden',true);
                     $('#overtimeForm').attr('hidden',false);
                     $('#leaveForm').attr('hidden',true);
+                    $.ajax({
+                        url : 'get-day-type',
+                        type : 'post',
+                        dataType : 'json',
+                        beforeSend : function(){
+
+                        },
+                        success : function(respon){
+                            var option = '<option value="" disabled selected>-- select day type --</option>';
+                            $.each(respon.day_type,function(key,val){
+                                option +=`<option value="`+val.id+`">`+val.name+`</option>`;
+                            })
+                            $('#daytype_id_overtime').html(option);
+                        }
+                    })
                 }else if($type == "leave"){
                     $('#attendanceForm').attr('hidden',true);
                     $('#scheduleFrom').attr('hidden',true);

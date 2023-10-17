@@ -254,19 +254,19 @@ class OvertimeController extends Controller
                     // overtime calculation
                     // ini belum untuk pengurangan tanggal dan waktu
                     $overTimes = (int)$diffInHour - (int)$this->break_time($diffInHour);
-                    if ($employee->type_work == "52" && $dayType->name =="Week Day"){
+                    if ($employee->work_type == "52" && $dayType->name =="Week Day"){
                         $tot_Overtime = $this->timeTot_weekday($overTimes);
                     }
-                    if ($employee->type_work == "61" && $dayType->name =="Week Day"){
+                    if ($employee->work_type == "61" && $dayType->name =="Week Day"){
                         $tot_Overtime = $this->timeTot_weekday($overTimes);
                     }
-                    if ($employee->type_work == "61" && $dayType->name =="Saturday"){
+                    if ($employee->work_type == "61" && $dayType->name =="Saturday"){
                         $tot_Overtime = $this->timeTot_61($overTimes,$dayType->name);
                     }
-                    if ($employee->type_work == "61" && $dayType->name =="Holiday"){
+                    if ($employee->work_type == "61" && $dayType->name =="Holiday"){
                         $tot_Overtime = $this->timeTot_61($overTimes,$dayType->name);
                     }
-                    if ($employee->type_work == "52" && $dayType->name =="Holiday"){
+                    if ($employee->work_type == "52" && $dayType->name =="Holiday"){
                         $tot_Overtime = $this->timeTot_52($overTimes);
                     }
                     $totFixedAllowance = $this->total_allowance($employee->id);
