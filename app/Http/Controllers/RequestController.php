@@ -14,6 +14,7 @@ use App\Models\AllowanceFinance;
 use App\Models\Overtime;
 use App\Models\Leave;
 use App\Models\LeaveType;
+use App\Models\Timesheet;
 use DataTables;
 use DateTime;
 use Carbon\Carbon;
@@ -239,12 +240,32 @@ class RequestController extends Controller
                     'early_leaving' =>'00:00:00',
                     'overtime'      =>'00:00:00',
                     'total_rest'    =>'00:00:00',
-                    'created_by'     => Auth::user()->id,
+                    'created_by'    => Auth::user()->id,
                 ];
                 $data_id = AttendanceEmployee::create($dataAttend)->id;
             }else if($request->request_type =="schedule"){
 
             }else if($request->request_type =="timesheet"){
+                 if ($request->file('formFile')) {
+                    $fileName = time() . '_' . $request->file('formFile')->getClientOriginalName();
+                    $store = $request->file('formFile')->storeAs('public', $fileName);
+                    $pathFile = 'storage/' . $fileName ?? null;
+                }
+                $dataTimesheet = [
+                    'employee_id'       => $request->employee_id,
+                    'project_stage'     => $request->project_stage,
+                    'start_date'        => $request->startdate,
+                    'end_date'          => $request->enddate,
+                    'taks_or_project'   => $request->task_or_project,
+                    'activity'          => $request->activity,
+                    'client_company'    => $request->client_company,
+                    'label_project'     => $request->label_project,
+                    'support'           => $request->support,
+                    'remark'            => $request->remark,
+                    'status'            => 'waiting',
+                    'file_attachment'   => $pathFile,
+                ];
+                $data_id = Timesheet::create($dataTimesheet)->id;
                 
             }else if($request->request_type =="overtime"){
                 $employee       = Employee::where('id', $request->employee_id)->first();

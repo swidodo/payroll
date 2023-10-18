@@ -105,155 +105,77 @@
                         <div id="scheduleFrom"></div>
                         <!-- form Timesheet ==================================================== -->
                         <div id="timesheetForm" hidden>
-                            <form action="{{route('timesheets.store')}}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="religion" class="control-label" required>Employee ID </label>
-                                            <select  class="form-control select-employee" name="employee_id" id="employee_id_add" required>
-                                                <option value=""  selected></option>
-                                            </select>
-
-                                            @if ($errors->has('employee_id'))
-                                            <div class="text-danger" role="alert">
-                                                <small><strong>{{ $errors->get('employee_id')[0] }}</strong></small>
-                                            </div>
-                                        @endif
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12">
+                            <form method="POST" id="formTimesheet" enctype="multipart/form-data">
+                               <div class="row">
+                                   <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="project_stage_id" class="control-label" required>Project stage</label>
-                                            <select  class="form-control select-project-stage-add" name="project_stage" id="project_stage_add" >
+                                            <select  class="form-control select-project-stage-add form-select" name="project_stage" id="project_stage_timesheet" required>
                                                 <option value="0">Select </option>
                                                 <option value="Dinas Luar Kota">Dinas Luar Kota </option>
                                                 <option value="Dinas Dalam Kota">Dinas Dalam Kota </option>
                                             </select>
-
-                                            @if ($errors->has('project_stage'))
-                                            <div class="text-danger" role="alert">
-                                                <small><strong>{{ $errors->get('project_stage')[0] }}</strong></small>
-                                            </div>
-                                        @endif
                                         </div>
                                     </div>
 
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <label>Task / Project </label>
-                                            <input type="text" name="task_or_project" id="task_or_project" class="form-control " required>
-
-                                            @if ($errors->has('task_or_project'))
-                                            <div class="text-danger" role="alert">
-                                                <small><strong>{{ $errors->get('task_or_project')[0] }}</strong></small>
-                                            </div>
-                                        @endif
+                                            <input type="text" name="task_or_project" id="task_or_project_timesheet" class="form-control" required>
                                         </div>
                                     </div>
-
 
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Start Date </label>
-                                            <input type="date" name="start_date" id="startdate" class="form-control " placeholder="Start Date" required>
-
-                                            @if ($errors->has('start_date'))
-                                                <div class="text-danger" role="alert">
-                                                    <small><strong>{{ $errors->get('start_date')[0] }}</strong></small>
-                                                </div>
-                                            @endif
+                                            <input type="date" name="start_date" id="startdate_timesheet" class="form-control" placeholder="Start Date" required>
                                         </div>
                                     </div>
-
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>End Date </label>
-                                            <input type="date" name="end_date" id="enddate" class="form-control " placeholder="End Date" required>
-
-                                            @if ($errors->has('end_date'))
-                                            <div class="text-danger" role="alert">
-                                                <small><strong>{{ $errors->get('end_date')[0] }}</strong></small>
-                                            </div>
-                                        @endif
+                                            <input type="date" name="end_date" id="enddate_timesheet" class="form-control" placeholder="End Date" required>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Activity</label>
-                                            <input type="text" name="activity" id="activity" class="form-control " required>
-
-                                            @if ($errors->has('activity'))
-                                            <div class="text-danger" role="alert">
-                                                <small><strong>{{ $errors->get('activity')[0] }}</strong></small>
-                                            </div>
-                                        @endif
+                                            <input type="text" name="activity" id="activity_timesheet" class="form-control" required>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Client Company</label>
-                                            <input type="text" name="client_company" id="client_company" class="form-control " required>
-
-                                            @if ($errors->has('client_company'))
-                                            <div class="text-danger" role="alert">
-                                                <small><strong>{{ $errors->get('client_company')[0] }}</strong></small>
-                                            </div>
-                                        @endif
+                                            <input type="text" name="client_company" id="client_company_timesheet" class="form-control" required>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Label Project</label>
-                                            <input type="text" name="label_project" id="label_project" class="form-control " required>
-
-                                            @if ($errors->has('label_project'))
-                                            <div class="text-danger" role="alert">
-                                                <small><strong>{{ $errors->get('label_project')[0] }}</strong></small>
-                                            </div>
-                                        @endif
+                                            <input type="text" name="label_project" id="label_project_timesheet" class="form-control" required>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Support</label>
-                                            <input type="text" name="support" id="support" class="form-control " required>
-
-                                            @if ($errors->has('support'))
-                                            <div class="text-danger" role="alert">
-                                                <small><strong>{{ $errors->get('support')[0] }}</strong></small>
-                                            </div>
-                                        @endif
+                                            <input type="text" name="support" id="support_timesheet" class="form-control" required>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>File Attachment</label>
-                                            <input class="form-control" type="file" id="formFile" name="attachment">
-
-                                            @if ($errors->has('attachment'))
-                                            <div class="text-danger" role="alert">
-                                                <small><strong>{{ $errors->get('attachment')[0] }}</strong></small>
-                                            </div>
-                                        @endif
+                                            <input class="form-control" type="file" id="formFile_timesheet" name="attachment">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Remark </label>
-                                            <textarea name="remark" id="remark" cols="30" rows="2" class="form-control"></textarea>
-
-                                            @if ($errors->has('remark'))
-                                            <div class="text-danger" role="alert">
-                                                <small><strong>{{ $errors->get('remark')[0] }}</strong></small>
-                                            </div>
-                                        @endif
+                                            <textarea name="remark" id="remark_timesheet" cols="30" rows="2" class="form-control"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -592,7 +514,7 @@
 
                 })
             })
-             $('#formLeave').on('submit',function(e){
+            $('#formLeave').on('submit',function(e){
                 e.preventDefault();
                 var req_date    = $('#date_request').val();
                 var request_type= $('#request-options').val();
@@ -639,6 +561,65 @@
 
                 })
             })
+            $('#formTimesheet').on('submit',function(e){
+                e.preventDefault();
+                var req_date    = $('#date_request').val();
+                var request_type= $('#request-options').val();
+                var branchId    = $('#branchId').val();
+                var employeeId  = $('#employeeId').val();
+                var project_stage   = $('#project_stage_timesheet').val();
+                var task_or_project = $('#task_or_project_timesheet').val();
+                var startdate       = $('#startdate_timesheet').val();
+                var enddate         = $('#enddate_timesheet').val();
+                var activity        = $('#activity_timesheet').val();
+                var client_company  = $('#client_company_timesheet').val();
+                var label_project   = $('#label_project_timesheet').val();
+                var support         = $('#support_timesheet').val();
+                var formFile        = $('#formFile_timesheet')[0].files[0];
+                var remark          = $('#remark_timesheet').val();
+                var formData        = new FormData();
+
+                formData.append('date_request',req_date)
+                formData.append('request_type',request_type)
+                formData.append('branch_id',branchId)
+                formData.append('employee_id',employeeId)
+
+                formData.append('project_stage',project_stage)
+                formData.append('task_or_project',task_or_project)
+                formData.append('startdate',startdate)
+                formData.append('enddate',enddate)
+                formData.append('activity',activity)
+                formData.append('client_company',client_company)
+                formData.append('label_project',label_project)
+                formData.append('support',support)
+                formData.append('formFile',formFile)
+                formData.append('remark',remark)
+
+                 $.ajax({
+                    url : 'store-request',
+                    type : 'post',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    data : formData,
+                    dataType : 'json',
+                    beforeSend : function(){
+
+                    },
+                    success : function(respon){
+                        if (respon.status == 'success'){
+                            $('#formTimesheet')[0].reset();
+                        }
+                        swal.fire({
+                            icon : respon.status,
+                            text : respon.msg,
+                        })
+                    },
+                    error : function(){
+                        alert('Someting went wrong !')
+                    }
+                })
+             })
         })
 </script>
 @endpush
