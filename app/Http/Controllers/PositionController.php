@@ -28,10 +28,10 @@ class PositionController extends Controller
                                                 <a href ="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons"> more_vert</i></a>
                                                 <div class="dropdown-menu dropdown-menu-right">';
                             /** edit */
-                            if (Auth()->user()->can('edit Position'){
+                            if (Auth()->user()->can('edit Position')){
                                 $view .= '<a href="#" data-id = "'.$d->id.'" class="dropdown-item edit-position"><i class="fa fa-pencil m-r-5" ></i> Edit</a>';
                             }
-                            if (Auth()->user()->can('delete Position'){
+                            if (Auth()->user()->can('delete Position')){
                                 /** delete */
                                 $view .= '<a data-id="'.$d->id.'" class="dropdown-item delete-position" href="#"><i class="fa fa-trash-o m-r-5"></i>Delete</a>';
                             }
