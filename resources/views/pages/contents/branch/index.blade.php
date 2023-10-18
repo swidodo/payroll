@@ -44,6 +44,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Branch</th>
+                                <th>Alias</th>
                                 @if(Auth::user()->can('edit branch') || Auth::user()->can('delete branch'))
                                     <th class="text-end">Action</th>
                                 @endif
@@ -58,6 +59,9 @@
                                     <td>{{$no++}}</td>
                                     <td>
                                         {{$branch->name}}
+                                    </td> 
+                                    <td>
+                                        {{$branch->alias}}
                                     </td>
                                     @canany(['edit branch', 'delete branch'])
                                         <td class="text-end">

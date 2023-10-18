@@ -48,24 +48,37 @@ class CompanyController extends Controller
         return $response;
     }
     public function store(Request $request){
-        $data =[
-            'name' => $request->company_name,
-            'address' => $request->address,
-            'code'   => $request->code,
-        ];
-        $save = Company::create($data);
-         if ($save){
-            $res = [
+        try {
+                DB::beginTransaction();
+            $data =[
+                'name' => $request->company_name,
+                'address' => $request->address,
+                'code'   => $request->code,
+            ];
+            
+            $save = Company::create($data)->id;
+            $branch = [
+                'name'       => $request->company_name,
+                'alias'      => $request->company_name,
+                'created_by' => Auth::user()->id;
+                'company_id' => $save,
+            ];
+            Branch::create($branch);
+            DB::commit();
+             $res = [
                 'status' => 'success',
                 'msg'    => 'Data success saved !',
             ];
-        }else{
-            $res = [
+            return response()->json($res);
+        }catch (Exception $e) {
+                DB::rollBack();
+                 $res = [
                 'status' => 'success',
                 'msg'    => 'Something went wrong  !, try again.',
             ];
+            return response()->json($res);
         }
-        return response()->json($res);
+        
     }
     public function edit(Request $request){
         $data = Company::find($request->id);
