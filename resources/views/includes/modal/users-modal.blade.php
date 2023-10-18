@@ -108,7 +108,7 @@
                              >
                                 <div class="form-group">
                                     <label>Date Join</label>
-                                        <input class="form-control" name="doj" id="doj" type="date">
+                                        <input class="form-control" name="doj" id="doj" type="date" hidden>
                                     @if ($errors->has('doj'))
                                     <div class="text-danger" role="alert">
                                         <small><strong>{{ $errors->get('doj')[0] }}</strong></small>
@@ -121,7 +121,7 @@
                             >
                                 <div class="form-group">
                                     <label>Date End</label>
-                                        <input class="form-control" name="doe" id="doe" type="date">
+                                        <input class="form-control" name="doe" id="doe" type="date" hidden>
 
                                     @if ($errors->has('doe'))
                                     <div class="text-danger" role="alert">

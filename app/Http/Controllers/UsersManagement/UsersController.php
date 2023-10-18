@@ -78,8 +78,8 @@ class UsersController extends Controller
                     'name' => 'required|max:120',
                     'email' => 'required|email|unique:users',
                     'password' => 'required|min:8',
-                    // 'doj' => 'required|date',
-                    // 'doe' => 'required|date',
+                    'doj' => 'required|date',
+                    'doe' => 'required|date',
                 ]);
 
                 if ($validator->fails()) {
@@ -112,18 +112,18 @@ class UsersController extends Controller
                     return redirect()->back();
                 }
             } else {
-                $validator = Validator::make($request->all(), [
-                    'name'      => 'required|max:120',
-                    'email'     => 'required|email|unique:users',
-                    'password'  => 'required|min:8',
-                    'branch_id'    => 'required|not_in:0',
-                    'role'      => 'required|not_in:0',
-                    'employee_type'      => 'required|not_in:0',
-                ]);
+                // $validator = Validator::make($request->all(), [
+                //     'name'      => 'required|max:120',
+                //     'email'     => 'required|email|unique:users',
+                //     'password'  => 'required|min:8',
+                //     'branch_id'    => 'required|not_in:0',
+                //     'role'      => 'required|not_in:0',
+                //     'employee_type'      => 'required|not_in:0',
+                // ]);
 
-                if ($validator->fails()) {
-                    return redirect()->back()->with('errors', $validator->messages());
-                }
+                // if ($validator->fails()) {
+                //     return redirect()->back()->with('errors', $validator->messages());
+                // }
 
                 try {
                     DB::beginTransaction();
