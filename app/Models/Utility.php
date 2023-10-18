@@ -219,6 +219,7 @@ class Utility extends Model
         }
 
         foreach ($dayoffs as $key => $value) {
+            dd($value);
             ShiftSchedule::updateShift($value['day'], 'l', 'Dayoff', 'Dayoff');
         }
     }
