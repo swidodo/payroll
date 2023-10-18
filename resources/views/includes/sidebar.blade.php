@@ -83,7 +83,11 @@
                             @endcanany
 
                             @canany(['manage dayoff', 'create dayoff'])
-                                <li class="{{(request()->routeIs('dayoff*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('dayoff*')) ? 'active' : ''}}" href="{{ route('dayoff.index') }}">Dayoff</a></li>
+                                <li class="{{(request()->routeIs('dayoff*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('dayoff*')) ? 'active' : ''}}" href="{{ route('dayoff.index') }}">Time Off</a></li>
+                            @endcanany
+
+                            @canany(['manage company holiday', 'create company holiday'])
+                                <li class="{{(request()->routeIs('company-holiday*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('company-holiday*')) ? 'active' : ''}}" href="{{ route('company-holiday.index') }}">Calender</a></li>
                             @endcanany
 
                             @canany(['manage attendance', 'create attendance', 'edit attendance', 'delete attendance'])
@@ -245,9 +249,6 @@
 
                             @canany(['manage role', 'create role'])
                                 <li class="{{(request()->routeIs('roles*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('roles*')) ? 'active' : ''}}" href="{{route('roles.index')}}">Roles</a></li>
-                            @endcanany
-                            @canany(['manage company holiday', 'create company holiday'])
-                                <li class="{{(request()->routeIs('company-holiday*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('company-holiday*')) ? 'active' : ''}}" href="{{ route('company-holiday.index') }}">Company Holiday</a></li>
                             @endcanany
 
                             <!-- @canany(['manage level approval', 'edit level approval'])
