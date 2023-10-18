@@ -113,10 +113,8 @@
                             name : 'branch_name'
                         },
                         {
-                            data: 'id',
-                            render: function ( data, type, row ) {
-                                return  `<button class="btn btn-primary btn-sm edit_rotate" data-id=`+data+`><span class="fa fa-pencil"></span></button>`;
-                            }
+                            data: 'action',
+                            name: 'action'
                         },
                 ],
 
