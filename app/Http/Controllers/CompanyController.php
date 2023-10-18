@@ -60,7 +60,7 @@ class CompanyController extends Controller
             $branch = [
                 'name'       => $request->company_name,
                 'alias'      => $request->company_name,
-                'created_by' => Auth::user()->id;
+                'created_by' => Auth::user()->id,
                 'company_id' => $save,
             ];
             Branch::create($branch);
