@@ -248,9 +248,9 @@
                         <a href="#"><i class="la la-cog"></i> <span> Setting</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
 
-                            <!-- @canany(['manage app']) -->
+                            @canany(['manage role', 'create role'])
                                 <li class="{{(request()->routeIs('setup-app')) ? 'active' : ''}}"><a class="{{(request()->routeIs('setup-app')) ? 'active' : ''}}" href="{{ route('setup-app') }}">Setup App</a></li>
-                            <!-- @endcanany  -->
+                            @endcanany 
                             @canany(['manage user', 'create user'])
                                 <li class="{{(request()->routeIs('users*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('users*')) ? 'active' : ''}}" href="{{ route('users.index') }}">Users</a></li>
                             @endcanany
