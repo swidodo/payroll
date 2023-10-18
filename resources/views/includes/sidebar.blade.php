@@ -50,10 +50,10 @@
                             @canany(['manage leave', 'create leave', 'edit leave', 'delete leave'])
                                 <li class="{{(request()->routeIs('leaves*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('leaves*')) ? 'active' : ''}}" href="{{ route('leaves.index') }}">Leave</a></li>
                             @endcanany
-
+<!-- 
                             @canany(['view history leave'])
                                 <li class="{{(request()->routeIs('history-leave*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('history-leave*')) ? 'active' : ''}}" href="{{ route('history-leave.index') }}">Histroy Leave</a></li>
-                            @endcanany
+                            @endcanany -->
 
                             @canany(['manage overtime', 'create overtime', 'edit overtime', 'delete overtime'])
                                 <li class="{{(request()->routeIs('overtimes*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('overtimes*')) ? 'active' : ''}}" href="{{ route('overtimes.index') }}">Overtime</a></li>
@@ -78,9 +78,9 @@
                                 </li>
                             @endcanany -->
 
-                            @canany(['manage on duty', 'create on duty', 'edit on duty', 'delete on duty'])
+                            <!-- @canany(['manage on duty', 'create on duty', 'edit on duty', 'delete on duty'])
                                 <li class="{{(request()->routeIs('travels*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('travels*')) ? 'active' : ''}}" href="{{ route('travels.index') }}">On Duty</a></li>
-                            @endcanany
+                            @endcanany -->
 
                             @canany(['manage dayoff', 'create dayoff'])
                                 <li class="{{(request()->routeIs('dayoff*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('dayoff*')) ? 'active' : ''}}" href="{{ route('dayoff.index') }}">Time Off</a></li>
