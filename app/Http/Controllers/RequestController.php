@@ -176,7 +176,7 @@ class RequestController extends Controller
                                 <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                 <div class="dropdown-menu dropdown-menu-right">';
                                 // if(Auth()->user()->can('edit attendance')){
-                                    $btn .= '<a  data-id='.$row->id.' class="dropdown-item approve" href="javascript:void(0)" ><i class="fa fa-pencil m-r-5"></i> Edit</a>';
+                                    $btn .= '<a  data-id='.$row->id.' req-type ='.$row->request_type.' class="dropdown-item approve" href="javascript:void(0)" ><i class="fa fa-pencil m-r-5"></i>Approve</a>';
                                 // }
                                 // if(Auth()->user()->can('delete attendance')){
                                     $btn .= '<a data-id='.$row->id.' class="dropdown-item delete-master-bpjs" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
@@ -370,7 +370,11 @@ class RequestController extends Controller
         $data['leave_type'] = LeaveType::all();
         return response()->json($data);;
     }
-    public function approve_leave(){
+    public function approve_leave(Request $request){
+        $data['request']   = Request_employee::where('id',$request->id)->first();
+        $req = $data['request']->request_data_id;
+        $data['data']     = Leave::where('id',$req)->first();
+        return response()->json($data);
 
     }
     public function approve_overtime(){
