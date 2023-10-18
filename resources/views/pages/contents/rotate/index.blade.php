@@ -20,7 +20,7 @@
                         <li class="breadcrumb-item active">Rotation</li>
                     </ul>
                 </div>
-                @can('create leave type')
+                @can('create rotation')
                     <div class="col-auto float-end ms-auto">
                         <a href="#" class="btn add-btn" id="addDataRotate"><i class="fa fa-plus"></i>Add Rotation</a>
                     </div>
