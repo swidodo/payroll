@@ -33,28 +33,26 @@ class PayrollController extends Controller
         // DB::table('take_home_pay')->delete();
         // DB::table('rekap_pph21s')->delete();
         if (Auth::user()->can('manage payroll')) {
-            if (Auth::user()->type != 'company') {
-                $user     = Auth::user();
-                $employee = Employee::where('user_id', '=', $user->id)->get();
-                $payroll  = Payroll::where('employee_id', '=', $user->employee->id)->get();
-                $payslipType = PayslipType::where('created_by', '=', Auth::user()->creatorId())->get();
+            // if (Auth::user()->type != 'HO') {
+            //     $user     = Auth::user();
+            //     $employee = Employee::where('user_id', '=', $user->id)->get();
+            //     $payroll  = Payroll::where('employee_id', '=', $user->employee->id)->get();
+            //     $payslipType = PayslipType::where('created_by', '=', Auth::user()->creatorId())->get();
 
-                // allowance
-                $allowance = AllowanceFinance::where('created_by', '=', Auth::user()->creatorId())->get();
-                $employee  = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
-                $allowanceTypes  = AllowanceOption::where('created_by', '=', Auth::user()->creatorId())->get();
+            //     // allowance
+            //     $allowance = AllowanceFinance::where('created_by', '=', Auth::user()->creatorId())->get();
+            //     $employee  = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
+            //     $allowanceTypes  = AllowanceOption::where('created_by', '=', Auth::user()->creatorId())->get();
 
-                return view('pages.contents.payroll.index', compact('payroll', 'employee', 'payslipType','allowance','allowanceTypes'));
-            } else {
-                $payroll = Payroll::where('created_by', '=', Auth::user()->creatorId())->get();
-                $employee  = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
-                $payslipType = PayslipType::where('created_by', '=', Auth::user()->creatorId())->get();
-                $allowance = AllowanceFinance::where('created_by', '=', Auth::user()->creatorId())->get();
-                $employee  = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
-                $allowanceTypes  = AllowanceOption::where('created_by', '=', Auth::user()->creatorId())->get();
+            //     return view('pages.contents.payroll.index', compact('payroll', 'employee', 'payslipType','allowance','allowanceTypes'));
+            // } else {
+                $payroll = Payroll::where('branch_id', '=', Auth::user()->branch_id)->get();
+                $employee  = Employee::where('branch_id', '=', Auth::user()->branch_id)->get();
+                $payslipType = PayslipType::where('branch_id', '=', Auth::user()->branch_id)->get();
+                $allowanceTypes  = AllowanceOption::where('branch_id', '=', Auth::user()->branch_id)->get();
                 $data_bpjs = Master_bpjs::where('branch_id','=',Auth::user()->branch_id)->get();
                 return view('pages.contents.payroll.index', compact('payroll', 'employee', 'payslipType','allowance','allowanceTypes','data_bpjs'));
-            }
+            // }
         } else {
             toast('Permission denied.', 'error');
             return redirect()->back();
@@ -62,21 +60,15 @@ class PayrollController extends Controller
     }
     public function get_data(Request $request){
         $data = DB::table('v_payrolls')->select('*')->where('branch_id',Auth::user()->branch_id)->get();
-        // $data = Payroll::leftJoin('allowance_finances','allowance_finances.employee_id','=','payrolls.employee_id')
-        //                 ->where('payrolls.branch_id','=',Auth::user()->branch_id)
-        //                 ->where('payrolls.id','=','is not null')
-        //                 ->with('employees','payslip_type')
-        //                 ->get();
-
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action',function($row){
                     $btn ='';
-                    if(Auth()->user()->canany('edit payroll', 'delete payroll')){
+                    if(Auth()->user()->canany('edit payroll', 'show payroll','delete payroll')){
                         $btn .= '<div class="dropdown dropdown-action">
                                 <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                 <div class="dropdown-menu dropdown-menu-right">';
-                        if(Auth()->user()->can('edit payroll')){
+                        if(Auth()->user()->can('show payroll')){
                             $btn .= '<a  data-id ="'.$row->id.'" class="dropdown-item view-payroll" href="javascript:void(0)" ><i class="fa fa-eye m-r-5"></i> View</a>';
                         }if(Auth()->user()->can('edit payroll')){
                             $btn .= '<a  data-id ="'.$row->id.'" class="dropdown-item edit-payroll" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_payroll"><i class="fa fa-pencil m-r-5"></i> Edit</a>';

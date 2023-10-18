@@ -20,7 +20,7 @@ class TimesheetController extends Controller
     public function index()
     {
         if (Auth::user()->can('manage timesheet')) {
-            if (Auth::user()->type != 'company') {
+            if (Auth::user()->initial != 'HO') {
                 $employee     = Employee::where('id', '=', Auth::user()->employee->id)->get();
                 $timesheets = Timesheet::where('employee_id', '=', Auth::user()->employee->id)->get();
 

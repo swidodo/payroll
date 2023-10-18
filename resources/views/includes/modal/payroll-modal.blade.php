@@ -83,6 +83,7 @@
                                         </div>
                                         <hr />
                                     </div>
+                                    @if(isset($allowanceTypes))
                                     @foreach ($allowanceTypes as $type)
                                         <div class="row mx-4">
                                             <div class="form-check col-md-6 mb-3">
@@ -96,6 +97,7 @@
                                             </div>
                                         </div>
                                     @endforeach
+                                    @endif
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-12">
@@ -104,6 +106,7 @@
                                     </div>
                                     <div class="row mx-4">
                                         <div class="row">
+                                    @if(isset($data_bpjs))
                                         @foreach ($data_bpjs as $bpjs)
                                             <div class="col-md-6">
                                                 <div class="form-check col-md-6 mb-3">
@@ -114,6 +117,7 @@
                                                 </div>
                                             </div>
                                         @endforeach
+                                    @endif
                                         </div>
                                     </div>
                                 </div>
