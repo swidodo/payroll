@@ -58,6 +58,7 @@
     </div>
 </div>
   @include('includes.modal.company.add_company')
+  @include('includes.modal.company.edit_company')
 @endsection
 
 @push('addon-style')
@@ -151,46 +152,27 @@
                     }
                 })
             })
-           //  $(document).on('click','.edit-group-position',function(e){
-           //     e.preventDefault();
-           //     var id = $(this).attr('data-id')
-           //      $.ajax({
-           //          url : 'edit-group-position',
-           //          type : 'post',
-           //          data : {id : id},
-           //          dataType : 'json',
-           //          beforeSend : function(){
+            $(document).on('click','.edit-company',function(e){
+               e.preventDefault();
+               var id = $(this).attr('data-id')
+                $.ajax({
+                    url : 'edit-company',
+                    type : 'post',
+                    data : {id : id},
+                    dataType : 'json',
+                    beforeSend : function(){
 
-           //          },
-           //          success : function(respon){
-           //              var departement = '';
-           //              var position = '';
-           //              $.each(respon.departement, function(key,val){
-           //                  if (respon.data.departement_id == val.id){
-           //                       departement += `<option value="`+val.id+`" selected>`+val.name+`</option>`
-           //                  }else{
-           //                      departement += `<option value="`+val.id+`">`+val.name+`</option>`
-           //                  }
-           //              }) 
-           //              $.each(respon.position, function(key,val){
-           //                  if (respon.data.position_id == val.id){
-           //                       position += `<option value="`+val.id+`" selected>`+val.position_name+`</option>`
-           //                  }else {
-           //                      position += `<option value="`+val.id+`">`+val.position_name+`</option>`
-           //                  }
-           //              })
-           //              $('#id').val(respon.data.id);
-           //              $('#editBranchId').val(respon.data.branch_id);
-           //              $('#editBranchName').val(respon.data.branch_name);
-           //              $('#editEmployeeId').val(respon.data.employee_id);
-           //              $('#editEmployeeName').val(respon.data.employee_name);
-           //              $('#editDepartementId').html(departement)
-           //              $('#editPositionId').html(position)
-                      
-           //              $('#edit_company').modal('show');
-           //          }
-           //      })
-           //  })
+                    },
+                    success : function(respon){
+                       
+                        $('#id').val(respon.id);
+                        $('#companyName').val(respon.name);
+                        $('#companyAddress').val(respon.address);
+                        $('#companycode').val(respon.code);
+                        $('#edit_company').modal('show');
+                    }
+                })
+            })
            //  $('#updateFormGroupPotision').on('submit', function(e){
            //      e.preventDefault()
            //      var data = $('#updateFormGroupPotision').serialize();
