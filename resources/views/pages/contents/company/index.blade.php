@@ -57,7 +57,7 @@
         </div>
     </div>
 </div>
- 
+  @include('includes.modal.company.add_company')
 @endsection
 
 @push('addon-style')
