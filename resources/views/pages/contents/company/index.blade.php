@@ -199,7 +199,7 @@
                     }
                 })
             })
-            $(document).on('click','.delete-companyn',function(e){
+            $(document).on('click','.delete-company',function(e){
                 e.preventDefault()
                 var id = $(this).attr('data-id')
                 Swal.fire({
