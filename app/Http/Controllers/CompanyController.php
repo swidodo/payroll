@@ -7,7 +7,6 @@ use App\Models\Company;
 class CompanyController extends Controller
 {
      public function index(){
-
         return view('pages.contents.company.index');
     }
     public function get_data(Request $request){
@@ -43,4 +42,5 @@ class CompanyController extends Controller
             ]);
         }
         return $response;
+}
 }
