@@ -56,9 +56,9 @@
                                         @canany(['manage attendance'])
                                             <li class="{{(request()->routeIs('attendance*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('attendance*')) ? 'active' : ''}}" href="{{ route('attendance.index') }}">Attendance List</a></li>
                                         @endcanany
-                                        @canany(['create attendance'])
+                                        <!-- @canany(['create attendance'])
                                             <li class="{{(request()->routeIs('bulk-attendance*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('bulk-attendance*')) ? 'active' : ''}}" href="{{ route('bulk-attendance.index') }}">Bulk Attendance</a></li>
-                                        @endcanany
+                                        @endcanany -->
                                     </ul>
                                 </li>
                             @endcanany
