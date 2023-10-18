@@ -394,6 +394,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('add-request-employee',[RequestController::class,'create'])->name('add-request');
         Route::post('store-request',[RequestController::class,'store'])->name('store-request');
         Route::post('get-day-type',[RequestController::class,'get_daytype'])->name('get-day-type');
+        Route::post('get-leave-type',[RequestController::class,'get_leavetype'])->name('get-leave-type');
     });
 
 

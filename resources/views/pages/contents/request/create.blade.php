@@ -76,11 +76,11 @@
                                         <label>Status</label>
                                         <select class="form-control form-select mb-3" name="status" id="attendance_status" required>
                                             <option value="Present" selected>Present</option>
-                                            <option value="Alpha">Alpha</option>
+                                           <!--  <option value="Alpha">Alpha</option>
                                             <option value="Leave">Leave</option>
                                             <option value="Sick">Sick</option>
                                             <option value="Permit">Permit</option>
-                                            <option value="Dispensation">Dispensation</option>
+                                            <option value="Dispensation">Dispensation</option> -->
                                         </select>
                                     </div>
                                     <div class="col-md-6">
@@ -88,6 +88,10 @@
                                         <input type="time" name="clock_in" class="form-control mb-3" id="attendance_clock_in" required>
                                         <label>Clock Out</label>
                                         <input type="time" name="clock_out" class="form-control mb-3"id="attendance_clock_out" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="leave_reason" class="form-label">Description</label>
+                                        <textarea class="form-control" placeholder="description" name="description" cols="50" rows="3" id="description_attendance"></textarea>
                                     </div>
                                 </div>
                                 
@@ -332,30 +336,14 @@
                         </div>
                         <!-- form Leave ========================================================== -->
                         <div id="leaveForm" hidden>
-                            <form action="{{route('leaves.store')}}" method="POST" enctype="multipart/form-data">
-                                @csrf
+                            <form  method="POST"  id="formLeave">
                                 <div class="row">
                                     <div class="col-sm-12">
-                                            <div class="form-group">
-                                                <label>Employee <span class="text-danger">*</span></label>
-                                                <select class="form-control select-employee" id="employee_id" name="employee_id">
-                                                    <option value="" selected></option>
-                                                </select>
-
-                                                @if ($errors->has('employee_id'))
-                                                    <div class="text-danger" role="alert">
-                                                        <small><strong>{{ $errors->get('employee_id')[0] }}</strong></small>
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        {{-- @endif --}}
-
                                         <div class="form-group">
                                             <label for="leave_type_id" class="form-label">Leave Type</label>
-                                            <select name="leave_type_id" id="leave_type_id" class="form-control select-leave-type">
+                                            <select name="leave_type_id" id="leave_type_id" class="form-control form-select select-leave-type">
                                                 <option value="0">Select Leave Type</option>
                                             </select>
-
                                                 @if ($errors->has('employee_id'))
                                                     <div class="text-danger" role="alert">
                                                         <small><strong>{{ $errors->get('employee_id')[0] }}</strong></small>
@@ -367,7 +355,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="start_date" class="form-label">Start Date</label>
-                                                    <input class="form-control" name="start_date" type="date" id="start_date">
+                                                    <input class="form-control" name="start_date" type="date" id="start_date_leave">
 
                                                     @if ($errors->has('start_date'))
                                                         <div class="text-danger" role="alert">
@@ -379,7 +367,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="end_date" class="form-label">End Date</label>
-                                                    <input class="form-control" name="end_date" type="date" id="end_date">
+                                                    <input class="form-control" name="end_date" type="date" id="end_date_leave">
                                                 </div>
 
                                                 @if ($errors->has('end_date'))
@@ -403,7 +391,7 @@
                                         
                                         <div class="form-group">
                                             <label for="formFile" class="form-label">Attachment (opsional)</label>
-                                            <input name="attachment_request" class="form-control" type="file" id="attachment_rejected_add">
+                                            <input name="attachment_request" class="form-control" type="file" id="attachment_leave">
                                             <a href="" id="attachment_rejected_add_anchor"></a>
                                         </div>
                                     </div>
@@ -500,6 +488,21 @@
                     $('#timesheetForm').attr('hidden',true);
                     $('#overtimeForm').attr('hidden',true);
                     $('#leaveForm').attr('hidden',false);
+                     $.ajax({
+                        url : 'get-leave-type',
+                        type : 'post',
+                        dataType : 'json',
+                        beforeSend : function(){
+
+                        },
+                        success : function(respon){
+                            var option = '<option value="" disabled selected>-- select day type --</option>';
+                            $.each(respon.leave_type,function(key,val){
+                                option +=`<option value="`+val.id+`">`+val.title+`</option>`;
+                            })
+                            $('#leave_type_id').html(option);
+                        }
+                    })
                 }
             })
             $('#formattendance').on('submit',function(e){
@@ -589,7 +592,53 @@
 
                 })
             })
-            
+             $('#formLeave').on('submit',function(e){
+                e.preventDefault();
+                var req_date    = $('#date_request').val();
+                var request_type= $('#request-options').val();
+                var branchId    = $('#branchId').val();
+                var employeeId  = $('#employeeId').val();
+                var leave_type_id   = $('#leave_type_id').val();
+                var start_date      = $('#start_date_leave').val();
+                var end_date        = $('#end_date_leave').val();
+                var leave_reason    = $('#leave_reason').val();
+                var attachment_leave  = $('#attachment_leave')[0].files[0];
+                var formData = new FormData();
+                formData.append('date_request',req_date)
+                formData.append('request_type',request_type)
+                formData.append('branch_id',branchId)
+                formData.append('employee_id',employeeId)
+                formData.append('leave_type_id',leave_type_id)
+                formData.append('start_date',start_date)
+                formData.append('end_date',end_date)
+                formData.append('leave_reason',leave_reason)
+                formData.append('attachment_leave',attachment_leave)
+                $.ajax({
+                    url : 'store-request',
+                    type : 'post',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    data : formData,
+                    dataType : 'json',
+                    beforeSend : function(){
+
+                    },
+                    success : function(respon){
+                        if (respon.status == 'success'){
+                            $('#formLeave')[0].reset();
+                        }
+                        swal.fire({
+                            icon : respon.status,
+                            text : respon.msg,
+                        })
+                    },
+                    error : function(){
+                        alert('Sameting went wrong !');
+                    }
+
+                })
+            })
         })
 </script>
 @endpush

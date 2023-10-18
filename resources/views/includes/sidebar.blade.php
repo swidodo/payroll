@@ -68,7 +68,7 @@
                             @endcanany
 
                             @canany(['manage timesheet', 'create timesheet', 'edit timesheet', 'delete timesheet'])
-                                <li class="{{(request()->routeIs('timesheets*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('timesheets*')) ? 'active' : ''}}" href="{{ route('timesheets.index') }}">Timesheet</a></li>
+                                <li class="{{(request()->routeIs('timesheets*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('timesheets*')) ? 'active' : ''}}" href="{{ route('timesheets.index') }}">Time Sheet</a></li>
                             @endcanany
 
                             <!-- @canany(['show employee request'])
@@ -135,7 +135,7 @@
                                 <li class="{{(request()->routeIs('payroll*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('payroll*')) ? 'active' : ''}}" href="{{ route('payroll.index') }}">Payroll</a></li>
                             @endcanany
                             @canany(['manage reimburst', 'create reimburst'])
-                                <li class="{{(request()->routeIs('reimburst*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('reimburst*')) ? 'active' : ''}}" href="{{ route('reimburst.index') }}"> Reimburst</a></li>
+                                <li class="{{(request()->routeIs('reimburst*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('reimburst*')) ? 'active' : ''}}" href="{{ route('reimburst.index') }}"> Reimburse</a></li>
                             @endcanany
                             @canany(['manage allowance', 'create allowance'])
                             <li class=" {{(request()->routeIs('allowance-other')) ? 'active' : ''}}">
@@ -285,7 +285,7 @@
                                                 @endcanany
                                                 @canany(['manage jht', 'create jht', 'manage jkk', 'create jkk', 'manage jkm', 'create jkm', 'manage jp', 'create jp'])
                                                     <li class=" {{(request()->routeIs('master-limit-bpjs*')) ? 'active' : ''}}">
-                                                        <a class=" {{(request()->routeIs('master-limit-bpjs*')) ? 'active' : ''}}" href="{{route('master-limit-bpjs')}}"> Max Value Bpjs
+                                                        <a class=" {{(request()->routeIs('master-limit-bpjs*')) ? 'active' : ''}}" href="{{route('master-limit-bpjs')}}"> Maximum Value
                                                         </a>
                                                     </li>
                                                 @endcanany
@@ -352,7 +352,7 @@
 
                                     @canany(['manage reimbursement option', 'create reimbursement option', 'edit reimbursement option', 'delete reimbursement option'])
                                         <li class=" {{(request()->routeIs('reimbursement-option*')) ? 'active' : ''}}">
-                                            <a  class="{{(request()->routeIs('reimbursement-option*')) ? 'active' : ''}}" href="{{route('reimbursement-option.index')}}"></i> <span> Reimbursement Option</span>
+                                            <a  class="{{(request()->routeIs('reimbursement-option*')) ? 'active' : ''}}" href="{{route('reimbursement-option.index')}}"></i> <span> Reimburse Option</span>
                                             </a>
                                         </li>
                                     @endcanany

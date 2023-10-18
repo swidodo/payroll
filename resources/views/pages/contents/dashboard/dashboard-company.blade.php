@@ -396,7 +396,7 @@
                     <div class="col-md-6 d-flex">
                         <div class="card card-table flex-fill">
                             <div class="card-header">
-                                <h3 class="card-title mb-0">Timesheets Schedule</h3>
+                                <h3 class="card-title mb-0">Time sheets Schedule</h3>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive p-2">

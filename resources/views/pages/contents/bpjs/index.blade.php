@@ -44,9 +44,9 @@
                             <tr>
                                 <th>No</th>
                                 <th>Bpjs Name</th>
-                                <th>Company %</th>
-                                <th>Employee %</th>
-                                <th>Total %</th>
+                                <th>Company percentage value</th>
+                                <th>Employee percentage value</th>
+                                <th>Total percentage value</th>
                                 {{-- @if(Auth::user()->can('edit bpjs') || Auth::user()->can('delete bpjs')) --}}
                                     <th class="text-center">Action</th>
                                 {{-- @endif --}}

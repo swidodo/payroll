@@ -12,7 +12,10 @@ use App\Models\AttendanceEmployee;
 use App\Models\DayType;
 use App\Models\AllowanceFinance;
 use App\Models\Overtime;
+use App\Models\Leave;
+use App\Models\LeaveType;
 use DataTables;
+use DateTime;
 use Carbon\Carbon;
 class RequestController extends Controller
 {
@@ -245,8 +248,7 @@ class RequestController extends Controller
                 
             }else if($request->request_type =="overtime"){
                 $employee       = Employee::where('id', $request->employee_id)->first();
-                // $dayType        = DayType::where('id', $request->daytype_id)->first();
-                $dayType        = DayType::where('id', 1)->first();
+                $dayType        = DayType::where('id', $request->daytype_id)->first();
                 $diffInHour     = Carbon::parse($request->end_time)->diffInHours(Carbon::parse($request->start_time));
                 $typeCompany = 'default';
                 $data_id ='';
@@ -276,7 +278,7 @@ class RequestController extends Controller
                         $dataOvertime = [
                             'employee_id'        => $employee->id,
                             'overtime_type_id'   => 0,
-                            'day_type_id'        => 1,
+                            'day_type_id'        => $request->daytype_id,
                             'start_date'         => $request->start_date,
                             'amount_fee'         => $amount_fee ,
                             'status'             => 'Pending',
@@ -288,21 +290,42 @@ class RequestController extends Controller
                     }
                 }
             }else if($request->request_type =="leave"){
-            }
-            $data = [
-                    'date'              => $request->date_request,
-                    'branch_id'         => $request->branch_id,
-                    'request_type'      => $request->request_type,
-                    'request_data_id'   => $data_id,
-                    'employee_id'       => $request->employee_id,
-                    'approve_id'        => $userApprove,
-                    'position_id'       => $dataEmp->position_id,
-                    'department_id'     => $dataEmp->department_id,
-                    'status'            => 'waiting',
-                    'create_by'         => Auth::user()->id,
+                if ($request->file('attachment_leave')) {
+                    $fileName = time() . '_' . $request->file('attachment_leave')->getClientOriginalName();
+                    $store = $request->file('attachment_leave')->storeAs('public', $fileName);
+                    $pathFile = 'storage/' . $fileName ?? null;
+                }
+                $startDate = new DateTime($request->start_date);
+                $endDate   = new DateTime($request->end_date);
+                $total_leave_days = !empty($startDate->diff($endDate)) && $startDate < $endDate ? $startDate->diff($endDate)->days : 0;
+                $dataLeave =[
+                    'employee_id'               => $request->employee_id,
+                    'leave_type_id'             => $request->leave_type_id,
+                    'applied_on'                => $request->date_request,
+                    'start_date'                => $request->start_date,
+                    'end_date'                  => $request->end_date,
+                    'total_leave_days'          => $total_leave_days,
+                    'leave_reason'              => $request->leave_reason,
+                    'status'                    => 'waiting',
+                    'attachment_request_path'   => $pathFile,
+                    'created_by'                => Auth::user()->id,
                 ];
-            Request_employee::create($data);
-            DB::commit();
+                $data_id = Leave::create($dataLeave)->id;
+            }
+                $data = [
+                        'date'              => $request->date_request,
+                        'branch_id'         => $request->branch_id,
+                        'request_type'      => $request->request_type,
+                        'request_data_id'   => $data_id,
+                        'employee_id'       => $request->employee_id,
+                        'approve_id'        => $userApprove,
+                        'position_id'       => $dataEmp->position_id,
+                        'department_id'     => $dataEmp->department_id,
+                        'status'            => 'waiting',
+                        'create_by'         => Auth::user()->id,
+                    ];
+                Request_employee::create($data);
+                DB::commit();
              $res = [
                     'status' => 'success',
                     'msg'    => 'Request successfully created !',
@@ -320,6 +343,10 @@ class RequestController extends Controller
     }
     public function get_daytype(){
         $data['day_type'] = DayType::all();
+        return response()->json($data);;
+    }
+    public function get_leavetype(){
+        $data['leave_type'] = LeaveType::all();
         return response()->json($data);;
     }
 }
