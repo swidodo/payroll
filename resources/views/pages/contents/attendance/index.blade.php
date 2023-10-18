@@ -92,7 +92,7 @@
                                     </div> 
                                 </div>
                             </div>
-                            @if(Auth::user()->can('create attendance')
+                            @if(Auth::user()->can('create attendance'))
                             <div class="col-4 mt-3 d-flex justify-content-start">
                                 <div class="col-auto ">
                                     <button type="button" class="btn btn-primary ms-1 mt-1" id="btnAdjustment">Adjustment <span class="btn-inner--icon"><i class="la la-gear"></i></span></button>
