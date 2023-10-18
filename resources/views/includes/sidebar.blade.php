@@ -79,11 +79,11 @@
                                 <li class="{{(request()->routeIs('overtimes*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('overtimes*')) ? 'active' : ''}}" href="{{ route('overtimes.index') }}">Overtime</a></li>
                             @endcanany
 
-                            @canany(['manage request shift schedule', 'create request shift schedule', 'edit request shift schedule', 'delete request shift schedule'])
+                           <!--  @canany(['manage request shift schedule', 'create request shift schedule', 'edit request shift schedule', 'delete request shift schedule'])
                                 <li class="{{(request()->routeIs('request-shift-schedule*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('request-shift-schedule*')) ? 'active' : ''}}" href="{{ route('request-shift-schedule.index') }}">Request Schedule</a></li>
-                            @endcanany
+                            @endcanany -->
 
-                            @canany(['show shift schedule'])
+                             @canany(['manage request shift schedule', 'create request shift schedule', 'edit request shift schedule', 'delete request shift schedule'])
                                 <li class="{{(request()->routeIs('shift-schedule*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('shift-schedule*')) ? 'active' : ''}}" href="{{ route('shift-schedule.index') }}">Shift Schedule</a></li>
                             @endcanany
 
@@ -108,7 +108,7 @@
                                 <li class="{{(request()->routeIs('company-holiday*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('company-holiday*')) ? 'active' : ''}}" href="{{ route('company-holiday.index') }}">Calender</a></li>
                             @endcanany
 
-                             @canany(['manage company holiday', 'create company holiday'])
+                             @canany(['manage request', 'create request', 'edit request'])
                                 <li class="{{(request()->routeIs('request-employee*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('request-employee*')) ? 'active' : ''}}" href="{{ route('request-employee') }}">Request</a></li>
                             @endcanany 
 
