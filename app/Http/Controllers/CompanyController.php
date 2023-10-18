@@ -68,7 +68,7 @@ class CompanyController extends Controller
         return response()->json($res);
     }
     public function edit(Request $request){
-        $data = Company::fine($request->id);
+        $data = Company::find($request->id);
         return response()->json($data);
     }
     public function update(Request $request){
