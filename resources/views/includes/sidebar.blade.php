@@ -35,7 +35,7 @@
                             <a class=" {{(request()->routeIs('employees*')) ? 'active' : ''}}" href="{{route('employees.index')}}"><i class="la la-users"></i> <span>Employees</span>
                             </a>
                         </li>
-                        @canany(['edit rotation'])
+                        @canany(['view rotation,create rotation,edit rotation,delete rotation'])
                         <li class=" {{(request()->routeIs('employees*')) ? 'active' : ''}}">
                             <a class=" {{(request()->routeIs('rotation*')) ? 'active' : ''}}" href="{{route('rotation-employee')}}"><i class="la la-users"></i> <span>Rotation</span>
                             </a>
