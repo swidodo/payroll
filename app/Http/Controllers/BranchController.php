@@ -55,7 +55,7 @@ class BranchController extends Controller
                 return redirect()->back()->with('errors', $validator->messages());
             }
             $branchId = Auth::user()->branch_id;
-            $comId = Branch::where('id',$branchId);
+            $comId = Branch::where('id',$branchId)->first();
             $branch             = new Branch();
             $branch->name       = $request->name;
             $branch->alias      = $request->alias;
