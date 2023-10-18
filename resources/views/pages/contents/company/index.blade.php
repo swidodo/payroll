@@ -20,7 +20,7 @@
                 </div>
                 @can('create company')
                 <div class="col-auto float-end ms-auto">
-                    <a href="javascript:void(0);" class="btn add-btn" id="add_groupPosition"><i class="fa fa-plus"></i>company</a>
+                    <a href="javascript:void(0);" class="btn add-btn" id="add_company"><i class="fa fa-plus"></i>company</a>
                 </div>
                 @endcan
             </div>
@@ -119,67 +119,38 @@
                 ],
 
             });
-           //  $('#add_groupPosition').on('click', function(e){
-           //      e.preventDefault();
-           //      $.ajax({
-           //          url : 'add-group-position',
-           //          type : 'get',
-           //          dataType : 'json',
-           //          beforeSend : function(){
+            $('#add_company').on('click', function(e){
+                e.preventDefault();
+                 $('#addCompany').modal('show');
+               
+            })
+           $('#addFormCompany').on('submit', function(e){
+                e.preventDefault()
+                var data = $('#addFormCompany').serialize();
 
-           //          },
-           //          success : function(respon){
-           //              var branch = '';
-           //              var employee = '<option value="" selected></option>';
-           //              var departement = '<option value="" selected></option>';
-           //              var position = '<option value="" selected></option>';
-           //              $.each(respon.branch, function(key,val){
-           //                  branch += `<option value="`+val.id+`">`+val.name+`</option>`
-           //              })
-           //              $.each(respon.position, function(key,val){
-           //                  position += `<option value="`+val.id+`">`+val.position_name+`</option>`
-           //              })
-           //              $.each(respon.employee, function(key,val){
-           //                  employee += `<option value="`+val.id+`">`+val.name+`</option>`
-           //              }) 
-           //              $.each(respon.departement, function(key,val){
-           //                  departement += `<option value="`+val.id+`">`+val.name+`</option>`
-           //              })
-           //              $('#branchId').html(branch);
-           //              $('#employeeId').html(employee);
-           //              $('#departementId').html(departement);
-           //              $('#positionId').html(position);
-           //              $('#addGroupPosition').modal('show');
-           //          }
-           //      })
-           //  })
-           // $('#addFormGroupPosition').on('submit', function(e){
-           //      e.preventDefault()
-           //      var data = $('#addFormGroupPosition').serialize();
+                $.ajax({
+                    url : 'store-company',
+                    type : 'post',
+                    data : data,
+                    dataType : 'json',
+                    beforeSend : function(){
 
-           //      $.ajax({
-           //          url : 'store-group-position',
-           //          type : 'post',
-           //          data : data,
-           //          dataType : 'json',
-           //          beforeSend : function(){
-
-           //          },
-           //          success : function(respon){
-           //              if (respon.status == "success"){
-           //                  $('#addGroupPosition').modal('hide');
-           //                  table.ajax.reload();
-           //              }
-           //              swal.fire({
-           //                  icon : respon.status,
-           //                  text : respon.msg
-           //              })
-           //          },
-           //          error : function(){
-           //              alert('Someting went wrong !');
-           //          }
-           //      })
-           //  })
+                    },
+                    success : function(respon){
+                        if (respon.status == "success"){
+                            $('#addCompany').modal('hide');
+                            table.ajax.reload();
+                        }
+                        swal.fire({
+                            icon : respon.status,
+                            text : respon.msg
+                        })
+                    },
+                    error : function(){
+                        alert('Someting went wrong !');
+                    }
+                })
+            })
            //  $(document).on('click','.edit-group-position',function(e){
            //     e.preventDefault();
            //     var id = $(this).attr('data-id')
@@ -216,7 +187,7 @@
            //              $('#editDepartementId').html(departement)
            //              $('#editPositionId').html(position)
                       
-           //              $('#edit_groupPosition').modal('show');
+           //              $('#edit_company').modal('show');
            //          }
            //      })
            //  })
@@ -233,7 +204,7 @@
            //          },
            //          success : function(respon){
            //              if (respon.status == "success"){
-           //                  $('#edit_groupPosition').modal('hide');
+           //                  $('#edit_company').modal('hide');
            //                  table.ajax.reload();
            //              }
            //              swal.fire({

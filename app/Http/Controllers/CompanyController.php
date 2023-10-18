@@ -46,5 +46,64 @@ class CompanyController extends Controller
             ]);
         }
         return $response;
-}
+    }
+    public function store(Request $request){
+        $data =[
+            'name' => $request->company_name,
+            'address' => $request->address,
+            'code'   => $request->code,
+        ];
+        $save = Company::create($data);
+         if ($save){
+            $res = [
+                'status' => 'success',
+                'msg'    => 'Data success saved !',
+            ];
+        }else{
+            $res = [
+                'status' => 'success',
+                'msg'    => 'Something went wrong  !, try again.',
+            ];
+        }
+        return response()->json($res);
+    }
+    public function edit(Request $request){
+        $data = Company::fine($request->id);
+        return response()->json($data);
+    }
+    public function update(Request $request){
+        $data =[
+            'name' => $request->company_name,
+            'address' => $request->address,
+            'code'   => $request->code,
+        ];
+        $save = Company::where('id',$request->id)->update($data);
+         if ($save){
+            $res = [
+                'status' => 'success',
+                'msg'    => 'Data success updated !',
+            ];
+        }else{
+            $res = [
+                'status' => 'success',
+                'msg'    => 'Something went wrong !, try again.',
+            ];
+        }
+        return response()->json($res);
+    }
+    public function destroy(Request $request){
+        $destr = Company::destroy($request->id);
+         if ($destr){
+            $res = [
+                'status' => 'success',
+                'msg'    => 'Data success deleted !',
+            ];
+        }else{
+            $res = [
+                'status' => 'success',
+                'msg'    => 'Something went wrong !, try again.',
+            ];
+        }
+        return response()->json($res);
+    }
 }

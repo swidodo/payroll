@@ -103,6 +103,7 @@ Route::group(['middleware' => 'auth'], function () {
         // ** setup company **//
         Route::get('setup-company',[CompanyController::class,'index'])->name('setup-company');
         Route::post('get-data',[CompanyController::class,'get_data'])->name('get-data');
+        Route::post('store-company',[CompanyController::class,'store'])->name('get-company');
         
         /** route employees */
         Route::resource('employees', EmployeeController::class);
