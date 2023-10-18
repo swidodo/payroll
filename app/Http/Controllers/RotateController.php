@@ -29,69 +29,30 @@ class RotateController extends Controller
                     ->select('rotates.*','position.position_name')
                     ->orderBy('rotates.id','DESC')
                     ->get();
-        return DataTables::of($data)->make(true);
+        return DataTables::of($data)
+                        ->addIndexColumn()
+                        ->addColumn('action', function($row){
+                            $btn ='';
+                            if(Auth()->user()->can('edit rotation')){
+                                $btn .= '<div class="dropdown dropdown-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                <div class="dropdown-menu dropdown-menu-right">';
+                                if(Auth()->user()->can('edit rotation')){
+                                    $btn .= '<a  data-id='.$row->id.' class="dropdown-item edit_rotate" href="javascript:void(0)" ><i class="fa fa-pencil m-r-5"></i> Edit</a>';
+                                }
+                                
+                                    $btn .= '</div></div>';
+                                }
+                                return $btn;
+                            })
+                        ->rawColumns(['action'])
+        ->make(true);
     }
     public function create()
     {
 
     }
-    // public function store(Request $request)
-    // {
-      
-    //     try {
-    //     DB::beginTransaction();
-    //     $employee = Employee::select('name')
-    //                             ->where('employee_id',$request->employee_id)
-    //                             ->where('branch_id',$request->branch_id)
-    //                             ->first();
-    //     $company_id = Company::select('company_name')
-    //                             ->where('company_id',$request->company_id)
-    //                             ->first();
-    //     $from_department = Departement::select('name')
-    //                             ->where('branch_id',$request->branch_id)
-    //                             ->where('id',$request->from_department)
-    //                             ->first();
-    //     $to_department = Departement::select('name')
-    //                             ->where('id',$request->to_department)
-    //                             ->where('branch_id',$request->branch_id)
-    //                             ->first();
-
-       
-    //         $data = [
-    //             'employee_id'           => $request->employee_id,
-    //             'branch_id'             => $request->branch_id,
-    //             'company_id'            => $request->company_id,
-    //             'from_department_id'    => $request->from_department_id,
-    //             'to_department_id'      => $request->to_department_id,
-    //             'employee_name'         => $employee->name,
-    //             'branch_name'           => $request->branch_name,
-    //             'from_department_name'  => $from_department,
-    //             'to_department_name'    => $to_department,
-    //             'updated_at'            => date('Y-m-d h:m:s'),
-    //         ];
-    //         $data_employee = [
-    //             'department_id' =>$request->to_department_id,
-    //         ];
-    //         Rotate::insert($data);
-    //         DB::table('employee')->where('id',$request->employee_id)->update($data_employee);
-    //         DB::commit();
-    //          $response = [
-    //             'status' => 'success',
-    //             'msg'    => 'Insert data successfuly !',
-    //         ];
-    //         return reponse()->json($response);
-
-    //     }
-    //     catch (Exception $e) {
-    //         DB::rollBack();
-    //         $response = [
-    //             'status' => 'success',
-    //             'msg'    => 'Someting went wrong !',
-    //         ];
-    //          return reponse()->json($response);
-    //     }
-
-    // }
+    
     public function show($id)
     {
         $rotate = Rotate::where('employee_id',$id)->get();
