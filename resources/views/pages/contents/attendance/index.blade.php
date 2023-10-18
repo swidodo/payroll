@@ -22,7 +22,7 @@
                 <div class="col-auto float-end ms-auto">
                     <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#modal_export"> Report</a>
                 </div>
-                @if(Auth::user()->can('create attendance')
+                @if(Auth::user()->can('create attendance'))
                 <div class="col-auto float-end ms-auto">
                     <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_import">Import Excel</a>
                 </div>
