@@ -28,6 +28,8 @@ class UsersController extends Controller
      */
     public function index()
     {
+        $data = User::all();
+        dd($data);
         $user       = Auth::user();
         $roles      = Role::where('created_by', '=', $user->creatorId())->where('name', '!=', 'client')->get();
         $branches   = Branch::where('created_by', Auth::user()->creatorId())->get();
