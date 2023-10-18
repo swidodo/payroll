@@ -179,7 +179,7 @@ class RequestController extends Controller
                                     $btn .= '<a  data-id='.$row->id.' req-type ='.$row->request_type.' class="dropdown-item approve" href="javascript:void(0)" ><i class="fa fa-pencil m-r-5"></i>Approve</a>';
                                 // }
                                 // if(Auth()->user()->can('delete attendance')){
-                                    $btn .= '<a data-id='.$row->id.' class="dropdown-item delete-master-bpjs" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
+                                    $btn .= '<a data-id='.$row->id.' class="dropdown-item delete-master-bpjs" href="#"><i class="fa fa-trash-o m-r-5"></i>Reject</a>';
                                 // }
                                     $btn .= '</div></div>';
                                 // }
@@ -371,9 +371,18 @@ class RequestController extends Controller
         return response()->json($data);;
     }
     public function approve_leave(Request $request){
-        $data['request']   = Request_employee::where('id',$request->id)->first();
+        $data['request']   = Request_employee::select('request_employees.*',
+                                                        'branches.name as branch_name',
+                                                        'departements.name as departement_name',
+                                                        'position.position_name',
+                                                        'employees.name as employee_name')
+                            ->leftJoin('branches','branches.id','request_employees.branch_id')
+                            ->leftJoin('departements','departements.id','request_employees.department_id')
+                            ->leftJoin('position','position.id','request_employees.position_id')
+                            ->leftJoin('employees','employees.id','request_employees.employee_id')
+                            ->where('request_employees.id',$request->id)->first();
         $req = $data['request']->request_data_id;
-        $data['data']     = Leave::where('id',$req)->first();
+        $data['data']     = Leave::select('leaves.*','leave_types.title')->leftjoin('leave_types','leave_types.id','=','leaves.leave_type_id')->where('leaves.id',$req)->first();
         return response()->json($data);
 
     }

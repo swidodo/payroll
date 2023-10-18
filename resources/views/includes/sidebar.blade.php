@@ -86,10 +86,6 @@
                                 <li class="{{(request()->routeIs('dayoff*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('dayoff*')) ? 'active' : ''}}" href="{{ route('dayoff.index') }}">Dayoff</a></li>
                             @endcanany
 
-                            @canany(['manage company holiday', 'create company holiday'])
-                                <li class="{{(request()->routeIs('company-holiday*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('company-holiday*')) ? 'active' : ''}}" href="{{ route('company-holiday.index') }}">Company Holiday</a></li>
-                            @endcanany
-
                             @canany(['manage attendance', 'create attendance', 'edit attendance', 'delete attendance'])
                                 <li class="submenu ">
                                     <a style="padding: 9px 10px 9px 44px" href="#"> <span> Attendance</span> <span class="menu-arrow"></span></a>
@@ -177,7 +173,7 @@
                             <li class="{{(request()->routeIs('run-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('run-payroll')) ? 'active' : ''}}" href="{{ route('run-payroll') }}">Run payroll</a></li>
                         @endcanany
                         @canany(['manage payslip', 'generate payslip'])
-                            <li class="{{(request()->routeIs('salary-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('salary-payroll')) ? 'active' : ''}}" href="{{ route('salary-payroll') }}">Data payroll</a></li>
+                            <li class="{{(request()->routeIs('salary-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('salary-payroll')) ? 'active' : ''}}" href="{{ route('salary-payroll') }}">Pay Slip</a></li>
                         @endcanany
 
 
@@ -250,6 +246,9 @@
                             @canany(['manage role', 'create role'])
                                 <li class="{{(request()->routeIs('roles*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('roles*')) ? 'active' : ''}}" href="{{route('roles.index')}}">Roles</a></li>
                             @endcanany
+                            @canany(['manage company holiday', 'create company holiday'])
+                                <li class="{{(request()->routeIs('company-holiday*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('company-holiday*')) ? 'active' : ''}}" href="{{ route('company-holiday.index') }}">Company Holiday</a></li>
+                            @endcanany
 
                             <!-- @canany(['manage level approval', 'edit level approval'])
                                 <li class="{{(request()->routeIs('level-approvals*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('level-approvals*')) ? 'active' : ''}}" href="{{ route('level-approvals.index') }}">Set Level Approval </a></li>
@@ -257,7 +256,7 @@
 
                             @canany(['manage denda', 'create denda', 'edit denda', 'delete denda', 'manage bpjs kesehatan', 'create bpjs kesehatan', 'edit bpjs kesehatan', 'delete bpjs kesehatan', 'manage pph21', 'edit pph21', 'manage jht', 'create jht', 'manage jkk', 'create jkk', 'manage jkm', 'create jkm', 'manage jp', 'create jp', 'manage payslip code pin', 'manage payslip checklist attendance summary'])
                                 <li class="submenu" >
-                                    <a style="padding: 9px 10px 9px 50px" href="#"> <span> Setting Payroll</span> <span class="menu-arrow"></span></a>
+                                    <a style="padding: 9px 10px 9px 50px" href="#"> <span>Payroll</span> <span class="menu-arrow"></span></a>
                                     <ul style="display: none;">
 
                                         @canany(['manage payslip checklist attendance summary', 'edit payslip checklist attendance summary'])

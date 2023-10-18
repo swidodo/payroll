@@ -159,7 +159,16 @@
 
                         },
                         success : function(respon){
-                            // console.log('data');
+                            $('#date_request').val(respon.request.date)
+                            $('#branch_id_leave').val(respon.request.branch_name)
+                            $('#employe_id_leave').val(respon.request.employee_name)
+                            $('#request_type_leave').val(respon.request.request_type)
+
+                            $('#leave_type_id').val(respon.data.title)
+                            $('#start_date_leave').val(respon.data.start_date)
+                            $('#end_date_leave').val(respon.data.end_date)
+                            $('#leave_reason').val(respon.data.leave_reason)
+                            $('#imgLeave').attr('src',"{{ asset('../storage/app/public/1697598451_image.png'); }}")
                             $('#modalApproveLeave').modal('show');
 
                         },
