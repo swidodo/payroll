@@ -19,9 +19,8 @@
                                 <div class="form-group">
                                     <label>Leave Type  <span class="text-danger">*</span></label>
                                     <select class="form-select" name="type_name" id="typeName">
-                                        <option value="SDS">SICK WITH LETTER</option>
-                                        <option value="STS">SICK WITHOUT LETTER</option>
-                                        <option value="IZN">PERMISSION</option>
+                                        <option value="SDS">SICK</option>
+                                        <option value="IZN">PERMIT</option>
                                         <option value="A">ALPHA</option>
                                         <option value="CT">LEAVE</option>
                                         <option value="DSP">DISPENSATION</option>
