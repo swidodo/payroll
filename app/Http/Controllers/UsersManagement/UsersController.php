@@ -112,18 +112,18 @@ class UsersController extends Controller
                     return redirect()->back();
                 }
             } else {
-                // $validator = Validator::make($request->all(), [
-                //     'name'      => 'required|max:120',
-                //     'email'     => 'required|email|unique:users',
-                //     'password'  => 'required|min:8',
-                //     'branch_id'    => 'required|not_in:0',
-                //     'role'      => 'required|not_in:0',
-                //     'employee_type'      => 'required|not_in:0',
-                // ]);
+                $validator = Validator::make($request->all(), [
+                    'name'      => 'required|max:120',
+                    'email'     => 'required|email|unique:users',
+                    'password'  => 'required|min:8',
+                    'branch_id'    => 'required|not_in:0',
+                    'role'      => 'required|not_in:0',
+                    'employee_type'      => 'required|not_in:0',
+                ]);
 
-                // if ($validator->fails()) {
-                //     return redirect()->back()->with('errors', $validator->messages());
-                // }
+                if ($validator->fails()) {
+                    return redirect()->back()->with('errors', $validator->messages());
+                }
 
                 try {
                     DB::beginTransaction();
@@ -155,12 +155,11 @@ class UsersController extends Controller
                     // }
 
                     $role_r                = Role::findById($request->role);
-                    // $psw                   = $request->password;
                     $request['password']   = Hash::make($request->password);
                     $request['type']       = $role_r->name;
                     $request['lang']       = !empty($default_language) ? $default_language->value : 'en';
                     $request['created_by'] = Auth::user()->creatorId();
-                    $user = User::create($request->except('branch_id'));
+                    $user = User::create($request);
                     $user->assignRole($role_r);
 
                     if ($request['type'] != 'client') {
@@ -170,8 +169,6 @@ class UsersController extends Controller
                     DB::commit();
                 } catch (Exception $e) {
                     DB::rollBack();
-                    dd($e);
-
                     toast('Something went wrong.', 'error');
                     return redirect()->back();
                 }
