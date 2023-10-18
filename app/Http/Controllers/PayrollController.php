@@ -48,10 +48,10 @@ class PayrollController extends Controller
             // } else {
                 $payroll = Payroll::where('branch_id', '=', Auth::user()->branch_id)->get();
                 $employee  = Employee::where('branch_id', '=', Auth::user()->branch_id)->get();
-                $payslipType = PayslipType::where('branch_id', '=', Auth::user()->branch_id)->get();
+                $payslipType = PayslipType::all();
                 $allowanceTypes  = AllowanceOption::where('branch_id', '=', Auth::user()->branch_id)->get();
                 $data_bpjs = Master_bpjs::where('branch_id','=',Auth::user()->branch_id)->get();
-                return view('pages.contents.payroll.index', compact('payroll', 'employee', 'payslipType','allowance','allowanceTypes','data_bpjs'));
+                return view('pages.contents.payroll.index', compact('payroll', 'employee', 'payslipType','allowanceTypes','data_bpjs'));
             // }
         } else {
             toast('Permission denied.', 'error');
