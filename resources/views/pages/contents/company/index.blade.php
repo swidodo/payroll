@@ -57,8 +57,7 @@
         </div>
     </div>
 </div>
- @include('includes.modal.group_position.add_groupPosition')
- @include('includes.modal.group_position.edit_groupPosition')
+ 
 @endsection
 
 @push('addon-style')
@@ -92,7 +91,7 @@
                 serverSide: true,
                 destroy: true,
                 ajax : {
-                    url : "get-group-position",
+                    url : "get-data",
                     type : 'post',
                 },
                 columns: [

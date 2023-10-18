@@ -102,6 +102,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('open-permission',[RolesController::class,'open_permission'])->name('open-permission');
         // ** setup company **//
         Route::get('setup-company',[CompanyController::class,'index'])->name('setup-company');
+        Route::post('get-data',[CompanyController::class,'get_data'])->name('get-data');
         
         /** route employees */
         Route::resource('employees', EmployeeController::class);
