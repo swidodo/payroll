@@ -22,9 +22,11 @@
                 <div class="col-auto float-end ms-auto">
                     <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#modal_export"> Report</a>
                 </div>
+                @if(Auth::user()->can('create attendance')
                 <div class="col-auto float-end ms-auto">
                     <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_import">Import Excel</a>
                 </div>
+                @endif
             </div>
         </div>
         <!-- /Page Header -->
@@ -90,11 +92,13 @@
                                     </div> 
                                 </div>
                             </div>
+                            @if(Auth::user()->can('create attendance')
                             <div class="col-4 mt-3 d-flex justify-content-start">
                                 <div class="col-auto ">
                                     <button type="button" class="btn btn-primary ms-1 mt-1" id="btnAdjustment">Adjustment <span class="btn-inner--icon"><i class="la la-gear"></i></span></button>
                                 </div>
                             </div>
+                            @endif
                         </div>
                     </form>
                 </div>
