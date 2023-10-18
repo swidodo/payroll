@@ -92,67 +92,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @foreach ($overtimes as $overtime)
-                            <tr>
-                                <td>
-                                    {{$overtime->employee->no_company ?? '-'}}
-                                </td>
-                                <td>
-                                    {{$overtime->employee->name ?? '-'}}
-                                </td>
-                                <td>
-                                    {{$overtime->start_date ?? '-'}}
-                                </td>
-                                <td>
-                                    {{$overtime->end_date ?? '-'}}
-                                </td>
-                                <td>
-                                    {{$overtime->start_time ?? '-'}}
-                                </td>
-                                <td>
-                                    {{$overtime->end_time ?? '-'}}
-                                </td>
-                                <td>
-                                    {{formatRupiah(floor($overtime->amount_fee))  ?? '-'}}
-                                </td>
-                                <td>
-                                    {{date('H:i', strtotime($overtime->duration)) ?? '-'}}
-                                </td>
-                                <td>
-                                    @if($overtime->status=="Pending")
-                                        <div class="status_badge badge bg-warning p-2 px-3 rounded">{{ $overtime->status ?? '-'}}</div>
-                                    @elseif($overtime->status=="Approved")
-                                        <div class="status_badge badge bg-success p-2 px-3 rounded">{{ $overtime->status ?? '-'}}</div>
-                                    @elseif($overtime->status=="Rejected")
-                                        <a href="{{route('overtimes.show', $overtime->id)}}" class="text-white">
-                                            <div class="status_badge badge bg-danger p-2 px-3 rounded">
-                                                {{ $overtime->status ?? '-'}}
-                                            </div>
-                                        </a>
-                                    @endif
-                                </td>
-                                <td>
-                                    {{$overtime->notes ?? '-'}}
-                                </td>
-                                @canany(['edit overtime', 'delete overtime'])
-                                    <td class="text-end">
-                                        <div class="dropdown dropdown-action">
-                                            <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                @can('edit overtime')
-                                                    <a  data-url="{{route('overtimes.edit', $overtime->id)}}" id="edit-overtime" class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_overtime"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                @endcan
-                                                @can('delete overtime')
-                                                    <a id="delete-overtime" data-url="{{route('overtimes.destroy', $overtime->id)}}" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_overtime"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                @endcan
-
-                                            </div>
-                                        </div>
-                                    </td>
-                                @endcanany
-                            </tr>
-                        @endforeach --}}
+                      
                     </tbody>
                 </table>
             </div>
