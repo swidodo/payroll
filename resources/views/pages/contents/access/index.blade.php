@@ -58,8 +58,8 @@
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Role Name</label>
                                     <select class="form-select select" aria-label="Default select example" name="role_id" required>
-                                        @foreach($role as $roles)
                                         <option value="" selected>select role</option>
+                                        @foreach($role as $roles)
                                             <option value="{{$roles->id}}">{{$roles->name}}</option>
                                          @endforeach
                                     </select> 
@@ -67,8 +67,8 @@
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Permission Name</label>
                                     <select class="form-select select" aria-label="Default select example" name="permission_id" required>
-                                        @foreach($permission as $permiss)
                                             <option value="" selected>select permission</option>
+                                        @foreach($permission as $permiss)
                                             <option value="{{$permiss->id}}">{{$permiss->name}}</option>
                                         @endforeach
                                     </select>
