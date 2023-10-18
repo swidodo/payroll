@@ -395,6 +395,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('store-request',[RequestController::class,'store'])->name('store-request');
         Route::post('get-day-type',[RequestController::class,'get_daytype'])->name('get-day-type');
         Route::post('get-leave-type',[RequestController::class,'get_leavetype'])->name('get-leave-type');
+        Route::post('get-approve-leave',[RequestController::class,'approve_leave'])->name('get-approve-leave');
+        Route::post('get-approve-overtime',[RequestController::class,'approve_overtime'])->name('get-approve-overtime');
+        Route::post('get-approve-timesheet',[RequestController::class,'approve_timesheet'])->name('get-approve-timesheet');
+        Route::post('get-approve-attendance',[RequestController::class,'approve_attendance'])->name('get-approve-attendance');
     });
 
 

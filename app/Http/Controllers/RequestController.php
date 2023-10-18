@@ -176,7 +176,7 @@ class RequestController extends Controller
                                 <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                 <div class="dropdown-menu dropdown-menu-right">';
                                 // if(Auth()->user()->can('edit attendance')){
-                                    $btn .= '<a  data-id='.$row->id.' class="dropdown-item edit-master-bpjs" href="javascript:void(0)" ><i class="fa fa-pencil m-r-5"></i> Edit</a>';
+                                    $btn .= '<a  data-id='.$row->id.' class="dropdown-item approve" href="javascript:void(0)" ><i class="fa fa-pencil m-r-5"></i> Edit</a>';
                                 // }
                                 // if(Auth()->user()->can('delete attendance')){
                                     $btn .= '<a data-id='.$row->id.' class="dropdown-item delete-master-bpjs" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
@@ -369,5 +369,17 @@ class RequestController extends Controller
     public function get_leavetype(){
         $data['leave_type'] = LeaveType::all();
         return response()->json($data);;
+    }
+    public function approve_leave(){
+
+    }
+    public function approve_overtime(){
+        
+    }
+    public function approve_timesheet(){
+        
+    }
+    public function approve_attendance(){
+        
     }
 }

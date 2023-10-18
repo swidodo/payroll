@@ -141,6 +141,79 @@
                 ],
 
             });
+            $(document).on('click','.approve',function(e){
+                var request_type    = $(this).attr('req-type');
+                var id              = $(this).attr('data-id');
+                if (request_type == 'leave'){
+                    $.ajax({
+                        url : 'get-approve-leave'
+                        type : 'post',
+                        data : {id:id},
+                        dataType : 'json',
+                        beforeSend : function(){
+
+                        },
+                        success : function(respon){
+                            $('#modalApproveLeave').modal('show');
+
+                        },
+                        error : function(){
+                            alert('Someting went wrong !')
+                        }
+                    })
+                }
+                else if(request_type == 'overtime'){
+                    $.ajax({
+                        url : 'get-approve-overtime'
+                        type : 'post',
+                        data : {id:id},
+                        dataType : 'json',
+                        beforeSend : function(){
+
+                        },
+                        success : function(respon){
+                            $('#modalApproveOvertime').modal('show');
+                        },
+                        error : function(){
+                            alert('Someting went wrong !')
+                        }
+                    })
+
+                }else if(request_type == 'timesheet'){
+                     $.ajax({
+                        url : 'get-approve-timesheet'
+                        type : 'post',
+                        data : {id:id},
+                        dataType : 'json',
+                        beforeSend : function(){
+
+                        },
+                        success : function(respon){
+                            $('#modalApproveTimesheet').modal('show');
+                        },
+                        error : function(){
+                            alert('Someting went wrong !')
+                        }
+                    })
+                }else if(request_type == 'attendance'){
+                     $.ajax({
+                        url : 'get-approve-attendance'
+                        type : 'post',
+                        data : {id:id},
+                        dataType : 'json',
+                        beforeSend : function(){
+
+                        },
+                        success : function(respon){
+                            $('#modalApproveAttendance').modal('show');
+                        },
+                        error : function(){
+                            alert('Someting went wrong !')
+                        }
+                    })
+                }
+
+            })
         });
     </script>
 @endpush
