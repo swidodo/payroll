@@ -100,7 +100,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('setup-aplication',[RolesController::class,'setup_app'])->name('setup-app');
         Route::post('create-permission',[RolesController::class,'add_permission'])->name('create-permission');
         Route::post('open-permission',[RolesController::class,'open_permission'])->name('open-permission');
-
+        // ** setup company **//
+        Route::post('setup-company',[CompanyController::class,'index'])->name('setup-company');
+        
         /** route employees */
         Route::resource('employees', EmployeeController::class);
         Route::get('get-data-employees',[EmployeeController::class,'GetDataEmployees'])->name('employees.get-data-employees');

@@ -250,6 +250,9 @@
 
                             @can(['setup-app'])
                                 <li class="{{(request()->routeIs('setup-app')) ? 'active' : ''}}"><a class="{{(request()->routeIs('setup-app')) ? 'active' : ''}}" href="{{ route('setup-app') }}">Setup App</a></li>
+                            @endcan  
+                            @can(['setup-app'])
+                                <li class="{{(request()->routeIs('setup-company')) ? 'active' : ''}}"><a class="{{(request()->routeIs('setup-company')) ? 'active' : ''}}" href="{{ route('setup-company') }}">Setup Company</a></li>
                             @endcan 
                             @canany(['manage user', 'create user'])
                                 <li class="{{(request()->routeIs('users*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('users*')) ? 'active' : ''}}" href="{{ route('users.index') }}">Users</a></li>
