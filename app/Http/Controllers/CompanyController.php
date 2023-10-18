@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Company;
+use App\Models\Branch;
 use DataTables;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -51,9 +52,9 @@ class CompanyController extends Controller
         try {
                 DB::beginTransaction();
             $data =[
-                'name' => $request->company_name,
-                'address' => $request->address,
-                'code'   => $request->code,
+                'name'      => $request->company_name,
+                'address'   => $request->address,
+                'code'      => $request->code,
             ];
             
             $save = Company::create($data)->id;
