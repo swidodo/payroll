@@ -35,10 +35,12 @@
                             <a class=" {{(request()->routeIs('employees*')) ? 'active' : ''}}" href="{{route('employees.index')}}"><i class="la la-users"></i> <span>Employees</span>
                             </a>
                         </li>
+                        @canany(['edit rotation'])
                         <li class=" {{(request()->routeIs('employees*')) ? 'active' : ''}}">
                             <a class=" {{(request()->routeIs('rotation*')) ? 'active' : ''}}" href="{{route('rotation-employee')}}"><i class="la la-users"></i> <span>Rotation</span>
                             </a>
                         </li>
+                        @endcanany
                     </ul>
                 </li>
                 @endcanany
@@ -47,6 +49,24 @@
                     <li class="submenu">
                         <a href="#"><i class="la la-clock"></i> <span> Time Management</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
+                            @canany(['manage attendance', 'create attendance', 'edit attendance', 'delete attendance'])
+                                <li class="submenu ">
+                                    <a style="padding: 9px 10px 9px 44px" href="#"> <span> Attendance</span> <span class="menu-arrow"></span></a>
+                                    <ul style="display: none;">
+                                        @canany(['manage attendance'])
+                                            <li class="{{(request()->routeIs('attendance*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('attendance*')) ? 'active' : ''}}" href="{{ route('attendance.index') }}">Attendance List</a></li>
+                                        @endcanany
+                                        @canany(['create attendance'])
+                                            <li class="{{(request()->routeIs('bulk-attendance*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('bulk-attendance*')) ? 'active' : ''}}" href="{{ route('bulk-attendance.index') }}">Bulk Attendance</a></li>
+                                        @endcanany
+                                    </ul>
+                                </li>
+                            @endcanany
+                            
+                            @canany(['manage dayoff', 'create dayoff'])
+                                <li class="{{(request()->routeIs('dayoff*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('dayoff*')) ? 'active' : ''}}" href="{{ route('dayoff.index') }}">Time Off</a></li>
+                            @endcanany
+
                             @canany(['manage leave', 'create leave', 'edit leave', 'delete leave'])
                                 <li class="{{(request()->routeIs('leaves*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('leaves*')) ? 'active' : ''}}" href="{{ route('leaves.index') }}">Leave</a></li>
                             @endcanany
@@ -82,27 +102,12 @@
                                 <li class="{{(request()->routeIs('travels*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('travels*')) ? 'active' : ''}}" href="{{ route('travels.index') }}">On Duty</a></li>
                             @endcanany -->
 
-                            @canany(['manage dayoff', 'create dayoff'])
-                                <li class="{{(request()->routeIs('dayoff*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('dayoff*')) ? 'active' : ''}}" href="{{ route('dayoff.index') }}">Time Off</a></li>
-                            @endcanany
+                            
 
                             @canany(['manage company holiday', 'create company holiday'])
                                 <li class="{{(request()->routeIs('company-holiday*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('company-holiday*')) ? 'active' : ''}}" href="{{ route('company-holiday.index') }}">Calender</a></li>
                             @endcanany
 
-                            @canany(['manage attendance', 'create attendance', 'edit attendance', 'delete attendance'])
-                                <li class="submenu ">
-                                    <a style="padding: 9px 10px 9px 44px" href="#"> <span> Attendance</span> <span class="menu-arrow"></span></a>
-                                    <ul style="display: none;">
-                                        @canany(['manage attendance'])
-                                            <li class="{{(request()->routeIs('attendance*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('attendance*')) ? 'active' : ''}}" href="{{ route('attendance.index') }}">Attendance List</a></li>
-                                        @endcanany
-                                        @canany(['create attendance'])
-                                            <li class="{{(request()->routeIs('bulk-attendance*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('bulk-attendance*')) ? 'active' : ''}}" href="{{ route('bulk-attendance.index') }}">Bulk Attendance</a></li>
-                                        @endcanany
-                                    </ul>
-                                </li>
-                            @endcanany
                              @canany(['manage company holiday', 'create company holiday'])
                                 <li class="{{(request()->routeIs('request-employee*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('request-employee*')) ? 'active' : ''}}" href="{{ route('request-employee') }}">Request</a></li>
                             @endcanany 
@@ -243,6 +248,9 @@
                         <a href="#"><i class="la la-cog"></i> <span> Setting</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
 
+                            @canany(['manage user', 'create user'])
+                                <li class="{{(request()->routeIs('setup-app')) ? 'active' : ''}}"><a class="{{(request()->routeIs('setup-app')) ? 'active' : ''}}" href="{{ route('setup-app') }}">Setup App</a></li>
+                            @endcanany 
                             @canany(['manage user', 'create user'])
                                 <li class="{{(request()->routeIs('users*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('users*')) ? 'active' : ''}}" href="{{ route('users.index') }}">Users</a></li>
                             @endcanany

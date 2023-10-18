@@ -97,6 +97,9 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::resource('users', UsersController::class);
         Route::resource('roles', RolesController::class);
+        Route::get('setup-aplication',[RolesController::class,'setup_app'])->name('setup-app');
+        Route::post('create-permission',[RolesController::class,'add_permission'])->name('create-permission');
+        Route::post('open-permission',[RolesController::class,'open_permission'])->name('open-permission');
 
         /** route employees */
         Route::resource('employees', EmployeeController::class);

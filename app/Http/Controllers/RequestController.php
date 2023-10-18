@@ -368,7 +368,7 @@ class RequestController extends Controller
     }
     public function get_leavetype(){
         $data['leave_type'] = LeaveType::all();
-        return response()->json($data);;
+        return response()->json($data);
     }
     public function approve_leave(Request $request){
         $data['request']   = Request_employee::select('request_employees.*',
@@ -386,10 +386,32 @@ class RequestController extends Controller
         return response()->json($data);
 
     }
-    public function approve_overtime(){
+    public function approve_overtime(Request $request){
+        $data['request']   = Request_employee::select('request_employees.*',
+                                                        'branches.name as branch_name',
+                                                        'departements.name as departement_name',
+                                                        'position.position_name',
+                                                        'employees.name as employee_name')
+                            ->leftJoin('branches','branches.id','request_employees.branch_id')
+                            ->leftJoin('departements','departements.id','request_employees.department_id')
+                            ->leftJoin('position','position.id','request_employees.position_id')
+                            ->leftJoin('employees','employees.id','request_employees.employee_id')
+                            ->where('request_employees.id',$request->id)->first();
+        $req = $data['request']->request_data_id;
         
     }
-    public function approve_timesheet(){
+    public function approve_timesheet(Request $request){
+        $data['request']   = Request_employee::select('request_employees.*',
+                                                        'branches.name as branch_name',
+                                                        'departements.name as departement_name',
+                                                        'position.position_name',
+                                                        'employees.name as employee_name')
+                            ->leftJoin('branches','branches.id','request_employees.branch_id')
+                            ->leftJoin('departements','departements.id','request_employees.department_id')
+                            ->leftJoin('position','position.id','request_employees.position_id')
+                            ->leftJoin('employees','employees.id','request_employees.employee_id')
+                            ->where('request_employees.id',$request->id)->first();
+        $req = $data['request']->request_data_id;
         
     }
     public function approve_attendance(){

@@ -14,11 +14,6 @@ use Spatie\Permission\Models\Role;
 
 class RolesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         if (Auth::user()->can('manage role')) {
@@ -50,12 +45,6 @@ class RolesController extends Controller
             return redirect()->back();
         }
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         if (Auth::user()->can('create role')) {
@@ -250,5 +239,42 @@ class RolesController extends Controller
             toast('Permission denied.', 'error');
             return redirect()->back();
         }
+    }
+    public function setup_app(){
+        $data['role']       = Role::all();
+        $data['permission'] = Permission::all();
+        return view('pages.contents.access.index',$data);
+    }
+    public function add_permission(Request $request){
+        $permission = Permission::create(['name' => $request->permission_name]);
+        if ($permission){
+            $data = [
+                'status' => 'success',
+                'msg'    => 'Create permission successfully'
+            ];
+        }else{
+            $data = [
+                'status' => 'error',
+                'msg'    => 'Something went wrong !'
+            ];
+        }
+        return response()->json($data);
+    }
+    public function open_permission(Request $request){
+        $role       = Role::find($request->role_id);
+        $permission = Permission::find($request->permission_id);
+        $access = $role->givePermissionTo($permission);
+        if ($access){
+            $data = [
+                'status' => 'success',
+                'msg'    => 'Open permission successfully'
+            ];
+        }else{
+            $data = [
+                'status' => 'error',
+                'msg'    => 'Something went wrong !'
+            ];
+        }
+        return response()->json($data);
     }
 }

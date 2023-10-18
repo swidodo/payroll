@@ -13,7 +13,7 @@
 
                         <div class="form-group col-md-6">
                             <label>Request Date <span class="text-danger">*</span></label>
-                            <input type="date" name="date" id="date_request" class="form-control" readonly />
+                            <input type="date" name="date" id="date_request_leave" class="form-control" readonly />
                         </div>
                         <div class="form-group col-md-6">
                             <label>Branch  <span class="text-danger">*</span></label>
@@ -25,25 +25,25 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label>Request Type<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="request_type" id="request_type_leave">
+                            <input type="text" class="form-control" name="request_type" id="request_type_leave" readonly />
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label for="leave_type_id" class="form-label">Leave Type</label>
-                                <input type="text" class="form-control" name="leave_type_id" id="leave_type_id" readonly>
+                                <input type="text" class="form-control" name="leave_type_id" id="leave_type_id" readonly />
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="start_date" class="form-label">Start Date</label>
-                                        <input class="form-control" name="start_date" type="date" id="start_date_leave" readonly>
+                                        <input class="form-control" name="start_date" type="date" id="start_date_leave" readonly />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="end_date" class="form-label">End Date</label>
-                                        <input class="form-control" name="end_date" type="date" id="end_date_leave" readonly>
+                                        <input class="form-control" name="end_date" type="date" id="end_date_leave" readonly />
                                     </div>
                                 </div>
                             </div>
@@ -57,7 +57,9 @@
                                 <label for="formFile" class="form-label">Image Attachment</label>
                                 <div class="row">
                                     <div class="col-md-12 h-50 w-50">
-                                        <img src="" id="imgLeave">
+                                        <a href="{{ asset('../storage/app/public/1697598451_image.png'); }}" target="_blank">
+                                            <img src="" id="imgLeave">
+                                        </a>
                                     </div>
                                 </div>
 

@@ -122,12 +122,6 @@ class EmployeeController extends Controller
         }
         return $response;
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $data = DB::table('rotates')
@@ -136,24 +130,10 @@ class EmployeeController extends Controller
             ->get();
         return DataTables::of($data)->make(true);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         if (Auth::user()->can('view employee')) {
@@ -472,13 +452,6 @@ class EmployeeController extends Controller
             return redirect()->back();
         }
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         if (Auth::user()->can('delete employee')) {

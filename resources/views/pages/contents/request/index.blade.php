@@ -159,7 +159,7 @@
 
                         },
                         success : function(respon){
-                            $('#date_request').val(respon.request.date)
+                            $('#date_request_leave').val(respon.request.date)
                             $('#branch_id_leave').val(respon.request.branch_name)
                             $('#employe_id_leave').val(respon.request.employee_name)
                             $('#request_type_leave').val(respon.request.request_type)
