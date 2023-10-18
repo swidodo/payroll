@@ -18,9 +18,11 @@
                         <li class="breadcrumb-item active">Group Position</li>
                     </ul>
                 </div>
+                @can('create group position')
                 <div class="col-auto float-end ms-auto">
                     <a href="javascript:void(0);" class="btn add-btn" id="add_groupPosition"><i class="fa fa-plus"></i> Group Position</a>
                 </div>
+                @endcan
             </div>
         </div>
         <!-- /Page Header -->

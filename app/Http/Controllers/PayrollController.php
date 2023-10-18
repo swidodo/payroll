@@ -29,9 +29,7 @@ class PayrollController extends Controller
 {
     public function index()
     {
-        // DB::table('bpjs_value')->delete();
-        // DB::table('take_home_pay')->delete();
-        // DB::table('rekap_pph21s')->delete();
+        
         if (Auth::user()->can('manage payroll')) {
             // if (Auth::user()->type != 'HO') {
             //     $user     = Auth::user();
@@ -425,9 +423,14 @@ class PayrollController extends Controller
     }
 
     public function run_payroll(){
-        $companyId          = Branch::where('id',Auth::user()->branch_id)->first();
-        $branch['branch']   = Branch::where('company_id',$companyId->company_id)->get();
-        return  view('pages.contents.payroll.run_payroll',$branch);
+        if(Auth::user()->can('manage payroll')){
+            $companyId          = Branch::where('id',Auth::user()->branch_id)->first();
+            $branch['branch']   = Branch::where('company_id',$companyId->company_id)->get();
+            return  view('pages.contents.payroll.run_payroll',$branch);
+        }else{
+            toast('Permission denied.', 'error');
+            return redirect()->back();
+        }
     }
     public function generate_run_payroll(Request $request){
         try {
@@ -621,11 +624,11 @@ class PayrollController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action',function($row){
                     $btn ='';
-                    if(Auth()->user()->canany('edit payroll', 'delete payroll')){
+                    if(Auth()->user()->canany('manage payroll','show payroll', 'edit payroll')){
                         $btn .= '<div class="dropdown dropdown-action">
                                 <a href="#"  class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                 <div class="dropdown-menu dropdown-menu-right">';
-                        if(Auth()->user()->can('edit payroll')){
+                        if(Auth()->user()->can('show payroll')){
                             $btn .= '<a  data-id ="'.$row->id.'" data-employeeid ="'.$row->employee_id.'" class="dropdown-item cetak-payroll" href="'.route("generate_slip_payroll", ['id'=>$row->id]).'" target="_blank"><i class="fa fa-print m-r-5"></i>Print Payslip</a>';
                         }
                     }

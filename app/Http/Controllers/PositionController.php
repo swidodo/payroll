@@ -22,16 +22,22 @@ class PositionController extends Controller
             return DataTables::of($group)
                             ->addColumn('action', function ($d) {
                         $view = '';
+                        if (Auth()->user()->canany('manage position','edit position','delete position')){
                         $view = '<td class="text-end" >
-                                        <div class="dropdown dropdown-action" >
-                                            <a href ="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons"> more_vert</i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">';
-                        /** edit */
-                        $view .= '<a href="#" data-id = "'.$d->id.'" class="dropdown-item edit-position"><i class="fa fa-pencil m-r-5" ></i> Edit</a>';
-                        /** delete */
-                        $view .= '<a data-id="'.$d->id.'" class="dropdown-item delete-position" href="#"><i class="fa fa-trash-o m-r-5"></i>Delete</a>';
-                        /** delete */
-                        $view .= '</div></div></td>';
+                                            <div class="dropdown dropdown-action" >
+                                                <a href ="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons"> more_vert</i></a>
+                                                <div class="dropdown-menu dropdown-menu-right">';
+                            /** edit */
+                            if (Auth()->user()->can('edit Position'){
+                                $view .= '<a href="#" data-id = "'.$d->id.'" class="dropdown-item edit-position"><i class="fa fa-pencil m-r-5" ></i> Edit</a>';
+                            }
+                            if (Auth()->user()->can('delete Position'){
+                                /** delete */
+                                $view .= '<a data-id="'.$d->id.'" class="dropdown-item delete-position" href="#"><i class="fa fa-trash-o m-r-5"></i>Delete</a>';
+                            }
+                            /** delete */
+                            $view .= '</div></div></td>';
+                        }
                     return $view;
                 })
                 ->rawColumns(['action'])

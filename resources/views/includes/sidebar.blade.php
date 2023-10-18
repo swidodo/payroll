@@ -148,26 +148,26 @@
                                 </a>
                             </li>
                             @endcanany
-                            @canany(['manage allowance', 'create allowance'])
+                            @canany(['manage thr', 'create thr'])
                             <li class=" {{(request()->routeIs('thr')) ? 'active' : ''}}">
                                 <a class=" {{(request()->routeIs('thr')) ? 'active' : ''}}" href="{{route('thr')}}"> THR
                                 </a>
                             </li>
                             @endcanany
-                            @canany(['manage jht', 'create jht', 'manage jkk', 'create jkk', 'manage jkm', 'create jkm', 'manage jp', 'create jp'])
-                                <li class="submenu" >
-                                    <a style="padding: 9px 10px 9px 44px" href="#"> <span> Deduction</span> <span class="menu-arrow"></span></a>
-                                    <ul style="display: none;">
-                                        @canany(['manage loan', 'create loan'])
-                                            <li class="{{(request()->routeIs('loans*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('loans*')) ? 'active' : ''}}" href="{{route('loans.index')}}">Loan</a></li>
-                                        @endcanany
-                                        @canany(['manage loan', 'create loan'])
-                                            <li class="{{(request()->routeIs('loans*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('loans*')) ? 'active' : ''}}" href="{{route('loan_cash_receipt')}}">Installment</a></li>
-                                        @endcanany
+                            @canany(['manage loan', 'create loan'])
+                            <li class="submenu" >
+                                <a style="padding: 9px 10px 9px 44px" href="#"> <span> Deduction</span> <span class="menu-arrow"></span></a>
+                                <ul style="display: none;">
+                                    @canany(['manage loan', 'create loan'])
+                                        <li class="{{(request()->routeIs('loans*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('loans*')) ? 'active' : ''}}" href="{{route('loans.index')}}">Loan</a></li>
+                                    @endcanany
+                                    @canany(['manage loan', 'create loan'])
+                                        <li class="{{(request()->routeIs('loans*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('loans*')) ? 'active' : ''}}" href="{{route('loan_cash_receipt')}}">Installment</a></li>
+                                    @endcanany
 
-                                    </ul>
-                                </li>
-                            @endcanany
+                                </ul>
+                            </li>
+                             @endcanany
                         </ul>
                     </li>
                 @endcanany
@@ -178,7 +178,7 @@
                        <!--  @canany(['manage payslip', 'generate payslip'])
                             <li class="{{(request()->routeIs('payslips*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('payslips*')) ? 'active' : ''}}" href="{{ route('payslips.index') }}">Payslip</a></li>
                         @endcanany -->
-                        @canany(['manage payslip', 'generate payslip'])
+                        @canany(['manage payroll'])
                             <li class="{{(request()->routeIs('run-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('run-payroll')) ? 'active' : ''}}" href="{{ route('run-payroll') }}">Run payroll</a></li>
                         @endcanany
                         @canany(['manage payslip', 'generate payslip'])
@@ -225,7 +225,7 @@
                     <li class="submenu">
                         <a href="#"><i class="la la-file"></i> <span>Report</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
-                        @canany(['manage user', 'create user'])
+                        @canany(['manage attendance', 'show attendance'])
                             <li class="{{(request()->routeIs('reporting-attandance')) ? 'active' : ''}}"><a class="{{(request()->routeIs('reporting-attandance')) ? 'active' : ''}}" href="{{ route('reporting-attandance') }}">Report Attandance</a></li>
                             <li class="{{(request()->routeIs('rekap-attandance')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap-attandance')) ? 'active' : ''}}" href="{{ route('rekap-attandance') }}">Rekap Attandance</a></li>
                         @endcanany
@@ -248,7 +248,7 @@
                         <a href="#"><i class="la la-cog"></i> <span> Setting</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
 
-                            @canany(['manage user', 'create user'])
+                            @canany(['manage app'])
                                 <li class="{{(request()->routeIs('setup-app')) ? 'active' : ''}}"><a class="{{(request()->routeIs('setup-app')) ? 'active' : ''}}" href="{{ route('setup-app') }}">Setup App</a></li>
                             @endcanany 
                             @canany(['manage user', 'create user'])
@@ -326,17 +326,21 @@
                                             </a>
                                         </li>
                                     @endcanany
-
-                                    <li class=" {{(request()->routeIs('departement*')) ? 'active' : ''}}">
-                                        <a class=" {{(request()->routeIs('departement*')) ? 'active' : ''}}" href="{{route('departement.index')}}"><span>Department</span></a>
-                                    </li>
+                                    @canany(['manage department', 'create department', 'edit department', 'delete department'])
+                                        <li class=" {{(request()->routeIs('departement*')) ? 'active' : ''}}">
+                                            <a class=" {{(request()->routeIs('departement*')) ? 'active' : ''}}" href="{{route('departement.index')}}"><span>Department</span></a>
+                                        </li>
+                                    @endcanany
+                                    @canany(['manage group position', 'create group position', 'edit group position', 'delete group position'])
                                     <li class=" {{(request()->routeIs('group-position*')) ? 'active' : ''}}">
                                         <a class=" {{(request()->routeIs('group-position*')) ? 'active' : ''}}" href="{{route('group-position')}}"><span>Group Position</span></a>
                                     </li>
+                                    @endcanany
+                                     @canany(['manage position', 'create position', 'edit position', 'delete position'])
                                     <li class=" {{(request()->routeIs('position*')) ? 'active' : ''}}">
                                         <a class=" {{(request()->routeIs('position*')) ? 'active' : ''}}" href="{{route('position')}}"><span>Position</span></a>
                                     </li>
-
+                                    @endcanany
                                     @canany(['manage shift type', 'create shift type', 'edit shift type', 'delete shift type'])
                                         <li class=" {{(request()->routeIs('shift-type*')) ? 'active' : ''}}">
                                             <a  class="{{(request()->routeIs('shift-type*')) ? 'active' : ''}}" href="{{route('shift-type.index')}}"></i> <span> Schedule Type</span>

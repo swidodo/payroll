@@ -25,16 +25,18 @@ class GroupPositionController extends Controller
             return DataTables::of($group)
                             ->addColumn('action', function ($d) {
                         $view = '';
-                        $view = '<td class="text-end" >
-                                        <div class="dropdown dropdown-action" >
-                                            <a href ="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons"> more_vert</i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">';
-                        /** edit */
-                        $view .= '<a href="#" data-id = "'.$d->id.'" class="dropdown-item edit-group-position"><i class="fa fa-pencil m-r-5" ></i> Edit</a>';
-                        /** delete */
-                        $view .= '<a data-id="'.$d->id.'" class="dropdown-item delete-group-position" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
-                        /** delete */
-                        $view .= '</div></div></td>';
+                        if(Auth()->user()->canany('edit group position','delete group position')){
+                            $view = '<td class="text-end" >
+                                            <div class="dropdown dropdown-action" >
+                                                <a href ="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons"> more_vert</i></a>
+                                                <div class="dropdown-menu dropdown-menu-right">';
+                            /** edit */
+                            $view .= '<a href="#" data-id = "'.$d->id.'" class="dropdown-item edit-group-position"><i class="fa fa-pencil m-r-5" ></i> Edit</a>';
+                            /** delete */
+                            $view .= '<a data-id="'.$d->id.'" class="dropdown-item delete-group-position" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
+                            /** delete */
+                            $view .= '</div></div></td>';
+                        }
                     return $view;
                 })
                ->rawColumns(['action'])

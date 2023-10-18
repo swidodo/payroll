@@ -20,12 +20,16 @@
                 </div>
                 <div class="col-md-4">
                     <div class="d-flex justify-content-center">
+                         @canany(['create employee'])
                         <div>
                             <button id="import_excel" class="btn btn-warning rounded-pill me-2"><i class="fa fa-download"></i> Import</button>
                         </div>
+                        @endcan
+                         @canany(['show employee'])
                         <div>
                             <button id="export_excel" class="btn btn-warning rounded-pill"><i class="fa fa-upload"></i> Export</button>
                         </div>
+                        @endcan
                     </div>
                 </div>
             </div>

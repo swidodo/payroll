@@ -18,9 +18,11 @@
                         <li class="breadcrumb-item active">Position</li>
                     </ul>
                 </div>
+                @can('create position')
                 <div class="col-auto float-end ms-auto">
                     <a href="javascript:void(0);" class="btn add-btn" id="add_position"><i class="fa fa-plus"></i>Position</a>
                 </div>
+                @endcan
             </div>
         </div>
         <!-- /Page Header -->
