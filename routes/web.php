@@ -105,6 +105,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('get-data',[CompanyController::class,'get_data'])->name('get-data');
         Route::post('store-company',[CompanyController::class,'store'])->name('get-company');
         Route::post('edit-company',[CompanyController::class,'edit'])->name('edit-company');
+        Route::post('update-company',[CompanyController::class,'update'])->name('update-company');
+        Route::post('destroy-company',[CompanyController::class,'destroy'])->name('destroy-company');
         
         /** route employees */
         Route::resource('employees', EmployeeController::class);

@@ -173,67 +173,67 @@
                     }
                 })
             })
-           //  $('#updateFormGroupPotision').on('submit', function(e){
-           //      e.preventDefault()
-           //      var data = $('#updateFormGroupPotision').serialize();
-           //      $.ajax({
-           //          url : 'update-group-position',
-           //          type : 'post',
-           //          data : data,
-           //          dataType : 'json',
-           //          beforeSend : function(){
+            $('#updateFormCompany').on('submit', function(e){
+                e.preventDefault()
+                var data = $('#updateFormCompany').serialize();
+                $.ajax({
+                    url : 'update-company',
+                    type : 'post',
+                    data : data,
+                    dataType : 'json',
+                    beforeSend : function(){
 
-           //          },
-           //          success : function(respon){
-           //              if (respon.status == "success"){
-           //                  $('#edit_company').modal('hide');
-           //                  table.ajax.reload();
-           //              }
-           //              swal.fire({
-           //                  icon : respon.status,
-           //                  text : respon.msg
-           //              })
-           //          },
-           //          error : function(){
-           //              alert('Someting went wrong !');
-           //          }
-           //      })
-           //  })
-           //  $(document).on('click','.delete-group-position',function(e){
-           //      e.preventDefault()
-           //      var id = $(this).attr('data-id')
-           //      Swal.fire({
-           //                  title: 'Are you sure?',
-           //                  text: "You won't be able to revert this!",
-           //                  icon: 'warning',
-           //                  showCancelButton: true,
-           //                  confirmButtonColor: '#3085d6',
-           //                  cancelButtonColor: '#d33',
-           //                  confirmButtonText: 'Yes, delete it!'
-           //              }).then(function(confirm){
-           //              if (confirm.value == true){
-           //                  $.ajax({
-           //                      url : 'destroy-group-position',
-           //                      type :'post',
-           //                      data : {id : id},
-           //                      dataType : 'json',
-           //                      beforeSend : function (){
+                    },
+                    success : function(respon){
+                        if (respon.status == "success"){
+                            $('#edit_company').modal('hide');
+                            table.ajax.reload();
+                        }
+                        swal.fire({
+                            icon : respon.status,
+                            text : respon.msg
+                        })
+                    },
+                    error : function(){
+                        alert('Someting went wrong !');
+                    }
+                })
+            })
+            $(document).on('click','.delete-companyn',function(e){
+                e.preventDefault()
+                var id = $(this).attr('data-id')
+                Swal.fire({
+                            title: 'Are you sure?',
+                            text: "You won't be able to revert this!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, delete it!'
+                        }).then(function(confirm){
+                        if (confirm.value == true){
+                            $.ajax({
+                                url : 'destroy-companyn',
+                                type :'post',
+                                data : {id : id},
+                                dataType : 'json',
+                                beforeSend : function (){
 
-           //                      },
-           //                      success : function(respon){
-           //                          swal.fire({
-           //                              icon : respon.status,
-           //                              text : respon.msg
-           //                          })
-           //                          table.ajax.reload();
-           //                      },
-           //                      error : function(){
-           //                          alert('Someting went wrong !');
-           //                      }
-           //                  })
-           //              }
-           //          })
-           //  })
+                                },
+                                success : function(respon){
+                                    swal.fire({
+                                        icon : respon.status,
+                                        text : respon.msg
+                                    })
+                                    table.ajax.reload();
+                                },
+                                error : function(){
+                                    alert('Someting went wrong !');
+                                }
+                            })
+                        }
+                    })
+            })
         });
     </script>
 @endpush
