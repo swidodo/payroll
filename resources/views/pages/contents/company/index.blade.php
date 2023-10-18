@@ -213,7 +213,7 @@
                         }).then(function(confirm){
                         if (confirm.value == true){
                             $.ajax({
-                                url : 'destroy-companyn',
+                                url : 'destroy-company',
                                 type :'post',
                                 data : {id : id},
                                 dataType : 'json',
