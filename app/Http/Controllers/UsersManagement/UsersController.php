@@ -29,15 +29,15 @@ class UsersController extends Controller
     public function index()
     {
         $data = User::all();
-        dd($data);
+        // dd($data);
         $user       = Auth::user();
         $roles      = Role::where('created_by', '=', $user->creatorId())->where('name', '!=', 'client')->get();
         $branches   = Branch::where('created_by', Auth::user()->creatorId())->get();
         if (Auth::user()->can('manage user')) {
             if (Auth::user()->type == 'super admin') {
-                $users = User::where('created_by', '=', $user->creatorId())->where('type', '=', 'company')->get();
+                $users = User::where('branch_id', '=', $user->branch_id)->where('type', '=', 'company')->get();
             } else {
-                $users = User::where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->where('type', '!=', 'super admin')->orWhere('type', '=', null)->get();
+                $users = User::where('branch_id', '=', $user->branch_id)->where('type', '!=', 'client')->where('type', '!=', 'super admin')->orWhere('type', '=', null)->get();
             }
             return view('pages.contents.users management.users.index', compact('users', 'roles', 'branches'));
         } else {
