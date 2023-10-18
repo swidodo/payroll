@@ -76,8 +76,8 @@ class UsersController extends Controller
                     'name' => 'required|max:120',
                     'email' => 'required|email|unique:users',
                     'password' => 'required|min:8',
-                    'doj' => 'required|date',
-                    'doe' => 'required|date',
+                    // 'doj' => 'required|date',
+                    // 'doe' => 'required|date',
                 ]);
 
                 if ($validator->fails()) {
