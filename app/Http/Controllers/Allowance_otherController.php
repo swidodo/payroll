@@ -30,14 +30,14 @@ class Allowance_otherController extends Controller
                         ->addIndexColumn()
                         ->addColumn('action', function($row){
                             $btn ='';
-                            if(Auth()->user()->canany('edit other allowance','delete other allowance')){
+                            if(Auth()->user()->canany('edit allowance','delete allowance')){
                                 $btn .= '<div class="dropdown dropdown-action">
                                 <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                 <div class="dropdown-menu dropdown-menu-right">';
-                                if(Auth()->user()->can('edit other allowance')){
+                                if(Auth()->user()->can('edit allowance')){
                                     $btn .= '<a  data-id='.$row->id.' class="dropdown-item edit-allowance-other" href="javascript:void(0)" ><i class="fa fa-pencil m-r-5"></i> Edit</a>';
                                 }
-                                if(Auth()->user()->can('delete other allowance')){
+                                if(Auth()->user()->can('delete allowance')){
                                     $btn .= '<a data-id='.$row->id.' class="dropdown-item delete-allowance-other" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
                                 }
                                     
