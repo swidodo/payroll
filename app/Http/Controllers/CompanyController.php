@@ -16,7 +16,7 @@ class CompanyController extends Controller
     public function get_data(Request $request){
         try {
             $data = Company::all();
-             return DataTables::of($group)
+             return DataTables::of($data)
                             ->addColumn('action', function ($d) {
                         $view = '';
                         if(Auth()->user()->canany('edit set company','delete set company')){
