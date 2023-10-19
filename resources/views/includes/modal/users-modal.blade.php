@@ -106,7 +106,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Placement</label>
-                                    <select class="form-control select"  name="employee_type" id="employee_type" required>
+                                    <select class="form-control select"  name="employee_type" required>
                                         <option value="" selected disabled>Select Type</option>
                                         <option value="HO" >HO</option>
                                         <option value="Null">No HO</option>

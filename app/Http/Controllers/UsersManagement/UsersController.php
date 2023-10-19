@@ -31,8 +31,13 @@ class UsersController extends Controller
         $data = User::all();
         // dd($data);
         $user       = Auth::user();
-        $roles      = Role::where('created_by', '=', $user->creatorId())->where('name', '!=', 'client')->get();
-        $branches   = Branch::where('created_by', Auth::user()->creatorId())->get();
+        $company_id = Branch::where('id',Auth::user()->branch_id)->first();
+        $roles      = Role::select('roles.*')
+                            ->leftJoin('users','users.id','roles.created_by')
+                            ->where('users.branch_id',Auth::user()->branch_id)
+                            ->where('roles.name', '!=', 'client')->get();
+        // $roles      = Role::where('created_by', '=', $user->creatorId())->where('name', '!=', 'client')->get();
+        $branches   = Branch::where('company_id',$company_id)->get();
         if (Auth::user()->can('manage user')) {
             if (Auth::user()->type == 'super admin') {
                 $users = User::where('branch_id', '=', $user->branch_id)->where('type', '=', 'company')->get();
