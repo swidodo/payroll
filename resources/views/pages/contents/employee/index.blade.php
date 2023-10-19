@@ -37,6 +37,23 @@
         <!-- /Page Header -->
         <div class="row">
             <div class="col-md-12">
+                 <div class="card">
+                    <div class="card-body">
+                        <div class="row d-flex align-items-center">
+                            <div class="col-md-3">
+                                <label>Branch</label>
+                                <select class="form-select form-control" id="branch_id">
+                                    @foreach($branch as $br)
+                                    <option value="{{ $br->id }} ">{{ $br->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-3 d-flex align-items-center mt-4"> 
+                                <button type="button" class="btn btn-primary" id="searchBranch">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-striped custom-table" id="table-empolyees">
                         <thead>
@@ -104,58 +121,71 @@
     </script>
     @endif
     <script>
+        $.ajaxSetup({
+            headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
+        });
             $(document).ready(function () {
                 /* When click show user */
                 /* datatable employees */
-                $('#table-empolyees').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    destroy: true,
-                    ajax : {
-                        url : "{{route('employees.get-data-employees')}}",
-                    },
-                    columns: [
-                        { data: 'no', name:'id', render: function (data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        }},
-                        {
-                            data: 'view_profile',
-                            name: 'no_employee'
+                var branch_id = $('#branch_id').val();
+                tableEmp(branch_id);
+                function tableEmp(branch_id){
+                    $('#table-empolyees').DataTable({
+                        processing: true,
+                        serverSide: true,
+                        destroy: true,
+                        ajax : {
+                            url : "{{route('employees.get-data-employees')}}",
+                            type : 'post',
+                            data : {branch_id :branch_id}
                         },
-                        {
-                            data: 'name',
-                            name : 'name'
-                        },
-                        {
-                            data: 'email',
-                            name : 'email'
-                        },
-                        {
-                            data: 'phone',
-                            name : 'phone'
-                        },
-                        {
-                            data: 'branch.name',
-                            name : 'branch.name'
-                        },
-                        {
-                            data: 'company_doj',
-                            name : 'company_doj'
-                        },
-                        {
-                            data: 'view_status',
-                            name : 'status'
-                        },
-                        @can('delete employee')
+                        columns: [
+                            { data: 'no', name:'id', render: function (data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }},
                             {
-                                data: 'view',
-                                orderable: 'false',
-                                searcharable: 'false'
-                            }
-                        @endcan
-                    ],
+                                data: 'view_profile',
+                                name: 'no_employee'
+                            },
+                            {
+                                data: 'name',
+                                name : 'name'
+                            },
+                            {
+                                data: 'email',
+                                name : 'email'
+                            },
+                            {
+                                data: 'phone',
+                                name : 'phone'
+                            },
+                            {
+                                data: 'branch.name',
+                                name : 'branch.name'
+                            },
+                            {
+                                data: 'company_doj',
+                                name : 'company_doj'
+                            },
+                            {
+                                data: 'view_status',
+                                name : 'status'
+                            },
+                            @can('delete employee')
+                                {
+                                    data: 'view',
+                                    orderable: 'false',
+                                    searcharable: 'false'
+                                }
+                            @endcan
+                        ],
 
-                });
+                    });
+                }
+                $('#searchBranch').on('click',function(e){
+                    var branch_id = $('#branch_id').val();
+                     tableEmp(branch_id);
+                })
 
                 $('body').on('click', '#delete-employee', function(){
                     const deleteURL = $(this).data('url');

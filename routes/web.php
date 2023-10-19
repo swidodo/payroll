@@ -112,7 +112,7 @@ Route::group(['middleware' => 'auth'], function () {
         
         /** route employees */
         Route::resource('employees', EmployeeController::class);
-        Route::get('get-data-employees',[EmployeeController::class,'GetDataEmployees'])->name('employees.get-data-employees');
+        Route::post('get-data-employees',[EmployeeController::class,'GetDataEmployees'])->name('employees.get-data-employees');
         /** end route employees */
 
         // HRM Config Master Data

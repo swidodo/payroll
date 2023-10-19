@@ -46,22 +46,28 @@ class EmployeeController extends Controller
     public function index()
     {
         if (Auth::user()->can('manage employee')) {
-
-            return view('pages.contents.employee.index');
+            $user = Auth::user();
+            $data = Branch::where('id',$user->branch_id)->first();
+            if ($user->initial =="Ho"){
+                $branch['branch'] = Branch::where('company_id',$data->company_id)->get();
+            }else{
+                $branch['branch'] = Branch::where('id',$user->branch_id)->get();
+            }
+            return view('pages.contents.employee.index',$branch);
         } else {
             return redirect()->route('employees.index')->with('error', __('Permission denied.'));
         }
     }
 
     /** ajaxDatatable */
-    public function GetDataEmployees()
+    public function GetDataEmployees(Request $request)
     {
         try {
             /** type user */
             if (Auth::user()->type == 'employee') {
                 $employees = Employee::query()->where('user_id', '=', Auth::user()->id)->with('branch');
             } else {
-                $employees = Employee::query()->where('created_by', Auth::user()->creatorId())->with('branch');
+                $employees = Employee::query()->where('branch_id', $request->branch_id)->with('branch');
             }
             $response = datatables()->eloquent($employees)
                 ->addColumn('view_profile', function ($d) {
