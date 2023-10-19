@@ -161,6 +161,7 @@ class UsersController extends Controller
                     $role_r                = Role::findById($request->role);
                     $pass = Hash::make($request->password);
                     $data = [
+                        'name'      => $name,
                         'password' => $pass,
                         'type'     => $role_r->name,
                         'lang'     => !empty($default_language) ? $default_language->value : 'en',

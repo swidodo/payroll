@@ -32,6 +32,7 @@ class User extends Authenticatable
         'plan_expire_date',
         'requested_plan',
         'last_login_at',
+        'initial',
         'created_by',
     ];
 
