@@ -38,18 +38,6 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label>Password <span class="text-danger">*</span></label>
-                                    <input class="form-control" type="password" name="password" placeholder="Enter User Password">
-
-                                    @if ($errors->has('password'))
-                                    <div class="text-danger" role="alert">
-                                        <small><strong>{{ $errors->get('password')[0] }}</strong></small>
-                                    </div>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
                                     <label>User Role</label>
                                     <select class="select-role" name="role">
                                         <option value="0" selected>Select Role</option>
@@ -142,6 +130,18 @@
                                     @endif
                                 </div>
                             </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Password <span class="text-danger">*</span></label>
+                                    <input class="form-control" type="password" name="password" placeholder="Enter User Password">
+
+                                    @if ($errors->has('password'))
+                                    <div class="text-danger" role="alert">
+                                        <small><strong>{{ $errors->get('password')[0] }}</strong></small>
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                         <div class="submit-section">
                             <button type="submit" class="btn btn-primary submit-btn">Submit</button>
@@ -226,7 +226,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="col-sm-6" id="section-doj-edit" >
+                           <!--  <div class="col-sm-6" id="section-doj-edit" >
                                 <div class="form-group">
                                     <label>Date Join</label>
                                         <input readonly class="form-control" name="doj" id="doj-edit" type="date">
@@ -248,7 +248,7 @@
                                     </div>
                                     @endif
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="submit-section">
                             <button type="submit" class="btn btn-primary submit-btn">Submit</button>

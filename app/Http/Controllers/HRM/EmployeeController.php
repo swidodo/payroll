@@ -34,6 +34,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\EmployeeImportExcel;
+use Illuminate\Support\Facades\Hash;
 
 class EmployeeController extends Controller
 {
@@ -759,7 +760,7 @@ class EmployeeController extends Controller
                     $user = new User();
                     $user->name     = $row[0];
                     $user->email    = $row[10];
-                    $user->password = 'pehadir123';
+                    $user->password = Hash::make('12345678');
                     $user->type     = 'user'; //default
                     $doj            = ($row[22] != "" ) ? $row[22] : '0000-00-00';
                     $doe            = ($row[23] != "" ) ? $row[23] : '0000-00-00';

@@ -158,8 +158,8 @@ class UsersController extends Controller
                     // {
                     //     return redirect()->back()->with('error', __('Your user limit is over, Please upgrade plan.'));
                     // }
-                    $role_r                = Role::findById($request->role);
-                    $pass = Hash::make($request->password);
+                    $role_r  = Role::findById($request->role);
+                    $pass    = Hash::make($request->password);
                     $data = [
                         'name'      => $request->name,
                         'password' => $pass,
