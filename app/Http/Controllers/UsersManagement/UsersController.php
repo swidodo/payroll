@@ -161,7 +161,8 @@ class UsersController extends Controller
                         'lang'     => !empty($default_language) ? $default_language->value : 'en',
                         'created_by'=> Auth::user()->creatorId(),
                         'branch_id' => $request->branch_id,
-                        'initial'   => $request->initial
+                        'initial'   => $request->initial,
+                        'email'   => $request->email
                     ];
                     $user = User::create($data);
                     $user->assignRole($role_r);
@@ -172,7 +173,6 @@ class UsersController extends Controller
 
                     DB::commit();
                 } catch (Exception $e) {
-                    dd($e);
                     DB::rollBack();
                     toast('Something went wrong.', 'error');
                     return redirect()->back();
