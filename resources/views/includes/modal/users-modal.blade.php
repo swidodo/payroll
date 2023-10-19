@@ -102,13 +102,27 @@
                                     </div>
                                     @endif
                                 </div>
+                            </div> 
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Placement</label>
+                                    <select class="select-employee-type"  name="employee_type" id="employee_type" required>
+                                        <option value="" selected disabled>Select Type</option>
+                                        <option value="HO" >HO</option>
+                                        <option value="Null">No HO</option>
+                                    </select>
+
+                                    @if ($errors->has('Placement'))
+                                    <div class="text-danger" role="alert">
+                                        <small><strong>{{ $errors->get('Placement')[0] }}</strong></small>
+                                    </div>
+                                    @endif
+                                </div>
                             </div>
-                            <div class="col-sm-6" id="section-doj"
-                             {{-- style="display: none" --}}
-                             >
+                            <div class="col-sm-6" id="section-doj" style="display: none">
                                 <div class="form-group">
                                     <label>Date Join</label>
-                                        <input class="form-control" name="doj" id="doj" type="date" hidden>
+                                        <input class="form-control" name="doj" id="doj" type="date">
                                     @if ($errors->has('doj'))
                                     <div class="text-danger" role="alert">
                                         <small><strong>{{ $errors->get('doj')[0] }}</strong></small>
@@ -116,12 +130,10 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="col-sm-6" id="section-doe"
-                            {{-- style="display: none" --}}
-                            >
+                            <div class="col-sm-6" id="section-doe" style="display: none">
                                 <div class="form-group">
                                     <label>Date End</label>
-                                        <input class="form-control" name="doe" id="doe" type="date" hidden>
+                                        <input class="form-control" name="doe" id="doe" type="date">
 
                                     @if ($errors->has('doe'))
                                     <div class="text-danger" role="alert">

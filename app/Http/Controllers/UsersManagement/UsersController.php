@@ -159,6 +159,8 @@ class UsersController extends Controller
                     $request['type']       = $role_r->name;
                     $request['lang']       = !empty($default_language) ? $default_language->value : 'en';
                     $request['created_by'] = Auth::user()->creatorId();
+                    $request['branch_id']  = $request->branch_id;
+                    $request['initial']    = $request->initial;
                     $user = User::create($request);
                     $user->assignRole($role_r);
 
