@@ -97,8 +97,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::resource('users', UsersController::class);
         Route::resource('roles', RolesController::class);
-        Route::get('change_password',[UsersController::class,'change_pass'])->name('change_password')
-        Route::post('change_store',[UsersController::class,'change_store'])->name('change_store')
+        Route::get('change_password',[UsersController::class,'change_pass'])->name('change_password');
+        Route::post('change_store',[UsersController::class,'change_store'])->name('change_store');
         Route::get('setup-aplication',[RolesController::class,'setup_app'])->name('setup-app');
         Route::post('create-permission',[RolesController::class,'add_permission'])->name('create-permission');
         Route::post('open-permission',[RolesController::class,'open_permission'])->name('open-permission');
