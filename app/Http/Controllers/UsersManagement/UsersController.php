@@ -172,6 +172,7 @@ class UsersController extends Controller
 
                     DB::commit();
                 } catch (Exception $e) {
+                    dd($e);
                     DB::rollBack();
                     toast('Something went wrong.', 'error');
                     return redirect()->back();
