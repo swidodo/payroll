@@ -37,7 +37,7 @@ class UsersController extends Controller
                             ->where('users.branch_id',Auth::user()->branch_id)
                             ->where('roles.name', '!=', 'client')->get();
         // $roles      = Role::where('created_by', '=', $user->creatorId())->where('name', '!=', 'client')->get();
-        $branches   = Branch::where('company_id',$company_id)->get();
+        $branches   = Branch::where('company_id',$company_id->company_id)->get();
         if (Auth::user()->can('manage user')) {
             if (Auth::user()->type == 'super admin') {
                 $users = User::where('branch_id', '=', $user->branch_id)->where('type', '=', 'company')->get();
