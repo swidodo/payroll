@@ -153,15 +153,17 @@ class UsersController extends Controller
                     // {
                     //     return redirect()->back()->with('error', __('Your user limit is over, Please upgrade plan.'));
                     // }
-
                     $role_r                = Role::findById($request->role);
-                    $request['password']   = Hash::make($request->password);
-                    $request['type']       = $role_r->name;
-                    $request['lang']       = !empty($default_language) ? $default_language->value : 'en';
-                    $request['created_by'] = Auth::user()->creatorId();
-                    $request['branch_id']  = $request->branch_id;
-                    $request['initial']    = $request->initial;
-                    $user = User::create($request);
+                    $pass = Hash::make($request->password);
+                    $data = [
+                        'password' => $pass,
+                        'type'     => $role_r->name,
+                        'lang'     => !empty($default_language) ? $default_language->value : 'en',
+                        'created_by'=> Auth::user()->creatorId(),
+                        'branch_id' => $request->branch_id,
+                        'initial'   => $request->initial
+                    ];
+                    $user = User::create($data);
                     $user->assignRole($role_r);
 
                     if ($request['type'] != 'client') {
