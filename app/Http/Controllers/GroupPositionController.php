@@ -16,8 +16,13 @@ use Illuminate\Support\Facades\DB;
 class GroupPositionController extends Controller
 {
     public function index(){
-
-        return view('pages.contents.group_position.index');
+        $branch = Branch::where('id',Auth::user()->branch_id)->first();
+        if (Auth::user()->initial == "HO"){
+            $data['branch'] = Branch::where('company_id',$branch->company_id)->get();
+        }else{
+            $data['branch'] = Branch::where('id',$branch->id)->get();
+        }
+        return view('pages.contents.group_position.index',$data);
     }
     public function get_data(Request $request){
         try {
