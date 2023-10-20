@@ -26,9 +26,8 @@ class UsersController extends Controller
    
     public function index()
     {
-        User::where('id',1)->update(['email' =>'Penukal@pehadir.com','initial'=>'HO','name'=>'admin penukal']);
         $branch = Branch::where('id',Auth::user()->branch_id)->first();
-        if (Auth::user()->type == 'superadmin' ){
+        if (Auth::user()->type == 'super admin' ){
             $data['company'] = Company::all();
             return view('pages.contents.users management.users.index',$data);
         }else if(Auth::user()->type == 'company'){
@@ -78,7 +77,7 @@ class UsersController extends Controller
     }
 
     public function add_user_data(Request $request){
-        if(Auth::user()->type == 'superadmin'){
+        if(Auth::user()->type == 'super admin'){
             $branch = Branch::where('id',Auth::user()->branch_id)->first();
             $data['user'] = User::where('id',Auth::user()->id)->first();
             $data['branches']  = Branch::all();
