@@ -77,7 +77,7 @@ class UsersController extends Controller
     }
 
     public function add_user_data(Request $request){
-        if(Auth::user()->type == 'super admin'){
+        if(Auth::user()->type == 'company'){
             $branch = Branch::where('id',Auth::user()->branch_id)->first();
             $data['user'] = User::where('id',Auth::user()->id)->first();
             $data['branches']  = Branch::all();
@@ -88,10 +88,10 @@ class UsersController extends Controller
             $data['user'] = User::where('id',Auth::user()->id)->first();
             $data['branches']  = Branch::where('company_id',$branch->company_id)->get();
              $data['role'] = Role::all();
-            // $data['role'] = Role::select('roles.*')
-            //                     ->leftJoin('users','users.id','=','roles.created_by')
-            //                     ->leftJoin('branches','branches.id','=','users.branch_id')
-            //                     ->where('branches.company_id',$branch->company_id)->get();
+            $data['role'] = Role::select('roles.*')
+                                ->leftJoin('users','users.id','=','roles.created_by')
+                                ->leftJoin('branches','branches.id','=','users.branch_id')
+                                ->where('branches.company_id',$branch->company_id)->get();
             return response()->json($data);
         }else{
             $branch = Branch::where('id',Auth::user()->branch_id)->first();
