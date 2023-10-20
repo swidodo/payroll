@@ -27,7 +27,7 @@ class UsersController extends Controller
     public function index()
     {
         $branch = Branch::where('id',Auth::user()->branch_id)->first();
-        if (Auth::user()->type == 'company' && Auth::user()->initial == "HO"){
+        if (Auth::user()->type == 'superadmin'){
             $data['company'] = Company::all();
             return view('pages.contents.users management.users.index',$data);
         }else if(Auth::user()->type == 'company'){
