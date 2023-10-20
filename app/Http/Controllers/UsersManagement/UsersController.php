@@ -32,8 +32,8 @@ class UsersController extends Controller
             return view('pages.contents.users management.users.index',$data);
         }else if(Auth::user()->type == 'company'){
             if (Auth::user()->can('manage user')) {
-                $data['company'] = Company::where('id',$branch->company_id)->get();
-                $data['branch']  = Branch::where('company_id',$branch->company_id)->get();
+                $data['company'] = Company::all();
+                $data['branch']  = Branch::all();
                 return view('pages.contents.users management.users.index',$data);
             }else{
                 return redirect()->back();
