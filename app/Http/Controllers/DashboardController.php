@@ -38,7 +38,7 @@ class DashboardController extends Controller
         } else {
             $employee = Employee::where('user_id', Auth::user()->id)->first();
             if ($employee !=null){
-                $attendanceStatus = $employee->present_status($employee->id, date('Y-m-d'))
+                $attendanceStatus = $employee->present_status($employee->id, date('Y-m-d'));
             }else{
                 $attendanceStatus = null;
             }
