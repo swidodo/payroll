@@ -16,11 +16,20 @@ class RotateController extends Controller
 {
     public function index()
     {
-        $branch = Branch::where('id',Auth::user()->branch_id)->first();
+        $branch = DB::table('branches')
+                    ->select('*')
+                    ->where('id',Auth::user()->branch_id)
+                    ->first();
         if(Auth::user()->initial == "HO"){
-            $data['branch'] = Branch::where('company_id',$branch->company_id)->get();
+            $data['branch'] = DB::table('branches')
+                    ->select('*')
+                    ->where('company_id',$branch->company_id)
+                    ->get();
         }else{
-            $data['branch'] = Branch::where('id',$branch->id)->get();
+            $data['branch'] =  DB::table('branches')
+                    ->select('*')
+                    ->where('id',Auth::user()->branch_id)
+                    ->get();
         }
         return view('pages.contents.rotate.index',$data);
     }
