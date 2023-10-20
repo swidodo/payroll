@@ -38,6 +38,7 @@ class DashboardController extends Controller
         } else {
             $employee = Employee::where('user_id', Auth::user()->id)->first();
             $attendanceStatus = $employee->present_status($employee->id, date('Y-m-d'));
+            dd($attendanceStatus);
             $attendanceEmployee = AttendanceEmployee::where('employee_id', $employee->id)->where('date', date('Y-m-d'))->orderBy('id', 'desc')->first();
             $shiftSchedule = ShiftSchedule::where('employee_id', Auth::user()->employee->id)->where('created_by', '=', Auth::user()->creatorId())->where('schedule_date', date('Y-m-d'))->first();
             $timesheet = Timesheet::where('employee_id', Auth::user()->employee->id)->where('created_by', '=', Auth::user()->creatorId())->where('start_date', '<=', date('Y-m-d'))->where('end_date', '>=', date('Y-m-d'))->first();
