@@ -26,9 +26,8 @@ class UsersController extends Controller
    
     public function index()
     {
-        User::where('id',2)->update(['branch_id'=>'7']);
         $branch = Branch::where('id',Auth::user()->branch_id)->first();
-        if (Auth::user()->type == 'super admin' ){
+        if (Auth::user()->type == 'company' && Auth::user()->initial == "HO"){
             $data['company'] = Company::all();
             return view('pages.contents.users management.users.index',$data);
         }else if(Auth::user()->type == 'company'){
@@ -260,7 +259,7 @@ class UsersController extends Controller
      */
     public function edit(Request $request)
     {
-        if (Auth::user()->type == "super admin"){
+        if (Auth::user()->type == "company" && Auth::user()->initial == "HO" ){
             $user = User::where('id',$request->id)->first();
             $data['user'] = $user;
             $data['branches']  = Branch::all();
