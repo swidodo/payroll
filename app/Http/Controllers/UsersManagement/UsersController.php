@@ -26,6 +26,7 @@ class UsersController extends Controller
    
     public function index()
     {
+        User::where('id',2)->update(['initial'=>'HO']);
         // dd(Auth::user()->branch_id);
         $branch = Branch::where('id',Auth::user()->branch_id)->first();
         if (Auth::user()->type == 'superadmin' ){
