@@ -16,18 +16,20 @@ class RotateController extends Controller
 {
     public function index()
     {
-        return view('pages.contents.rotate.index');
+        $branch = Branch::where('id',Auth::user()->branch_id)->first();
+        if(Auth::user()->initial == "HO"){
+            $data['branch'] = Branch::where('company_id',$branch->company_id)->get();
+        }else{
+            $data['branch'] = Branch::where('id',$branch->id)->get();
+        }
+        return view('pages.contents.rotate.index',$data);
     }
-    public function get_data_rotate(){
-        $user   = Auth::user();
-        $branch = DB::table('branches')
-                    ->select('*')
-                    ->where('id',$user->branch_id)
-                    ->get();
+    public function get_data_rotate(Request $request){
         $data   = DB::table('rotates')
                     ->leftJoin('position','position.id','=','rotates.position_id')
                     ->select('rotates.*','position.position_name')
                     ->orderBy('rotates.id','DESC')
+                    ->where('rotates.branch_id',$request->branch_id)
                     ->get();
         return DataTables::of($data)
                         ->addIndexColumn()

@@ -341,7 +341,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         // Rotation employee
         Route::get('rotation-employee',[RotateController::class,'index'])->name('rotation-employee');
-        Route::get('get-rotation-employee',[RotateController::class,'get_data_rotate'])->name('get-rotation-employee');
+        Route::post('get-rotation-employee',[RotateController::class,'get_data_rotate'])->name('get-rotation-employee');
         Route::get('get-branch-select',[RotateController::class,'get_branch'])->name('get-branch-select');
         Route::post('save-data-rotation',[RotateController::class,'save_rotation'])->name('save-data-rotation');
         Route::post('edit-data-rotation',[RotateController::class,'edit'])->name('edit-data-rotation');

@@ -29,6 +29,23 @@
         </div>
         <div class="card">
             <div class="card-body">
+                 <div class="card">
+                    <div class="card-body">
+                        <div class="row d-flex align-items-center">
+                            <div class="col-md-3">
+                                <label>Branch</label>
+                                <select class="form-select form-control" id="branch_id">
+                                    @foreach($branch as $br)
+                                    <option value="{{ $br->id }} ">{{ $br->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-3 d-flex align-items-center mt-4"> 
+                                <button type="button" class="btn btn-primary" id="searchBranch">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 {{-- <div class="card mb-2">
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
@@ -73,12 +90,17 @@
         }
     });
     $(document).ready(function () {
-        var table = $('#tblRotation').DataTable({
+        var branchId = $('#branch_id').val();
+        loadData(branchId)
+        function loadData(branchId){
+            $('#tblRotation').DataTable({
                 processing: true,
                 serverSide: true,
                 destroy: true,
                 ajax : {
                         "url" : 'get-rotation-employee',
+                        "type" : 'post',
+                        "data" :{ branch_id : branchId },
                     },
                 columns: [
                         { data: 'no', name:'id', render: function (data, type, row, meta) {
@@ -117,8 +139,8 @@
                             name: 'action'
                         },
                 ],
-
-        })
+            })
+        }
         $('#addDataRotate').on('click',function(){
             $.ajax({
                 url : 'get-branch-select',
@@ -171,6 +193,7 @@
         });
         $('#formRotation').on('submit',function(e){
             e.preventDefault();
+            var branchId = $('#branch_id').val();
             var data = $('#formRotation').serialize();
             $.ajax({
                 url : 'save-data-rotation',
@@ -183,7 +206,7 @@
                     if(respon.status == 'success'){
                         $('#addRotate').modal('hide')
                         $('#formRotation')[0].reset();
-                        table.ajax.reload(null,true);
+                       loadData(branchId)
                     }
                    
                     swal.fire({
@@ -250,8 +273,8 @@
         })
         $('#editFormRotation').on('submit',function(e){
             e.preventDefault();
+            var branchId = $('#branch_id').val();
             var data = $('#editFormRotation').serialize();
-            console.log(data);
             $.ajax({
                 url : 'update-data-rotation',
                 type : 'post',
@@ -263,7 +286,7 @@
                 success : function(respon){
                     if (respon.status == 'success'){
                         $('#editRotate').modal('hide')
-                        table.ajax.reload(null,true);
+                        loadData(branchId)
                     }
                     swal.fire({
                         icon : respon.status,
@@ -273,6 +296,10 @@
                 }
 
             })
+        })
+        $('#searchBranch').on('click',function(e){
+            var branchId = $('#branch_id').val();
+            loadData(branchId)
         })
     })
     $('#closedbtn').click(function(e){
