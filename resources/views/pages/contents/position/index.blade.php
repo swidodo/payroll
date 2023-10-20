@@ -37,6 +37,23 @@
         @endif
 
         <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-3">
+                            <label>Branch</label>
+                            <select class="form-select form-control" id="branch_id">
+                                @foreach($branch as $br)
+                                <option value="{{ $br->id }} ">{{ $br->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-center mt-4"> 
+                            <button type="button" class="btn btn-primary" id="searchBranch">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-12">
                 <div class="table-responsive">
                     <table class="table table-striped custom-table" id="table-position">
@@ -117,40 +134,43 @@
     <script>
         $(document).ready(function () {
             $.ajaxSetup({
-            headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
-        });
-            var table = $('#table-position').DataTable({
-                processing: true,
-                serverSide: true,
-                destroy: true,
-                ajax : {
-                    url : "get-position",
-                    type : 'post',
-                },
-                columns: [
-                    {
-                        data: 'branch_name',
-                        name: 'branch_name'
-                    },
-                    {
-                        data: 'position_code',
-                        name: 'position_code'
-                    },
-                    {
-                        data: 'position_name',
-                        name: 'position_name'
-                    }, 
-                    {
-                        data: 'description',
-                        name: 'description'
-                    },
-                    {
-                        data: 'action',
-                        name : 'action'
-                    },
-                ],
-
+                headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
             });
+            var branchId = $('#branch_id').val();
+            loadData(branchId)
+            function loadData(branchId){
+                $('#table-position').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    destroy: true,
+                    ajax : {
+                        url : "get-position",
+                        type : 'post',
+                    },
+                    columns: [
+                        {
+                            data: 'branch_name',
+                            name: 'branch_name'
+                        },
+                        {
+                            data: 'position_code',
+                            name: 'position_code'
+                        },
+                        {
+                            data: 'position_name',
+                            name: 'position_name'
+                        }, 
+                        {
+                            data: 'description',
+                            name: 'description'
+                        },
+                        {
+                            data: 'action',
+                            name : 'action'
+                        },
+                    ],
+                });
+            }
             $('#add_position').on('click', function(e){
                 e.preventDefault();
                 $.ajax({
@@ -174,7 +194,8 @@
             $('#addFormPosition').on('submit', function(e){
                 e.preventDefault()
                 var data = $('#addFormPosition').serialize();
-
+                var branchId = $('#branch_id').val();
+        
                 $.ajax({
                     url : 'store-position',
                     type : 'post',
@@ -187,7 +208,7 @@
                         if (respon.status == "success"){
                             $('#add_modal_position').modal('hide');
                             $('#addFormPosition')[0].reset()
-                            table.ajax.reload();
+                            loadData(branchId)
                         }
                         swal.fire({
                             icon : respon.status,
@@ -224,6 +245,7 @@
             })
             $('#updateFormPotision').on('submit', function(e){
                 e.preventDefault()
+                var branchId = $('#branch_id').val();
                 var data = $('#updateFormPotision').serialize();
                 $.ajax({
                     url : 'update-position',
@@ -236,7 +258,7 @@
                     success : function(respon){
                         if (respon.status == "success"){
                             $('#edit_position').modal('hide');
-                            table.ajax.reload();
+                            loadData(branchId)
                         }
                         swal.fire({
                             icon : respon.status,
@@ -250,6 +272,7 @@
             })
             $(document).on('click','.delete-position',function(e){
                 e.preventDefault()
+                var branchId = $('#branch_id').val();
                 var id = $(this).attr('data-id')
                 Swal.fire({
                             title: 'Are you sure?',
@@ -274,7 +297,7 @@
                                         icon : respon.status,
                                         text : respon.msg
                                     })
-                                    table.ajax.reload();
+                                    loadData(branchId)
                                 },
                                 error : function(){
                                     alert('Someting went wrong !');
@@ -282,6 +305,10 @@
                             })
                         }
                     })
+            })
+             $('#searchBranch').on('click',function(e){
+                var branchId = $('#branch_id').val();
+                loadData(branchId)
             })
         });
     </script>
