@@ -32,8 +32,8 @@ class UsersController extends Controller
             return view('pages.contents.users management.users.index',$data);
         }else if(Auth::user()->type == 'company'){
             if (Auth::user()->can('manage user')) {
-                $data['company'] = Company::all();
-                $data['branch']  = Branch::all();
+                $data['company'] = Company::where('id',$branch->company_id)->get();
+                $data['branch']  = Branch::where('company_id',$branch->company_id)->get();
                 return view('pages.contents.users management.users.index',$data);
             }else{
                 return redirect()->back();
@@ -87,10 +87,11 @@ class UsersController extends Controller
             $branch = Branch::where('id',Auth::user()->branch_id)->first();
             $data['user'] = User::where('id',Auth::user()->id)->first();
             $data['branches']  = Branch::where('company_id',$branch->company_id)->get();
-            $data['role'] = Role::select('roles.*')
-                                ->leftJoin('users','users.id','=','roles.created_by')
-                                ->leftJoin('branches','branches.id','=','users.branch_id')
-                                ->where('branches.company_id',$branch->company_id)->get();
+             $data['role'] = Role::all();
+            // $data['role'] = Role::select('roles.*')
+            //                     ->leftJoin('users','users.id','=','roles.created_by')
+            //                     ->leftJoin('branches','branches.id','=','users.branch_id')
+            //                     ->where('branches.company_id',$branch->company_id)->get();
             return response()->json($data);
         }else{
             $branch = Branch::where('id',Auth::user()->branch_id)->first();
