@@ -48,7 +48,7 @@ class EmployeeController extends Controller
         if (Auth::user()->can('manage employee')) {
             $user = Auth::user();
             $data = Branch::where('id',$user->branch_id)->first();
-            if ($user->initial =="Ho"){
+            if ($user->initial =="HO"){
                 $branch['branch'] = Branch::where('company_id',$data->company_id)->get();
             }else{
                 $branch['branch'] = Branch::where('id',$user->branch_id)->get();
