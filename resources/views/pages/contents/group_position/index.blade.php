@@ -137,43 +137,46 @@
             $.ajaxSetup({
             headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
         });
-            var table = $('#table-group-position').DataTable({
-                processing: true,
-                serverSide: true,
-                destroy: true,
-                ajax : {
-                    url : "get-group-position",
-                    type : 'post',
-                },
-                columns: [
-                    {
-                        data: 'employee_name',
-                        name: 'employee_name'
+            var branchId = $('#branch_id').val();
+            loadData(branchId)
+            function loadData(branchId){
+                $('#table-group-position').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    destroy: true,
+                    ajax : {
+                        url : "get-group-position",
+                        type : 'post',
                     },
-                     {
-                        data: 'position_name',
-                        name: 'position_name'
-                    }, 
-                    
-                    {
-                        data: 'departement_code',
-                        name: 'departement_code'
-                    },
-                    {
-                        data: 'departement_name',
-                        name: 'departement_name'
-                    },
-                   {
-                        data: 'branch_name',
-                        name: 'branch_name'
-                    }, 
-                    {
-                        data: 'action',
-                        name : 'action'
-                    },
-                ],
-
-            });
+                    columns: [
+                        {
+                            data: 'employee_name',
+                            name: 'employee_name'
+                        },
+                         {
+                            data: 'position_name',
+                            name: 'position_name'
+                        }, 
+                        
+                        {
+                            data: 'departement_code',
+                            name: 'departement_code'
+                        },
+                        {
+                            data: 'departement_name',
+                            name: 'departement_name'
+                        },
+                       {
+                            data: 'branch_name',
+                            name: 'branch_name'
+                        }, 
+                        {
+                            data: 'action',
+                            name : 'action'
+                        },
+                    ],
+                });
+            }
             $('#add_groupPosition').on('click', function(e){
                 e.preventDefault();
                 $.ajax({
@@ -237,7 +240,7 @@
             $('#addFormGroupPosition').on('submit', function(e){
                 e.preventDefault()
                 var data = $('#addFormGroupPosition').serialize();
-
+                var branchId = $('#branch_id').val();
                 $.ajax({
                     url : 'store-group-position',
                     type : 'post',
@@ -249,7 +252,7 @@
                     success : function(respon){
                         if (respon.status == "success"){
                             $('#addGroupPosition').modal('hide');
-                            table.ajax.reload();
+                            loadData(branchId)
                         }
                         swal.fire({
                             icon : respon.status,
@@ -303,6 +306,7 @@
             })
             $('#updateFormGroupPotision').on('submit', function(e){
                 e.preventDefault()
+                var branchId = $('#branch_id').val();
                 var data = $('#updateFormGroupPotision').serialize();
                 $.ajax({
                     url : 'update-group-position',
@@ -315,7 +319,7 @@
                     success : function(respon){
                         if (respon.status == "success"){
                             $('#edit_groupPosition').modal('hide');
-                            table.ajax.reload();
+                            loadData(branchId)
                         }
                         swal.fire({
                             icon : respon.status,
@@ -329,6 +333,7 @@
             })
             $(document).on('click','.delete-group-position',function(e){
                 e.preventDefault()
+                var branchId = $('#branch_id').val();
                 var id = $(this).attr('data-id')
                 Swal.fire({
                             title: 'Are you sure?',
@@ -353,7 +358,7 @@
                                         icon : respon.status,
                                         text : respon.msg
                                     })
-                                    table.ajax.reload();
+                                    loadData(branchId)
                                 },
                                 error : function(){
                                     alert('Someting went wrong !');
@@ -361,6 +366,10 @@
                             })
                         }
                     })
+            })
+            $('#searchBranch').on('click',function(e){
+                var branchId = $('#branch_id').val();
+                loadData(branchId)
             })
         });
     </script>
