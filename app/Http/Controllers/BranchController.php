@@ -16,8 +16,13 @@ class BranchController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->can('manage branch')) {
-            $branches = Branch::where('created_by', Auth::user()->creatorId())->get();
+         if (Auth::user()->can('manage branch')) {
+            $br = Branch::where('id',Auth::user()->branch_id)->first();
+            if (Auth::user()->initial == "HO"){
+                $branch = Branch::where('company_id',$br->company_id)->get();
+            }else{
+                $branch = Branch::where('id',$br->id)->get();
+            }
             return view('pages.contents.branch.index', compact('branches'));
         } else {
             return redirect()->back()->with('error', 'Permission denied');
