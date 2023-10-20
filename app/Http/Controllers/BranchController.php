@@ -19,9 +19,9 @@ class BranchController extends Controller
          if (Auth::user()->can('manage branch')) {
             $br = Branch::where('id',Auth::user()->branch_id)->first();
             if (Auth::user()->initial == "HO"){
-                $branch = Branch::where('company_id',$br->company_id)->get();
+                $branches = Branch::where('company_id',$br->company_id)->get();
             }else{
-                $branch = Branch::where('id',$br->id)->get();
+                $branches = Branch::where('id',$br->id)->get();
             }
             return view('pages.contents.branch.index', compact('branches'));
         } else {
