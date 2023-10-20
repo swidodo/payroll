@@ -21,7 +21,7 @@
                 </div>
                 @can('create user')
                     <div class="col-auto float-end ms-auto">
-                        <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_user"><i class="fa fa-plus"></i> Add User</a>
+                        <a href="#" class="btn add-btn" id="AddUser"><i class="fa fa-plus"></i> Add User</a>
                     </div>
                 @endcan
             </div>
@@ -37,15 +37,43 @@
             </div>
         @endif
 
-
-
-
         <div class="row">
             <div class="col-md-12">
+                 <div class="card">
+                    <div class="card-body">
+                        <div class="row d-flex align-items-center">
+                            <div class="col-md-3">
+                                <label>Company</label>
+                                <select class="form-select form-control" id="company_id" required>
+                                    @if(Auth::user()->type =='superadmin')
+                                        <option value="" selected disabbled>select company</option>
+                                    @endif
+                                    @foreach($company as $comp)
+                                        <option value="{{ $comp->id }}">{{ $comp->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Branch</label>
+                                <select class="form-select form-control" id="branchId">
+                                    @if (isset($branch))
+                                       @foreach($branch as $branchs)
+                                            <option value="{{ $branchs->id }}" {{ (Auth::user()->branch_id == $branchs->id) ? 'selected' :'' }}>{{ $branchs->name }}</option>
+                                       @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                            <div class="col-md-3 d-flex align-items-center mt-4"> 
+                                <button type="button" class="btn btn-primary" id="search">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="table-responsive">
-                    <table class="table table-striped custom-table datatable">
+                    <table class="table table-striped custom-table" id="tableUser">
                         <thead>
                             <tr>
+                                <th>No</th>
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Role</th>
@@ -55,61 +83,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($users as $user)
-
-                            <tr>
-                                <td>
-                                    <h2 class="table-avatar">
-                                        <a href="#" class="avatar"><img src="https://ui-avatars.com/api/?name={{$user->name}}" alt=""></a>
-                                        <a href="#">{{$user->name}}</a>
-                                    </h2>
-                                </td>
-                                <td>{{$user->email}}</td>
-                                <td>
-                                    @if (isset($user->roles[0]))
-                                        @if (strtolower($user->roles[0]->name) == 'admin')
-                                            <span class="badge bg-inverse-danger">Admin</span>
-                                        @endif
-
-                                        @if (strtolower($user->roles[0]->name) == null)
-                                            <span class="badge bg-inverse-danger">No Role</span>
-                                        @endif
-
-                                        @if (strtolower($user->roles[0]->name) == 'client')
-                                            <span class="badge bg-inverse-info">Client</span>
-                                        @endif
-
-                                        @if (strtolower($user->roles[0]->name) == 'company')
-                                            <span class="badge bg-inverse-success">Company</span>
-                                        @endif
-
-                                        @if (strtolower($user->roles[0]->name) != 'client' && strtolower($user->roles[0]->name) != 'admin' && strtolower($user->roles[0]->name) != 'company' && strtolower($user->roles[0]->name) != null)
-                                            <span class="badge bg-inverse-success">{{$user->roles[0]->name}}</span>
-                                        @endif
-                                    @else
-                                        -
-                                    @endif
-
-
-
-                                </td>
-                                @if(Auth::user()->can('edit user') || Auth::user()->can('delete user'))
-                                    <td class="text-end">
-                                        <div class="dropdown dropdown-action">
-                                            <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                @can('edit user')
-                                                    <a  data-url="{{ route('users.edit', $user->id) }}" id="edit-user" class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_user"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                @endcan
-                                                @can('delete user')
-                                                    <a id="delete-user" data-url="{{ route('users.destroy', $user->id) }}" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_user"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                @endcan
-                                            </div>
-                                        </div>
-                                    </td>
-                                @endif
-                            </tr>
-                            @endforeach
+                           
                         </tbody>
                     </table>
                 </div>
@@ -132,6 +106,7 @@
 
     <!-- Datetimepicker CSS -->
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap-datetimepicker.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/plugins/sweetalert2/sweetalert2.min.css')}}">
 @endpush
 
 @push('addon-script')
@@ -148,108 +123,226 @@
     <!-- Datatable JS -->
     <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
+
 
     <script>
-            $(document).ready(function () {
-                /* When click show user */
+         $.ajaxSetup({
+            headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
+        });
+        $(document).ready(function () {
+            var branchId = $('#branchId').val();
+            LoadData(branchId)
+            function LoadData(branch_id){
+                $('#tableUser').DataTable({
+                        processing: true,
+                        serverSide: true,
+                        destroy: true,
+                        ajax : {
+                            url : "get-data-user",
+                            type : 'post',
+                            data : {branch_id :branch_id},
+                        },
+                        columns: [
+                            { data: 'no', name:'id', render: function (data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }},
+                            {
+                                data: 'name',
+                                name: 'name'
+                            },
+                            {
+                                data: 'email',
+                                name : 'email'
+                            },
+                            {
+                                data: 'type',
+                                name : 'type'
+                            },
+                            {
+                                data: 'action',
+                                name : 'action'
+                            },
+                        ],
 
-                // add modal
-                if($('.select-role').length > 0) {
-                    $('.select-role').select2({
-                        width: '100%',
-                        tags: true,
-                        dropdownParent: $('#add_user')
                     });
+            }
+            $('#AddUser').on('click',function(e){
+                e.preventDefault();
+                $.ajax({
+                    url : 'add-user-data',
+                    type:'post',
+                    dataType : 'json',
+                    beforeSend :function(){
+
+                    },
+                    success : function(respon){
+                        var branch ='';
+                        $.each(respon.branches,function(key,val){
+                            if (respon.user.branch_id == val.id){
+                                 branch +=`<option value="`+val.id+`" selected>`+val.name+`</option>`;
+                            }else{
+                                branch +=`<option value="`+val.id+`">`+val.name+`</option>`; 
+                            }
+                        }) 
+
+                        $('#addbranch_id').html(branch)
+                        var role ='<option value="" selected disabled>Select Role</option>';
+                        $.each(respon.role,function(key,val){
+                            role +=`<option value="`+val.id+`">`+val.name+`</option>`;
+                        })
+                        $('#role').html(role);
+                        $('#add_user').modal('show');
+                    },
+                    error :function(){
+                        alert('Someting went wrong !')
+                    }
+                }) 
+            })
+            $('#formAddUser').on('submit',function(e){
+                e.preventDefault();
+                var pass = 8;
+                if (pass < 8){
+                    $('#errpass').html('password must be 8 character!')
+                    return true;
                 }
+                var branchId = $('#branchId').val();
+                var data = $('#formAddUser').serialize();
+                $.ajax({
+                    url : 'store-user',
+                    type :'post',
+                    data : data,
+                    dataType : 'json',
+                    beforeSend : function(){
 
-                if($('.select-branch').length > 0) {
-                    $('.select-branch').select2({
-                        width: '100%',
-                        tags: true,
-                        dropdownParent: $('#add_user')
-                    });
-                }
-
-                // edit modal
-                if($('.select-role-edit').length > 0) {
-                    $('.select-role-edit').select2({
-                        width: '100%',
-                        tags: true,
-                        dropdownParent: $('#edit_user')
-                    });
-                }
-
-                if($('.select-branch-edit').length > 0) {
-                    $('.select-branch-edit').select2({
-                        width: '100%',
-                        tags: true,
-                        dropdownParent: $('#edit_user')
-                    });
-                }
-                if($('.select-employee-type').length > 0) {
-                    $('.select-employee-type').select2({
-                        width: '100%',
-                        tags: true,
-                        dropdownParent: $('#add_user')
-                    });
-                }
-
-                $('body').on('click', '#edit-user', function () {
-                    const userURL = $(this).data('url');
-                    // $('#option0').attr('selected','selected');
-                    // $('#option0').trigger('change');
-
-                    $.get(userURL, (data) => {
-                        console.log(data);
-                        const {employee, name, email, id : idUser, branch_id} = data?.user
-                        const {id} = data?.user.roles[0] ?? 0
-
-                        const urlNow = '{{ Request::url() }}'
-                        $('#edit-name').val(name);
-                        $('#doe-edit').val(employee.company_doe);
-                        $('#doj-edit').val(employee.company_doj);
-
-                        $('#edit-email').val(email);
-
-                        $('#edit-role option[value='+ id +']').attr('selected','selected');
-                        $('#edit-role').val(id ? id : 0).trigger('change');
-
-                        $('#branch-id-edit option[value='+ branch_id +']').attr('selected','selected');
-                        $('#branch-id-edit').val(branch_id ? branch_id : 0).trigger('change');
-
-                        $('#edit-form-user').attr('action', urlNow + '/' + idUser);
-                    })
-                });
-
-                // const employeeType = $('#employee_type').val();
-                // if (employeeType != 'jobholder' && employeeType != 0) {
-                //         $('#section-doj').css('display', 'block');
-
-                //         $('#section-doe').css('display', 'block');
-
-
-                //     }else{
-                //         $('#section-doj').css('display', 'none');
-
-                //         $('#section-doe').css('display', 'none');
-                //     }
-
-                // $('body').on('change', '#employee_type', function () {
-                //     const val = $(this).val();
-
-                //     if (val != 'jobholder' && val != 0) {
-                //         $('#section-doj').css('display', 'block');
-                //         $('#section-doe').css('display', 'block');
-                //     }else{
-                //         $('#section-doj').css('display', 'none');
-                //         $('#section-doe').css('display', 'none');
-                //     }
-                // });
-
-                $('body').on('click', '#delete-user', function(){
-                    const deleteURL = $(this).data('url');
-                    $('#user-delete-form').attr('action', deleteURL);
+                    },
+                    success : function(respon){
+                        if (respon.status == "success"){
+                            $('#formAddUser')[0].reset();
+                            $('#add_user').modal('hide')
+                        }
+                        swal.fire({
+                            icon : respon.status,
+                            text : respon.msg
+                        })
+                        LoadData(branchId)
+                    },
+                    error :function(){
+                        alert('Someting went Wrong !')
+                    }
                 })
-            });
+            })
+            $(document).on('click','.edit-user',function(e){
+                var id = $(this).attr('data-id')
+                $.ajax({
+                    url : 'edit-user',
+                    type : 'post',
+                    data : {id :id },
+                    dataType : 'json',
+                    beforeSend : function(){
+
+                    },
+                    success : function(respon){
+                        var branch ='';
+                        $.each(respon.branches,function(key,val){
+                            if (respon.user.branch_id == val.id){
+                                 branch +=`<option value="`+val.id+`" selected>`+val.name+`</option>`;
+                            }
+                            else{
+                                branch +=`<option value="`+val.id+`">`+val.name+`</option>`; 
+                            }
+                        }) 
+
+                        $('#branch-id-edit').html(branch)
+                        var role ='<option value="" selected disabled>Select Role</option>';
+                        $.each(respon.role,function(key,val){
+                            
+                             if (respon.user.type == val.name){
+                                role +=`<option value="`+val.id+`" selected>`+val.name+`</option>`;
+                            }else{
+                                 role +=`<option value="`+val.id+`">`+val.name+`</option>`;
+                            }
+                        })
+                        $('#id').val(respon.user.id);
+                        $('#editrole').html(role);
+                        $('#editname').val(respon.user.name);
+                        $('#edit-email').val(respon.user.email);
+                        $('#edit_usermodal').modal('show');
+                    },
+                    error : function(){
+                        Alert('Someting went wrong!')
+                    }
+                })
+            })
+            $('#editFormUser').on('submit',function(e){
+                e.preventDefault()
+                var data = $('#editFormUser').serialize();
+                $.ajax({
+                    url : 'update-user',
+                    type :'post',
+                    data : data,
+                    dataType : 'json',
+                    beforeSend : function(){
+
+                    },
+                    success : function(respon){
+                        if (respon.status == "success"){
+                            $('#editFormUser')[0].reset();
+                            $('#edit_usermodal').modal('hide')
+                        }
+                        swal.fire({
+                            icon : respon.status,
+                            text : respon.msg
+                        })
+                        LoadData(branchId)
+                    },
+                    error :function(){
+                        alert('Someting went Wrong !')
+                    }
+                })
+            })
+            $('#search').on('click', function(e){
+                e.preventDefault();
+                var branchId = $('#branchId').val();
+                // var compny = $('#company').val();
+                LoadData(branchId)
+            })
+            $(document).on('click','.delete-user',function(e){
+                e.preventDefault()
+                var id = $(this).attr('data-id')
+                 var branchId = $('#branchId').val();
+                Swal.fire({
+                            title: 'Are you sure?',
+                            text: "You won't be able to revert this!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, delete it!'
+                        }).then(function(confirm){
+                        if (confirm.value == true){
+                            $.ajax({
+                                url : 'destroy-user',
+                                type :'post',
+                                data : {id : id},
+                                dataType : 'json',
+                                beforeSend : function (){
+
+                                },
+                                success : function(respon){
+                                    swal.fire({
+                                        icon : respon.status,
+                                        text : respon.msg
+                                    })
+                                     LoadData(branchId)
+                                },
+                                error : function(){
+                                    alert('Someting went wrong !');
+                                }
+                            })
+                        }
+                    })
+            })
+        });
     </script>
 @endpush

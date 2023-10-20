@@ -94,11 +94,18 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/chart/filter-employee-resume', [DashboardController::class, 'employeeResumeFilterByBranch'])
                 ->name('dashboard.filter-employee-resume');
 
-
+        // user
         Route::resource('users', UsersController::class);
         Route::resource('roles', RolesController::class);
+        Route::post('get-data-user', [UsersController::class,'get_data'])->name('get-data-user');
+        Route::post('add-user-data', [UsersController::class,'add_user_data'])->name('add-user-data');
+        Route::post('store-user', [UsersController::class,'store'])->name('store-user');
+        Route::post('edit-user', [UsersController::class,'edit'])->name('edit-user');
+        Route::post('update-user', [UsersController::class,'update'])->name('update-user');
+        Route::post('destroy-user', [UsersController::class,'destroy'])->name('update-user');
         Route::get('change_password',[UsersController::class,'change_pass'])->name('change_password');
         Route::post('change_store',[UsersController::class,'change_store'])->name('change_store');
+        // role
         Route::get('setup-aplication',[RolesController::class,'setup_app'])->name('setup-app');
         Route::post('create-permission',[RolesController::class,'add_permission'])->name('create-permission');
         Route::post('open-permission',[RolesController::class,'open_permission'])->name('open-permission');

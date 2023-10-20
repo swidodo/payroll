@@ -9,13 +9,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{route('users.store')}}" method="POST">
-                        @csrf
+                    <form  id="formAddUser">
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Name <span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text" name="name" placeholder="Enter Username">
+                                    <input class="form-control" type="text" name="name" placeholder="Enter Name" required>
 
                                     @if ($errors->has('name'))
                                     <div class="text-danger" role="alert">
@@ -27,7 +26,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Email <span class="text-danger">*</span></label>
-                                    <input class="form-control" type="email" name="email" placeholder="Enter User Email">
+                                    <input class="form-control" type="email" name="email" placeholder="Enter User Email" required>
 
                                     @if ($errors->has('email'))
                                     <div class="text-danger" role="alert">
@@ -39,11 +38,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>User Role</label>
-                                    <select class="select-role" name="role">
-                                        <option value="0" selected>Select Role</option>
-                                        @foreach ($roles as $role)
-                                            <option value="{{$role->id}}">{{$role->name}}</option>
-                                        @endforeach
+                                    <select class="select-role form-select form-control" name="role" id="role" required>
                                     </select>
 
                                     @if ($errors->has('role'))
@@ -56,11 +51,8 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Branch</label>
-                                    <select class="select-branch"  name="branch_id">
+                                    <select class="form-select form-control" name="branch_id" id="addbranch_id" required>
                                         <option value="0" selected>Select Branch</option>
-                                        @foreach ($branches as $branch)
-                                            <option value="{{$branch->id}}">{{$branch->name}}</option>
-                                        @endforeach
                                     </select>
 
                                     @if ($errors->has('branch_id'))
@@ -73,7 +65,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Employee Type</label>
-                                    <select class="select-employee-type"  name="employee_type" id="employee_type" required>
+                                    <select class="form-select form-control"  name="employee_type" id="employee_type" required>
                                         <option value="" selected disabled>Select Type</option>
                                         <option value="permanent" >Permanent</option>
                                         <option value="probation" >Probation</option>
@@ -94,10 +86,12 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Placement</label>
-                                    <select class="form-control select"  name="initial" required>
+                                    <select class="form-control form-select"  name="initial" required>
                                         <option value="" selected disabled>Select Type</option>
-                                        <option value="HO" >HO</option>
-                                        <option value="Null">No HO</option>
+                                        @if(Auth::user()->initial =="HO")
+                                            <option value="HO" >Head Office</option>
+                                        @endif
+                                        <option value="Null">Non Head Office</option>
                                     </select>
 
                                     @if ($errors->has('Placement'))
@@ -133,13 +127,8 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Password <span class="text-danger">*</span></label>
-                                    <input class="form-control" type="password" name="password" placeholder="Enter User Password">
-
-                                    @if ($errors->has('password'))
-                                    <div class="text-danger" role="alert">
-                                        <small><strong>{{ $errors->get('password')[0] }}</strong></small>
-                                    </div>
-                                    @endif
+                                    <input class="form-control" type="password" name="password" placeholder="Enter User Password" required>
+                                    <div class="text-small" id="errpass"></div>
                                 </div>
                             </div>
                         </div>
@@ -154,7 +143,7 @@
     <!-- /Add User Modal -->
 
     <!-- Edit User Modal -->
-    <div id="edit_user" class="modal custom-modal fade" role="dialog">
+    <div id="edit_usermodal" class="modal custom-modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -164,42 +153,26 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="" id="edit-form-user" method="POST">
-                        @csrf
-                        @method('PUT')
+                    <form id="editFormUser">
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Name <span class="text-danger">*</span></label>
-                                    <input class="form-control" id="edit-name" type="text" name="name" placeholder="Enter Username">
-
-                                    @if ($errors->has('name'))
-                                    <div class="text-danger" role="alert">
-                                        <small><strong>{{ $errors->get('name')[0] }}</strong></small>
-                                    </div>
-                                    @endif
+                                    <input class="form-control" id="editname" type="text" name="name" placeholder="Enter Username" required>
+                                    <input id="id" name="id" type="hidden">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Email <span class="text-danger">*</span></label>
-                                    <input class="form-control" id="edit-email" type="email" name="email" placeholder="Enter User Email">
-
-                                    @if ($errors->has('email'))
-                                    <div class="text-danger" role="alert">
-                                        <small><strong>{{ $errors->get('email')[0] }}</strong></small>
-                                    </div>
-                                    @endif
+                                    <input class="form-control" id="edit-email" type="email" name="email" placeholder="Enter User Email" required>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>User Role</label>
-                                    <select class="select-role-edit" id="edit-role" name="role">
+                                    <select class="form-control form-select" id="editrole" name="role" required>
                                         <option value="0">Select Role</option>
-                                        @foreach ($roles as $role)
-                                            <option value="{{$role->id}}">{{$role->name}}</option>
-                                        @endforeach
                                     </select>
 
                                     @if ($errors->has('role'))
@@ -212,11 +185,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Branch</label>
-                                    <select class="select-branch-edit" id="branch-id-edit"   name="branch_id">
-                                        <option value="0"  selected>Select Branch</option>
-                                        @foreach ($branches as $branch)
-                                            <option value="{{$branch->id}}">{{$branch->name}}</option>
-                                        @endforeach
+                                    <select class="form-select form-control" id="branch-id-edit" name="branch_id" required>
                                     </select>
 
                                     @if ($errors->has('branch_id'))
@@ -251,7 +220,7 @@
                             </div> -->
                         </div>
                         <div class="submit-section">
-                            <button type="submit" class="btn btn-primary submit-btn">Submit</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -259,37 +228,5 @@
         </div>
     </div>
     <!-- /Edit User Modal -->
-
-    <!-- Delete User Modal -->
-    <div class="modal custom-modal fade" id="delete_user" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="form-header">
-                        <h3>Delete User</h3>
-                        <p>Are you sure want to delete?</p>
-                    </div>
-                    <div class="modal-btn delete-action">
-                        <div class="row">
-                            <div class="col-6">
-                                <form action="" id="user-delete-form" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <div class="d-grid gap-2">
-                                        <button type="submit" class="btn btn-primary continue-btn">Delete</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="col-6">
-                                <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Delete User Modal -->
-
 
 

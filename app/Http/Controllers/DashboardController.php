@@ -20,8 +20,9 @@ class DashboardController extends Controller
 {
     public  function index()
     {
-        if (Auth::user()->type == 'company') {
-            $data['branches'] = Branch::where('created_by', '=', Auth::user()->creatorId())
+        if (Auth::user()->initial == 'HO') {
+            $branch = Branch::find(Auth::user()->branch_id);
+            $data['branches'] = Branch::where('company_id', '=', $branch->company_id)
                 ->get();
 
             //Info Ulang Tahun

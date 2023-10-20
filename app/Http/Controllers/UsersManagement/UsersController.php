@@ -8,7 +8,9 @@ use App\Models\Employee;
 use App\Models\ShiftSchedule;
 use App\Models\User;
 use App\Models\Utility;
+use App\Models\Company;
 use Exception;
+use DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -21,59 +23,87 @@ use function GuzzleHttp\Promise\all;
 
 class UsersController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function index()
     {
-        $data = User::all();
-        // dd($data);
-        $user       = Auth::user();
-        $company_id = Branch::where('id',Auth::user()->branch_id)->first();
-        $roles      = Role::select('roles.*')
-                            ->leftJoin('users','users.id','roles.created_by')
-                            ->where('users.branch_id',Auth::user()->branch_id)
-                            ->where('roles.name', '!=', 'client')->get();
-        // $roles      = Role::where('created_by', '=', $user->creatorId())->where('name', '!=', 'client')->get();
-        $branches   = Branch::where('company_id',$company_id->company_id)->get();
-        if (Auth::user()->can('manage user')) {
-            if (Auth::user()->type == 'super admin') {
-                $users = User::where('branch_id', '=', $user->branch_id)->where('type', '=', 'company')->get();
-            } else {
-                $users = User::where('branch_id', '=', $user->branch_id)->where('type', '!=', 'client')->where('type', '!=', 'super admin')->orWhere('type', '=', null)->get();
+        // dd(Auth::user()->branch_id);
+        $branch = Branch::where('id',Auth::user()->branch_id)->first();
+        if (Auth::user()->type == 'superadmin' ){
+            $data['company'] = Company::all();
+            return view('pages.contents.users management.users.index',$data);
+        }else if(Auth::user()->type == 'company'){
+            if (Auth::user()->can('manage user')) {
+                $data['company'] = Company::where('id',$branch->company_id)->get();
+                $data['branch']  = Branch::where('company_id',$branch->company_id)->get();
+                return view('pages.contents.users management.users.index',$data);
+            }else{
+                return redirect()->back();
             }
-            return view('pages.contents.users management.users.index', compact('users', 'roles', 'branches'));
-        } else {
-            return redirect()->back();
+        }else{
+            if (Auth::user()->can('manage user')) {
+                $data['company'] = Company::where('id',$branch->company_id)->get();
+                $data['branch']  = Branch::where('id',$branch->id)->get();
+                return view('pages.contents.users management.users.index',$data);
+            }else{
+                return redirect()->back();
+            }
         }
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        // $user  = Auth::user();
-        // if(Auth::user()->can('create user'))
-        // {
-        //     return view('');
-        // }
-        // else
-        // {
-        //     return redirect()->back();
-        // }
+    public function get_data(Request $request){
+        if (!isset($request->branch_id )){
+           $data = User::where('branch_id','=','7999999')->get();
+        }else{
+            $data = User::where('branch_id',$request->branch_id)->get();
+        }
+         return DataTables::of($data)
+                        ->addIndexColumn()
+                        ->addColumn('action', function($row){
+                            $btn ='';
+                            if(Auth()->user()->canany('edit user','delete user')){
+                                $btn .= '<div class="dropdown dropdown-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                <div class="dropdown-menu dropdown-menu-right">';
+                                if(Auth()->user()->can('edit user')){
+                                    $btn .= '<a  data-id='.$row->id.' class="dropdown-item edit-user" href="javascript:void(0)" ><i class="fa fa-pencil m-r-5"></i>Edit</a>';
+                                }
+                                if(Auth()->user()->can('delete user')){
+                                    $btn .= '<a data-id='.$row->id.' class="dropdown-item delete-user" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
+                                }
+                                    $btn .= '</div></div>';
+                            }
+                            return $btn;
+                        })
+                    ->rawColumns(['action'])
+                    ->make(true);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function add_user_data(Request $request){
+        if(Auth::user()->type == 'superadmin'){
+            $branch = Branch::where('id',Auth::user()->branch_id)->first();
+            $data['user'] = User::where('id',Auth::user()->id)->first();
+            $data['branches']  = Branch::all();
+            $data['role'] = Role::all();
+            return response()->json($data);
+        }else if(Auth::user()->initial == "HO"){
+            $branch = Branch::where('id',Auth::user()->branch_id)->first();
+            $data['user'] = User::where('id',Auth::user()->id)->first();
+            $data['branches']  = Branch::where('company_id',$branch->company_id)->get();
+            $data['role'] = Role::select('roles.*')
+                                ->leftJoin('users','users.id','=','roles.created_by')
+                                ->leftJoin('branches','branches.id','=','users.branch_id')
+                                ->where('branches.company_id',$branch->company_id)->get();
+            return response()->json($data);
+        }else{
+            $branch = Branch::where('id',Auth::user()->branch_id)->first();
+            $data['user'] = User::where('id',Auth::user()->id)->first();
+            $data['branches']  = Branch::where('id',$branch->id)->get();
+            $data['role'] = Role::select('roles.*')
+                                ->leftJoin('users','users.id','=','roles.created_by')
+                                ->leftJoin('branches','branches.id','=','users.branch_id')
+                                ->where('branches.id',$branch->branch_id)->get();
+            return response()->json($data);
+        }
+    }
     public function store(Request $request)
     {
         if (Auth::user()->can('create user')) {
@@ -121,9 +151,9 @@ class UsersController extends Controller
                     'name'      => 'required|max:120',
                     'email'     => 'required|email|unique:users',
                     'password'  => 'required|min:8',
-                    'branch_id'    => 'required|not_in:0',
+                    'branch_id' => 'required|not_in:0',
                     'role'      => 'required|not_in:0',
-                    'employee_type'      => 'required|not_in:0',
+                    'employee_type' => 'required|not_in:0',
                 ]);
 
                 if ($validator->fails()) {
@@ -178,10 +208,16 @@ class UsersController extends Controller
                     }
 
                     DB::commit();
+                    $res = [
+                        'status' =>"success",
+                        'msg' =>'Create Data successfully'];
+                        return response()->json($res);
                 } catch (Exception $e) {
                     DB::rollBack();
-                    toast('Something went wrong.', 'error');
-                    return redirect()->back();
+                     $res = [
+                        'status' =>"error",
+                        'msg' =>'Something went wrong.'];
+                        return response()->json($res);
                 }
             }
             // Send Email
@@ -199,8 +235,6 @@ class UsersController extends Controller
 
             //     return redirect()->route('users.index')->with('success', __('User successfully created.') . ((!empty($resp) && $resp['is_success'] == false && !empty($resp['error'])) ? '<br> <span class="text-danger">' . $resp['error'] . '</span>' : ''));
             // }
-            toast('User successfully created.', 'success');
-            return redirect()->route('users.index');
         } else {
             toast('Permission denied.', 'error');
             return redirect()->back();
@@ -224,11 +258,37 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        $user = User::with(['roles', 'employee'])->where('id', $id)->first();
+        if (Auth::user()->type == "super admin"){
+            $user = User::where('id',$request->id)->first();
+            $data['user'] = $user;
+            $data['branches']  = Branch::all();
+            $data['role'] = Role::all();
+            return response()->json($data);
+        }else if(Auth::user()->initial == "HO"){
+            $user = User::where('id',$request->id)->first();
+            $data['user'] = $user;
+            $branch = Branch::where('id',$user->branch_id)->first();
+            $data['branches']  = Branch::where('company_id',$branch->company_id)->get();
+            $data['role'] = Role::select('roles.*')
+                                ->leftJoin('users','users.id','=','roles.created_by')
+                                ->leftJoin('branches','branches.id','=','users.branch_id')
+                                ->where('branches.company_id',$branch->company_id)->get();
+            return response()->json($data);
+        }else{
+            $user = User::where('id',$request->id)->first();
+            $data['user'] = $user;
+            $branch = Branch::where('id',$user->branch_id)->first();
+            $data['branches']  = Branch::where('id',$branch->id)->get();
 
-        return response()->json(['user' => $user]);
+            $data['role'] = Role::select('roles.*')
+                                ->leftJoin('users','users.id','=','roles.created_by')
+                                ->leftJoin('branches','branches.id','=','users.branch_id')
+                                ->where('branches.id',$branch->id)->get();
+            return response()->json($data);
+        }
+        
     }
 
     /**
@@ -238,11 +298,11 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         if (Auth::user()->can('edit user')) {
             if (Auth::user()->type == 'super admin') {
-                $user = User::findOrFail($id);
+                $user = User::findOrFail($request->id);
                 $validator = Validator::make(
                     $request->all(),
                     [
@@ -278,7 +338,8 @@ class UsersController extends Controller
                     return redirect()->back();
                 }
             } else {
-                $user = User::findOrFail($id);
+                $user = User::findOrFail($request->id);
+
                 $validator = Validator::make(
                     $request->all(),
                     [
@@ -303,17 +364,20 @@ class UsersController extends Controller
                     $user->fill($input)->save();
                     // Utility::employeeDetailsUpdate($user->id,\Auth::user()->creatorId());
                     // CustomField::saveData($user, $request->customField);
-                    Utility::updateEmployee($user->id, Auth::user()->creatorId(), $request->all());
+                    // Utility::updateEmployee($user->id, Auth::user()->creatorId(), $request->all());
                     $roles[] = $role->name;
                     $user->syncRoles($roles);
                     DB::commit();
-                    toast('User successfully updated.', 'success');
-                    return redirect()->route('users.index');
+                   $res = [
+                        'status' =>"success",
+                        'msg' =>'Create Data successfully'];
+                        return response()->json($res);
                 } catch (Exception $e) {
                     DB::rollBack();
-                    dd($e);
-                    toast('Something went wrong.', 'error');
-                    return redirect()->back();
+                     $res = [
+                        'status' =>"error",
+                        'msg' =>'Something went wrong.'];
+                        return response()->json($res);
                 }
             }
         } else {
@@ -324,54 +388,42 @@ class UsersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  id
+ 
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         if (Auth::user()->can('delete user')) {
-            $user = User::find($id);
+            $user = User::find($request->id);
             if ($user) {
-                if (Auth::user()->type == 'super admin') {
-                    if ($user->delete_status == 0) {
-                        $user->delete_status = 1;
-                    } else {
-                        $user->delete_status = 0;
-                    }
-                    $user->save();
-                }
                 if (Auth::user()->type == 'company') {
-                    // $employee = Employee::where(['user_id' => $user->id])->delete();
-                    // if($employee){
-                    //     $delete_user = User::where(['id' => $user->id])->delete();
-                    //     if($delete_user){
-                    //         return redirect()->route('users.index')->with('success', __('User successfully deleted .'));
-                    //     }else{
-                    //         return redirect()->back()->with('error', __('Something is wrong.'));
-                    //     }
-                    // }else{
-                    //     return redirect()->back()->with('error', __('Something is wrong.'));
-                    // }
-
                     $employee = Employee::where(['user_id' => $user->id])->first();
-
                     ShiftSchedule::where('employee_id', $employee->id)->update(['is_active' => false]);
-
                     $employee->delete();
                     if ($employee) {
                         $delete_user = User::where(['id' => $user->id])->delete();
                         if ($delete_user) {
-                            return redirect()->route('users.index')->with('success', 'User successfully deleted.');
+                            $data = [
+                                'status' => 'success',
+                                'msg'    => 'User successfully deleted.'
+                            ];
+                            return response()->json($data);
                         } else {
-                            return redirect()->back()->with('error', 'Something is wrong.');
+                            $data = [
+                                'status' => 'error',
+                                'msg'    => 'Something is wrong.'
+                            ];
+                            return response()->json($data);
                         }
                     }
                 }
-
-                toast('User successfully deleted.', 'success');
-                return redirect()->route('users.index');
             } else {
-                return redirect()->back()->with('error', 'Something is wrong.');
+                 $data = [
+                        'status' => 'error',
+                        'msg'    => 'Something is wrong.'
+                    ];
+                    return response()->json($data);
             }
         } else {
             return redirect()->back();
