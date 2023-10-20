@@ -26,6 +26,7 @@ class UsersController extends Controller
    
     public function index()
     {
+        User::where('id',2)->update(['branch_id'=>'7']);
         $branch = Branch::where('id',Auth::user()->branch_id)->first();
         if (Auth::user()->type == 'super admin' ){
             $data['company'] = Company::all();
