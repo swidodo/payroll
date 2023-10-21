@@ -16,15 +16,21 @@ class DepartementController extends Controller
 {
     public function index()
     {
-            return view('pages.contents.departement.index');
+        $branch = Branch::where('id',Auth::user()->branch_id)->first();
+        if (Auth::user()->initial == "HO"){
+            $data['branch'] = Branch::where('company_id',$branch->company_id)->get();
+        }else{
+            $data['branch'] = Branch::where('id',$branch->id)->get();
+        }
+        return view('pages.contents.departement.index',$data);
     }
 
     /** ajaxDatatable */
-    public function GetDataDepartements()
+    public function GetDataDepartements(Request $request)
     {
         try {
             /** Departement */
-            $departements   = Departement::query()->where('branch_id', 1)->with('branch');
+            $departements   = Departement::query()->where('branch_id', $request->branch_id)->with('branch');
             $response       = datatables()->eloquent($departements)
                             ->addColumn('action', function ($d) {
                         $view = '';
@@ -67,8 +73,8 @@ class DepartementController extends Controller
     {
         $initial = Auth::user()->initial;
         if ($initial == "HO"){
-            $companiId = Branch::select('company_id')->where('id',Auth::user()->branch_id)->first();
-            $data['branch'] = Branch::where('company_id',$companyId)->get();
+            $companyId = Branch::select('company_id')->where('id',Auth::user()->branch_id)->first();
+            $data['branch'] = Branch::where('company_id',$companyId->company_id)->get();
         }else{
             $data['branch'] = Branch::where('id',Auth::user()->branch_id)->get();
         }
@@ -128,8 +134,8 @@ class DepartementController extends Controller
     {
         $initial = Auth::user()->initial;
         if ($initial == "HO"){
-            $companiId = Branch::select('company_id')->where('id',Auth::user()->branch_id)->first();
-            $data['branch'] = Branch::where('company_id',$companyId)->get();
+            $companyId = Branch::select('company_id')->where('id',Auth::user()->branch_id)->first();
+            $data['branch'] = Branch::where('company_id',$companyId->company_id)->get();
         }else{
             $data['branch'] = Branch::where('id',Auth::user()->branch_id)->get();
         }

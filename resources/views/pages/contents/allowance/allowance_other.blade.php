@@ -33,6 +33,23 @@
         </div>
         <!-- /Page Header -->
         <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-3">
+                            <label>Branch</label>
+                            <select class="form-select form-control" id="branch_id">
+                                @foreach($branch as $br)
+                                <option value="{{ $br->id }} ">{{ $br->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-center mt-4"> 
+                            <button type="button" class="btn btn-primary" id="searchBranch">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-12">
                 <div class="table-responsive">
                     <table class="table table-striped custom-table" id="tblAllowanceother">
@@ -95,49 +112,52 @@
         $.ajaxSetup({
             headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
         });
-        var branchId ='';
         var employeeId ='';
-        var table = $('#tblAllowanceother').DataTable({
-            processing: true,
-            serverSide: true,
-            destroy: true,
-            ajax : {
-                    "url" : 'get-allowance-other',
-                    "type" : 'POST',
-                    "data" : {branch_id : branchId,employee_id :employeeId},
-                },
-            columns: [
-                { data: 'no', name:'id', render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                }},
-                {
-                    data: 'date',
-                    name: 'date'
-                },
-                {
-                    data: 'no_employee',
-                    name: 'no_employee'
-                },
-                {
-                    data: 'employee_name',
-                    name: 'employee_name'
-                },
-                {
-                    data: 'allowance_name',
-                    name: 'allowance_name'
-                },
-                {
-                    data: 'amount',
-                    render : function(data, type, row){
-                        return data.toLocaleString('en-US');
-                    }
-                },
-                {
-                    data: 'action',
-                    name: 'action'
-                },
-            ],
-        })
+        var branchId = $('#branch_id').val();
+        loadData(branchId ,employeeId="")
+        function loadData(branchId ,employeeId=""){
+            $('#tblAllowanceother').DataTable({
+                processing: true,
+                serverSide: true,
+                destroy: true,
+                ajax : {
+                        "url" : 'get-allowance-other',
+                        "type" : 'POST',
+                        "data" : {branch_id : branchId,employee_id :employeeId},
+                    },
+                columns: [
+                    { data: 'no', name:'id', render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }},
+                    {
+                        data: 'date',
+                        name: 'date'
+                    },
+                    {
+                        data: 'no_employee',
+                        name: 'no_employee'
+                    },
+                    {
+                        data: 'employee_name',
+                        name: 'employee_name'
+                    },
+                    {
+                        data: 'allowance_name',
+                        name: 'allowance_name'
+                    },
+                    {
+                        data: 'amount',
+                        render : function(data, type, row){
+                            return data.toLocaleString('en-US');
+                        }
+                    },
+                    {
+                        data: 'action',
+                        name: 'action'
+                    },
+                ],
+            })
+        }
         $('#add-AllowanceOther').click(function(e){
             e.preventDefault();
             $('#add_modal_allowance_other').modal('show')
@@ -256,9 +276,13 @@
                     }
                 })
             }
-    })
+        })
             
         })
+        $('#searchBranch').on('click',function(e){
+                var branchId = $('#branch_id').val();
+                loadData(branchId ,employeeId="");
+            })
 
     </script>
 @endpush

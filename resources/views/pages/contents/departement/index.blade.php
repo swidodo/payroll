@@ -35,6 +35,23 @@
         @endif
 
         <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-3">
+                            <label>Branch</label>
+                            <select class="form-select form-control" id="branch_id">
+                                @foreach($branch as $br)
+                                <option value="{{ $br->id }} ">{{ $br->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-center mt-4"> 
+                            <button type="button" class="btn btn-primary" id="searchBranch">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-12">
                 <div class="table-responsive">
                     <table class="table table-striped custom-table" id="table-departements">
@@ -118,12 +135,17 @@
             $.ajaxSetup({
             headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
         });
-            var table = $('#table-departements').DataTable({
+        var branchId = $('#branch_id').val();
+        loadData(branchId)
+        function loadData(branchId){
+            $('#table-departements').DataTable({
                 processing: true,
                 serverSide: true,
                 destroy: true,
                 ajax : {
                     url : "{{route('departement.get-data-departements')}}",
+                    type :'post',
+                    data : {branch_id : branchId },
                 },
                 columns: [
                     {
@@ -159,8 +181,8 @@
                         name : 'action'
                     },
                 ],
-
             });
+        }
             $('body').on('click', '#delete-departement', function(){
                 const deleteURL = $(this).data('url');
                 $('#form-delete-departement').attr('action', deleteURL);
@@ -186,6 +208,7 @@
             })
             $('#addFormDepartement').on('submit', function(e){
                 e.preventDefault()
+                var branchId = $('#branch_id').val();
                 var data = $('#addFormDepartement').serialize();
 
                 $.ajax({
@@ -200,7 +223,7 @@
                         if (respon.status == "success"){
                             $('#add_department').modal('hide');
                             $('#addFormDepartement')[0].reset()
-                            table.ajax.reload();
+                            loadData(branchId)
                         }
                         swal.fire({
                             icon : respon.status,
@@ -251,6 +274,7 @@
             })
             $('#updateFormDepartement').on('submit', function(e){
                 e.preventDefault()
+                var branchId = $('#branch_id').val();
                 var data = $('#updateFormDepartement').serialize();
 
                 $.ajax({
@@ -264,7 +288,7 @@
                     success : function(respon){
                         if (respon.status == "success"){
                             $('#edit_departement').modal('hide');
-                            table.ajax.reload();
+                            loadData(branchId)
                         }
                         swal.fire({
                             icon : respon.status,
@@ -279,6 +303,7 @@
             $(document).on('click','.delete-departement',function(e){
                 e.preventDefault()
                 var id = $(this).attr('data-id')
+                var branchId = $('#branch_id').val();
                 Swal.fire({
                             title: 'Are you sure?',
                             text: "You won't be able to revert this!",
@@ -302,7 +327,7 @@
                                         icon : respon.status,
                                         text : respon.msg
                                     })
-                                    table.ajax.reload();
+                                    loadData(branchId)
                                 },
                                 error : function(){
                                     alert('Someting went wrong !');
@@ -310,6 +335,10 @@
                             })
                         }
                     })
+            })
+            $('#searchBranch').on('click',function(e){
+                var branchId = $('#branch_id').val();
+                loadData(branchId);
             })
         });
     </script>

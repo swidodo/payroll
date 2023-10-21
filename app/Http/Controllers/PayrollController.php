@@ -31,33 +31,25 @@ class PayrollController extends Controller
     {
         
         if (Auth::user()->can('manage payroll')) {
-            // if (Auth::user()->type != 'HO') {
-            //     $user     = Auth::user();
-            //     $employee = Employee::where('user_id', '=', $user->id)->get();
-            //     $payroll  = Payroll::where('employee_id', '=', $user->employee->id)->get();
-            //     $payslipType = PayslipType::where('created_by', '=', Auth::user()->creatorId())->get();
-
-            //     // allowance
-            //     $allowance = AllowanceFinance::where('created_by', '=', Auth::user()->creatorId())->get();
-            //     $employee  = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
-            //     $allowanceTypes  = AllowanceOption::where('created_by', '=', Auth::user()->creatorId())->get();
-
-            //     return view('pages.contents.payroll.index', compact('payroll', 'employee', 'payslipType','allowance','allowanceTypes'));
-            // } else {
-                $payroll = Payroll::where('branch_id', '=', Auth::user()->branch_id)->get();
-                $employee  = Employee::where('branch_id', '=', Auth::user()->branch_id)->get();
-                $payslipType = PayslipType::all();
-                $allowanceTypes  = AllowanceOption::where('branch_id', '=', Auth::user()->branch_id)->get();
-                $data_bpjs = Master_bpjs::where('branch_id','=',Auth::user()->branch_id)->get();
-                return view('pages.contents.payroll.index', compact('payroll', 'employee', 'payslipType','allowanceTypes','data_bpjs'));
-            // }
+            $branch = Branch::where('id',Auth::user()->branch_id)->first();
+            if (Auth::user()->initial == "HO"){
+                $branches = Branch::where('company_id',$branch->company_id)->get();
+            }else{
+                $branches = Branch::where('id',$branch->id)->get();
+            }
+            $payroll = Payroll::where('branch_id', '=', Auth::user()->branch_id)->get();
+            $employee  = Employee::where('branch_id', '=', Auth::user()->branch_id)->get();
+            $payslipType = PayslipType::all();
+            $allowanceTypes  = AllowanceOption::where('branch_id', '=', Auth::user()->branch_id)->get();
+            $data_bpjs = Master_bpjs::where('branch_id','=',Auth::user()->branch_id)->get();
+            return view('pages.contents.payroll.index', compact('payroll', 'employee', 'payslipType','allowanceTypes','data_bpjs','branches'));
         } else {
             toast('Permission denied.', 'error');
             return redirect()->back();
         }
     }
     public function get_data(Request $request){
-        $data = DB::table('v_payrolls')->select('*')->where('branch_id',Auth::user()->branch_id)->get();
+        $data = DB::table('v_payrolls')->select('*')->where('branch_id',$request->branch_id)->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action',function($row){

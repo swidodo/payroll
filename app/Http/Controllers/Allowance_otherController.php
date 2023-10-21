@@ -15,15 +15,19 @@ class Allowance_otherController extends Controller
 {
      public function index(){
         $user = Auth::user();
-        $branch['branch'] = Branch::where('id',$user->branch_id)->get();
+         $branch = Branch::where('id',Auth::user()->branch_id)->first();
+            if (Auth::user()->initial == "HO"){
+                $branch['branch'] = Branch::where('company_id',$branch->company_id)->get();
+            }else{
+                $branch['branch'] = Branch::where('id',$branch->id)->get();
+            }
         $branch['employee'] = Employee::where('branch_id','=',$user->branch_id)->get();
         $branch['allowanceTypes'] = AllowanceOption::where('branch_id','=',$user->branch_id)->get();
         return view('pages.contents.allowance.allowance_other', $branch);
      }
-     public function get_data(){
-        $branch  = Auth::user()->branch_id;
-        $branchs = Branch::where('id',$branch)->first();
-        $data   = Allowance_other::select('allowances.*','employees.name as employee_name','employees.no_employee','allowance_options.name as allowance_name')->where('allowances.branch_id','=',$branchs->id)
+     public function get_data(Request $request){
+        // $branchs = Branch::where('id',$branch)->first();
+        $data   = Allowance_other::select('allowances.*','employees.name as employee_name','employees.no_employee','allowance_options.name as allowance_name')->where('allowances.branch_id','=',$request->branch_id)
                                 ->leftJoin('employees','employees.id','=','allowances.employee_id')
                                 ->leftJoin('allowance_options','allowance_options.id','=','allowances.allowance_option_id')->get();
         return DataTables::of($data)

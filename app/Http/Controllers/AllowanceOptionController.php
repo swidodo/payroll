@@ -3,20 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\AllowanceOption;
+use App\Models\Branch;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
+
 class AllowanceOptionController extends Controller
 {
     public function index()
     {
         if (Auth::user()->can('manage allowance option')) {
-            $allowanceOptions = AllowanceOption::where('created_by', '=', Auth::user()->creatorId())->get();
+            $branch = Branch::where('id',Auth::user()->branch_id)->first();
+            if (Auth::user()->initial == "HO"){
+                $branches = Branch::where('company_id',$branch->company_id)->get();
+            }else{
+                $branches = Branch::where('id',$branch->id)->get();
+            }
+            $allowanceOptions = AllowanceOption::where('branch_id', '=', Auth::user()->branch_id)->get();
 
-            return view('pages.contents.allowance-option.index', compact('allowanceOptions'));
+            return view('pages.contents.allowance-option.index', compact('allowanceOptions','branches'));
         } else {
             toast('Permission denied.', 'error');
             return redirect()->back();

@@ -349,7 +349,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         /** departement */
         Route::resource('departement', DepartementController::class);
-        Route::get('get-data-departements',[DepartementController::class,'GetDataDepartements'])->name('departement.get-data-departements');
+        Route::post('get-data-departements',[DepartementController::class,'GetDataDepartements'])->name('departement.get-data-departements');
         Route::get('add-departement',[DepartementController::class,'create'])->name('add-departement');
         Route::post('store-departement',[DepartementController::class,'store'])->name('store-departement');
         Route::post('edit-departement',[DepartementController::class,'edit'])->name('edit-departement');

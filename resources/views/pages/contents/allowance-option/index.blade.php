@@ -37,8 +37,25 @@
         @endif
 
         <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-3">
+                            <label>Branch</label>
+                            <select class="form-select form-control" id="branch_id">
+                                @foreach($branches as $br)
+                                <option value="{{ $br->id }} ">{{ $br->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-center mt-4"> 
+                            <button type="button" class="btn btn-primary" id="searchBranch">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-12">
-                <div class="table-responsive" style="overflow-x: visible">
+                <div class="table-responsive">
                     <table class="table table-striped custom-table datatable">
                         <thead>
                             <tr>

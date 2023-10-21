@@ -43,6 +43,23 @@
         @endif
 
         <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-3">
+                            <label>Branch</label>
+                            <select class="form-select form-control" id="branch_id">
+                                @foreach($branches as $br)
+                                <option value="{{ $br->id }} ">{{ $br->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-center mt-4"> 
+                            <button type="button" class="btn btn-primary" id="searchBranch">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-12">
                 <div class="table-responsive">
                     <table class="table table-striped custom-table" id="payrollData">
@@ -113,7 +130,8 @@
             headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
         });
             $(document).ready(function () {
-                loadData(branchId ="" ,employeeId="")
+                var branchId = $('#branch_id').val();
+                loadData(branchId ,employeeId="")
                 $('.itemAmount').attr('disabled',true)
                 $(document).on('change','.itemCheck', function(){
                     var id = $(this).attr('data-id')
@@ -193,8 +211,8 @@
                 })
 
             });
-            function loadData(branchId ="" ,employeeId=""){
 
+            function loadData(branchId ,employeeId=""){
                 $('#payrollData').DataTable({
                     processing: true,
                     serverSide: true,
@@ -233,8 +251,13 @@
                     ],
                 })
             }
+             $('#searchBranch').on('click',function(e){
+                var branchId = $('#branch_id').val();
+                loadData(branchId ,employeeId="");
+            })
             $('#payroll_submit').on('submit',function(e){
                 e.preventDefault();
+                var branchId = $('#branch_id').val();
                 var data = $('#payroll_submit').serialize();
                 $.ajax({
                     url : 'payroll-addNew',
@@ -250,7 +273,7 @@
                             text : respon.msg
                         })
                         $('#add_payroll').modal('hide')
-                        loadData(branchId ="" ,employeeId="");
+                        loadData(branchId,employeeId="");
                         $('#payroll_submit')[0].reset();
 
                     },
@@ -385,31 +408,32 @@
                     }
                 })
             })
-$(document).on('change','.editItemBpjs',function(){
-    var id = $(this).attr('data-code');
-    var empId = $(this).attr('data-empId');
-    var data = { 
-        'id': id,
-        'employee_id': empId
-    }
-    var bpjs =[];
-    if(($(this).prop("checked"))) {
+            $(document).on('change','.editItemBpjs',function(){
+                var id = $(this).attr('data-code');
+                var empId = $(this).attr('data-empId');
+                var data = { 
+                    'id': id,
+                    'employee_id': empId
+                }
+                var bpjs =[];
+                if(($(this).prop("checked"))) {
 
-        if (bpjs.includes(id)){
-            obj = {key : id }
-            delete obj["key"];
-        }
-        if (bpjs.includes(empId)){
+                    if (bpjs.includes(id)){
+                        obj = {key : id }
+                        delete obj["key"];
+                    }
+                    if (bpjs.includes(empId)){
 
-        }
-        
-    }else{
-        bpjs.push(data)
-    }
-    console.log(bpjs);
-})
+                    }
+                    
+                }else{
+                    bpjs.push(data)
+                }
+                console.log(bpjs);
+            })
             $('#update-payroll').on('submit',function(e){
                 e.preventDefault();
+                var branchId = $('#branch_id').val();
                 var data = $('#update-payroll').serialize();
                 $.ajax({
                     url : 'update-data-payroll',
@@ -425,6 +449,7 @@ $(document).on('change','.editItemBpjs',function(){
                             text : respon.msg
                         })
                         $('#edit_payroll').modal('hide')
+                        loadData(branchId,employeeId="");
                     },
                     error: function(){
                         alert('There is an error !, please try again')
@@ -434,6 +459,7 @@ $(document).on('change','.editItemBpjs',function(){
             $(document).on('click','.delete-data-payroll',function(e){
                 e.preventDefault();
                 var id = $(this).attr('data-id');
+                var branchId = $('#branch_id').val();
                 Swal.fire({
                         title: 'Are you sure?',
                         text: "You won't be able to revert this!",
@@ -457,7 +483,7 @@ $(document).on('change','.editItemBpjs',function(){
                                     icon : respon.status,
                                     text : respon.msg
                                 })
-                                loadData(branchId ="" ,employeeId="");
+                                loadData(branchId ,employeeId="");
                             },
                             error:function(){
                                 alert('There is an error !, please try again')

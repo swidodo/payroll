@@ -13,7 +13,7 @@ use App\Models\Branch;
 class PositionController extends Controller
 {
     public function index(){
-         $branch = Branch::where('id',Auth::user()->branch_id)->first();
+        $branch = Branch::where('id',Auth::user()->branch_id)->first();
         if (Auth::user()->initial == "HO"){
             $data['branch'] = Branch::where('company_id',$branch->company_id)->get();
         }else{
@@ -23,8 +23,8 @@ class PositionController extends Controller
     }
      public function get_data(Request $request){
         try {
-            $branch = Auth::user()->branch_id;
-            $group   = Position::select('position.*','branches.name as branch_name')->leftJoin('branches','branches.id','=','position.branch_id')->WHERE('branch_id',$branch)->get();
+            // $branch = Auth::user()->branch_id;
+            $group   = Position::select('position.*','branches.name as branch_name')->leftJoin('branches','branches.id','=','position.branch_id')->WHERE('branch_id',$request->branch_id)->get();
             return DataTables::of($group)
                             ->addColumn('action', function ($d) {
                         $view = '';
