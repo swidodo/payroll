@@ -70,9 +70,7 @@
                                 <th>Employee Name</th>
                                 <th>Type</th>
                                 <th>Amount</th>
-                                @if(Auth::user()->can('edit reimburst') || Auth::user()->can('delete reimburst'))
-                                    <th class="text-end">Action</th>
-                                @endif
+                                <th class="text-end">Action</th>
                             </tr>
                         </thead>
                         <tbody>
