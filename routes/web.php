@@ -145,6 +145,12 @@ Route::group(['middleware' => 'auth'], function () {
 
         //Finance
         Route::resource('reimburst', ReimburstController::class);
+        Route::post('get-data-reimburse', [ReimburstController::class,'get_data'])->name('get-data-reimburse');
+        Route::post('store-reimbursment', [ReimburstController::class,'store'])->name('store-reimbursment');
+        Route::post('add-data-reimburse', [ReimburstController::class,'get_data_employee'])->name('add-data-reimburse');
+        Route::post('edit-data-reimburse', [ReimburstController::class,'edit'])->name('edit-data-reimburse');
+        Route::post('update-reimbursment', [ReimburstController::class,'update'])->name('update-reimbursment');
+        Route::post('destroy-reimburse', [ReimburstController::class,'destroy'])->name('destroy-reimburse');
         Route::resource('cash', CashController::class);
         Route::resource('allowances', AllowanceController::class);
 

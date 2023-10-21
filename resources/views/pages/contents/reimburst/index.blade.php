@@ -26,7 +26,7 @@
                 </div>
                 @can('create reimburst')
                     <div class="col-auto float-end ms-auto">
-                        <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_reimburst"><i class="fa fa-plus"></i> New Reimburst</a>
+                        <a href="#" class="btn add-btn" id="addRreimburst"><i class="fa fa-plus"></i> New Reimburst</a>
                     </div>
                 @endcan
             </div>
@@ -43,11 +43,29 @@
         @endif
 
         <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-3">
+                            <label>Branch</label>
+                            <select class="form-select form-control" id="branch_id">
+                                @foreach($branch as $br)
+                                <option value="{{ $br->id }} ">{{ $br->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-center mt-4"> 
+                            <button type="button" class="btn btn-primary" id="searchBranch">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-12">
-                <div class="table-responsive" style="overflow-x: visible">
-                    <table class="table table-striped custom-table datatable">
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table" id="tblReimburse">
                         <thead>
                             <tr>
+                                <th>No</th>
                                 <th>Employee ID</th>
                                 <th>Employee Name</th>
                                 <th>Type</th>
@@ -58,39 +76,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($reimburst as $reimburstes)
-                                <tr>
-                                    <td>
-                                        {{$reimburstes->employee->no_employee  ?? '-'}}
-                                    </td>
-                                    <td>
-                                        {{$reimburstes->employee->name  ?? '-'}}
-                                    </td>
-                                    <td>
-                                        {{$reimburstes->reimburst_type->name ?? '-'}}
-                                    </td>
-                                    <td>
-                                        {{ number_format($reimburstes->amount)  ?? '-' }}
-                                    </td>
-                                    @canany(['edit reimburst', 'delete reimburst'])
-                                        <td class="text-end">
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    @can('edit reimburst')
-                                                        <a  data-url="{{route('leaves.edit', $reimburstes->id)}}" id="edit-leave" class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_reimburst"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                    @endcan
-                                                    @can('delete reimburst')
-                                                        <a id="delete-leave" data-url="{{route('leaves.destroy', $reimburstes->id)}}" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_reimburst"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                    @endcan
-
-                                                </div>
-                                            </div>
-                                        </td>
-                                    @endcanany
-                                </tr>
-                            @endforeach
+                          
                         </tbody>
                     </table>
                 </div>
@@ -113,6 +99,7 @@
 
     <!-- Datetimepicker CSS -->
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap-datetimepicker.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/plugins/sweetalert2/sweetalert2.min.css')}}">
 @endpush
 
 @push('addon-script')
@@ -129,6 +116,7 @@
     <!-- Datatable JS -->
     <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
 
     @if (Session::has('edit-show'))
     <script>
@@ -139,85 +127,237 @@
     @endif
 
     <script>
-            $(document).ready(function () {
-                /* When click show user */
+         $.ajaxSetup({
+            headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
+        });
+        $(document).ready(function () {
+            /* When click show user */
+             var branchId = $('#branch_id').val();
+             loadData(branchId)
+            $('#searchBranch').on('click',function(e){
+                var branchId = $('#branch_id').val();
+                loadData(branchId)
+            })
+             function loadData(branchId){
+                $('#tblReimburse').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    destroy: true,
+                    ajax : {
+                            url : 'get-data-reimburse',
+                            type : 'post',
+                            data : {branch_id : branchId},
+                        },
+                    columns: [
+                        { data: 'no', name:'id', render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }},
+                        {
+                            data: 'no_employee',
+                            name: 'no_employee'
+                        },
+                        {
+                            data: 'employee_name',
+                            name: 'employee_name'
+                        },
+                        {
+                            data: 'type',
+                            name: 'type'
+                        },
+                        {
+                            data: 'amount',
+                            render : function(data,type,row){
+                                return data.toLocaleString('en-US');
+                            }
+                        },
+                        {
+                            data: 'action',
+                            name: 'action'
+                        },
+                    ],
+                })
+             }
 
-                $('select#status_edit').change(function(){
-                    let selectedItem = $(this).children('option:selected').val()
+            if($('.select-employee').length > 0) {
+                $('.select-employee').select2({
+                    width: '100%',
+                    tags: true,
+                    dropdownParent: $('#add_reimburst')
+                });
+            }
 
-                    if (selectedItem == 'Rejected') {
-                        $('#rejected-reason').show()
-                    }else{
-                        $('#rejected-reason').hide()
+            if($('.select-reimburst-type').length > 0) {
+                $('.select-reimburst-type').select2({
+                    width: '100%',
+                    tags: true,
+                    dropdownParent: $('#add_reimburst')
+                });
+            }
+            $('#addRreimburst').on('click', function(e){
+                e.preventDefault()
+                var branch =  $('#branch_id').val();
+                $.ajax({
+                    url : 'add-data-reimburse',
+                    type :'post',
+                    data : { branch_id : branch},
+                    dataType :'json',
+                    beforeSend : function(){
+
+                    },
+                    success : function(respon){
+                        $('#add_reimburst').modal('show')
+                        var html =`<option value="">-- select employee --</option>`;
+                        $.each(respon.employee,function(key,val){
+                            html +=`<option value="`+val.id+`">`+val.name+`</option>`
+                        })
+                        var type =`<option value="">-- select employee --</option>`;
+                        $.each(respon.reimburseType,function(key,val){
+                            type +=`<option value="`+val.id+`">`+val.name+`</option>`
+                        })
+                        $('#employee_id').html(html)
+                        $('#reimburst_type_id').html(type)
+                        $('#branchInput').html(`<option value="`+branch+`">`+$('#branch_id option:selected').text()+`</option>`)
+                       
+                    },
+                    error : function(){
+                        Alert('Someting went wrong!')
                     }
                 })
+            })
+            $('#formAddReimurse').on('submit',function(e){
+                e.preventDefault()
+                var branchId = $('#branch_id').val();
+                var data = $('#formAddReimurse').serialize()
+                 $.ajax({
+                    url : 'store-reimbursment',
+                    type : 'post',
+                    data : data,
+                    dataType :'json',
+                    beforeSend : function(){
 
-                if($('.select-employee').length > 0) {
-                    $('.select-employee').select2({
-                        width: '100%',
-                        tags: true,
-                        dropdownParent: $('#add_reimburst')
-                    });
-                }
-
-                if($('.select-reimburst-type').length > 0) {
-                    $('.select-reimburst-type').select2({
-                        width: '100%',
-                        tags: true,
-                        dropdownParent: $('#add_reimburst')
-                    });
-                }
-
-                //edit
-                if($('.select-employee-edit').length > 0) {
-                    $('.select-employee-edit').select2({
-                        width: '100%',
-                        tags: true,
-                        dropdownParent: $('#edit_reimburst')
-                    });
-                }
-
-                if($('.select-reimburst-type-edit').length > 0) {
-                    $('.select-reimburst-type-edit').select2({
-                        width: '100%',
-                        tags: true,
-                        dropdownParent: $('#edit_reimburst')
-                    });
-                }
-
-                    $('body').on('click', '#edit-leave', function () {
-                        const editUrl = $(this).data('url');
-                        // $('#edit-name-branch').val('')
-
-
-                        $.get(editUrl, (data) => {
-                            // let splitFile = data[2].attachment_reject.split('/')
-                            // const lastItem = splitFile[splitFile.length - 1]
-                            $('#start_date_edit').val(data[2].start_date)
-                            $('#end_date_edit').val(data[2].end_date)
-                            $('#leave_reason_edit').html(data[2].leave_reason)
-                            $('#rejected_reason_edit').html(data[2].rejected_reason)
-                            // $('#attachment_rejected_edit_anchor').attr('href', data[2].attachment_reject)
-                            // $('#attachment_rejected_edit_anchor').html(lastItem)
-                            
-                            $('#employee_id_edit option[value='+ data[0].id +']').attr('selected','selected');
-                            $('#employee_id_edit').val(data[0].id ? data[0].id : 0).trigger('change');
-
-                            $('#leave_type_id_edit option[value='+ data[2].leave_type_id +']').attr('selected','selected');
-                            $('#leave_type_id_edit').val(data[2].leave_type_id ? data[2].leave_type_id : 0).trigger('change');
-
-                            $('#status_edit option[value='+ data[2].status +']').attr('selected','selected');
-                            $('#status_edit').val(data[2].status ? data[2].status : 0).trigger('change');
-                            
-                            const urlNow = '{{ Request::url() }}'
-                            $('#edit-form-leave').attr('action', urlNow + '/' + data[2].id);
+                    },
+                     success : function(respon){
+                        if(respon.status == 'success'){
+                            $('#formAddReimurse')[0].reset();
+                            $('#add_reimburst').modal('hide')
+                        }
+                        swal.fire({
+                            icon : respon.status,
+                            text : respon.msg
                         })
-                    });
 
-                $('body').on('click', '#delete-leave', function(){
-                    const deleteURL = $(this).data('url');
-                    $('#form-delete-leave').attr('action', deleteURL);
+                    loadData(branchId)
+                    },
+                    error :function(){
+                        Alert('Sameting went wrong!')
+                    }
                 })
-            });
+            })
+            //edit
+            if($('.select-reimburst-type-edit').length > 0) {
+                $('.select-reimburst-type-edit').select2({
+                    width: '100%',
+                    tags: true,
+                    dropdownParent: $('#edit_reimburst')
+                });
+            }
+            $(document).on('click','.edit-reimburse',function(e){
+                e.preventDefault();
+                var id = $(this).attr('data-id');
+                $.ajax({
+                    url : 'edit-data-reimburse',
+                    type : 'post',
+                    data : {id : id},
+                    dataType : 'json',
+                    beforeSend : function(){
+
+                    },
+                    success : function(respon){
+                        $('#edit_reimburst').modal('show')
+                        var type = '';
+                        $.each(respon.reimburseType,function(key,val){
+                            if (respon.reimburse.reimburst_type_id == val.id){
+                                type +=`<option value="`+val.id+`" selected>`+val.name+`</option>`
+                            }else{
+                                type +=`<option value="`+val.id+`">`+val.name+`</option>`
+                            }
+                        })
+                        $('#editreimburst_type_id').html(type)
+                        $('#editemployee_id').html(`<option value="`+respon.reimburse.employee_id+`">`+respon.reimburse.employee_name+`</option>`)
+                        $('#edit_amount').val(respon.reimburse.amount)
+                         $('#id').val(respon.reimburse.id)
+
+                    },
+                    error : function(){
+                        alert('Sameting went wrong!')
+                    }
+                })
+            })
+            $('#updateReimburse').on('submit', function(e){
+                e.preventDefault()
+                 var branchId = $('#branch_id').val();
+                var data = $('#updateReimburse').serialize();
+                $.ajax({
+                    url : 'update-reimbursment',
+                    type : 'post',
+                    data : data,
+                    dataType :'json',
+                    beforeSend : function(){
+
+                    },
+                    success : function(respon){
+                        if(respon.status == 'success'){
+                            $('#updateReimburse')[0].reset();
+                            $('#edit_reimburst').modal('hide')
+                        }
+                        swal.fire({
+                            icon : respon.status,
+                            text : respon.msg
+                        })
+                        loadData(branchId)
+                    },
+                    error :function(){
+                        Alert('Sameting went wrong!')
+                    }
+                })
+            })
+            $(document).on('click','.delete-reimburse',function(e){
+                e.preventDefault()
+                var branchId = $('#branch_id').val();
+                var id = $(this).attr('data-id')
+                Swal.fire({
+                            title: 'Are you sure?',
+                            text: "You won't be able to revert this!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, delete it!'
+                        }).then(function(confirm){
+                        if (confirm.value == true){
+                            $.ajax({
+                                url : 'destroy-reimburse',
+                                type :'post',
+                                data : {id : id},
+                                dataType : 'json',
+                                beforeSend : function (){
+
+                                },
+                                success : function(respon){
+                                    swal.fire({
+                                        icon : respon.status,
+                                        text : respon.msg
+                                    })
+                                    loadData(branchId)
+                                },
+                                error : function(){
+                                    alert('Someting went wrong !');
+                                }
+                            })
+                        }
+                    })
+            })
+        });
+        
     </script>
 @endpush

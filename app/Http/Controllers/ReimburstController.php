@@ -9,8 +9,10 @@ use App\Models\Reimburst;
 use App\Models\ReimburstmentOption;
 use App\Models\ShiftType;
 use App\Models\Utility;
+use App\Models\Branch;
 use Carbon\Carbon;
 use Exception;
+use DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -27,19 +29,13 @@ class ReimburstController extends Controller
     public function index()
     {
         if (Auth::user()->can('manage reimburst')) {
-            if (Auth::user()->type != 'company') {
-                $user     = Auth::user();
-                $employee = Employee::where('user_id', '=', $user->id)->get();
-                $reimburst  = Reimburst::where('employee_id', '=', $user->employee->id)->get();
-                $reimburstType = ReimburstmentOption::where('created_by', '=', Auth::user()->creatorId())->get();
-
-                return view('pages.contents.reimburst.index', compact('reimburst', 'employee', 'reimburstType'));
-            } else {
-                $reimburst = Reimburst::where('created_by', '=', Auth::user()->creatorId())->get();
-                $employee  = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
-                $reimburstType = ReimburstmentOption::where('created_by', '=', Auth::user()->creatorId())->get();
-
-                return view('pages.contents.reimburst.index', compact('reimburst', 'employee', 'reimburstType'));
+            $branch = Branch::where('id',Auth::user()->branch_id)->first();
+            if(Auth::user()->initial == "HO"){
+                $data['branch'] = Branch::where('company_id',$branch->company_id)->get();
+                return view('pages.contents.reimburst.index',$data);
+            }else{
+                $data['branch'] = Branch::where('id',$branch->id)->get();
+                return view('pages.contents.reimburst.index', $data);
             }
         } else {
             toast('Permission denied.', 'error');
@@ -47,22 +43,44 @@ class ReimburstController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   public function get_data(Request $request){
+    $data = Reimburst::select('reimbursts.*','reimburstment_options.name as type','employees.no_employee','employees.name as employee_name')
+                        ->leftJoin('reimburstment_options','reimburstment_options.id','=','reimbursts.reimburst_type_id')
+                        ->leftJoin('employees','employees.id','=','reimbursts.employee_id')
+                        ->where('employees.branch_id',$request->branch_id)
+                        ->get();
+    return DataTables::of($data)
+                        ->addIndexColumn()
+                        ->addColumn('action', function($row){
+                            $btn ='';
+                            if(Auth()->user()->canany('edit reimburst','delete reimburst')){
+                                $btn .= '<div class="dropdown dropdown-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                <div class="dropdown-menu dropdown-menu-right">';
+                                if(Auth()->user()->can('edit reimburst')){
+                                    $btn .= '<a  data-id='.$row->id.' class="dropdown-item edit-reimburse" href="javascript:void(0)" ><i class="fa fa-pencil m-r-5"></i> Edit</a>';
+                                }
+                                if(Auth()->user()->can('delete reimburst')){
+                                    $btn .= '<a data-id='.$row->id.' class="dropdown-item delete-reimburse" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
+                                }
+                                    
+                            }
+                            return $btn;
+                        })
+                        ->rawColumns(['action'])
+                        ->make(true);
+   }
+   public function get_data_employee(Request $request){
+    $branch = Branch::where('id',Auth::user()->branch_id)->first();
+    $data['employee'] = Employee::select('id','name')->where('branch_id',$request->branch_id)->get();
+    $data['reimburseType'] = ReimburstmentOption::all();
+     return response()->json($data);
+   }
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         if (Auth::user()->can('create reimburst')) {
@@ -81,79 +99,81 @@ class ReimburstController extends Controller
 
             try {
                 DB::beginTransaction();
-
-                $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
-
-                $reimburst    = new Reimburst();
-                if (Auth::user()->type == "employee") {
-                    $reimburst->employee_id = $employee->id;
-                } else {
-                    $reimburst->employee_id = $request->employee_id;
-                }
-                $reimburst->reimburst_type_id    = $request->reimburst_type_id;
-                $reimburst->amount       = $request->amount;
-                $reimburst->created_by       = Auth::user()->creatorId();
-                $reimburst->save();
-
-                // Utility::insertToRequest($reimburst, Auth::user(), 'Reimburst');
-
+                $data = [
+                    'employee_id'       => $request->employee_id,
+                    'reimburst_type_id' => $request->reimburst_type_id,
+                    'amount'            => $request->amount,
+                    'created_by'        => Auth::user()->id,
+                    'date'              => date('Y-m-d'),
+                ];
+               Reimburst::create($data);
                 DB::commit();
-                toast('Reimburst successfully created.', 'success');
-                return redirect()->route('reimburst.index');
+                $res = [
+                    'status' =>'success',
+                    'msg'    =>'Created data successfuly !',
+                ];
+                return response()->json($res);
             } catch (Exception $e) {
                 DB::rollBack();
-                toast('Something went wrong.', 'error');
-                return redirect()->back();
+                $res = [
+                    'status' =>'error',
+                    'msg'    =>'Sameting went wrong!',
+                ];  
+                 return response()->json($res);
             }
         } else {
-            toast('Permission denied.', 'error');
-            toast('Permission denied.', 'error');
-            return redirect()->back();
+            $res = [
+                    'status' =>'error',
+                    'msg'    =>'Permission denied!',
+                ];  
+            return response()->json($res);
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+   public function edit(Request $request)
     {
-        //
+        $data['reimburse'] = Reimburst::select('reimbursts.*','employees.name as employee_name')
+                                        ->leftJoin('employees','employees.id','reimbursts.employee_id')
+                                        ->where('reimbursts.id',$request->id)
+                                        ->first();
+        $data['reimburseType'] = ReimburstmentOption::all();
+        return response()->json($data);
+    }
+    public function update(Request $request)
+    {
+        $data = [
+            'reimburst_type_id' => $request->reimburst_type_id,
+            'amount' => $request->amount,
+        ];
+        $update = Reimburst::where('id',$request->id)->update($data);
+        if($update){
+            $res = [
+                'status' =>'success',
+                'msg'    =>'Updated data successfuly !',
+            ];
+        }else{
+            $res = [
+                'status' =>'error',
+                'msg'    =>'Sameting went wrong!',
+            ];   
+        }
+        return response()->json($res);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+  public function destroy(Request $request)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $data = Reimburst::destroy($request->id);
+        if($data){
+            $res = [
+                'status' =>'success',
+                'msg'    =>'Delete data successfuly !',
+            ];
+        }else{
+            $res = [
+                'status' =>'error',
+                'msg'    =>'Sameting went wrong!',
+            ];   
+        }
+        return response()->json($res);
     }
 }
