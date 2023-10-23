@@ -189,53 +189,21 @@
                     </ul>
                 </li>
             @endcanany
-                @canany(['manage user',
-                        // 'create user',
-                        // 'manage role',
-                        // 'create role',
-                        // 'manage level approval',
-                        // 'edit level approval',
-                        // 'manage denda',
-                        // 'create denda',
-                        // 'edit denda',
-                        // 'delete denda',
-                        // 'manage bpjs kesehatan',
-                        // 'create bpjs kesehatan',
-                        // 'edit bpjs kesehatan',
-                        // 'delete bpjs kesehatan',
-                        // 'manage pph21',
-                        // 'edit pph21',
-                        // 'manage jht',
-                        // 'create jht',
-                        // 'manage jkk',
-                        // 'create jkk',
-                        // 'manage jkm',
-                        // 'create jkm',
-                        //  'manage jp',
-                        //  'create jp',
-                        //  'manage payslip code pin',
-                        //  'manage payslip checklist attendance summary',
-                        //  'manage allowance option',
-                        //  'create allowance option',
-                        //  'manage leave type',
-                        //  'manage reimbursement option',
-                        //  'manage branch',
-                        //  'manage loan option',
-                         'manage payslip type'])
+            @canany(['manage reporting'])
                     <li class="submenu">
                         <a href="#"><i class="la la-file"></i> <span>Report</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
-                        @canany(['manage attendance', 'show attendance'])
+                        @canany(['report attendance'])
                             <li class="{{(request()->routeIs('reporting-attandance')) ? 'active' : ''}}"><a class="{{(request()->routeIs('reporting-attandance')) ? 'active' : ''}}" href="{{ route('reporting-attandance') }}">Report Attandance</a></li>
                             <li class="{{(request()->routeIs('rekap-attandance')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap-attandance')) ? 'active' : ''}}" href="{{ route('rekap-attandance') }}">Rekap Attandance</a></li>
                         @endcanany
-                        @canany(['manage payroll'])
+                        @canany(['rekap attendance'])
                             <li class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}" href="{{ route('rekap-payroll') }}">Rekap Payroll</a></li>
                         @endcanany
-                         @canany(['manage bpjs kesehatan', 'create bpjs kesehatan', 'edit bpjs kesehatan', 'delete bpjs kesehatan'])
+                         @canany(['rekap bpjs'])
                             <li class="{{(request()->routeIs('get-data-bpjs*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('get-data-bpjs*')) ? 'active' : ''}}" href="{{ route('get-data-bpjs') }}">BPJS</a></li>
                         @endcanany
-                        @canany(['manage pph21', 'create pph21', 'edit pph21', 'delete pph21'])
+                        @canany(['rekap pph21'])
                             <li class="{{(request()->routeIs('get-rekap-pph')) ? 'active' : ''}}"><a class="{{(request()->routeIs('get-rekap-pph')) ? 'active' : ''}}" href="{{ route('get-rekap-pph') }}">PPH21</a></li>
                         @endcanany
 
