@@ -181,7 +181,7 @@
                         @canany(['manage payroll'])
                             <li class="{{(request()->routeIs('run-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('run-payroll')) ? 'active' : ''}}" href="{{ route('run-payroll') }}">Run payroll</a></li>
                         @endcanany
-                        @canany(['manage payslip', 'generate payslip'])
+                        @canany(['manage payslip'])
                             <li class="{{(request()->routeIs('salary-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('salary-payroll')) ? 'active' : ''}}" href="{{ route('salary-payroll') }}">Pay Slip</a></li>
                         @endcanany
 
