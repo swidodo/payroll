@@ -29,7 +29,7 @@
                 </div>
                 @can('create overtime')
                     <div class="col-auto float-end ms-auto">
-                        <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_overtime"><i class="fa fa-plus"></i> New Request</a>
+                        <a href="#" id="newOvertime" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_overtime"><i class="fa fa-plus"></i> New Request</a>
                     </div>
                 @endcan
             </div>
@@ -371,5 +371,61 @@
                 ],
             })
         }
+        $('#newOvertime').on('click',function(e){
+            e.preventDefault();
+            var branchId = $('#branchId').val();
+            $.ajax({
+                url : 'get-overtime-employee',
+                type : 'post',
+                data : {branch_id : branchId },
+                dataType : 'json',
+                beforeSend : function(){
+
+                },
+                success : function(respon){
+                    var emp = '<option value="">-- Select Employee --</option>';
+                    $.each(respon.employee,function(key,val){
+                        emp +=`<option value="`+val.id+`">`+val.name+`</option>`
+                    })
+                    $('#employee_id_add').html(emp)
+                    $('#branch_id_overtime').val($('#branchId').val())
+                },
+                error : function(){
+
+                }
+            })
+        })
+        $(document).on('click','.edit-overtime',function(e){
+            var id = $(this).attr('data-id')
+            $.ajax({
+                url : 'edit-overtime',
+                type : 'post',
+                data : {id : id },
+                dataType : 'json',
+                beforeSend : function(){
+
+                },
+                success : function(respon){
+                    $('#viewEmployee').val(respon.data.employee.name)
+                    $('#employee_id_edit').val(respon.data.employee_id)
+                    $('#end_date_edit').val(respon.data.start_date)
+                    $('#start_time_edit').val(respon.data.start_time)
+                    $('#end_time_edit').val(respon.data.end_time)
+                    $('#notes_edit').val(respon.data.notes)
+                    var type ='';
+                    $.each(respon.dayTypes, function(key,val){
+                        if(respon.data.day_type_id ==val.id){
+                            type += `<option value="`+val.id+`" selected>`+val.name+`</option>`
+                        }else{
+                            type += `<option value="`+val.id+`">`+val.name+`</option>`
+                        }
+                    })
+                    $('#day_type_id_edit').html(type);
+                },
+                error : function(){
+
+                }
+            })
+        })
     </script>
 @endpush

@@ -20,10 +20,10 @@
                         <li class="breadcrumb-item active">Rotation</li>
                     </ul>
                 </div>
-                @can('create rotation')
                     <div class="col-auto float-end ms-auto">
                         <a href="#" class="btn add-btn" id="addDataRotate"><i class="fa fa-plus"></i>Add Rotation</a>
                     </div>
+                @can('create rotation')
                 @endcan
             </div>
         </div>
@@ -141,21 +141,22 @@
                 ],
             })
         }
-        $('#addDataRotate').on('click',function(){
+        $('#addDataRotate').on('click',function(e){
+            e.preventDefault()
+            var branch_id = $('#branch_id').val();
             $.ajax({
                 url : 'get-branch-select',
-                type : 'get',
-                data :{
-
-                },
+                type : 'post',
+                data : {branch_id : branch_id},
+                dataType : 'json',
                 success : function(respon){
                    $('#company').val
                    (respon.company[0].name);
                    $('#companyName').val(respon.company[0].name);
                    $('#companyId').val(respon.company[0].id);
-                   $('#branch').val(respon.branch[0].name);
-                   $('#branchName').val(respon.branch[0].name);
-                   $('#branchId').val(respon.branch[0].id);
+                   $('#branch').val($('#branch_id option:selected').text());
+                   $('#branchName').val($('#branch_id option:selected').text());
+                   $('#branchId').val($('#branch_id').val());
                    var html =`<option value=""></option>`;
                    var html2=`<option value=""></option>`;
                    $.each(respon.department,function(key,val){

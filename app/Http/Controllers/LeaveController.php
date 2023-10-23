@@ -11,6 +11,7 @@ use App\Models\LeaveType;
 use App\Models\LevelApproval;
 use App\Models\Overtime;
 use App\Models\Utility;
+use App\Models\Branch;
 use Carbon\Carbon;
 use DataTables;
 use DateTime;
@@ -31,32 +32,14 @@ class LeaveController extends Controller
     public function index()
     {
         if (Auth::user()->can('manage leave')) {
-            if (Auth::user()->type != 'company') {
-                $user     = Auth::user();
-                $employee = Employee::where('user_id', '=', $user->id)->get();
-                $leaves  = Leave::where('employee_id', '=', $user->employee->id)->get();
-                $leaveType = LeaveType::where('created_by', '=', Auth::user()->creatorId())->get();
-
-                //3 tier approval
-                if (!is_null($employee[0]->level_approval)) {
-                    $levelApprove = $employee[0]->approval;
-
-                    $approval = LeaveApproval::where('level', $levelApprove->level)
-                        ->where('is_approver_company', false)
-                        ->where('approver_id', $employee[0]->id)
-                        ->first();
-                    $leaves = collect($leaves)->prepend($approval->leave);
-                    $employee = collect($employee)->prepend($approval->leave->employee);
-                }
-                //3 tier approval
-
-                return view('pages.contents.time-management.leaves.index', compact('leaves', 'employee', 'leaveType'));
+            $user     = Auth::user();
+            $branchId = Branch::where('id',Auth::user()->branch_id)->first();
+            if (Auth::user()->type != 'HO') {
+                $data['branch'] = Branch::where('company_id',$branchId->company_id)->get();
+                return view('pages.contents.time-management.leaves.index', $data);
             } else {
-                $leaves = Leave::where('created_by', '=', Auth::user()->creatorId())->get();
-                $employee  = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
-                $leaveType = LeaveType::where('created_by', '=', Auth::user()->creatorId())->get();
-                // return view('pages.contents.time-management.leaves.index', compact('leaves', 'employee', 'leaveType'));
-                return view('pages.contents.time-management.leaves.index',compact('leaves', 'employee', 'leaveType'));
+                $data['branch'] = Branch::where('id',$branchId->id)->get();
+                return view('pages.contents.time-management.leaves.index', $data);
             }
         } else {
             toast('Permission denied.', 'error');
@@ -64,8 +47,7 @@ class LeaveController extends Controller
         }
     }
 
-    public function get_leave(){
-        $user = Auth::user();
+    public function get_leave(Request $request){
         $data = DB::table('leaves')
                     ->select('employees.name','no_employee',
                             'leave_types.title',
@@ -79,7 +61,7 @@ class LeaveController extends Controller
                             'leaves.id')
                     ->leftJoin('leave_types','leave_types.id','=','leaves.leave_type_id')
                     ->leftJoin('employees','employees.id','=','leaves.employee_id')
-                    ->where('employees.branch_id',$user->branch_id)
+                    ->where('employees.branch_id',$request->branch_id)
                     ->orderBy('leaves.id','DESC')
                     ->get();
         return Datatables::of($data)
@@ -103,6 +85,24 @@ class LeaveController extends Controller
         ->rawColumns(['action'])
         ->make(true);
 
+    }
+    public function request_manage_leave(Request $request){
+        $branch = Branch::where('id',$request->branch_id)->first();
+        if (Auth::user()->initial == 'HO'){
+            $data['employee'] = Employee::select('id','name')->where('branch_id',$request->branch_id)->get();
+            $data['leaveType'] = LeaveType::select('leave_types.id','leave_types.title')
+                                    ->leftJoin('users','users.id','=','leave_types.created_by')
+                                    ->leftJoin('branches','branches.id','=','users.branch_id')
+                                    ->where('branches.company_id',$branch->company_id)->get();
+            return response()->json($data);
+        }else{
+            $data['employee'] = Employee::select('id','name')->where('branch_id',$request->branch_id)->get();
+            $data['leaveType'] = LeaveType::select('leave_types.id','leave_types.title')
+                                    ->leftJoin('users','users.id','=','leave_types.created_by')
+                                    ->leftJoin('branches','branches.id','=','users.branch_id')
+                                    ->where('branches.id',$branch->id)->get();
+            return response()->json($data);
+        }
     }
     public function store(Request $request)
     {
@@ -178,7 +178,7 @@ class LeaveController extends Controller
                 if ($request->file('attachment_request')) {
                     $fileName = time() . '_' . $request->file('attachment_request')->getClientOriginalName();
                     $store = $request->file('attachment_request')->storeAs('public', $fileName);
-                    $pathFile = 'storage/' . $fileName ?? null;
+                    $pathFile = '/storage/app/public/' . $fileName ?? null;
                     $leave->attachment_request_path =  $pathFile;
                 }
 

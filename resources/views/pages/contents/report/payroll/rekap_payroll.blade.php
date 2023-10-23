@@ -24,13 +24,13 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title-sm">
-                        filter Periode
+                        Filter Periode
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3 mb-2">
-                            <select class="form-control " id="branch_id" name="branch_id">
+                            <select class="form-control form-select" id="branch_id" name="branch_id">
                                 @foreach($branch as $branches)
                                 <option value="{{ $branches->id }}">{{ $branches->name }}</option>
                                 @endforeach

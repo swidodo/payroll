@@ -107,31 +107,32 @@ class RotateController extends Controller
     }
     public function update(Request $request)
     {
-        DB::beginTransaction();
+       
         try {
+             DB::beginTransaction();
             $user = Auth::user();
             $dt_from_depart = DB::table('departements')
                                 ->select('name')
                                 ->where('id',$request->from_department)
-                                ->get();
+                                ->first();
             $dt_to_depart = DB::table('departements')
                                 ->select('name')
                                 ->where('id',$request->to_department)
-                                ->get();
+                                ->first();
             $employee = DB::table('employees')
                                 ->select('name')
                                 ->where('id',$request->employee_id)
-                                ->get();
+                                ->first();
 
             $data = [
                     'rotate_date'           => $request->rotate_date,
                     'rotate_name'           => $request->rotate_name,
                     'employee_id'           => $request->employee_id,
-                    'employee_name'         => $employee[0]->name,
+                    'employee_name'         => $employee->name,
                     'from_department_id'    => $request->from_department,
-                    'from_department_name'  => $dt_from_depart[0]->name,
+                    'from_department_name'  => $dt_from_depart->name,
                     'to_department_id'      => $request->to_department,
-                    'to_department_name'    => $dt_to_depart[0]->name,
+                    'to_department_name'    => $dt_to_depart->name,
                     'branch_id'             => $request->branch_id,
                     'branch_name'           => $request->branch_name,
                     'company_id'            => $request->company_id,
@@ -158,6 +159,11 @@ class RotateController extends Controller
                 return $response;
         }catch (Exception $e) {
             DB::rollBack();
+             $response = [
+                    'status' => 'error',
+                    'msg'    => 'Sameting went wrong !',
+                ];
+             return $response;
         }
     }
     public function destroy($id)
@@ -172,27 +178,27 @@ class RotateController extends Controller
             return response()->json($response);
         }
     }
-    public function get_branch(){
-        $user = Auth::user();
+    public function get_branch(Request $request){
+        // $user = Auth::user();
         $branch =  DB::table('branches')
                     ->select('company_id','id','name')
-                    ->where('id',$user->branch_id)
-                    ->get();
+                    ->where('id',$request->branch_id)
+                    ->first();
         $company = DB::table('companies')
                     ->select('id','name')
-                    ->where('id',$branch[0]->company_id)
+                    ->where('id',$branch->company_id)
                     ->get();
         $department = DB::table('departements')
                          ->select('id','name as department_name')
-                         ->where('branch_id',$user->branch_id)
+                         ->where('branch_id',$request->branch_id)
                          ->get(); 
         $position = DB::table('position')
                          ->select('id','position_name')
-                         ->where('branch_id',$user->branch_id)
+                         ->where('branch_id',$request->branch_id)
                          ->get();
         $employee = DB::table('employees')
                         ->select('id','name')
-                        ->where('branch_id',$user->branch_id)
+                        ->where('branch_id',$request->branch_id)
                         ->get();
         $data = [
             'branch'        => $branch,
@@ -213,7 +219,7 @@ class RotateController extends Controller
     public function save_rotation(Request $request){
       
         try {
-             // DB::beginTransaction();
+             DB::beginTransaction();
              $user = Auth::user();
                 $dt_from_depart = DB::table('departements')
                                     ->select('name')
@@ -262,13 +268,12 @@ class RotateController extends Controller
                 ];
                 return $response;
         }catch (Exception $e) {
+            DB::rollBack();
              $response = [
                     'status' => 'error',
-                    // 'msg'    => 'Something went wrong !',
-                    'msg'    => $e,
+                    'msg'    => 'Something went wrong !',
                 ];
                 return $response;
-            // DB::rollBack();
            
         }
     }

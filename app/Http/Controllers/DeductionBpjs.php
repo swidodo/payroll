@@ -12,11 +12,16 @@ use Illuminate\Support\Facades\DB;
 class DeductionBpjs extends Controller
 {
     public function index(){
-        $branch = Branch::find(Auth::user()->branch_id);
-        return view('pages.contents.bpjs.view_data_bpjs',$branch);
+        $branch = Branch::where('id',Auth::user()->branch_id)->first();
+        if (Auth::user()->initial == "HO"){
+            $data['branch'] = Branch::where('company_id',$branch->company_id)->get();
+        }else{
+            $data['branch'] = Branch::find($branch->branch_id);
+        }
+        return view('pages.contents.bpjs.view_data_bpjs',$data);
     }
-    public function get_data(){
-        $data = DB::table('v_deduction_bpjs')->where('branch_id','=',Auth::user()->branch_id)->get();
+    public function get_data(Request $request){
+        $data = DB::table('v_deduction_bpjs')->where('branch_id','=',$request->branch_id)->get();
         return DataTables::of($data)
                         ->make(true);
     }

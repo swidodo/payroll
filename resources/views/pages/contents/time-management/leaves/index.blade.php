@@ -23,7 +23,7 @@
                 </div>
                 @can('create leave')
                     <div class="col-auto float-end ms-auto">
-                        <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_leave"><i class="fa fa-plus"></i> New Request</a>
+                        <a href="#" class="btn add-btn" id="addNewLeave"><i class="fa fa-plus"></i> New Request</a>
                     </div>
                 @endcan
             </div>
@@ -40,6 +40,23 @@
         @endif
 
         <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-3">
+                            <label>Branch</label>
+                            <select class="form-select form-control" id="branch_id">
+                                @foreach($branch as $br)
+                                <option value="{{ $br->id }} ">{{ $br->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-center mt-4"> 
+                            <button type="button" class="btn btn-primary" id="searchBranch">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-12">
                 <div class="table-responsive">
                     <table class="table table-striped custom-table" id="tblLeaveEmployee">
@@ -211,63 +228,188 @@
             $.ajaxSetup({
                 headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
              });
-           var oTable = $('#tblLeaveEmployee').DataTable({
-                processing: true,
-                serverSide: true,
-                destroy: true,
-                ajax : {
-                        "url" : 'get-leaves',
+            var branchId = $('#branch_id').val();
+            loadData(branchId)
+            function loadData(branchId){
+                $('#tblLeaveEmployee').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    destroy: true,
+                    ajax : {
+                            "url" : 'get-leaves',
+                            "type" : 'post',
+                            "data" : {branch_id : branchId},
+                        },
+                    columns: [
+                            { data: 'no', name:'id', render: function (data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }},
+                            {
+                                data: 'no_employee',
+                                name: 'no_employee'
+                            },
+                            {
+                                data: 'name',
+                                name: 'name'
+                            },
+                            {
+                                data: 'title',
+                                name : 'title'
+                            },
+                            {
+                                data: 'applied_on',
+                                name : 'applied_on'
+                            },
+                            {
+                                data: 'start_date',
+                                name : 'start_date'
+                            },
+                            {
+                                data: 'end_date',
+                                name : 'end_date'
+                            },
+                            {
+                                data: 'total_leave_days',
+                                name : 'total_leave_days'
+                            },
+                            {
+                                data: 'attachment_request_path',
+                                render : function(data,row,type){
+                                    var btn ='';
+                                    if (data !=null){
+                                        btn ="<a href='{{ asset('../"+data+"'); }}' target='_blank' class='btn btn-primary'>view file </a>";
+                                    }
+                                    return btn;
+                                }
+                            },
+                            {
+                                data: 'leave_reason',
+                                name : 'leave_reason'
+                            },
+                            {
+                                data: 'status',
+                                name : 'status'
+                            },
+                            {
+                                data: 'action',
+                                name : 'action'
+                            },
+                    ],
+                });
+            }
+             $('#searchBranch').on('click',function(e){
+                var branchId = $('#branch_id').val();
+                loadData(branchId)
+            })
+            $('#addNewLeave').on('click',function(e){
+                $('#add_leave').modal('show')
+                var branch_id = $('#branch_id').val();
+                $.ajax({
+                    url : 'add-request-leave',
+                    type : 'post',
+                    data : { branch_id : branch_id },
+                    dataType : 'json',
+                    beforeSend : function(){
+
                     },
-                columns: [
-                        { data: 'no', name:'id', render: function (data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        }},
-                        {
-                            data: 'no_employee',
-                            name: 'no_employee'
-                        },
-                        {
-                            data: 'name',
-                            name: 'name'
-                        },
-                        {
-                            data: 'title',
-                            name : 'title'
-                        },
-                        {
-                            data: 'applied_on',
-                            name : 'applied_on'
-                        },
-                        {
-                            data: 'start_date',
-                            name : 'start_date'
-                        },
-                        {
-                            data: 'end_date',
-                            name : 'end_date'
-                        },
-                        {
-                            data: 'total_leave_days',
-                            name : 'total_leave_days'
-                        },
-                        {
-                            data: 'attachment_request_path',
-                            name : 'attachment_request_path'
-                        },
-                        {
-                            data: 'leave_reason',
-                            name : 'leave_reason'
-                        },
-                        {
-                            data: 'status',
-                            name : 'status'
-                        },
-                        {
-                            data: 'action',
-                            name : 'action'
-                        },
-                ],
-            });
+                    success : function(respon){
+                        var emp = '<option value="" selected>-- Select Employee --</option>';
+                        $.each(respon.employee,function(key,val){
+                            emp +=`<option value="`+val.id+`">`+val.name+`</option>`;
+                        })
+                        $('#employee_id').html(emp)
+
+                        var type ='<option value="" selected>-- Select Leave Type --</option>';
+                        $.each(respon.leaveType,function(key,val){
+                            type +=`<option value="`+val.id+`">`+val.title+`</option>`;
+                        })
+                        $('#leave_type_id').html(type)
+                    },
+                    error : function() {
+                        alert('Samting went wrong!')
+                    }
+                })
+            })
+            $('#formLeave').on('submit',function(e){
+                e.preventDefault();
+                var req_date    = $('#date_request').val();
+                var request_type= $('#request-options').val();
+                var branchId    = $('#branchId').val();
+                var employeeId  = $('#employee_id').val();
+                var leave_type_id   = $('#leave_type_id').val();
+                var start_date      = $('#start_date').val();
+                var end_date        = $('#end_date').val();
+                var leave_reason    = $('#leave_reason').val();
+                var attachment_request  = $('#attachment_leave')[0].files[0];
+                var formData = new FormData();
+                formData.append('branch_id',branchId)
+                formData.append('employee_id',employeeId)
+                formData.append('leave_type_id',leave_type_id)
+                formData.append('start_date',start_date)
+                formData.append('end_date',end_date)
+                formData.append('leave_reason',leave_reason)
+                formData.append('attachment_request',attachment_leave)
+                $.ajax({
+                    url : 'store-leave',
+                    type : 'post',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    data : formData,
+                    dataType : 'json',
+                    beforeSend : function(){
+
+                    },
+                    success : function(respon){
+                        if (respon.status == 'success'){
+                            $('#formLeave')[0].reset();
+                        }
+                        swal.fire({
+                            icon : respon.status,
+                            text : respon.msg,
+                        })
+                    },
+                    error : function(){
+                        alert('Sameting went wrong !');
+                    }
+            })})
+
+            $(document).on('click','.edit_leave',function(e){
+                e.preventDefault()
+                $.ajax({
+                    url :'edit-leave',
+                    type :'post',
+                    data :{id : id },
+                    dataType : 'json',
+                    beforeSend : function(){
+
+                    },
+                    success ; function(respon){
+                        $('#edit_leave').modal('show')
+                        var emp = '<option value="" selected>-- Select Employee --</option>';
+                        $.each(respon.employee,function(key,val){
+                            emp +=`<option value="`+val.id+`">`+val.name+`</option>`;
+                        })
+                        $('#employee_id').html(emp)
+
+                        var type ='<option value="" selected>-- Select Leave Type --</option>';
+                        $.each(respon.leaveType,function(key,val){
+                            type +=`<option value="`+val.id+`">`+val.title+`</option>`;
+                        })
+                        $('#leave_type_id_edit').html(type)
+                        $('#employee_id_edit').text();
+                        $('#employee_id_edit').val();
+                        $('#start_date_edit').val()
+                        $('#end_date_edit').val()
+                        $('#leave_reason_edit').val()
+                        $('#rejected_reason_edit').val()
+                    },
+
+                    error : function(){
+                        alert('Sameting went wrong!')
+                    }
+                })
+            })
 
         });
     </script>

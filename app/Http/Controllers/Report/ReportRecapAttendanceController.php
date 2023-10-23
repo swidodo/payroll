@@ -16,25 +16,39 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class ReportRecapAttendanceController extends Controller
 {
     public function index(){
-        return view('pages.contents.report.report_attandance');
+        $initial = Auth::user()->initial;
+        $branch = Branch::where('id',Auth::user()->branch_id)->first();
+        if ($initial == "HO"){
+            $data['branch'] = Branch::where('company_id',$branch->company_id)->get();
+        }else{
+            $data['branch'] = $branch = Branch::where('id',Auth::user()->branch_id)->get();
+        }
+        return view('pages.contents.report.report_attandance',$data);
     }
     public function get_report_attadance(Request $request){
         $data = DB::table('v_all_attendance')
-                    ->select('*')
-                    ->whereBetween('date',[$request->from_date,$request->to_date])
+                    ->select('v_all_attendance.*')
+                    ->leftJoin('employees','employees.id','v_all_attendance.employee_id')
+                    ->where('employees.branch_id',$request->branch_id)
+                    ->whereBetween('v_all_attendance.date',[$request->from_date,$request->to_date])
                     ->get();
         return DataTables::of($data)->make(true);
     }
     public function attandancePrintPdf(Request $request){
         $dtl= DB::table('v_all_attendance')
-                    ->select('*')
-                    ->whereBetween('date',[$request->from_date,$request->to_date])
+                    ->select('v_all_attendance.*')
+                    ->leftJoin('employees','employees.id','v_all_attendance.employee_id')
+                    ->where('employees.branch_id',$request->branch_id)
+                    ->whereBetween('v_all_attendance.date',[$request->from_date,$request->to_date])
                     ->get();
         $mst = DB::table('v_all_attendance')
-                    ->select('employee_id','name')
-                    ->whereBetween('date',[$request->from_date,$request->to_date])
-                    ->groupBy('employee_id')
-                    ->groupBy('name')
+                    ->select('v_all_attendance.no_employee','v_all_attendance.name','v_all_attendance.employee_id')
+                    ->leftJoin('employees','employees.id','v_all_attendance.employee_id')
+                    ->where('employees.branch_id',$request->branch_id)
+                    ->whereBetween('v_all_attendance.date',[$request->from_date,$request->to_date])
+                    ->groupBy('v_all_attendance.no_employee')
+                    ->groupBy('v_all_attendance.employee_id')
+                    ->groupBy('v_all_attendance.name')
                     ->get();
         $data ['mst'] = $mst;
         $data ['dtl'] = $dtl;

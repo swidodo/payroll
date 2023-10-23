@@ -138,43 +138,31 @@ class OvertimeController extends Controller
     public function index()
     {
         if (Auth::user()->can('manage overtime')) {
-            // belum selesai nunggu kelanjutan dr mb elyn
-            if (Auth::user()->type != 'company') {
-                $user     = Auth::user();
-                $employee = Employee::where('user_id', '=', $user->id)->get();
-                $overtimes  = Overtime::where('employee_id', '=', $user->employee->id)->get();
-                $overtimeTypes = OvertimeType::where('created_by', '=', Auth::user()->creatorId())->get();
-                $dayTypes      = DayType::where('created_by', '=', Auth::user()->creatorId())->get();
-
-                //3 tier approval
-                if (!is_null($employee[0]->level_approval)) {
-                    $levelApprove = $employee[0]->approval;
-                    $approval = OvertimeApproval::where('level', $levelApprove->level)
-                        ->where('is_approver_company', false)
-                        ->where('approver_id', $employee[0]->id)
-                        ->get();
-                    foreach ($approval as $key => $value) {
-                        $overtimes = collect($overtimes)->prepend($value->overtime);
-                        $employee = collect($employee)->prepend($value->overtime->employee);
-                    }
-                }
-                //3 tier approval
-
-                return view('pages.contents.time-management.overtime.index', compact('overtimes', 'employee', 'overtimeTypes', 'dayTypes'));
-            } else {
-                $data['branch']     = Branch::Where('id','=',Auth::user()->branch_id)->get();
-                $data['employee']   = Employee::where('branch_id', '=', Auth::user()->branch_id)->get();
-                $data['dayTypes']   = DayType::where('created_by', '=', Auth::user()->creatorId())->get();
+            $branch = Branch::where('id',Auth::user()->branch_id)->first();
+            if (Auth::user()->initial == 'HO'){
+                $data['branch']     = Branch::Where('company_id','=',$branch->company_id)->get();
+                $data['dayTypes']   = DayType::select('day_types.id','day_types.name')
+                                                ->leftJoin('branches','branches.id','=','day_types.branch_id')
+                                                ->where('branches.company_id',$branch->company_id)->get();
                 $data['date']       = date('Y-m-d');
                 return view('pages.contents.time-management.overtime.index',$data );
-                // $overtimes = Overtime::where('created_by', '=', Auth::user()->creatorId())->get();
-                // $overtimeTypes = OvertimeType::where('created_by', '=', Auth::user()->creatorId())->get();
-                // return view('pages.contents.time-management.overtime.index', compact('overtimes', 'employee', 'overtimeTypes', 'dayTypes'));
+            }else{
+                $data['branch']     = Branch::Where('id','=',$branch->id)->get();
+                $data['dayTypes']   = DayType::select('day_types.id','day_types.name')
+                                                ->leftJoin('branches','branches.id','=','day_types.branch_id')
+                                                ->where('branches.company_id',$branch->company_id)->get();
+                $data['date']       = date('Y-m-d');
+                return view('pages.contents.time-management.overtime.index',$data );
             }
         } else {
             toast('Permission denied.', 'error');
             return redirect()->route('dashboard');
         }
+    }
+    public function get_employee(Request $request){
+        $branch = Branch::where('id',$request->branch_id)->first();
+        $data['employee'] = Employee::where('branch_id',$branch->id)->get();
+        return response()->json($data);
     }
     public function get_data(Request $request){
         $defaultDate = date('m');
@@ -208,7 +196,7 @@ class OvertimeController extends Controller
                                     <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">';
                                     if(Auth()->user()->can('edit overtime')){
-                                        $btn .= '<a  data-url="'.route('overtimes.edit', $row->id).'" id="edit-overtime" class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_overtime"><i class="fa fa-pencil m-r-5"></i> Edit</a>';
+                                        $btn .= '<a  data-id="'.$row->id.'" class="dropdown-item edit-overtime" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_overtime"><i class="fa fa-pencil m-r-5"></i> Edit</a>';
                                     }
                                     if(Auth()->user()->can('delete overtime')){
                                         $btn .= '<a id="delete-overtime" data-url="'.route('overtimes.destroy', $row->id).'" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_overtime"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
@@ -223,27 +211,7 @@ class OvertimeController extends Controller
 
     public function store(Request $request)
     {
-        // if (Auth::user()->can('create overtime')) {
-            // $validator = Validator::make(
-            //     $request->all(),
-            //     [
-            //         'employee_id' => 'required',
-            //         'overtime_type_id' => 'required',
-            //         'day_type_id' => 'required',
-            //         'start_date' => 'required',
-            //         'end_date' => 'required',
-            //         'start_time' => 'required',
-            //         'end_time' => 'required',
-            //         // 'duration' => 'required',
-            //         // 'notes' => 'required',
-            //         // 'status' => 'required',
-            //     ]
-            // );
-
-            // if ($validator->fails()) {
-            //     return redirect()->back()->with('errors', $validator->messages());
-            // }
-            // try {
+        // try {
                 // DB::beginTransaction();
                 $employee       = Employee::where('id', $request->employee_id)->where('created_by', Auth::user()->creatorId())->first();
                 $dayType        = DayType::where('id', $request->day_type_id)->first();
@@ -295,54 +263,6 @@ class OvertimeController extends Controller
                 }else{
 
                 }
-
-
-
-
-
-
-
-
-
-
-                // if (Auth::user()->type == 'company') {
-                //     $request['created_by']  = Auth::user()->creatorId();
-                //     $request['status']      = 'Approved';
-                //     $model = Overtime::create($request->all());
-                // } else {
-                //     $request['created_by']  = Auth::user()->creatorId();
-                //     $request['status']      = 'Pending';
-                //     $model = Overtime::create($request->all());
-                // }
-
-                // 3 Tier Approval
-                // $levels = LevelApproval::where('created_by', Auth::user()->creatorId())->get();
-                // foreach ($levels as $key => $value) {
-                //     OvertimeApproval::create([
-                //         'overtime_id'              => $model->id,
-                //         'level'                 => $value->level,
-                //         'is_approver_company'   => $value->company_id ? true : false,
-                //         'approver_id'           => isset($value->company_id) ? $value->company_id : $value->employee_id,
-                //         'status'                => 'Pending',
-                //         'created_by'            => Auth::user()->creatorId(),
-                //     ]);
-                // }
-                // 3 Tier Approval
-
-                // Utility::insertToRequest($model, Auth::user(), 'Overtime');
-
-                // DB::commit();
-                // toast('Overtime successfully created.', 'success');
-                // return redirect()->route('overtimes.index');
-        //     } catch (Exception $e) {
-        //         DB::rollBack();
-        //         toast('Something went wrong.', 'error');
-        //         return redirect()->route('overtimes.index');
-        //     }
-        // } else {
-        //     toast('Permission denied.', 'error');
-        //     return redirect()->route('overtimes.index');
-        // }
     }
 
     public function show($id)
@@ -357,38 +277,16 @@ class OvertimeController extends Controller
         return view('pages.contents.time-management.overtime.detail-rejected', compact('overtime', 'fileType'));
     }
 
-    public function edit($id)
+    public function edit(Request $request)
     {
-        $overtime = Overtime::find($id);
         if (Auth::user()->can('edit overtime')) {
-            if ($overtime->created_by == Auth::user()->creatorId()) {
-                $employee  = Employee::where('created_by', '=', Auth::user()->creatorId())->where('id', $overtime->employee_id)->first();
-                $overtimetypes = OvertimeType::where('created_by', '=', Auth::user()->creatorId())->get();
-                $daytypes = DayType::where('created_by', '=', Auth::user()->creatorId())->get();
-
-                // 3 Tier Approval
-                if (Auth::user()->type == 'company') {
-                    $levelApprove = LevelApproval::where('created_by', '=', Auth::user()->creatorId())
-                        ->where('company_id', Auth::user()->creatorId())
-                        ->first();
-                } elseif (Auth::user()->type != 'company' && Auth::user()->type != 'client') {
-                    $levelApprove = LevelApproval::where('created_by', '=', Auth::user()->creatorId())
-                        ->where('employee_id', isset(Auth::user()->employee) ? Auth::user()->employee->id : 0)
-                        ->first();
-                }
-
-                $overtimeApprovals = $overtime->overtime_approvals()->orderBy('level', 'asc')->get();
-                $levelAndApprovals = Utility::getLevelAndApprover($levelApprove, $overtimeApprovals);
-                // 3 Tier Approval
-
-                return response()->json([
-                    $employee, $overtimetypes, $overtime, $daytypes,
-                    'leaveApprovals' => $levelAndApprovals['approver'],
-                    'level_approve' => $levelAndApprovals['level']
-                ]);
-            } else {
-                return response()->json(['error' => 'Permission denied.'], 401);
-            }
+            $branch = Branch::where('id',Auth::user()->branch_id)->first();
+            $data['data']       = Overtime::where('id',$request->id)->with('employee')->first();
+            $data['dayTypes']   = DayType::select('day_types.id','day_types.name')
+                                                ->leftJoin('branches','branches.id','=','day_types.branch_id')
+                                                ->where('branches.company_id',$branch->company_id)->get();
+            return response()->json($data);
+           
         } else {
             return response()->json(['error' => 'Permission denied.'], 401);
         }

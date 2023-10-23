@@ -1,5 +1,5 @@
 @extends('pages.dashboard')
-@section('title', 'Employees')
+@section('title', 'Report Attendance')
 @section('dashboard-content')
 
 @push('addon-style')
@@ -24,19 +24,26 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title-sm">
-                        filter Periode
+                        Filter Periode
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-3 mb-2">
-                            <input type="date" name="from_date" id="from_date" class="form-control form-control-sm">
+                         <div class="col-md-3 mb-2">
+                            <select class="form-control form-select" id="branch_id" name="branch_id">
+                                @foreach($branch as $branches)
+                                <option value="{{ $branches->id }}">{{ $branches->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                        <div class="col-md-3 mb-2">
-                            <input type="date" name="to_date" id="to_date" class="form-control form-control-sm">
+                        <div class="col-md-2 mb-2">
+                            <input type="date" name="from_date" id="from_date" class="form-control">
                         </div>
-                        <div class="col-md-3 mb-2">
-                            <select class="form-control form-control-sm" name="type" id="type_print">
+                        <div class="col-md-2 mb-2">
+                            <input type="date" name="to_date" id="to_date" class="form-control">
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <select class="form-control" name="type" id="type_print">
                                 <option value="PDF">PDF</option>
                                 <option value="EXCEL">EXCEL</option>
                             </select>
@@ -65,7 +72,7 @@
                                     <th>Early Leaving</th>
                                     <th>Overtime</th>
                                     <th>Time Work</th>
-                                    <th>Amount Attandance</th>
+                                    <th>Amount Time</th>
                                 </tr>
                             </thead>
                             <tbody>

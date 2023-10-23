@@ -1,7 +1,7 @@
 @foreach ($mst as $mst)
 <table>
     <tr>
-        <td>Employee ID : {{ $mst->employee_id }}</td>
+        <td>Employee ID : {{ $mst->no_employee }}</td>
         <td></td>
     </tr>
     <tr>
@@ -21,7 +21,7 @@
             <th>Early Leaving</th>
             <th>Overtime</th>
             <th>Time Work</th>
-            <th>Amount Attendance</th>
+            <th>Amount Time</th>
         </tr>
     </thead>
     <tbody>

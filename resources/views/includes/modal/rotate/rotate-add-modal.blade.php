@@ -30,7 +30,7 @@
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label>Central Office</label>
+                                <label>Head Office</label>
                                 <input type="text" id="company" class="form-control form-select mb-3" disable>
                                 <input type="hidden" name="company_id" id="companyId">
                                 <input type="hidden" name="company_name" id="companyName">

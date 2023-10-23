@@ -1,6 +1,6 @@
 @extends('pages.dashboard')
 
-@section('title', 'Branches')
+@section('title', 'Leave type')
 
 @section('dashboard-content')
 <div class="page-wrapper">
@@ -26,7 +26,6 @@
             </div>
         </div>
         <!-- /Page Header -->
-
 
         @if (Session::has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">

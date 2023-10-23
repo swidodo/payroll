@@ -308,10 +308,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('history-leave', HistoryLeaveController::class);
         Route::post('data-history-leaves',[HistoryLeaveController::class,'get_data'])->name('data-history-leaves');
         Route::post('filter-leave-history',[HistoryLeaveController::class,'get_data_filter_employee'])->name('filter-leave-history');
-        Route::get('get-leaves',[LeaveController::class,'get_leave'])->name('get-leaves');
+        Route::post('get-leaves',[LeaveController::class,'get_leave'])->name('get-leaves');
+        Route::post('add-request-leave',[LeaveController::class,'request_manage_leave'])->name('add-request-leave');
+        Route::post('store-leave',[LeaveController::class,'store'])->name('store-leave');
+        Route::post('edit-leave',[LeaveController::class,'edit'])->name('edit-leave');
 
         Route::resource('overtimes', OvertimeController::class);
         Route::post('get-list-overtime', [OvertimeController::class,'get_data'])->name('get-list-overtime');
+        Route::post('get-overtime-employee', [OvertimeController::class,'get_employee'])->name('get-overtime-employee');
+        Route::post('edit-overtime', [OvertimeController::class,'edit'])->name('edit-overtime');
         Route::resource('time-management-report', TimeManagementReportController::class);
         Route::resource('time-management-report', TimeManagementReportController::class);
         Route::post('time-management-report/export-pdf', [TimeManagementReportController::class, 'exportPdf'])->name('time-management.export');
@@ -348,7 +353,7 @@ Route::group(['middleware' => 'auth'], function () {
         // Rotation employee
         Route::get('rotation-employee',[RotateController::class,'index'])->name('rotation-employee');
         Route::post('get-rotation-employee',[RotateController::class,'get_data_rotate'])->name('get-rotation-employee');
-        Route::get('get-branch-select',[RotateController::class,'get_branch'])->name('get-branch-select');
+        Route::post('get-branch-select',[RotateController::class,'get_branch'])->name('get-branch-select');
         Route::post('save-data-rotation',[RotateController::class,'save_rotation'])->name('save-data-rotation');
         Route::post('edit-data-rotation',[RotateController::class,'edit'])->name('edit-data-rotation');
         Route::post('update-data-rotation',[RotateController::class,'update'])->name('update-data-rotation');

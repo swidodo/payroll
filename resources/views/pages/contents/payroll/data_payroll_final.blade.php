@@ -48,6 +48,9 @@
                                     @endforeach
                                 </select>
                             </div>
+                             <div class="col-md-3 d-flex align-items-center mt-4"> 
+                                <button type="button" class="btn btn-primary" id="searchBranch">Search</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -378,5 +381,11 @@
                     ],
                 })
             }
+            $('#searchBranch').on('click',function(){
+                var startdate = $('#startdate').val();
+                var enddate = $('#enddate').val();
+                var branch_id = $('#branch_id').val();
+                loadData(startdate,enddate,branch_id)
+            })
     </script>
 @endpush

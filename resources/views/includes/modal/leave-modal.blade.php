@@ -9,50 +9,20 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{route('leaves.store')}}" method="POST" enctype="multipart/form-data">
+                    <form action="{{route('leaves.store')}}" method="POST" enctype="multipart/form-data" id="formLeave">
                         @csrf
                         <div class="row">
                             <div class="col-sm-12">
-                                {{-- @if (Auth::user()->type == 'company') --}}
-                                    <div class="form-group">
-                                        <label>Employee <span class="text-danger">*</span></label>
-                                        <select class="form-control select-employee" id="employee_id" name="employee_id">
-                                            @if ( !is_null(Auth::user()->employee) )
-                                                @foreach ($employee as $e)
-                                                    @if ($e->id == Auth::user()->employee->id)
-                                                        <option value="{{$e->id}}" selected>{{$e->name}}</option>
-                                                    @endif
-                                                @endforeach
-                                            @else
-                                                <option value="0">Select Employee</option>
-                                                @foreach ($employee as $e)
-                                                    <option value="{{$e->id}}">{{$e->name}}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-
-                                        @if ($errors->has('employee_id'))
-                                            <div class="text-danger" role="alert">
-                                                <small><strong>{{ $errors->get('employee_id')[0] }}</strong></small>
-                                            </div>
-                                        @endif
-                                    </div>
-                                {{-- @endif --}}
+                                <div class="form-group">
+                                    <label>Employee <span class="text-danger">*</span></label>
+                                    <select class="form-control select-employee" id="employee_id" name="employee_id">
+                                    </select>
+                                </div>
 
                                 <div class="form-group">
                                     <label for="leave_type_id" class="form-label">Leave Type</label>
                                     <select name="leave_type_id" id="leave_type_id" class="form-control select-leave-type">
-                                        <option value="0">Select Leave Type</option>
-                                        @foreach ($leaveType as $type)
-                                        <option value="{{$type->id}}">{{$type->title.'('.$type->days.')'}}</option>
-                                        @endforeach
                                     </select>
-
-                                        @if ($errors->has('employee_id'))
-                                            <div class="text-danger" role="alert">
-                                                <small><strong>{{ $errors->get('employee_id')[0] }}</strong></small>
-                                            </div>
-                                        @endif
                                 </div>
 
                                 <div class="row">
@@ -64,7 +34,7 @@
                                             @if ($errors->has('start_date'))
                                                 <div class="text-danger" role="alert">
                                                     <small><strong>{{ $errors->get('start_date')[0] }}</strong></small>
-                                                </div>
+                                                </div>x
                                             @endif
                                         </div>
                                     </div>
@@ -95,7 +65,7 @@
                                 
                                 <div class="form-group">
                                     <label for="formFile" class="form-label">Attachment (opsional)</label>
-                                    <input name="attachment_request" class="form-control" type="file" id="attachment_rejected_add">
+                                    <input name="attachment_request" class="form-control" type="file" id="attachment_leave">
                                     <a href="" id="attachment_rejected_add_anchor"></a>
                                 </div>
                             </div>
@@ -179,36 +149,14 @@
                                     <div class="form-group">
                                         <label>Employee <span class="text-danger">*</span></label>
                                         <select  class="form-control select-employee-edit" id="employee_id_edit" name="employee_id">
-                                            @foreach ($employee as $e)
-                                                @if (!is_null(Auth::user()->employee))
-                                                        <option value="{{$e->id}}">{{$e->name}}</option>
-                                                @elseif (is_null(Auth::user()->employee))
-                                                    <option value="{{$e->id}}">{{$e->name}}</option>
-                                                @endif
-                                            @endforeach
                                         </select>
-
-                                        @if ($errors->has('employee_id'))
-                                            <div class="text-danger" role="alert">
-                                                <small><strong>{{ $errors->get('employee_id')[0] }}</strong></small>
-                                            </div>
-                                        @endif
                                     </div>
 
                                 <div class="form-group">
                                     <label for="leave_type_id" class="form-label">Leave Type</label>
                                     <select name="leave_type_id" id="leave_type_id_edit" class="form-control select-leave-type-edit">
-                                        <option value="0">Select Leave Type</option>
-                                        @foreach ($leaveType as $type)
-                                        <option value="{{$type->id}}">{{$type->title.'('.$type->days.')'}}</option>
-                                        @endforeach
+                                       
                                     </select>
-
-                                        @if ($errors->has('employee_id'))
-                                            <div class="text-danger" role="alert">
-                                                <small><strong>{{ $errors->get('employee_id')[0] }}</strong></small>
-                                            </div>
-                                        @endif
                                 </div>
 
                                 <div class="row">

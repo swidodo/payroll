@@ -20,15 +20,22 @@ class ReportAttendanceExport implements FromView
     public function view(): View
     {
         $dtl= DB::table('v_all_attendance')
-                    ->select('*')
-                    ->whereBetween('date',[ $this->request->from_date, $this->request->to_date])
+                    ->select('v_all_attendance.*')
+                    ->leftJoin('employees','employees.id','v_all_attendance.employee_id')
+                    ->where('employees.branch_id',$this->request->branch_id)
+                    ->whereBetween('v_all_attendance.date',[ $this->request->from_date, $this->request->to_date])
                     ->get();
+                   
         $mst = DB::table('v_all_attendance')
-                    ->select('employee_id','name')
-                    ->whereBetween('date',[ $this->request->from_date, $this->request->to_date])
-                    ->groupBy('employee_id')
-                    ->groupBy('name')
+                    ->select('v_all_attendance.no_employee','v_all_attendance.name','v_all_attendance.employee_id')
+                    ->leftJoin('employees','employees.id','v_all_attendance.employee_id')
+                    ->where('employees.branch_id',$this->request->branch_id)
+                    ->whereBetween('v_all_attendance.date',[ $this->request->from_date, $this->request->to_date])
+                    ->groupBy('v_all_attendance.no_employee')
+                    ->groupBy('v_all_attendance.employee_id')
+                    ->groupBy('v_all_attendance.name')
                     ->get();
+                    
         $data ['mst'] = $mst;
         $data ['dtl'] = $dtl;
         return view('pages.contents.report.export_excel.attendance_periode',$data);

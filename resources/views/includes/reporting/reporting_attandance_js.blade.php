@@ -5,16 +5,18 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        let currentDate = new Date().toJSON().slice(0, 10);
-        getData(currentDate,currentDate);
-        function getData(from_date,to_date){
+        let startDate = new Date().toJSON().slice(0, 10);
+        let endDate = new Date().toJSON().slice(0, 10);
+        let branch = $('#branch_id').val();
+        getData(branch,startDate,endDate);
+        function getData(branch,from_date,to_date){
             $('#report_attandance').DataTable({
                 processing: true,
                 serverSide: true,
                 destroy: true,
                 ajax : {
                     "url" : 'get-reporting-attandance',
-                    "data" : {from_date:from_date, to_date:to_date}
+                    "data" : {branch_id:branch,from_date:from_date, to_date:to_date}
                 },
                 columns: [
                 {
@@ -22,8 +24,8 @@
                     name: 'date'
                 },
                 {
-                    data: 'employee_id',
-                    name: 'employee_id'
+                    data: 'no_employee',
+                    name: 'no_employee'
                 },
                 {
                     data: 'name',
@@ -71,8 +73,9 @@
         $('#filter_attandance').on('click', function(){
             var from_date = $('#from_date').val();
             var to_date = $('#to_date').val();
+            let branch = $('#branch_id').val();
             if (from_date !='' && to_date !=''){
-                getData(from_date,to_date);
+                getData(branch,from_date,to_date);
             }else{
                 alert('Sorry, from date and to date empty !');
             }
@@ -80,18 +83,16 @@
         $('#print_attandance').on('click',function(){
             var from_date = $('#from_date').val();
             var to_date = $('#to_date').val();
+            let branch = $('#branch_id').val();
             var type = $('#type_print').val();
-
-            var from_date = $('#from_date').val();
-            var to_date = $('#to_date').val();
             if (from_date =='' && to_date ==''){
                 alert('Sorry, from date and to date empty !');
             }
             if (type == 'PDF'){
-                window.open('reporting-attandance-pdf?from_date='+from_date+'&to_date='+to_date)
+                window.open('reporting-attandance-pdf?branch_id='+branch+'&from_date='+from_date+'&to_date='+to_date)
             }
             else if (type == 'EXCEL'){
-                window.location.href = 'reporting-attandance-excel?from_date='+from_date+'&to_date='+to_date;
+                window.location.href = 'reporting-attandance-excel?branch_id='+branch+'&from_date='+from_date+'&to_date='+to_date;
             }
         })
 
