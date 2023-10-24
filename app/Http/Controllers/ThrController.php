@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Branch;
+use App\Models\Employee;
+use App\Models\Thr;
 use Exception;
 use DataTables;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Models\Branch;
-use App\Models\Employee;
-use App\Models\Thr;
+
 
 class ThrController extends Controller
 {
