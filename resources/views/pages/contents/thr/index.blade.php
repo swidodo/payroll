@@ -27,7 +27,7 @@
                 <div class="col-auto float-end ms-auto">
                     <a href="javascript:void(0);" class="btn add-btn" id="add_position"><i class="fa fa-download"></i>Import</a>
                 </div>
-                @endcand
+                @endcan
             </div>
         </div>
         <!-- /Page Header -->
