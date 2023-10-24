@@ -18,12 +18,16 @@
                         <li class="breadcrumb-item active">THR</li>
                     </ul>
                 </div>
+                @can('create thr')
                 <div class="col-auto float-end ms-auto">
                     <a href="javascript:void(0);" class="btn add-btn" id="add_position"><i class="fa fa-plus"></i>THR</a>
                 </div> 
+                @endcan
+                @can('import thr')
                 <div class="col-auto float-end ms-auto">
                     <a href="javascript:void(0);" class="btn add-btn" id="add_position"><i class="fa fa-download"></i>Import</a>
                 </div>
+                @endcand
             </div>
         </div>
         <!-- /Page Header -->
