@@ -12,6 +12,9 @@ class Overtime extends Model
     protected $fillable = [
         'employee_id',
         'overtime_type_id',
+        'overtime_type',
+        'branch_id',
+        'nominal_per_hour',
         'day_type_id',
         'start_date',
         'end_date',

@@ -6,18 +6,20 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Create New Overtime</h5>
+                <h5 class="modal-title">Create Overtime</h5>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{route('overtimes.store')}}" method="POST">
+                <div class="col-sm-12">OVERTIME NORMATIF</div>
+                <hr />
+                <form id="formAddOvertime" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="religion" class="control-label" required>Employee ID </label>
+                                <label for="employee_id_add" class="control-label" required>Employee ID </label>
                                 <select  class="form-control select-employee" name="employee_id" id="employee_id_add" required>
                                 </select>
                                 <input type="hidden" name="branch_id" id="branch_id_overtime">
@@ -42,29 +44,11 @@
                                 <input type="date" name="start_date" id="enddate" class="form-control " placeholder="End Date" required>
                             </div>
                         </div>
-                        {{-- <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="religion" class="control-label" required>Overtime Type </label>
-                                <select class="form-control  select-overtime" name="overtime_type_id" id="overtime_id_add" required >
-                                    <option value="" selected>Change Overtime Type</option>
-                                    @foreach ($overtimeTypes as $type)
-                                    <option value="{{$type->id}}">{{$type->name}}</option>
-                                    @endforeach
-                                </select>
-
-                                @if ($errors->has('overtime_type_id'))
-                                <div class="text-danger" role="alert">
-                                    <small><strong>{{ $errors->get('overtime_type_id')[0] }}</strong></small>
-                                </div>
-                            @endif
-                            </div>
-                        </div> --}}
-
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Start Time </label>
-                                <input type="text" name="start_time" id="time_add" class="form-control" placeholder="00:00" required>
+                                <input type="text" name="start_time" id="start_time_add" class="form-control" placeholder="00:00" required>
 
                                 @if ($errors->has('start_time'))
                                 <div class="text-danger" role="alert">
@@ -77,7 +61,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>End Time </label>
-                                <input type="text" name="end_time" id="time_add" class="form-control" placeholder="00:00" required>
+                                <input type="text" name="end_time" id="end_time_add" class="form-control" placeholder="00:00" required>
 
                                 @if ($errors->has('end_time'))
                                 <div class="text-danger" role="alert">
@@ -88,7 +72,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="religion" class="control-label" required="">Day type </label>
+                                <label for="daytype_id_add" class="control-label" required="">Day type </label>
                                 <select class="form-control  select-day-type" name="day_type_id" id="daytype_id_add" required >
                                     <option value="" selected>Change Day Type</option>
                                     @foreach ($dayTypes as $type)
@@ -116,6 +100,15 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <input type="checkbox" id="unnorlamOvertime" name="unnormal_overtime" value="unnormal">
+                            <label> OVERTIME UNORMATIF</label>
+                            <hr />
+                        </div>
+                        <div class="row unnormal"></div>
+                    </div>
                     <div class="submit-section">
                         <button type="submit" class="btn btn-primary submit-btn">Submit</button>
                     </div>
@@ -137,19 +130,20 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" id="edit-form-overtime" method="POST" enctype="multipart/form-data">
-                    
+                <form id="edit-form-overtime">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="religion" class="control-label" required>Employee</label>
+                                <label for="viewEmployee" class="control-label" required>Employee</label>
                                 <input type="text" id="viewEmployee" class="form-control">
                                 <input type="hidden" id="employee_id_edit" name="employee_id">
+                                <input type="hidden" id="id" name="id">
+                                <input type="hidden" id="branchInput" name="branch_id">
                             </div>
                         </div>
-                        {{-- <div class="col-md-6">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label>Start Date </label>
+                                <label>Date </label>
                                 <input type="date" name="start_date" id="start_date_edit" class="form-control " placeholder="Start Date" required>
 
                                 @if ($errors->has('start_date'))
@@ -158,9 +152,9 @@
                                     </div>
                                 @endif
                             </div>
-                        </div> --}}
+                        </div>
 
-                        <div class="col-md-6">
+                       <!--  <div class="col-md-6">
                             <div class="form-group">
                                 <label>Date </label>
                                 <input type="date" name="end_date" id="end_date_edit" class="form-control " placeholder="End Date" required>
@@ -171,23 +165,7 @@
                                 </div>
                             @endif
                             </div>
-                        </div>
-
-                        {{-- <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="religion" class="control-label" required>Overtime Type </label>
-                                <select class="form-control  select-overtime-edit" name="overtime_type_id" id="overtime_type_edit" required >
-                                </select>
-
-                                @if ($errors->has('overtime_type_id'))
-                                <div class="text-danger" role="alert">
-                                    <small><strong>{{ $errors->get('overtime_type_id')[0] }}</strong></small>
-                                </div>
-                            @endif
-                            </div>
-                        </div> --}}
-
-
+                        </div> -->
 
                         <div class="col-lg-6">
                             <div class="form-group">
@@ -216,7 +194,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="religion" class="control-label" required="">Day type </label>
+                                <label for="day_type_id_edit" class="control-label" required="">Day type </label>
                                 <select class="form-control select" name="day_type_id" id="day_type_id_edit" required >
                                 </select>
 
@@ -247,15 +225,15 @@
 
 
                         <div class="col-md-12">
-                            <div class="form-group" id="approver" style="display: none">
+                            <!-- <div class="form-group" id="approver" style="display: none">
                                 <label for="status" class="form-label">Approved By</label>
                                 <div class="wrapper-approver">
 
                                 </div>
-                            </div>
+                            </div> -->
 
-                            <div class="form-group" id="form-status" style="display: none">
-                                <label for="status" class="form-label">Status</label>
+                            <!-- <div class="form-group" id="form-status" style="display: none">
+                                <label for="status_edit" class="form-label">Status</label>
                                 <input hidden type="text" name="level_approve" id="level_approve" value="">
                                 <select name="status" id="status_edit" class="form-control">
                                     <option value="0">Select Status</option>
@@ -269,17 +247,26 @@
                                             <small><strong>{{ $errors->get('employee_id')[0] }}</strong></small>
                                         </div>
                                     @endif
-                            </div>
+                            </div> -->
 
-                            <div class="form-group" id="rejected-reason" style="display: none">
-                                <label for="rejected_reason" class="form-label">Rejected Reason</label>
+                            <!-- <div class="form-group" id="rejected-reason" style="display: none">
+                                <label for="rejected_reason_edit" class="form-label">Rejected Reason</label>
                                 <textarea class="form-control" placeholder="Rejected Reason" name="rejected_reason" cols="30" rows="3" id="rejected_reason_edit"></textarea>
 
                                 <div class="mt-3">
                                     <label for="formFile" class="form-label">Attachment (opsional)</label> &nbsp; <span class="text-muted" style="font-size: 10px">pdf, jpg, jpeg, png</span>
                                     <input class="form-control" type="file" id="formFile" name="attachment_reject">
                                 </div>
-                            </div>
+                            </div> -->
+
+                        <div class="row mt-4">
+                        <div class="col-md-12">
+                            <input type="checkbox" id="edit_unnorlamOvertime" name="unnormal_overtime" value="unnormal">
+                            <label> OVERTIME UNORMATIF</label>
+                            <hr />
+                        </div>
+                        <div class="row edit_unnormal"></div>
+                    </div>
 
                         </div>
 
@@ -344,7 +331,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Start Date </label>
-                                <input type="date" name="start_date" id="startdate" class="form-control " placeholder="Start Date" required>
+                                <input type="date" name="start_date" id="startdate_export" class="form-control " placeholder="Start Date" required>
 
                                 @if ($errors->has('start_date'))
                                     <div class="text-danger" role="alert">
@@ -356,7 +343,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>End Date </label>
-                                <input type="date" name="end_date" id="enddate" class="form-control " placeholder="End Date" required>
+                                <input type="date" name="end_date" id="enddate_export" class="form-control " placeholder="End Date" required>
 
                                 @if ($errors->has('end_date'))
                                 <div class="text-danger" role="alert">

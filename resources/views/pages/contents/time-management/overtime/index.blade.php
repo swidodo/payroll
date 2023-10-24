@@ -29,7 +29,7 @@
                 </div>
                 @can('create overtime')
                     <div class="col-auto float-end ms-auto">
-                        <a href="#" id="newOvertime" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_overtime"><i class="fa fa-plus"></i> New Request</a>
+                        <a href="#" id="newOvertime" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_overtime"><i class="fa fa-plus"></i>Overtime</a>
                     </div>
                 @endcan
             </div>
@@ -52,7 +52,7 @@
                         <h4>Filter Data</h4>
                         <hr />
                         <div class="col-md-4">
-                            <label for="attendance" class="form-label">Branch</label>
+                            <label for="branchId" class="form-label">Branch</label>
                             <select class="form-control form-control-sm select" id="branchId" name="branch">
                                 @foreach ($branch as $branch)
                                     <option value="{{$branch->id}}" {{($branch->id == Auth::user()->branch_id) ? 'selected':''}}>{{$branch->name}}</option>
@@ -60,7 +60,7 @@
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <label for="attendance" class="form-label">Date</label>
+                            <label for="date" class="form-label">Date</label>
                             <input type="date" id="date" value="{{ $date}}" class="form-control">
                         </div>
                         <div class="col-md-4 d-flex align-items-center">
@@ -78,17 +78,16 @@
                             <th>Employee</th>
                             <th>Date</th>
                             {{-- <th>End Date</th> --}}
-                            {{-- <th>Overtime Type</th> --}}
                             <th>Day Type</th>
+                            <th>Overtime Type</th>
                             <th>Start Time</th>
                             <th>End Time</th>
-                            <th>Amount Fee</th>
                             <th>Duration</th>
+                            <th>nominal/hour</th>
+                            <th>Amount Fee</th>
                             <th>Status</th>
                             <th>Notes</th>
-                            @if(Auth::user()->can('edit overtime') || Auth::user()->can('delete overtime'))
-                                <th class="text-end">Action</th>
-                            @endif
+                            <th class="text-end">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -114,6 +113,7 @@
 
     <!-- Datetimepicker CSS -->
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap-datetimepicker.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/plugins/sweetalert2/sweetalert2.min.css')}}">
 @endpush
 
 @push('addon-script')
@@ -133,6 +133,7 @@
     <!-- Datatable JS -->
     <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
 
     @if (Session::has('edit-show'))
     <script>
@@ -216,76 +217,7 @@
                     dropdownParent: $('#edit_overtime')
                 });
             }
-
-                $('body').on('click', '#edit-overtime', function () {
-                    const editUrl = $(this).data('url');
-                    $('.wrapper-approver').empty()
-                    $('#approver').hide()
-                    $('#start_date_edit').val("")
-                    $('#end_date_edit').val("")
-                    $('#start_time_edit').val("")
-                    $('#end_time_edit').val("")
-                    $('#notes_edit').html("")
-
-
-                    $('#employee_id_edit option[value='+ 0 +']').attr('selected','selected');
-                    $('#employee_id_edit').val(0).trigger('change');
-
-                    $('#overtime_id_edit option[value='+0 +']').attr('selected','selected');
-                    $('#overtime_id_edit').val(0).trigger('change');
-
-                    $('#day_type_id_edit option[value='+ 0 +']').attr('selected','selected');
-                    $('#day_type_id_edit').val(0).trigger('change');
-
-
-                    $.get(editUrl, (data) => {
-
-                        // 3 tier approval
-                        if(data.level_approve != null)
-                        {
-                            $('#level_approve').attr('value', data.level_approve)
-                            $('#form-status').show()
-                        }
-                        if(data.leaveApprovals.length > 0)
-                        {
-                            $.each(data.leaveApprovals, function (indexInArray, valueOfElement) {
-                                if (valueOfElement !== null) {
-                                    $('.wrapper-approver').append(`<input disabled style="margin-bottom: 3px" class="form-control"  type="text" value="${valueOfElement.approver}">`)
-                                    $('#approver').show()
-                                }
-                            });
-                        }
-                        // 3 tier approval
-
-                        $('#start_date_edit').val(data[2].start_date)
-                        $('#end_date_edit').val(data[2].end_date)
-                        $('#start_time_edit').val(data[2].start_time)
-                        $('#end_time_edit').val(data[2].end_time)
-                        $('#notes_edit').val(data[2].notes)
-                        $('#rejected_reason_edit').val(data[2].rejected_reason)
-
-
-                        $('#employee_id_edit option[value='+ data[2].employee_id +']').attr('selected','selected');
-                        $('#employee_id_edit').val(data[2].employee_id ? data[2].employee_id : 0).trigger('change');
-
-                        $('#overtime_id_edit option[value='+ data[2].overtime_type_id +']').attr('selected','selected');
-                        $('#overtime_id_edit').val(data[2].overtime_type_id ? data[2].overtime_type_id : 0).trigger('change');
-
-                        $('#day_type_id_edit option[value='+ data[2].day_type_id +']').attr('selected','selected');
-                        $('#day_type_id_edit').val(data[2].day_type_id ? data[2].day_type_id : 0).trigger('change');
-
-                        $('#status_edit option[value='+ data[2].status +']').attr('selected','selected');
-                        $('#status_edit').val(data[2].status ? data[2].status : 0).trigger('change');
-
-                        const urlNow = '{{ Request::url() }}'
-                        $('#edit-form-overtime').attr('action', urlNow + '/' + data[2].id);
-                    })
-                });
-
-            $('body').on('click', '#delete-overtime', function(){
-                const deleteURL = $(this).data('url');
-                $('#form-delete-overtime').attr('action', deleteURL);
-            })
+               
             $('#searchData').on('click',function(){
                 var branchId = $('#branchId').val();
                 var date = $('#date').val();
@@ -324,6 +256,10 @@
                             name: 'day_name'
                         },
                         {
+                            data: 'overtime_type',
+                            name: 'overtime_type'
+                        },
+                        {
                             data: 'start_time',
                             name: 'start_time'
                         },
@@ -332,29 +268,48 @@
                             name: 'end_time'
                         },
                         {
-                            data: 'amount_fee',
-                            render : function(data, type, row){
-                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
-                                    if(base.lastIndexOf(".") != -1)
-                                        base = base.substring(0, base.lastIndexOf("."));
-                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-                            }
-                        },
-                        {
                             data: 'duration',
                             name: 'duration'
                         },
                         {
+                            data: 'nominal_per_hour',
+                            render : function(data, type, row){
+                                if(data != null){
+                                    var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                                    if(base.lastIndexOf(",") != -1)
+                                        base = base.substring(0, base.lastIndexOf(","));
+                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                }else{
+                                    return 0;
+                                }
+                               
+                            }
+                        },
+                        {
+                            data: 'amount_fee',
+                            render : function(data, type, row){
+                                if(data != null){
+                                    var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                                    if(base.lastIndexOf(",") != -1)
+                                        base = base.substring(0, base.lastIndexOf(","));
+                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                }else{
+                                    return 0;
+                                }
+                            }
+                        },
+                        
+                        {
                             data: 'status',
                             render : function(data,type,row){
                                 var btn ='';
-                                if (data === "Pending"){
+                                if (data === "pending"){
                                     btn = '<span class="badge badge-warning">Pending</span>'
                                 }
-                                if (data === "Approve"){
+                                if (data === "approve"){
                                     btn = '<span class="badge badge-success">Approve</span>'
                                 }
-                                if (data === "Reject"){
+                                if (data === "reject"){
                                     btn = '<span class="badge badge-danger">Reject</span>'
                                 }
                                 return btn;
@@ -406,9 +361,11 @@
 
                 },
                 success : function(respon){
+                    $('#id').val(respon.data.id)
+                    $('#branchInput').val(respon.data.branch_id)
                     $('#viewEmployee').val(respon.data.employee.name)
                     $('#employee_id_edit').val(respon.data.employee_id)
-                    $('#end_date_edit').val(respon.data.start_date)
+                    $('#start_date_edit').val(respon.data.start_date)
                     $('#start_time_edit').val(respon.data.start_time)
                     $('#end_time_edit').val(respon.data.end_time)
                     $('#notes_edit').val(respon.data.notes)
@@ -421,11 +378,199 @@
                         }
                     })
                     $('#day_type_id_edit').html(type);
+
+                    if (respon.data.overtime_type == "unnormal"){
+                       $('#edit_unnorlamOvertime').prop('checked',true);
+                       var input = `<div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="multiplier" class="control-label" required="">Multiplier(x)</label>
+                                                 <select class="form-control form-select" name="day_type_id" id="edit_multiplier" onchange="return multiAutoedit()" required >
+                                                    <option value="" selected>-- Multiplier --</option>
+                                                    <option value="1">1 x</option>
+                                                    <option value="2">2 x</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="edit_jml_overtime" class="control-label" required="">Duration</label>
+                                                <input type="text" name="duration_overtime" class="form-control" id="edit_jml_overtime" onkeyup="return durationAutoedit()" onkeypress="return angka()" value="`+respon.data.duration+`" required>
+                                            </div>
+                                        </div> 
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="edit_Overtime_hour" class="control-label">Nominal/Hour</label>
+                                                <input type="text" name="nominal" class="form-control" id="edit_Overtime_hour" onkeyup="return autoTotaledit()" onkeypress="return angka()" value="`+respon.data.nominal_per_hour+`" required>
+                                            </div>
+                                        </div> 
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="edit_totalNominal" class="control-label">Total Nominal</label>
+                                                <input type="text" name="total_nominal" class="form-control" id="edit_totalNominal" value="`+respon.data.amount_fee+`" onkeypress="return angka()">
+                                            </div>
+                                        </div>`;
+                        $('.edit_unnormal').html(input);
+
+                    }else{
+                       $('.edit_unnormal').html('');
+                    }
                 },
                 error : function(){
 
                 }
             })
         })
+        $('#edit_unnorlamOvertime').on('change',function(){
+            if(!($(this).prop('checked'))){
+                $('.edit_unnormal').attr("hidden",true)
+            }
+            else if($(this).prop('checked')){
+                $('.edit_unnormal').removeAttr("hidden")
+            }
+        })
+        $('#unnorlamOvertime').on('change',function(){
+            var input = `
+                    <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="multiplier" class="control-label" required="">Multiplier(x)</label>
+                                 <select class="form-control form-select" name="day_type_id" id="multiplier" onchange="return multiAuto()" required >
+                                    <option value="" selected>-- Multiplier --</option>
+                                    <option value="1">1 x</option>
+                                    <option value="2">2 x</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="jml_overtime" class="control-label" required="">Duration</label>
+                                <input type="text" name="duration_overtime" class="form-control" id="jml_overtime" onkeyup="return durationAuto()"  onkeypress="return angka()" required>
+                            </div>
+                        </div> 
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="nominalOvertime" class="control-label">Nominal/Hour</label>
+                                <input type="text" name="nominal" class="form-control" id="Overtime_hour" onkeyup="return autoTotal()"  onkeypress="return angka()" required>
+                            </div>
+                        </div> 
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="totalNominal" class="control-label">Total Nominal</label>
+                                <input type="text" name="total_nominal" class="form-control" id="totalNominal"  onkeypress="return angka()">
+                            </div>
+                        </div>
+            `;
+            if($(this).prop("checked")){
+                $('.unnormal').html(input);
+            }else{
+                $('.unnormal').html('');
+            }
+        })
+        function angka(){
+                var charCode = (e.which) ? e.which : event.keyCode
+                    if (charCode >31 && (charCode < 48 || charCode >57 ))
+                    return false;
+                return true;
+            }
+        $('#formAddOvertime').on('submit',function(e){
+            e.preventDefault()
+            var data = $('#formAddOvertime').serialize();
+            var branchId = $('#branchId').val()
+            var date = $('#date').val()
+            $.ajax({
+                url : '{{route('overtimes.store')}}',
+                type : 'post',
+                data : data,
+                dataType : 'json',
+                beforeSend : function(){
+
+                },
+                success : function(respon){
+                    if(respon.status == 'success'){
+                         $('#formAddOvertime')[0].reset();
+                         $('#add_overtime').modal('hide')
+                         loadData(branchId,date)
+                    }
+                    swal.fire({
+                        icon : respon.status,
+                        text : respon.msg
+                    })
+                },
+                error : function(){
+                    alert('Sameting went wrong !')
+                }
+            })
+        })
+
+        $('#edit-form-overtime').on('submit',function(e){
+            e.preventDefault()
+            var branchId = $('#branchId').val()
+            var date = $('#date').val()
+            var data = $('#edit-form-overtime').serialize()
+            $.ajax({
+                url : 'update-overtime',
+                type : 'post',
+                data :data,
+                dataType : 'json',
+                beforeSend : function(){
+
+                },
+                success : function(respon){
+                    if (respon.status == "success"){
+                        $('#edit_overtime').modal('hide')
+                        loadData(branchId,date);
+                    }
+                    swal.fire({
+                        icon : respon.status,
+                        text : respon.msg
+                    })
+                },
+                error : function(){
+                    alert('Sameting went wrong !')
+                }
+            })
+        })
+        function multiAuto(){
+            var Overtime_hour = $('#Overtime_hour').val()
+            var duration = $('#jml_overtime').val()
+            var multi = $('#multiplier').val();
+            var total = (multi * duration) * Overtime_hour;
+            $('#totalNominal').val(total)
+        }
+        function durationAuto(){
+            var Overtime_hour = $('#Overtime_hour').val()
+            var duration = $('#jml_overtime').val()
+            var multi = $('#multiplier').val();
+            var total = (multi * duration) * Overtime_hour;
+            $('#totalNominal').val(total)
+        }
+        function autoTotal(){
+            var Overtime_hour = $('#Overtime_hour').val()
+            var duration = $('#jml_overtime').val()
+            var multi = $('#multiplier').val();
+            var total = (multi * duration) * Overtime_hour;
+            $('#totalNominal').val(total)
+        }
+        function multiAutoedit(){
+            var Overtime_hour = $('#edit_Overtime_hour').val()
+            var duration = $('#edit_jml_overtime').val()
+            var multi = $('#edit_multiplier').val();
+            var total = (multi * duration) * Overtime_hour;
+            $('#edit_totalNominal').val(total)
+        }
+        function durationAutoedit(){
+            var Overtime_hour = $('#edit_Overtime_hour').val()
+            var duration = $('#edit_jml_overtime').val()
+            var multi = $('#edit_multiplier').val();
+            var total = (multi * duration) * Overtime_hour;
+            $('#edit_totalNominal').val(total)
+        }
+        function autoTotaledit(){
+            var Overtime_hour = $('#edit_Overtime_hour').val()
+            var duration = $('#edit_jml_overtime').val()
+            var multi = $('#edit_multiplier').val();
+            var total = (multi * duration) * Overtime_hour;
+            $('#edit_totalNominal').val(total)
+        }
+        
     </script>
 @endpush

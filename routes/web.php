@@ -326,6 +326,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('get-list-overtime', [OvertimeController::class,'get_data'])->name('get-list-overtime');
         Route::post('get-overtime-employee', [OvertimeController::class,'get_employee'])->name('get-overtime-employee');
         Route::post('edit-overtime', [OvertimeController::class,'edit'])->name('edit-overtime');
+        Route::post('update-overtime', [OvertimeController::class,'update'])->name('update-overtime');
         Route::resource('time-management-report', TimeManagementReportController::class);
         Route::resource('time-management-report', TimeManagementReportController::class);
         Route::post('time-management-report/export-pdf', [TimeManagementReportController::class, 'exportPdf'])->name('time-management.export');
