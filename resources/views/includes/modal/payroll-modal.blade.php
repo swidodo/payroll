@@ -101,24 +101,36 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-12">
-                                        <label>BPJS</label>
+                                         <div class="row">
+                                            <div class="col-md-3">
+                                                <label>BPJS NORMATIF</label>
+                                            </div>
+                                        </div>
                                         <hr />
                                     </div>
                                     <div class="row mx-4">
                                         <div class="row">
-                                    @if(isset($data_bpjs))
-                                        @foreach ($data_bpjs as $bpjs)
-                                            <div class="col-md-6">
-                                                <div class="form-check col-md-6 mb-3">
-                                                    <input class="form-check-input itemBpjs" data-id="{{ $bpjs->id }}" type="checkbox" name="bpjs[]" value="{{ $bpjs->id }}" id="flexCheckDefault">
-                                                    <label class="form-check-label" for="flexCheckDefault">
-                                                     {{ $bpjs->bpjs_name }}
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    @endif
+                                            @if(isset($data_bpjs))
+                                                @foreach ($data_bpjs as $bpjs)
+                                                    <div class="col-md-6">
+                                                        <div class="form-check col-md-6 mb-3">
+                                                            <input class="form-check-input itemBpjs" data-id="{{ $bpjs->id }}" type="checkbox" name="bpjs[]" value="{{ $bpjs->id }}" id="flexCheckDefault">
+                                                            <label class="form-check-label" for="flexCheckDefault">
+                                                             {{ $bpjs->bpjs_name }}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            @endif
                                         </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <input type="checkbox" id="customeBpjs" name="custome_bpjs" value="" >
+                                            <label>BPJS UNNORMATIF</label>
+                                        </div>
+                                        <hr />
+                                        <div id="costumeView"></div>
                                     </div>
                                 </div>
                             </div>

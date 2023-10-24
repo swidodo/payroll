@@ -25,4 +25,5 @@ class DeductionBpjs extends Controller
         return DataTables::of($data)
                         ->make(true);
     }
+    
 }

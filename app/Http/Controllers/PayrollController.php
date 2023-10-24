@@ -413,7 +413,10 @@ class PayrollController extends Controller
             return response()->json($res);
         }
     }
-
+    public function list_bpjs(){
+        $data['bpjs'] = Master_bpjs::all();
+        return response()->json($data);
+    }
     public function run_payroll(){
         if(Auth::user()->can('manage payroll')){
             $companyId          = Branch::where('id',Auth::user()->branch_id)->first();

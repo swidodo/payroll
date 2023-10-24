@@ -241,7 +241,11 @@
                         {
                             data: 'salary',
                             render : function(data,type,row){
-                                return data.toLocaleString('en-US');
+                                if (data !=null){
+                                    return data.toLocaleString('en-US');
+                                }else{
+                                    return 0;
+                                }
                             }
                         },
                         {
@@ -492,11 +496,49 @@
                     }
                 })
             })
-            // $('#costumeBpjs').on('change',function(){
-            //     let input = `
-            //         <div class="row">
-            //             <
-            //         </div>
-            // })
+            $('#customeBpjs').on('change',function(){
+                // $.ajax({
+                //     url : 'get-list-bpjs',
+                //     dataType :'json'.
+                //     beforeSend : function(){
+
+                //     },
+                //     success : function(respon){
+
+                //     },
+                //     error : function(){
+                //         alert('Sameting went wrong!')
+                //     }
+                // })
+                let input = `
+                        
+                        <div class="row" id="cusbpjs">
+                            <div class="col-md-6">
+                                <label>BPJS JHT</label>
+                                <input type="number" name="jht" value="" class="mb-3 form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label>BPJS JKK</label>
+                                <input type="number" name="jkk" class="mb-3 form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label>BPJS JKM</label>
+                                <input type="number" name="jkk" class="mb-3 form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label>BPJS JP</label>
+                                <input type="number" name="jp" class="mb-3 form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label>BPJS KESEHATAN</label>
+                                <input type="number" name="kesehatan" class="mb-3 form-control">
+                            </div>
+                        </div>`;
+                if($(this).prop("checked")){
+                    $('#costumeView').html(input);
+                }else{
+                    $('#costumeView').html('');
+                }
+            })
     </script>
 @endpush

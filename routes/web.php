@@ -54,6 +54,8 @@ use App\Http\Controllers\CompanyController;
 // request && approval
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\ThrController;
+// deduction other
+use App\Http\Controllers\DeductionOtherController;
 
 // report
 use App\Http\Controllers\HRM\EmployeeReportController;
@@ -171,26 +173,25 @@ Route::group(['middleware' => 'auth'], function () {
 
 
         Route::get('loan_cash_receipt',[LoanController::class,'installment'])->name('loan_cash_receipt');
-        Route::get('set-bpjstk', [PayrollController::class, 'indexSetBpjsTk'])
-                ->name('set-bpjstk.index');
-        Route::get('set-bpjstk/{id}/edit', [PayrollController::class, 'editSetBpjsTk'])
-                ->name('set-bpjstk.edit');
-        Route::put('set-bpjstk/{id}/update', [PayrollController::class, 'updateSetBpjsTk'])
-                ->name('set-bpjstk.update');
-        Route::post('set-bpjstk', [PayrollController::class, 'storeSetBpjsTk'])
-                ->name('set-bpjstk.store');
-        Route::delete('set-bpjstk/{id}/destroy', [PayrollController::class, 'destroySetBpjsTk'])
-                ->name('set-bpjstk.destroy');
+        // Route::get('set-bpjstk', [PayrollController::class, 'indexSetBpjsTk'])->name('set-bpjstk.index');
+        // Route::get('set-bpjstk/{id}/edit', [PayrollController::class, 'editSetBpjsTk'])
+        //         ->name('set-bpjstk.edit');
+        // Route::put('set-bpjstk/{id}/update', [PayrollController::class, 'updateSetBpjsTk'])
+        //         ->name('set-bpjstk.update');
+        // Route::post('set-bpjstk', [PayrollController::class, 'storeSetBpjsTk'])
+        //         ->name('set-bpjstk.store');
+        // Route::delete('set-bpjstk/{id}/destroy', [PayrollController::class, 'destroySetBpjsTk'])
+                // ->name('set-bpjstk.destroy');
 
         // Payroll
         Route::resource('payroll', PayrollController::class);
         Route::resource('payslips', PaySlipController::class);
-        Route::post('/payslips/generate-slip/{employee}', [PaySlipController::class, 'downloadSlip'])
-                ->name('payslips.generate-slip');
-        Route::post('/payslips/show-slip/{employee}', [PaySlipController::class, 'showSlip'])
-                ->name('payslips.show-slip');
-        Route::get('/payslips/download-pdf/{payslipEmployee}', [PaySlipController::class, 'downloadPDF'])
-                ->name('payslips.downloadPDF');
+        // Route::post('/payslips/generate-slip/{employee}', [PaySlipController::class, 'downloadSlip'])
+        //         ->name('payslips.generate-slip');
+        // Route::post('/payslips/show-slip/{employee}', [PaySlipController::class, 'showSlip'])
+        //         ->name('payslips.show-slip');
+        // Route::get('/payslips/download-pdf/{payslipEmployee}', [PaySlipController::class, 'downloadPDF'])
+        //         ->name('payslips.downloadPDF');
         Route::resource('denda', FineController::class);
         Route::get('ptkp', [PtkpController::class, 'index'])
                 ->name('setting.ptkp.index');
@@ -225,7 +226,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('payroll-final',[PayrollController::class,'get_payroll_final'])->name('payroll-final');
         Route::get('generate_slip_payroll/{id}',[PayrollController::class,'generate_slip_payroll'])->name('generate_slip_payroll');
         Route::post('get-slip',[PayrollController::class,'get_slip'])->name('get-slip');
-
+        Route::get('get-list-bpjs',[PayrollController::class,'list_bpjs'])->name('get-list-bpjs');
+        
         // Payroll Setting
         Route::get('/setting/bpjs-tk', [PayrollController::class, 'indexBpjsTk'])
                 ->name('setting.bpjs-tk.index');
@@ -253,7 +255,14 @@ Route::group(['middleware' => 'auth'], function () {
                 ->name('setting.jp.post');
         Route::resource('payslip-code-pin', PayslipCodePinController::class);
         Route::resource('checklist-attendance-summary', ChecklistAttendanceSummaryController::class);
-
+        // deduction other
+        Route::get('deduction-other', [DeductionOtherController::class, 'index'])->name('deduction-other');
+        Route::post('get-deduction-other', [DeductionOtherController::class, 'get_data'])->name('get-deduction-other');
+        Route::post('store-deduction-other', [DeductionOtherController::class, 'store'])->name('store-deduction-other');
+        Route::post('get-employee-deduction-other', [DeductionOtherController::class, 'create'])->name('get-employee-deduction-other');
+        Route::post('edit-deduction-other', [DeductionOtherController::class, 'edit'])->name('edit-deduction-other');
+        Route::post('update-deduction-other', [DeductionOtherController::class, 'update'])->name('update-deduction-other');
+        Route::post('delete-deduction-other', [DeductionOtherController::class, 'destroy'])->name('delete-deduction-other');
         // import
         Route::post('import-excel-attendance', [AttendanceEmployeeController::class, 'importExcel'])->name('import.excel.attendace');
 
@@ -409,6 +418,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('data-bpjs-value',[DeductionBpjs::class,'get_data'])->name('data-bpjs-value');
         // THR
         Route::get('thr',[ThrController::class,'index'])->name('thr');
+        Route::post('get-thr',[ThrController::class,'get_data'])->name('get-thr');
+        Route::post('generate-thr',[ThrController::class,'generate_store'])->name('generate-thr');
         // Rekap
         Route::get('rekap-attandance',[ReportRecapAttendanceController::class,'rekap_attendance'])->name('rekap-attandance');
         Route::post('get-rekap-attendance',[ReportRecapAttendanceController::class,'get_rekap_attendance'])->name('get-rekap-attendance');

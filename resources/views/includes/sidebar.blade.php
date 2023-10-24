@@ -148,7 +148,7 @@
                                 </a>
                             </li>
                             @endcanany
-                            @canany(['manage thr', 'create thr'])
+                            @canany(['manage thr'])
                             <li class=" {{(request()->routeIs('thr')) ? 'active' : ''}}">
                                 <a class=" {{(request()->routeIs('thr')) ? 'active' : ''}}" href="{{route('thr')}}"> THR
                                 </a>
@@ -162,7 +162,10 @@
                                         <li class="{{(request()->routeIs('loans*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('loans*')) ? 'active' : ''}}" href="{{route('loans.index')}}">Loan</a></li>
                                     @endcanany
                                     @canany(['manage loan', 'create loan'])
-                                        <li class="{{(request()->routeIs('loans*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('loans*')) ? 'active' : ''}}" href="{{route('loan_cash_receipt')}}">Installment</a></li>
+                                        <li class="{{(request()->routeIs('loan_cash_receipt')) ? 'active' : ''}}"><a class="{{(request()->routeIs('loan_cash_receipt')) ? 'active' : ''}}" href="{{route('loan_cash_receipt')}}">Installment</a></li>
+                                    @endcanany 
+                                    @canany(['manage deduction other'])
+                                        <li class="{{(request()->routeIs('deduction-other')) ? 'active' : ''}}"><a class="{{(request()->routeIs('deduction-other')) ? 'active' : ''}}" href="{{route('deduction-other')}}">Deduction Other</a></li>
                                     @endcanany
 
                                 </ul>

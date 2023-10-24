@@ -19,7 +19,10 @@
                     </ul>
                 </div>
                 <div class="col-auto float-end ms-auto">
-                    <a href="javascript:void(0);" class="btn add-btn" id="add_position"><i class="fa fa-plus"></i>Generate THR</a>
+                    <a href="javascript:void(0);" class="btn add-btn" id="add_position"><i class="fa fa-plus"></i>THR</a>
+                </div> 
+                <div class="col-auto float-end ms-auto">
+                    <a href="javascript:void(0);" class="btn add-btn" id="add_position"><i class="fa fa-download"></i>Import</a>
                 </div>
             </div>
         </div>
@@ -35,6 +38,24 @@
         @endif
 
         <div class="row">
+            <div class="card">
+                    <div class="card-body">
+                        <div class="row d-flex align-items-center">
+                            <div class="col-md-3">
+                                <label>Branch</label>
+                                <select class="form-select form-control" id="branch_id">
+                                    @foreach($branch as $br)
+                                    <option value="{{ $br->id }} ">{{ $br->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div> 
+            
+                            <div class="col-md-3 d-flex align-items-center mt-4"> 
+                                <button type="button" class="btn btn-primary" id="generate_thr">Generate THR</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <div class="col-md-12">
                 <div class="table-responsive">
                     <table class="table table-striped custom-table" id="table-position">
@@ -44,9 +65,13 @@
                                 <th>Branch</th>
                                 <th>Employee ID</th>
                                 <th>Name</th>
-                                <th>Department</th>
+                                <th>Bank Name</th>
+                                <th>Account Number</th>
                                 <th>Position</th>
-                                <th>years of service</th>
+                                <th>Department</th>
+                                <th>service of years </th>
+                                <th>Basic Salary</th>
+                                <th>Allowance Position</th>
                                 <th>Amount</th>
                                 <th class="text-end">Action</th>
                             </tr>
@@ -60,6 +85,7 @@
     </div>
     <!-- /Page Content -->
 </div>
+@endsection
  
 @push('addon-style')
     <!-- Datatable CSS -->
@@ -83,42 +109,97 @@
     <script src="{{asset('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
 
     <script>
-        // $(document).ready(function () {
-        //     $.ajaxSetup({
-        //     headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
-        // });
-        //     var table = $('#table-position').DataTable({
-        //         processing: true,
-        //         serverSide: true,
-        //         destroy: true,
-        //         ajax : {
-        //             url : "get-position",
-        //             type : 'post',
-        //         },
-        //         columns: [
-        //             {
-        //                 data: 'branch_name',
-        //                 name: 'branch_name'
-        //             },
-        //             {
-        //                 data: 'position_code',
-        //                 name: 'position_code'
-        //             },
-        //             {
-        //                 data: 'position_name',
-        //                 name: 'position_name'
-        //             }, 
-        //             {
-        //                 data: 'description',
-        //                 name: 'description'
-        //             },
-        //             {
-        //                 data: 'action',
-        //                 name : 'action'
-        //             },
-        //         ],
+        $(document).ready(function () {
+            $.ajaxSetup({
+            headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
+        });
+        var branchId = $('#branch_id').val();
+        loadData(branchId)
+        function loadData(branchId){
+            $('#table-position').DataTable({
+                processing: true,
+                serverSide: true,
+                destroy: true,
+                ajax : {
+                    url : "get-thr",
+                    type : 'post',
+                    data :{branch_id : branchId}
+                },
+                columns: [
+                    {
+                        data: 'date',
+                        name: 'date'
+                    },
+                    {
+                        data: 'branch_name',
+                        name: 'branch_name'
+                    },
+                    {
+                        data: 'no_employee',
+                        name : 'no_employee'
+                    },
+                    {
+                        data: 'employee_name',
+                        name : 'employee_name'
+                    },
+                    {
+                        data: 'bank_name',
+                        name : 'bank_name'
+                    },
+                    {
+                        data: 'account_number',
+                        name : 'account_number'
+                    },
+                    {
+                        data: 'position_name',
+                        name: 'position_name'
+                    }, 
+                    {
+                        data: 'departement_name',
+                        name: 'departement_name'
+                    }, 
+                    {
+                        data: 'service_of_year',
+                        name: 'service_of_year'
+                    },
+                    {
+                        data: 'basic_salary',
+                        name: 'basic_salary'
+                    },
+                    {
+                        data: 'amount_allowance_position',
+                        name: 'amount_allowance_position'
+                    },
+                    {
+                        data: 'amount',
+                        name: 'amount'
+                    },
+                ],
 
-        //     });
+            });
+        }
+        $('#generate_thr').on('click',function(e){
+            var branch = $('#branch_id').val()
+            $.ajax({
+                url :'generate-thr',
+                type :'post',
+                data :{branch_id : branch},
+                dataType : 'json',
+                beforeSend : function(){
+
+                },
+                success:function(respon){
+                    swal.fire({
+                        icon : respon.status,
+                        text : respon.msg
+                    })
+
+                },
+                error : function(){
+                    alert('Sameting went wrong !')
+                }
+            })
+        })
         //     $('#add_position').on('click', function(e){
         //         e.preventDefault();
         //         $.ajax({
@@ -251,6 +332,6 @@
         //                 }
         //             })
         //     })
-        // });
+        });
     </script>
 @endpush
