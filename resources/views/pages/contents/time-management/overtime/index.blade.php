@@ -82,6 +82,7 @@
                             <th>Overtime Type</th>
                             <th>Start Time</th>
                             <th>End Time</th>
+                            <th>Multiplier</th>
                             <th>Duration</th>
                             <th>nominal/hour</th>
                             <th>Amount Fee</th>
@@ -268,6 +269,16 @@
                             name: 'end_time'
                         },
                         {
+                            data: 'multiplier',
+                            render : function(data, type, row){
+                                if(data !=null){
+                                    return data;
+                                }else{
+                                    return 'culculative'
+                                }
+                            }
+                        },
+                        {
                             data: 'duration',
                             name: 'duration'
                         },
@@ -280,7 +291,7 @@
                                         base = base.substring(0, base.lastIndexOf(","));
                                     return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                                 }else{
-                                    return 0;
+                                    return 'culculative';
                                 }
                                
                             }
@@ -381,13 +392,22 @@
 
                     if (respon.data.overtime_type == "unnormal"){
                        $('#edit_unnorlamOvertime').prop('checked',true);
+                       if (respon.data.multiplier == 1){
+                            $aop =`<option value="1" selected>1 x</option>
+                                   <option value="2">2 x</option>`;
+                        }else if (respon.data.multiplier == 2){
+                            $aop =`<option value="1">1 x</option>
+                                   <option value="2" selected>2 x</option>`;
+                       }else{
+                            $aop =`<option value="" selected> -- Multiplier --</option>
+                                    <option value="1">1 x</option>
+                                   <option value="2">2 x</option>`;
+                       }
                        var input = `<div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="multiplier" class="control-label" required="">Multiplier(x)</label>
-                                                 <select class="form-control form-select" name="day_type_id" id="edit_multiplier" onchange="return multiAutoedit()" required >
-                                                    <option value="" selected>-- Multiplier --</option>
-                                                    <option value="1">1 x</option>
-                                                    <option value="2">2 x</option>
+                                                 <select class="form-control form-select" name="multiplier" id="edit_multiplier" onchange="return multiAutoedit()" required >
+                                                     `+$aop+`
                                                 </select>
                                             </div>
                                         </div>
@@ -433,7 +453,7 @@
                     <div class="col-md-3">
                             <div class="form-group">
                                 <label for="multiplier" class="control-label" required="">Multiplier(x)</label>
-                                 <select class="form-control form-select" name="day_type_id" id="multiplier" onchange="return multiAuto()" required >
+                                 <select class="form-control form-select" name="multiplier" id="multiplier" onchange="return multiAuto()" required >
                                     <option value="" selected>-- Multiplier --</option>
                                     <option value="1">1 x</option>
                                     <option value="2">2 x</option>
@@ -465,12 +485,6 @@
                 $('.unnormal').html('');
             }
         })
-        function angka(){
-                var charCode = (e.which) ? e.which : event.keyCode
-                    if (charCode >31 && (charCode < 48 || charCode >57 ))
-                    return false;
-                return true;
-            }
         $('#formAddOvertime').on('submit',function(e){
             e.preventDefault()
             var data = $('#formAddOvertime').serialize();
@@ -529,6 +543,12 @@
                 }
             })
         })
+        function angka(){
+            var charCode = (e.which) ? e.which : event.keyCode
+                if (charCode >31 && (charCode < 48 || charCode >57 ))
+                return false;
+            return true;
+        }
         function multiAuto(){
             var Overtime_hour = $('#Overtime_hour').val()
             var duration = $('#jml_overtime').val()

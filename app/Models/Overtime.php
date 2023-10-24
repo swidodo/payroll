@@ -24,6 +24,7 @@ class Overtime extends Model
         'amount_fee',
         'notes',
         'status',
+        'multiplier',
         'rejected_reason',
         'attachment_reject',
         'created_by',

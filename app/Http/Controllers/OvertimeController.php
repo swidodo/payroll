@@ -174,6 +174,7 @@ class OvertimeController extends Controller
                             'overtimes.nominal_per_hour',
                             'overtimes.amount_fee',
                             'overtimes.status',
+                            'overtimes.multiplier',
                             'overtimes.notes')
                     ->leftJoin('employees','employees.id','=','overtimes.employee_id')
                     ->leftJoin('day_types','day_types.id','=','overtimes.day_type_id')
@@ -220,7 +221,9 @@ class OvertimeController extends Controller
                 'duration'           => $request->duration_overtime,
                 'start_time'         => $request->start_time,
                 'end_time'           => $request->end_time,
-                'branch_id'           => $request->branch_id,
+                'branch_id'          => $request->branch_id,
+                'multiplier'         => $request->multiplier,
+                'created_by'         => Auth::user()->id
             ];
            $insert = Overtime::create($data);
            if ($insert){
@@ -283,6 +286,7 @@ class OvertimeController extends Controller
                             'duration'           => $overTimes,
                             'start_time'         => $request->start_time,
                             'end_time'           => $request->end_time,
+                            'created_by'         => Auth::user()->id
                         ];
                         $insert = Overtime::create($data);
                         if ($insert){
@@ -360,8 +364,10 @@ class OvertimeController extends Controller
                 'start_time'         => $request->start_time,
                 'end_time'           => $request->end_time,
                 'branch_id'           => $request->branch_id,
+                'multiplier'         => $request->multiplier,
                 'updated_at'          => date('Y-m-d h:m:s'),
             ];
+            // dd($data);
            $update = Overtime::where('id',$request->id)->update($data);
            if ($update){
                 $res = [
