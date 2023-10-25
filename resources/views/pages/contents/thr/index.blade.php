@@ -55,7 +55,7 @@
                             </div> 
                             <div class="col-md-3">
                                 <label>Cut off Thr</label>
-                                <input type="date" name="cutoff_thr" class="form-control">
+                                <input type="date" id="cutoff_thr" name="cutoff_thr" class="form-control">
                             </div> 
             
                             <div class="col-md-3 d-flex align-items-center mt-4"> 
@@ -122,8 +122,9 @@
             headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
         });
         var branchId = $('#branch_id').val();
-        loadData(branchId)
-        function loadData(branchId){
+        var cutoff_thr = $('#cutoff_thr').val();
+        loadData(branchId,cutoff_thr)
+        function loadData(branchId,cutoff_thr){
             $('#table-position').DataTable({
                 processing: true,
                 serverSide: true,
@@ -131,7 +132,7 @@
                 ajax : {
                     url : "get-thr",
                     type : 'post',
-                    data :{branch_id : branchId}
+                    data :{branch_id : branchId,cutoff_thr : cutoff_thr}
                 },
                 columns: [
                     {
@@ -187,11 +188,12 @@
             });
         }
         $('#generate_thr').on('click',function(e){
-            var branch = $('#branch_id').val()
+            var branch = $('#branch_id').val();
+            var cutoff_thr = $('#cutoff_thr').val();
             $.ajax({
                 url :'generate-thr',
                 type :'post',
-                data :{branch_id : branch},
+                data :{branch_id : branch,cutoff_thr:cutoff_thr},
                 dataType : 'json',
                 beforeSend : function(){
 
@@ -201,6 +203,7 @@
                         icon : respon.status,
                         text : respon.msg
                     })
+                    loadData(branch)
 
                 },
                 error : function(){
@@ -208,138 +211,6 @@
                 }
             })
         })
-        //     $('#add_position').on('click', function(e){
-        //         e.preventDefault();
-        //         $.ajax({
-        //             url : 'add-position',
-        //             type : 'get',
-        //             dataType : 'json',
-        //             beforeSend : function(){
-
-        //             },
-        //             success : function(respon){
-        //                 var branch = '';
-        //                 $.each(respon.branch, function(key,val){
-        //                     branch += `<option value="`+val.id+`">`+val.name+`</option>`
-        //                 })
-        //                 $('#branchId').html(branch);
-        //                 $('#add_modal_position').modal('show');
-        //             }
-        //         })
-        //     })
-           
-        //     $('#addFormPosition').on('submit', function(e){
-        //         e.preventDefault()
-        //         var data = $('#addFormPosition').serialize();
-
-        //         $.ajax({
-        //             url : 'store-position',
-        //             type : 'post',
-        //             data : data,
-        //             dataType : 'json',
-        //             beforeSend : function(){
-
-        //             },
-        //             success : function(respon){
-        //                 if (respon.status == "success"){
-        //                     $('#add_modal_position').modal('hide');
-        //                     $('#addFormPosition')[0].reset()
-        //                     table.ajax.reload();
-        //                 }
-        //                 swal.fire({
-        //                     icon : respon.status,
-        //                     text : respon.msg
-        //                 })
-        //             },
-        //             error : function(){
-        //                 alert('Someting went wrong !');
-        //             }
-        //         })
-        //     })
-        //     $(document).on('click','.edit-position',function(e){
-        //        e.preventDefault();
-        //        var id = $(this).attr('data-id')
-        //         $.ajax({
-        //             url : 'edit-position',
-        //             type : 'post',
-        //             data : {id : id},
-        //             dataType : 'json',
-        //             beforeSend : function(){
-
-        //             },
-        //             success : function(respon){
-        //                 $('#id').val(respon.data.id);
-        //                 $('#editBranchId').val(respon.data.branch_id);
-        //                 $('#editBranchName').val(respon.data.branch_name);
-        //                 $('#editPositionCode').val(respon.data.position_code);
-        //                 $('#editPositionName').val(respon.data.position_name);
-        //                 $('#editDescription').html(respon.data.description)
-                       
-        //                 $('#edit_position').modal('show');
-        //             }
-        //         })
-        //     })
-        //     $('#updateFormPotision').on('submit', function(e){
-        //         e.preventDefault()
-        //         var data = $('#updateFormPotision').serialize();
-        //         $.ajax({
-        //             url : 'update-position',
-        //             type : 'post',
-        //             data : data,
-        //             dataType : 'json',
-        //             beforeSend : function(){
-
-        //             },
-        //             success : function(respon){
-        //                 if (respon.status == "success"){
-        //                     $('#edit_position').modal('hide');
-        //                     table.ajax.reload();
-        //                 }
-        //                 swal.fire({
-        //                     icon : respon.status,
-        //                     text : respon.msg
-        //                 })
-        //             },
-        //             error : function(){
-        //                 alert('Someting went wrong !');
-        //             }
-        //         })
-        //     })
-        //     $(document).on('click','.delete-position',function(e){
-        //         e.preventDefault()
-        //         var id = $(this).attr('data-id')
-        //         Swal.fire({
-        //                     title: 'Are you sure?',
-        //                     text: "You won't be able to revert this!",
-        //                     icon: 'warning',
-        //                     showCancelButton: true,
-        //                     confirmButtonColor: '#3085d6',
-        //                     cancelButtonColor: '#d33',
-        //                     confirmButtonText: 'Yes, delete it!'
-        //                 }).then(function(confirm){
-        //                 if (confirm.value == true){
-        //                     $.ajax({
-        //                         url : 'destroy-position',
-        //                         type :'post',
-        //                         data : {id : id},
-        //                         dataType : 'json',
-        //                         beforeSend : function (){
-
-        //                         },
-        //                         success : function(respon){
-        //                             swal.fire({
-        //                                 icon : respon.status,
-        //                                 text : respon.msg
-        //                             })
-        //                             table.ajax.reload();
-        //                         },
-        //                         error : function(){
-        //                             alert('Someting went wrong !');
-        //                         }
-        //                     })
-        //                 }
-        //             })
-        //     })
         });
     </script>
 @endpush

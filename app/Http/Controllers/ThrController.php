@@ -74,6 +74,7 @@ class ThrController extends Controller
                                         DB::raw("(SELECT a.amount from allowance_finances a left join allowance_options b on b.id=a.allowance_type_id where b.name = 'Tunjangan jabatan and a.employee_id=employees.id') as tunjangan_jabatan"))
                                 ->leftJoin('payrolls','payrolls.employee_id','employees.id')
                                 ->where('employees.branch_id',$request->branch_id)
+                                ->where('employees.status','active')
                                 ->get();
             $thr =[];
             foreach($employee as $emp){
@@ -87,7 +88,7 @@ class ThrController extends Controller
                      $amount = round($emp->basic_salary + $emp->tunjangan_jabatan);
                 }
                 $data = [
-                    'date'                        => date('Y-m-d'),
+                    'date'                        => $request->cutoff_thr,
                     'employee_id'                 => $emp->id,
                     'branch_id'                   => $emp->branch_id,
                     'doj'                         => $emp->company_doj,
