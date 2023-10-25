@@ -77,11 +77,11 @@ class ThrController extends Controller
                                 ->get();
             $thr =[];
             foreach($employee as $emp){
-                $service = Carbon::now()->diff($emp->company_doj);
+                $service = Carbon::parse($request->cutoff_thr)->diff($emp->company_doj);
                 $lengthService = $service->y.' tahun,'. $service->m.' bulan';
-                if ($service->y < 1 && $service->m >= 3){
+                if ($service->y < 1 && $service->d >= 30){
                     $amount = Round(($emp->basic_salary + $emp->tunjangan_jabatan) / 12 * $service->m);
-                }elseif ($service->y < 1 && $service->m < 3 ){
+                }elseif ($service->y < 1 && $service->d < 30 ){
                     $amount = 0;
                 }else{
                      $amount = round($emp->basic_salary + $emp->tunjangan_jabatan);
@@ -96,6 +96,7 @@ class ThrController extends Controller
                     'amount_allowance_position'   => $emp->tunjangan_jabatan,
                     'amount'                      => $amount,
                     'created_by'                  => Auth::user()->id,
+                    'created_at'                  => date('Y-m-d h:m:s')
                 ];
                 if(!in_array($data,$thr)){
                     array_push($thr,$data);
@@ -108,7 +109,7 @@ class ThrController extends Controller
             if ($check > 0){
                 Thr::where('branch_id',$request->branch_id)->whereRaw("date_part('year',date) = date_part('year',date(now()))")->delete();
             }
-            Thr::create($thr);
+            Thr::insert($thr);
             DB::commit();
             
                 $res = [

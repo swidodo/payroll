@@ -53,6 +53,10 @@
                                     @endforeach
                                 </select>
                             </div> 
+                            <div class="col-md-3">
+                                <label>Cut off Thr</label>
+                                <input type="date" name="cutoff_thr" class="form-control">
+                            </div> 
             
                             <div class="col-md-3 d-flex align-items-center mt-4"> 
                                 <button type="button" class="btn btn-primary" id="generate_thr">Generate THR</button>
