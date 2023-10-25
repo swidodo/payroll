@@ -40,6 +40,8 @@ class ThrController extends Controller
                     ->leftJoin('position','position.id','employees.position_id')
                     ->leftJoin('branches','branches.id','employees.branch_id')
                     ->where('thrs.branch_id',$request->branch_id)
+                    ->whereRaw("date_part('year',date) = date_part('year',date(now()))")
+                    ->orderBy('employees.name','ASC')
                     ->get();
         return DataTables::of($data)
                 ->addIndexColumn()
