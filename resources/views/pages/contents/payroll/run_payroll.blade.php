@@ -80,9 +80,9 @@
                                 <th>Employee Bpjs Kesehatan</th>
                                 <th>Employee Bpjs Ketenegakerjaan</th>
                                 <th>Employee Bpjs Total</th>
-                                <th>Installment</th>
-                                <th>Loan</th>
-                                <th>Installment + Loan</th>
+                                <th>Loan Installment</th>
+                                <th>Loan Kasbon</th>
+                                <th>Total Loan</th>
                                 <th>Saksi Adm</th>
                                 <th>Pph21</th>
                                 <th>Total Deduction</th>
