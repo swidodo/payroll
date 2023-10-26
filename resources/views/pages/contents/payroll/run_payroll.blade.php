@@ -83,7 +83,7 @@
                                 <th>Loan Installment</th>
                                 <th>Loan Kasbon</th>
                                 <th>Total Loan</th>
-                                <th>Saksi Adm</th>
+                                <th>Total Deduction Onter</th>
                                 <th>Pph21</th>
                                 <th>Total Deduction</th>
                                 <th>Take Home Pay</th>
@@ -424,7 +424,7 @@
                             }
                         },
                         {
-                            data: 'sanksi_adm',
+                            data: 'total_deduction_other',
                            render : function(data, type, row){
                                 if (data !=null) {
                                     var base = new String(data).substring(data.lastIndexOf('/') + 1);
