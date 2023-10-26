@@ -150,6 +150,7 @@
                 $('#generate_run_payroll').on('click',function(){
                     var startdate       = $('#startdate').val();
                     var enddate        = $('#enddate').val();
+                    var branch_id   = $('#branch_id').val();
                     $.ajax({
                         url : 'generate_run_payroll',
                         type : 'post',
