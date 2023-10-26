@@ -72,9 +72,9 @@
                                     <th>Allowance Other</th>
                                     <th>Overtime</th>
                                     <th>Salary This Month</th>
-                                    <th>Employee Pay BPJS Kesehatan</th>
-                                    <th>Employee Pay BPJS Ketenagakerjaan</th>
-                                    <th>Total Employee Pay BPJS</th>
+                                    <th>Employee BPJS Kesehatan</th>
+                                    <th>Employee BPJS Ketenagakerjaan</th>
+                                    <th>Total Employee BPJS</th>
                                     <th>Installment</th>
                                     <th>Loans</th>
                                     <th>Pph21</th>
