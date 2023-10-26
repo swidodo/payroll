@@ -596,7 +596,7 @@ class PayrollController extends Controller
                     'installment' => $thp->installment,
                     'loans' => $thp->loans,
                     'total_pay_loans' => $thp->total_pay_loans,
-                    'total_deduction_other' => $thp->total_deduction_other,
+                    // 'total_deduction_other' => $thp->total_deduction_other,
                     'sanksi_adm' => '0',
                     'pph21' => $thp->pph21,
                     'total_deduction' => $thp->total_deduction,
