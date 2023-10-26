@@ -16,8 +16,25 @@
                                 <div class="form-group">
                                     <label>Employee <span class="text-danger">*</span></label>
                                     <select class="form-control select-employee" id="employee_id" name="employee_id">
+                                        @if ( !is_null(Auth::user()->employee) )
+                                            @foreach ($employee as $e)
+                                                @if ($e->id == Auth::user()->employee->id)
+                                                    <option value="{{$e->id}}" selected>{{$e->name}}</option>
+                                                @endif
+                                            @endforeach
+                                        @else
+                                            <option value="0">Select Employee</option>
+                                            @foreach ($employee as $e)
+                                                <option value="{{$e->id}}">{{$e->name}}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
-                                    <input type="hidden" name="branch_id" id="branchInput">
+
+                                    @if ($errors->has('employee_id'))
+                                        <div class="text-danger" role="alert">
+                                            <small><strong>{{ $errors->get('employee_id')[0] }}</strong></small>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -62,7 +79,21 @@
                                         </div>
                                         <hr />
                                     </div>
-                                    <div id="ListAllowance"></div>                                   
+                                    @if(isset($allowanceTypes))
+                                    @foreach ($allowanceTypes as $type)
+                                        <div class="row mx-4">
+                                            <div class="form-check col-md-6 mb-3">
+                                                <input class="form-check-input itemCheck" data-id="{{$type->id}}" type="checkbox" name="allowance_id[]" value="{{$type->id}}" id="flexCheckDefault">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    {{$type->name}}
+                                                </label>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <input type="text" class="form-control itemAmount {{$type->id}}" data-id="{{$type->id}}" name="amount[]"/>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                    @endif
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-12">
@@ -74,21 +105,25 @@
                                         <hr />
                                     </div>
                                     <div class="row mx-4">
-                                        <div class="row" id="ListBpjs">
+                                        <div class="row">
+                                            @if(isset($data_bpjs))
+                                                @foreach ($data_bpjs as $bpjs)
+                                                    <div class="col-md-6">
+                                                        <div class="form-check col-md-6 mb-3">
+                                                            <input class="form-check-input itemBpjs" data-id="{{ $bpjs->id }}" type="checkbox" name="bpjs[]" value="{{ $bpjs->id }}" id="flexCheckDefault">
+                                                            <label class="form-check-label" for="flexCheckDefault">
+                                                             {{ $bpjs->bpjs_name }}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <input type="checkbox" id="customeBpjs" name="unnormatif_bpjs" value="unnormatif" class="form-check-input" >
+                                            <input type="checkbox" id="customeBpjs" name="custome_bpjs" value="" >
                                             <label>BPJS UNNORMATIF</label>
-                                        </div>
-                                        <hr />
-                                        <div id="costumeView"></div>
-                                    </div> 
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <input type="checkbox" name="pph21" value="1" class="form-check-input" >
-                                            <label>PPH21</label>
                                         </div>
                                         <hr />
                                         <div id="costumeView"></div>
@@ -124,9 +159,8 @@
                             <div class="col-sm-12">
                                     <div class="form-group">
                                         <label>Employee <span class="text-danger">*</span></label>
-                                        <select class="form-control" id="employee_id_edit" name="employee_id">
+                                            <select class="form-control" id="employee_id_edit" name="employee_id">
                                         </select>
-                                        <input type="hidden" name="branch_id" id="editbranchInput">
 
                                         @if ($errors->has('employee_id'))
                                             <div class="text-danger" role="alert">
@@ -183,22 +217,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                        <div class="col-md-12">
-                                            <input type="checkbox" id="edit-customeBpjs" name="unnormatif_bpjs" value="unnormatif" class="form-check-input" >
-                                            <label>BPJS UNNORMATIF</label>
-                                        </div>
-                                        <hr />
-                                        <div id="editcostumeView"></div>
-                                    </div> 
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <input type="checkbox" id="status_pph21" name="pph21" value="1" class="form-check-input" >
-                                            <label>PPH21</label>
-                                        </div>
-                                        <hr />
-                                        
-                                    </div>
                                     </div>
                                 </div>
                             </div>

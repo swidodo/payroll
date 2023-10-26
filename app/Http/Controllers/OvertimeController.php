@@ -184,6 +184,7 @@ class OvertimeController extends Controller
                     }else{
                         $data->where(DB::raw("TO_CHAR(overtimes.start_date,'MM')"),'=',$defaultDate);
                     }
+                    $data->orderBy('employees.name','ASC');
                     $data->get();
         return DataTables::of($data)
                     ->addIndexColumn()

@@ -19,18 +19,7 @@
                                     <div class="form-group">
                                         <label>Employee <span class="text-danger">*</span></label>
                                         <select class="form-control select-employee" id="employee_id" name="employee_id">
-                                            @if ( !is_null(Auth::user()->employee) )
-                                                @foreach ($employee as $e)
-                                                    @if ($e->id == Auth::user()->employee->id)
-                                                        <option value="{{$e->id}}" selected>{{$e->name}}</option>
-                                                    @endif
-                                                @endforeach
-                                            @else
-                                                <option value="0">Select Employee</option>
-                                                @foreach ($employee as $e)
-                                                    <option value="{{$e->id}}">{{$e->name}}</option>
-                                                @endforeach
-                                            @endif
+                                            
                                         </select>
 
                                         @if ($errors->has('employee_id'))

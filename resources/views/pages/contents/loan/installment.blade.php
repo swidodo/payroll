@@ -26,7 +26,7 @@
                 </div>
                 @can('create loan')
                     <div class="col-auto float-end ms-auto">
-                        <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_loan"><i class="fa fa-plus"></i> New Installment</a>
+                        <a href="#" class="btn add-btn" id="NewInstallment" data-bs-toggle="modal" data-bs-target="#add_loan"><i class="fa fa-plus"></i>Installment</a>
                     </div>
                 @endcan
             </div>
@@ -233,12 +233,12 @@
                             return meta.row + meta.settings._iDisplayStart + 1;
                         }},
                         {
-                            data: 'employee.no_employee',
-                            name: 'employee.no_employee'
+                            data: 'no_employee',
+                            name: 'no_employee'
                         },
                         {
-                            data: 'employee.name',
-                            name: 'employee.name'
+                            data: 'employee_name',
+                            name: 'employee_name'
                         },
                         {
                             data: 'loan_type.name',
@@ -354,6 +354,29 @@
                     }
                 })
 
+        })
+        $('#NewInstallment').on('click', function(){
+            var branch = $('#branch-filter').val();
+            
+            $.ajax({
+                url : 'get-emp-loan',
+                type : 'post',
+                data : {branch_id : branch },
+                dataType : 'json',
+                beforeSend : function(){
+
+                },
+                success : function(respon){
+                    var emp = `<option value=""> -- select employee --</option>`
+                    $.each(respon.employee,function(key,val){
+                        emp +=`<option value="`+val.id+`">`+val.no_employee+` - `+val.name+`</option>`
+                    })
+                    $('#employee_id').html(emp)
+                },
+                error : function(){
+                    alert('Someting went wrong !')
+                }
+            })
         })
     </script>
 @endpush

@@ -26,7 +26,7 @@
                 </div>
                 @can('create allowance')
                     <div class="col-auto float-end ms-auto">
-                        <a href="#" class="btn add-btn" id="add-AllowanceOther"><i class="fa fa-plus"></i> New Allowance</a>
+                        <a href="#" class="btn add-btn" id="add-AllowanceOther"><i class="fa fa-plus"></i>Allowance</a>
                     </div>
                 @endcan
             </div>
@@ -160,10 +160,31 @@
         }
         $('#add-AllowanceOther').click(function(e){
             e.preventDefault();
+            var branchId = $('#branch_id').val();
             $('#add_modal_allowance_other').modal('show')
+            $.ajax({
+                url : 'get-allow-emp',
+                type : 'post',
+                data : {branch_id:branchId},
+                dataType : 'json',
+                beforeSend : function(){
+
+                },
+                success : function(respon){
+                    var emp = `<option value="">-- Select Employee --</option>`
+                    $.each(respon.employee,function(key,val){
+                        emp += `<option value="`+val.id+`">`+val.no_employee+` - `+val.name+`</option>`
+                    })
+                    $('#employee_id').html(emp)
+                },
+                error : function(){
+                    Alert('Sameting went wrong !')
+                }
+            })
         })
         $('#form-addallowanceOther').on('submit',function(e){
             e.preventDefault();
+            var branchId = $('#branch_id').val();
             var data = $('#form-addallowanceOther').serialize();
             $.ajax({
                 url : 'store-allowance-other',
@@ -174,13 +195,17 @@
 
                 },
                 success : function(respon){
-                    table.ajax.reload();
+                     if(respon.status =="success"){
+                        $('#add_modal_allowance_other').modal('hide')
+                        $('#form-addallowanceOther')[0].reset();
+                        loadData(branchId ,"")
+                     }
+                    
                     swal.fire({
                         icon : respon.status,
                         text : respon.msg
                     })
-                    $('#add_modal_allowance_other').modal('hide')
-                    $('#form-addallowanceOther')[0].reset();
+                    
                 },
                 error : function(e){
                     console.log(e.responseJSON.errors)
@@ -245,6 +270,7 @@
         })
         $(document).on('click','.delete-allowance-other',function(e){
             e.preventDefault();
+            var branchId = $('#branch_id').val();
             var id = $(this).attr('data-id')
             Swal.fire({
                 title: 'Are you sure?',
@@ -269,7 +295,7 @@
                             icon : respon.status,
                             text : respon.msg,
                         })
-                        table.ajax.reload();
+                        loadData(branchId ,"")
                     },
                     error : function (){
                         alert('There is an error !, please try again')

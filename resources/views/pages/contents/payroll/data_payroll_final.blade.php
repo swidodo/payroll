@@ -1,6 +1,6 @@
 @extends('pages.dashboard')
 
-@section('title', 'Payroll')
+@section('title', 'Pay Slip')
 
 @section('dashboard-content')
 @php
@@ -18,7 +18,7 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Payroll</h3>
+                    <h3 class="page-title">Pay Slip</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Payroll</li>

@@ -131,29 +131,44 @@ function getListMasterBpjs(branchId){
             {
                 data: 'bpjs_kesehatan',
                 render : function(data, type, row){
-                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
-                                    if(base.lastIndexOf(".") != -1)
-                                        base = base.substring(0, base.lastIndexOf("."));
-                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                            }
+                    if(data !=null){
+                        var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                        if(base.lastIndexOf(".") != -1)
+                            base = base.substring(0, base.lastIndexOf("."));
+                            return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        
+                    }else{
+                        return 0;
+                    }
+                }
             },
             {
                 data: 'bpjs_ketenagakerjaan',
                 render : function(data, type, row){
-                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
-                                    if(base.lastIndexOf(".") != -1)
-                                        base = base.substring(0, base.lastIndexOf("."));
-                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                            }
+                    if(data !=null){
+                        var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                        if(base.lastIndexOf(".") != -1)
+                            base = base.substring(0, base.lastIndexOf("."));
+                            return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        
+                    }else{
+                        return 0;
+                    }
+                }
             },
             {
                 data: 'total_bpjs',
                 render : function(data, type, row){
-                                var base = new String(data).substring(data.lastIndexOf('/') + 1);
-                                    if(base.lastIndexOf(".") != -1)
-                                        base = base.substring(0, base.lastIndexOf("."));
-                                    return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                            }
+                    if(data !=null){
+                        var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                        if(base.lastIndexOf(".") != -1)
+                            base = base.substring(0, base.lastIndexOf("."));
+                            return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        
+                    }else{
+                        return 0;
+                    }
+                }
             },
         ],
 

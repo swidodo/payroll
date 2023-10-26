@@ -66,11 +66,14 @@ class LoanController extends Controller
         }else{
             $status = 'ongoing';
         }
-        $data = Loan::where('branch_id','=',$branchId)
-                    ->where('installment','=',0)
-                    ->where('number_of_installment','=',0)
-                    ->where('status','=',$status)
-                    ->with('loan_type','employee')
+        $data = Loan::select('loans.*','employees.no_employee','employees.name as employee_name')
+                    ->leftJoin('employees','employees.id','loans.employee_id')
+                    ->where('loans.branch_id','=',$branchId)
+                    ->where('loans.installment','=',0)
+                    ->where('loans.number_of_installment','=',0)
+                    ->where('loans.status','=',$status)
+                    ->orderBy('loans.created_at','DESC')
+                    ->with('loan_type')
                     ->get();
 
         return DataTables::of($data)
@@ -106,10 +109,12 @@ class LoanController extends Controller
         }else{
             $status = 'ongoing';
         }
-        $data = Loan::where('branch_id','=',$branchId)
-                    ->where('installment','<>',0)
-                    ->where('status','=',$status)
-                    ->with('loan_type','employee')
+        $data = Loan::select('loans.*','employees.no_employee','employees.name as employee_name')
+                    ->leftJoin('employees','employees.id','loans.employee_id')
+                    ->where('loans.branch_id','=',$branchId)
+                    ->where('loans.installment','<>',0)
+                    ->where('loans.status','=',$status)
+                    ->with('loan_type')
                     ->get();
 
         return DataTables::of($data)
@@ -135,6 +140,10 @@ class LoanController extends Controller
                         ->rawColumns(['action'])
                         ->make(true);
 
+    }
+    public function get_employee(Request $request){
+        $data['employee'] = Employee::where('branch_id',$request->branch_id)->get();
+        return response()->json($data);
     }
     public function store(Request $request)
     {

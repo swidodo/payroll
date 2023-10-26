@@ -72,7 +72,12 @@ class PayrollController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
     }
-
+    public function get_data_setpayroll(Request $request){
+        $data['employee']        = Employee::where('branch_id', '=',$request->branch_id)->get();
+        $data['allowanceTypes']  = AllowanceOption::where('branch_id', '=', Auth::user()->branch_id)->get();
+        $data['data_bpjs'  ]     = Master_bpjs::where('branch_id','=',Auth::user()->branch_id)->get();
+        return response()->json($data);
+    }
     public function store(Request $request)
     {
         if (Auth::user()->can('create payroll')) {
@@ -110,11 +115,14 @@ class PayrollController extends Controller
 
                 $payroll->payslip_type_id    = $request->payslip_type_id;
                 $payroll->amount             = $request->amount_salary;
-                $payroll->branch_id          = Auth::user()->branch_id;
+                $payroll->branch_id          = $request->branch_id;
+                $payroll->status_pph21       = (isset($request->pph21)) ? $request->pph21 : '0';
+                $payroll->status_bpjs       = (isset($request->unnormatif_bpjs)) ? 'unnormatif' : 'normatif';
                 $payroll->created_by         = Auth::user()->creatorId();
 
                 $employee->salary            = $payroll->amount;
                 $employee->salary_type       = isset($payroll->payslip_type) ? $payroll->payslip_type->name . ' (' . ucwords($payroll->payslip_type->type) . ')' : null;
+
 
                 // allowance
 
@@ -143,62 +151,119 @@ class PayrollController extends Controller
                     AllowanceFinance::Insert($data_array);
                 }
                 DB::commit();
+
                 $allowance = AllowanceFinance::select(DB::raw('sum(allowance_finances.amount) as allowance'))
                                               ->leftJoin('allowance_options','allowance_options.id','=','allowance_finances.allowance_type_id')
                                               ->where('allowance_finances.employee_id',$request->employee_id)
                                               ->where('allowance_options.pay_type','=','fixed')
                                               ->first();
-                if(isset($request->bpjs)){
-                    $array_bpjs = [];
-                    $salary_gross = $request->amount_salary + $allowance->allowance;
 
-                    foreach($request->bpjs as $bpjs){
-                        $getName     = Master_bpjs::where('id','=',$bpjs)->first();
-                        $max_bpjs = DB::table('master_limit_max_bpjs')->select('value')->where('bpjs_code',$getName->bpjs_code)->first();
-                            
-                        if ($getName->bpjs_code == 'KSHT' || $getName->bpjs_code == 'JP'){
-                            if ($max_bpjs->value <  $salary_gross ){
-                                $val_comp   = round($max_bpjs->value * $getName->is_company / 100 );
-                                $val_emp    = round($max_bpjs->value * $getName->is_employee / 100 );
-                                $total      = round($val_comp + $val_emp);
-                            }else{
-                                $val_comp   = round($salary_gross * $getName->is_company / 100 );
-                                $val_emp    = round($salary_gross * $getName->is_employee / 100 );
-                                $total      = round($val_comp + $val_emp);
-                            }
-                        }else{
-                            $val_comp   = round($salary_gross * $getName->is_company / 100 );
-                            $val_emp    = round($salary_gross * $getName->is_employee / 100 );
-                            $total      = round($val_comp + $val_emp);
+                if (isset($request->unnormatif_bpjs)){
+                    $salary_gross = $request->amount_salary + $allowance->allowance;
+                    $bp = [];
+                    $code = ['JHT','JKK','JKM','JP','KSHT'];
+                    foreach ($code as $dt ){
+                        if ($dt == "JHT"){
+                            $bpjs = Master_bpjs::where('bpjs_code','JHT')->first();
+                            $valbpjs  = $request->bpjs_jht;
+                        }else if($dt == "JKK"){
+                             $bpjs = Master_bpjs::where('bpjs_code','JKK')->first();
+                            $valbpjs  = $request->bpjs_jkk;
+                        }else if($dt == "JKM"){
+                             $bpjs = Master_bpjs::where('bpjs_code','JKM')->first();
+                            $valbpjs  = $request->bpjs_jkm;
+                        }else if($dt == "JP"){
+                             $bpjs = Master_bpjs::where('bpjs_code','JP')->first();
+                            $valbpjs  = $request->bpjs_jp;
+                        }else if($dt == "KSHT"){
+                             $bpjs = Master_bpjs::where('bpjs_code','KSHT')->first();
+                            $valbpjs  = $request->bpjs_kesehatan;
                         }
-                        $check = Bpjs_value::where('employee_id','=',$request->employee_id)->where('bpjs_id','=',$bpjs)->count();
-                        if ($check <= 0){
+                        if ($valbpjs != ""){
                             $databpjs = [
-                                'bpjs_id'       => $bpjs,
-                                'bpjs_name'     => $getName->bpjs_name,
-                                'is_company'    => $val_comp,
-                                'is_employee'   => $val_emp,
-                                'is_total'      => $total,
+                                'bpjs_id'       => $bpjs->id,
+                                'bpjs_name'     => $bpjs->bpjs_name,
+                                'is_company'    => 0,
+                                'is_employee'   => $valbpjs,
+                                'is_total'      => $valbpjs,
                                 'salary_gross'  => $salary_gross,
                                 'salary_kes'    => 0,
                                 'salary_tk_jp'  => 0,
                                 'value_kes'     => 0,
                                 'value_tk_jp'   => 0,
                                 'employee_id'   => $request->employee_id,
-                                'branch_id'     => Auth::user()->branch_id,
+                                'branch_id'     => $request->branch_id,
                                 'created_at'    => date("Y-m-d H:i:s"),
                                 'updated_at'    => date("Y-m-d H:i:s"),
                             ];
-                            if(! in_array($databpjs,$array_bpjs)){
-                                array_push($array_bpjs,$databpjs);
+                            if(!in_array($databpjs,$bp)){
+                                array_push($bp,$databpjs);
+                            }
+                        }  
+                    }
+                    $checkBp = Bpjs_value::where('employee_id',$request->employee_id)->count(); 
+                    if ($checkBp > 0 ){
+                        Bpjs_value::destroy($request->employee_id);
+                    }
+                    if(count($bp) > 0){
+                        Bpjs_value::Insert($bp);
+                    }
+                } else {
+                    if(isset($request->bpjs)){
+                        $array_bpjs = [];
+                        $salary_gross = $request->amount_salary + $allowance->allowance;
+
+                        foreach($request->bpjs as $bpjs){
+                            $getName     = Master_bpjs::where('id','=',$bpjs)->first();
+                            $max_bpjs = DB::table('master_limit_max_bpjs')->select('value')->where('bpjs_code',$getName->bpjs_code)->first();
+                                
+                            if ($getName->bpjs_code == 'KSHT' || $getName->bpjs_code == 'JP'){
+                                if ($max_bpjs->value <  $salary_gross ){
+                                    $val_comp   = round($max_bpjs->value * $getName->is_company / 100 );
+                                    $val_emp    = round($max_bpjs->value * $getName->is_employee / 100 );
+                                    $total      = round($val_comp + $val_emp);
+                                }else{
+                                    $val_comp   = round($salary_gross * $getName->is_company / 100 );
+                                    $val_emp    = round($salary_gross * $getName->is_employee / 100 );
+                                    $total      = round($val_comp + $val_emp);
+                                }
+                            }else{
+                                $val_comp   = round($salary_gross * $getName->is_company / 100 );
+                                $val_emp    = round($salary_gross * $getName->is_employee / 100 );
+                                $total      = round($val_comp + $val_emp);
+                            }
+                            $check = Bpjs_value::where('employee_id','=',$request->employee_id)->where('bpjs_id','=',$bpjs)->count();
+                            if ($check <= 0){
+                                $databpjs = [
+                                    'bpjs_id'       => $bpjs,
+                                    'bpjs_name'     => $getName->bpjs_name,
+                                    'is_company'    => $val_comp,
+                                    'is_employee'   => $val_emp,
+                                    'is_total'      => $total,
+                                    'salary_gross'  => $salary_gross,
+                                    'salary_kes'    => 0,
+                                    'salary_tk_jp'  => 0,
+                                    'value_kes'     => 0,
+                                    'value_tk_jp'   => 0,
+                                    'employee_id'   => $request->employee_id,
+                                    'branch_id'     => $request->branch_id,
+                                    'created_at'    => date("Y-m-d H:i:s"),
+                                    'updated_at'    => date("Y-m-d H:i:s"),
+                                ];
+                                if(! in_array($databpjs,$array_bpjs)){
+                                    array_push($array_bpjs,$databpjs);
+                                }
                             }
                         }
-                    }
-                    if (count($array_bpjs) > 0){
-                        $bpjsVlue = Bpjs_value::Insert($array_bpjs);
+                        $checkBp = Bpjs_value::where('employee_id',$request->employee_id)->count(); 
+                        if ($checkBp > 0 ){
+                            Bpjs_value::destroy($request->employee_id);
+                        }
+                        if (count($array_bpjs) > 0){
+                            $bpjsVlue = Bpjs_value::Insert($array_bpjs);
+                        }
                     }
                 }
-
 
                 $res = [
                     'status' => 'success',
@@ -215,8 +280,11 @@ class PayrollController extends Controller
                 return response()->json($res);
             }
         } else {
-            toast('Permission denied.', 'error');
-            return redirect()->route('payroll.index');
+            $res = [
+                    'status' => 'error',
+                    'msg'    => 'Permission denied.',
+                ];
+            return response()->json($res);
         }
     }
 
@@ -271,10 +339,13 @@ class PayrollController extends Controller
                 }
                 $employee = Employee::where('id', '=', $request->employee_id)->first();
                 $salary_type  = (isset($checkPayroll->payslip_type_id)) ? $checkPayroll->payslip_type->name . ' (' . ucwords($checkPayroll->payslip_type->type) . ')' : null;
-
+                $status_bpjs =(isset($request->unnormatif_bpjs)) ? 'unnormatif' : 'normatif';
+                $status_pph21 = (isset($request->pph21)) ? $request->pph21 : '0';
                 $payroll = [
                     'payslip_type_id' => $request->payslip_type_id,
                     'amount'          => $request->amount_salary,
+                    'status_bpjs'     => $status_bpjs,
+                    'status_pph21'    => $status_pph21,
                     'update_by'       => Auth::user()->creatorId(),
                 ];
 
@@ -317,53 +388,105 @@ class PayrollController extends Controller
                                             ->where('employee_id',$request->employee_id)
                                             ->where('allowance_options.pay_type','=','fixed')
                                             ->first();
-                $a = 0;
-                $array_bpjs = [];
-                $salary_gross = $request->amount_salary + $allowance->allowance;
 
-                if(isset($request->bpjs)){
-                    foreach($request->bpjs as $bpjs){
-                        $getName     = Master_bpjs::where('id','=',$bpjs)->first();
-                        $max_bpjs = DB::table('master_limit_max_bpjs')->select('value')->where('bpjs_code',$getName->bpjs_code)->first();
-                            
-                        if ($getName->bpjs_code == 'KSHT' || $getName->bpjs_code == 'JP'){
-                            if ($max_bpjs->value <  $salary_gross ){
-                                $val_comp   = round($max_bpjs->value * $getName->is_company / 100 );
-                                $val_emp    = round($max_bpjs->value * $getName->is_employee / 100 );
-                                $total      = round($val_comp + $val_emp);
+                if (isset($request->unnormatif_bpjs)){
+                    $salary_gross = $request->amount_salary + $allowance->allowance;
+                    $bp = [];
+                    $code = ['JHT','JKK','JKM','JP','KSHT'];
+                    foreach ($code as $dt ){
+                        if ($dt == "JHT"){
+                            $bpjs = Master_bpjs::where('bpjs_code','JHT')->first();
+                            $valbpjs  = $request->bpjs_jht;
+                        }else if($dt == "JKK"){
+                             $bpjs = Master_bpjs::where('bpjs_code','JKK')->first();
+                            $valbpjs  = $request->bpjs_jkk;
+                        }else if($dt == "JKM"){
+                             $bpjs = Master_bpjs::where('bpjs_code','JKM')->first();
+                            $valbpjs  = $request->bpjs_jkm;
+                        }else if($dt == "JP"){
+                             $bpjs = Master_bpjs::where('bpjs_code','JP')->first();
+                            $valbpjs  = $request->bpjs_jp;
+                        }else if($dt == "KSHT"){
+                             $bpjs = Master_bpjs::where('bpjs_code','KSHT')->first();
+                            $valbpjs  = $request->bpjs_kesehatan;
+                        }
+                        if ($valbpjs != ""){
+                            $databpjs = [
+                                'bpjs_id'       => $bpjs->id,
+                                'bpjs_name'     => $bpjs->bpjs_name,
+                                'is_company'    => 0,
+                                'is_employee'   => $valbpjs,
+                                'is_total'      => $valbpjs,
+                                'salary_gross'  => $salary_gross,
+                                'salary_kes'    => 0,
+                                'salary_tk_jp'  => 0,
+                                'value_kes'     => 0,
+                                'value_tk_jp'   => 0,
+                                'employee_id'   => $request->employee_id,
+                                'branch_id'     => $request->branch_id,
+                                'created_at'    => date("Y-m-d H:i:s"),
+                                'updated_at'    => date("Y-m-d H:i:s"),
+                            ];
+                            if(!in_array($databpjs,$bp)){
+                                array_push($bp,$databpjs);
+                            }
+                        }  
+                    }
+                    
+                    if(count($bp) > 0){
+                        Bpjs_value::where('employee_id','=',$request->employee_id)->delete();
+                        Bpjs_value::Insert($bp);
+                    }
+                } else {
+                    $a = 0;
+                    $array_bpjs = [];
+                    $salary_gross = $request->amount_salary + $allowance->allowance;
+
+                    if(isset($request->bpjs)){
+                        foreach($request->bpjs as $bpjs){
+                            $getName     = Master_bpjs::where('id','=',$bpjs)->first();
+                            $max_bpjs = DB::table('master_limit_max_bpjs')->select('value')->where('bpjs_code',$getName->bpjs_code)->first();
+                                
+                            if ($getName->bpjs_code == 'KSHT' || $getName->bpjs_code == 'JP'){
+                                if ($max_bpjs->value <  $salary_gross ){
+                                    $val_comp   = round($max_bpjs->value * $getName->is_company / 100 );
+                                    $val_emp    = round($max_bpjs->value * $getName->is_employee / 100 );
+                                    $total      = round($val_comp + $val_emp);
+                                }else{
+                                    $val_comp   = round($salary_gross * $getName->is_company / 100 );
+                                    $val_emp    = round($salary_gross * $getName->is_employee / 100 );
+                                    $total      = round($val_comp + $val_emp);
+                                }
                             }else{
                                 $val_comp   = round($salary_gross * $getName->is_company / 100 );
                                 $val_emp    = round($salary_gross * $getName->is_employee / 100 );
                                 $total      = round($val_comp + $val_emp);
                             }
-                        }else{
-                            $val_comp   = round($salary_gross * $getName->is_company / 100 );
-                            $val_emp    = round($salary_gross * $getName->is_employee / 100 );
-                            $total      = round($val_comp + $val_emp);
+                            $databpjs = [
+                                'bpjs_id'       => $bpjs,
+                                'bpjs_name'     => $getName->bpjs_name,
+                                'is_company'    => $val_comp,
+                                'is_employee'   => $val_emp,
+                                'is_total'      => $total,
+                                'salary_gross'  => $salary_gross,
+                                'salary_kes'    => 0,
+                                'salary_tk_jp'  => 0,
+                                'value_kes'     => 0,
+                                'value_tk_jp'   => 0,
+                                'employee_id'   => $request->employee_id,
+                                'branch_id'     => $request->branch_id,
+                                'created_at'    => date("Y-m-d H:i:s"),
+                                'updated_at'    => date("Y-m-d H:i:s"),
+                            ];
+                            // dd($request);
+                            if(! in_array($databpjs,$array_bpjs)){
+                                array_push($array_bpjs,$databpjs);
+                            }
                         }
-                        $databpjs = [
-                            'bpjs_id'       => $bpjs,
-                            'bpjs_name'     => $getName->bpjs_name,
-                            'is_company'    => $val_comp,
-                            'is_employee'   => $val_emp,
-                            'is_total'      => $total,
-                            'salary_gross'  => $salary_gross,
-                            'salary_kes'    => 0,
-                            'salary_tk_jp'  => 0,
-                            'value_kes'     => 0,
-                            'value_tk_jp'   => 0,
-                            'employee_id'   => $request->employee_id,
-                            'branch_id'     => Auth::user()->branch_id,
-                            'created_at'    => date("Y-m-d H:i:s"),
-                            'updated_at'    => date("Y-m-d H:i:s"),
-                        ];
-                        if(! in_array($databpjs,$array_bpjs)){
-                            array_push($array_bpjs,$databpjs);
+                        if (count($array_bpjs) > 0){
+                            Bpjs_value::where('employee_id','=',$request->employee_id)->delete();
+                            $bpjsVlue = Bpjs_value::Insert($array_bpjs);
                         }
-                    }
-                    if (count($array_bpjs) > 0){
-                        Bpjs_value::where('employee_id','=',$request->employee_id)->delete();
-                        $bpjsVlue = Bpjs_value::Insert($array_bpjs);
                     }
                 }
                 $res = [

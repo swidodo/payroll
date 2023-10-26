@@ -141,6 +141,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('edit-allowance-other',[Allowance_otherController::class,'edit'])->name('edit-allowance-other');
         Route::post('update-allowance-other',[Allowance_otherController::class,'update'])->name('update-allowance-other');
         Route::post('delete-allowance-other',[Allowance_otherController::class,'destroy'])->name('delete-allowance-other');
+        Route::post('get-allow-emp',[Allowance_otherController::class,'get_employee'])->name('');
 
         // leave type
         Route::post('create-leave-type', [LeaveTypeController::class,'store'])->name('create-leave-type');
@@ -162,6 +163,8 @@ Route::group(['middleware' => 'auth'], function () {
                 ->name('get-list-installment');
         Route::post('get-list-loan',[LoanController::class,'get_data_castReceipt'])
                 ->name('get-list-loan');
+        Route::post('get-emp-loan',[LoanController::class,'get_employee'])
+                ->name('get-emp-loan');
         Route::post('update-loan-installment',[LoanController::class,'update'])
                 ->name('update-loan-installment');
         Route::post('update-loan',[LoanController::class,'update'])
@@ -213,6 +216,7 @@ Route::group(['middleware' => 'auth'], function () {
         
 
         // payroll new
+        Route::post('get-data-setpayroll',[PayrollController::class,'get_data_setpayroll'])->name('get-data-setpayroll');
         Route::post('get-data-payroll',[PayrollController::class,'get_data'])->name('get-data-payroll');
         Route::post('payroll-addNew',[PayrollController::class,'store'])->name('payroll-addNew');
         Route::post('edit-data-payroll',[PayrollController::class,'edit'])->name('edit-data-payroll');

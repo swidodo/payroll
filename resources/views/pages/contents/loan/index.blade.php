@@ -26,7 +26,7 @@
                 </div>
                 @can('create loan')
                     <div class="col-auto float-end ms-auto">
-                        <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_loan"><i class="fa fa-plus"></i> New Loan</a>
+                        <a href="#" class="btn add-btn" id="NewLoan" data-bs-toggle="modal" data-bs-target="#add_loan"><i class="fa fa-plus"></i>Loan</a>
                     </div>
                 @endcan
             </div>
@@ -227,12 +227,12 @@
                             return meta.row + meta.settings._iDisplayStart + 1;
                         }},
                         {
-                            data: 'employee.no_employee',
-                            name: 'employee.no_employee'
+                            data: 'no_employee',
+                            name: 'no_employee'
                         },
                         {
-                            data: 'employee.name',
-                            name: 'employee.name'
+                            data: 'employee_name',
+                            name: 'employee_name'
                         },
                         {
                             data: 'amount',
@@ -266,6 +266,28 @@
                 var status = $('#status-filter').val()
                 loadData(branch,status)
             })
+            $('#NewLoan').on('click',function(){
+                var branch = $('#branch-filter').val();
+                 $.ajax({
+                    url : 'get-emp-loan',
+                    type : 'post',
+                    data : {branch_id : branch },
+                    datType : 'json',
+                    beforeSend : function(){
+
+                    },
+                    success : function(respon){
+                        var emp = `<option value=""> -- select employee --</option>`
+                        $.each(respon.employee,function(key,val){
+                            emp +=`<option value="`+val.id+`">`+val.no_employee+` - `+val.name+`</option>`
+                        })
+                        $('#employee_id').html(emp)
+                    },
+                    error: function(){
+                        alert('Sameting went wrong !')
+                    }
+                })
+            })
             $('#edit-form-loan').on('submit',function(e){
                 e.preventDefault();
                 var data = $('#edit-form-loan').serialize();
@@ -278,7 +300,6 @@
 
                     },
                     success : function(respon){
-                        e.preventDefault();
                         swal.fire({
                             icon : respon.status,
                             text : respon.msg,

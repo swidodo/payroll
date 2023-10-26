@@ -51,7 +51,11 @@ class Allowance_otherController extends Controller
                         ->rawColumns(['action'])
                         ->make(true);
     }
-     public function store(Request $request){
+    public function get_employee(Request $request){
+        $data['employee'] = Employee::where('branch_id',$request->branch_id)->get();
+        return response()->json($data);
+    }
+    public function store(Request $request){
         $validate = $this->validate($request, [
             'employee_id'           => 'required|string',
             'allowance_option_id'   => 'required|string',

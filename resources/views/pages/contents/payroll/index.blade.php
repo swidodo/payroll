@@ -1,6 +1,6 @@
 @extends('pages.dashboard')
 
-@section('title', 'Payroll')
+@section('title', 'Set Payroll')
 
 @section('dashboard-content')
 @php
@@ -18,15 +18,15 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Payroll</h3>
+                    <h3 class="page-title">Set Payroll</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Payroll</li>
+                        <li class="breadcrumb-item active">Set Payroll</li>
                     </ul>
                 </div>
                 @can('create payroll')
                     <div class="col-auto float-end ms-auto">
-                        <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_payroll"><i class="fa fa-plus"></i> New Payroll</a>
+                        <a href="#" class="btn add-btn" id="NewSetPayroll" data-bs-toggle="modal" data-bs-target="#add_payroll"><i class="fa fa-plus"></i>Payroll</a>
                     </div>
                 @endcan
             </div>
@@ -259,6 +259,60 @@
                 var branchId = $('#branch_id').val();
                 loadData(branchId ,employeeId="");
             })
+            $('#NewSetPayroll').on('click',function(){
+                var branch_id = $('#branch_id').val()
+                $.ajax({
+                    url : 'get-data-setpayroll',
+                    type : 'post',
+                    data : {branch_id : branch_id },
+                    dataType : 'json',
+                    beforeSend : function (){
+
+                    },
+                    success : function(respon){
+                        $('#costumeView').html('');
+                        var emp = `<option value="">-- Select Employee --</option>`;
+                        $.each(respon.employee,function(key,val){
+                            emp += `<option value="`+val.id+`">`+val.no_employee+` - `+val.name+`</option>`
+                        })
+                        $('#employee_id').html(emp)
+
+                        var allowance = '';
+                         $.each(respon.allowanceTypes,function(key,val){
+                            allowance += `<div class="row mx-4">
+                                            <div class="form-check col-md-6 mb-3">
+                                                <input class="form-check-input itemCheck" data-id="`+val.id+`" type="checkbox" name="allowance_id[]" value="`+val.id+`" id="flexCheckDefault">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    `+val.name+`
+                                                </label>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <input type="text" class="form-control itemAmount `+val.id+`" data-id="`+val.id+`" name="amount[]" disabled/>
+                                            </div>
+                                        </div>`
+                         })
+                        $('#ListAllowance').html(allowance)
+                        $('#branchInput').val($('#branch_id').val())
+
+                        var bpjs = '';
+                        $.each(respon.data_bpjs,function(key,val){
+                            bpjs += `<div class="col-md-6">
+                                        <div class="form-check col-md-6 mb-3">
+                                            <input class="form-check-input itemBpjs" data-id="`+val.id+`" type="checkbox" name="bpjs[]" value="`+val.id+`" id="flexCheckDefault">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                             `+val.bpjs_name+`
+                                            </label>
+                                        </div>
+                                    </div>`;
+                        })
+                         $('#ListBpjs').html(bpjs)
+
+                    },
+                    error : function (){
+                        alert('Sameting went wrong!');
+                    }
+                })
+            })
             $('#payroll_submit').on('submit',function(e){
                 e.preventDefault();
                 var branchId = $('#branch_id').val();
@@ -361,8 +415,11 @@
                             }
                         })
                         $.each(respon.master_bpjs,function(key,val){
-
-                        var checked = (bpjsChecked.includes(val.id)) ? 'checked' : '';
+                        if(respon.payroll.status_bpjs == "normatif"){
+                            var checked = (bpjsChecked.includes(val.id)) ? 'checked' : '';
+                        }else{
+                            var checked = (bpjsChecked.includes(val.id)) ? '' : '';
+                        }
                         bpjs += ` <div class="col-md-6">
                                         <div class="form-check col-md-6 mb-3">
                                             <input class="form-check-input itemBpjs editItemBpjs" data-id="`+val.id+`" data-code = "`+val.bpjs_code+`" data-empId ="`+respon.payroll.employee_id+`" type="checkbox" name="bpjs[]" value="`+val.id+`" id="flexCheckDefault" `+checked+`>
@@ -401,10 +458,162 @@
                         $('#payslip_type_id_edit').html(payslip)
                         $('#amount_edit').val(respon.payroll.amount)
                         $('#editId').val(respon.payroll.id)
+                        $('#editbranchInput').val(respon.payroll.branch_id)
                         $('#bpjs-list').html(bpjs);
                         $('#nominal_bpjs_kes_edit').val(nominal_bpjs_kes);
                         $('#nominal_bpjs_jp_edit').val(nominal_bpjs_jp);
                         $('#list-allowance').html(allowance);
+                        if (respon.payroll.status_pph21 == 1){
+                            $('#status_pph21').prop('checked',true)
+                        }else{
+                            $('#status_pph21').prop('checked',false)
+                        }
+                        if(respon.payroll.status_bpjs == "unnormatif"){
+                            var jht = []; 
+                            var jkk = [];
+                            var jkm = [];
+                            var jp = [];
+                            var ksht = [];
+                            $.each(respon.bpjs,function(key,val){
+                                if(val.bpjs_name == "BPJS JHT"){
+                                    jht.push(val.is_employee);
+                                }else if(val.bpjs_name == "BPJS JKK"){
+                                    jkk.push(val.is_employee);
+                                }else if(val.bpjs_name == "BPJS JKm"){
+                                    jkm.push(val.is_employee);
+                                }else if(val.bpjs_name == "BPJS JP"){
+                                    jp.push(val.is_employee);
+                                }else if(val.bpjs_name == "BPJS KESEHATAN"){
+                                    ksht.push(val.is_employee);
+                                }
+                            })
+                            var valjht = (jht.length > 0) ? jht[0] : '';
+                            var valjkk = (jkk.length > 0) ? jkk[0] : '';
+                            var valjkm = (jkm.length > 0) ? jkm[0] : '';
+                            var valjp = (jp.length > 0) ? jp[0] : '';
+                            var valksht = (ksht.length > 0) ? ksht[0] : '';
+
+                            var jhtenable = (jht.length > 0) ? '' : 'disabled';
+                            var jkkenable = (jkk.length > 0 ) ? '' : 'disabled';
+                            var jkmenable = (jkm.length > 0 ) ? '' : 'disabled';
+                            var jpenable  = (jp.length > 0) ? '' : 'disabled';
+                            var kshtenable = (ksht.length > 0) ? '' : 'disabled';
+
+                            var jhtselected = (jht.length > 0) ? 'checked' : '';
+                            var jkkselected = (jkk.length > 0 ) ? 'checked' : '';
+                            var jkmselected = (jkm.length > 0 ) ? 'checked' : '';
+                            var jpselected  = (jp.length > 0) ? 'checked' : '';
+                            var kshtselected = (ksht.length > 0) ? 'checked' : '';
+                            let input = `<div class="row mx-4" id="cusbpjs">
+                                            <div class="form-check col-md-6 mb-3">
+                                                <input class="form-check-input itemsBPJS" data-id="jht" type="checkbox" id="flexCheckDefault" `+jhtselected+`>
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    BPJS JHT
+                                                </label>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <input type="number" class="form-control jht" name="bpjs_jht" value="`+valjht+`" `+jhtenable+`/>
+                                            </div>
+
+                                            <div class="form-check col-md-6 mb-3">
+                                                <input class="form-check-input itemsBPJS" data-id="jkk" type="checkbox" id="flexCheckDefault" `+jkkselected+`>
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    BPJS JKK
+                                                </label>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <input type="number" class="form-control jkk" name="bpjs_jkk" value="`+valjkk+`" `+jkkenable+`/>
+                                            </div>
+
+                                            <div class="form-check col-md-6 mb-3">
+                                                <input class="form-check-input itemsBPJS" data-id="jkm" type="checkbox" id="flexCheckDefault" `+jkmselected+`>
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    BPJS JKM
+                                                </label>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <input type="number" class="form-control jkm" name="bpjs_jkm" value="`+valjkm+`" `+jkmenable+`/>
+                                            </div>
+
+                                            <div class="form-check col-md-6 mb-3">
+                                                <input class="form-check-input itemsBPJS" data-id="jp" type="checkbox" id="flexCheckDefault" `+jpselected+`>
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                   BPJS JP
+                                                </label>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <input type="number" class="form-control jp" name="bpjs_jp" value="`+valjp+`" `+jpenable+`/>
+                                            </div>
+
+                                            <div class="form-check col-md-6 mb-3">
+                                                <input class="form-check-input itemsBPJS" data-id="kesehatan" type="checkbox" id="flexCheckDefault" `+kshtselected+`>
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                   BPJS KESEHATAN
+                                                </label>
+                                            </div>
+                                        <div class="col-md-6 mb-3">
+                                            <input type="number" class="form-control kesehatan" name="bpjs_kesehatan" value="`+valksht+`" `+kshtenable+`/>
+                                        </div>
+                                    </div>`;
+                            $('#edit-customeBpjs').prop("checked",true)
+                            $('#editcostumeView').html(input);
+                            $('#editcostumeView').attr('hidden',false);
+                        }else{
+                            $('#edit-customeBpjs').prop("checked",false)
+                            let input = `<div class="row mx-4" id="cusbpjs">
+                                            <div class="form-check col-md-6 mb-3">
+                                                <input class="form-check-input itemsBPJS" data-id="jht" type="checkbox" id="flexCheckDefault">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    BPJS JHT
+                                                </label>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <input type="number" class="form-control jht" name="bpjs_jht" value="" disabled/>
+                                            </div>
+
+                                            <div class="form-check col-md-6 mb-3">
+                                                <input class="form-check-input itemsBPJS" data-id="jkk" type="checkbox" id="flexCheckDefault">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    BPJS JKK
+                                                </label>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <input type="number" class="form-control jkk" name="bpjs_jkk" value="" disabled/>
+                                            </div>
+
+                                            <div class="form-check col-md-6 mb-3">
+                                                <input class="form-check-input itemsBPJS jkm" data-id="jkm" type="checkbox" id="flexCheckDefault">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    BPJS JKM
+                                                </label>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <input type="number" class="form-control" name="bpjs_jkm" value="" disabled/>
+                                            </div>
+
+                                            <div class="form-check col-md-6 mb-3">
+                                                <input class="form-check-input itemsBPJS" data-id="jp" type="checkbox" id="flexCheckDefault">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                   BPJS JP
+                                                </label>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <input type="number" class="form-control jp" name="bpjs_jp" value="" disabled/>
+                                            </div>
+
+                                            <div class="form-check col-md-6 mb-3">
+                                                <input class="form-check-input itemsBPJS" data-id="kesehatan" type="checkbox" id="flexCheckDefault">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                   BPJS KESEHATAN
+                                                </label>
+                                            </div>
+                                        <div class="col-md-6 mb-3">
+                                            <input type="number" class="form-control kesehatan" name="bpjs_kesehatan" value="" disabled/>
+                                        </div>
+                                    </div>`;
+                            $('#editcostumeView').html(input);
+                            $('#editcostumeView').attr('hidden',true);
+                        }
 
                     },
                     error : function(){
@@ -497,47 +706,88 @@
                 })
             })
             $('#customeBpjs').on('change',function(){
-                // $.ajax({
-                //     url : 'get-list-bpjs',
-                //     dataType :'json'.
-                //     beforeSend : function(){
+                let input = `<div class="row mx-4" id="cusbpjs">
+                                <div class="form-check col-md-6 mb-3">
+                                    <input class="form-check-input additemsBPJS" data-id="jht" type="checkbox" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        BPJS JHT
+                                    </label>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <input type="number" class="form-control jht" name="bpjs_jht" disabled/>
+                                </div>
 
-                //     },
-                //     success : function(respon){
+                                <div class="form-check col-md-6 mb-3">
+                                    <input class="form-check-input additemsBPJS" data-id="jkk" type="checkbox" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        BPJS JKK
+                                    </label>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <input type="number" class="form-control jkk" name="bpjs_jkk" disabled/>
+                                </div>
 
-                //     },
-                //     error : function(){
-                //         alert('Sameting went wrong!')
-                //     }
-                // })
-                let input = `
-                        
-                        <div class="row" id="cusbpjs">
-                            <div class="col-md-6">
-                                <label>BPJS JHT</label>
-                                <input type="number" name="jht" value="" class="mb-3 form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label>BPJS JKK</label>
-                                <input type="number" name="jkk" class="mb-3 form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label>BPJS JKM</label>
-                                <input type="number" name="jkk" class="mb-3 form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label>BPJS JP</label>
-                                <input type="number" name="jp" class="mb-3 form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label>BPJS KESEHATAN</label>
-                                <input type="number" name="kesehatan" class="mb-3 form-control">
+                                <div class="form-check col-md-6 mb-3">
+                                    <input class="form-check-input additemsBPJS" data-id="jkm" type="checkbox" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        BPJS JKM
+                                    </label>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <input type="number" class="form-control jkm" name="bpjs_jkm" disabled/>
+                                </div>
+
+                                <div class="form-check col-md-6 mb-3">
+                                    <input class="form-check-input additemsBPJS" data-id="jp" type="checkbox" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                       BPJS JP
+                                    </label>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <input type="number" class="form-control jp" name="bpjs_jp" disabled/>
+                                </div>
+
+                                <div class="form-check col-md-6 mb-3">
+                                    <input class="form-check-input additemsBPJS" data-id="kesehatan" type="checkbox" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                       BPJS KESEHATAN
+                                    </label>
+                                </div>
+                            <div class="col-md-6 mb-3">
+                                <input type="number" class="form-control kesehatan" name="bpjs_kesehatan" disabled/>
                             </div>
                         </div>`;
                 if($(this).prop("checked")){
                     $('#costumeView').html(input);
+                    $('.itemBpjs').attr('disabled',true)
                 }else{
                     $('#costumeView').html('');
+                    $('.itemBpjs').attr('disabled',false)
+                }
+            })
+            $(document).on('change','.additemsBPJS',function(){
+                var id = $(this).attr('data-id');
+                if ($(this).prop('checked')){
+                    $('.'+id).attr('disabled',false);
+                }else{
+                    $('.'+id).attr('disabled',true);
+                }
+            })
+            $(document).on('change','.itemsBPJS',function(){
+                var id = $(this).attr('data-id');
+                if ($(this).prop('checked')){
+                    $('.'+id).attr('disabled',false);
+                }else{
+                    $('.'+id).attr('disabled',true);
+                }
+            })
+            $(document).on('change','#edit-customeBpjs',function(){
+                if ($(this).prop("checked")){
+                    $('#editcostumeView').attr('hidden', false)
+                    $('.editItemBpjs').attr('disabled',true)
+                }else{
+                    $('#editcostumeView').attr('hidden', true)
+                    $('.editItemBpjs').attr('disabled',false)
                 }
             })
     </script>
