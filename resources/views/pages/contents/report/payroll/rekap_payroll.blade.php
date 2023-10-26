@@ -77,6 +77,7 @@
                                     <th>Total Employee BPJS</th>
                                     <th>Installment</th>
                                     <th>Loans</th>
+                                    <th>Total Deduction Other</th>
                                     <th>Pph21</th>
                                     <th>Total Deduction</th>
                                     <th>Take Home Pay</th>

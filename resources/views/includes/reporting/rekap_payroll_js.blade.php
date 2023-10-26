@@ -183,6 +183,19 @@
                                         return 0;
                                     }
                             }
+                    },
+                    {
+                        data: 'total_deduction_other',
+                        render : function(data, type, row){
+                                if (data !=null) {
+                                    var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                                        if(base.lastIndexOf(".") != -1)
+                                            base = base.substring(0, base.lastIndexOf("."));
+                                        return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                    }else{
+                                        return 0;
+                                    }
+                            }
                     }, 
                     {
                         data: 'pph21',
