@@ -714,6 +714,7 @@ class PayrollController extends Controller
                              'position.position_name')
                     ->leftJoin('employees','employees.id','=','take_home_pay.employee_id')
                     ->leftJoin('position','position.id','=','take_home_pay.position_id')
+                    ->where('take_home_pay.branch_id','=',$request->branch_id)
                     ->where('take_home_pay.date',date(NOW()))
                     ->get();
         return DataTables::of($data)->make(true);
@@ -725,7 +726,6 @@ class PayrollController extends Controller
         return  view('pages.contents.payroll.data_payroll_final',$branch);
     } 
     public function get_payroll_final(Request $request){
-       
         $data   = DB::table('take_home_pay')
                     ->select('take_home_pay.*',
                              'employees.name',
@@ -736,6 +736,7 @@ class PayrollController extends Controller
                             )
                     ->leftJoin('employees','employees.id','=','take_home_pay.employee_id')
                     ->leftJoin('position','position.id','=','take_home_pay.position_id')
+                    ->where('take_home_pay.branch_id','=',$request->branch_id)
                     ->whereBetween('take_home_pay.date',[$request->startdate,$request->enddate])
                     ->get();
         return DataTables::of($data)
