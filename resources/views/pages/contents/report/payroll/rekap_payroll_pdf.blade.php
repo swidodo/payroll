@@ -76,6 +76,7 @@
             <th class="border-top border-left">Total BPJS</th>
             <th class="border-top border-left">Installment</th>
             <th class="border-top border-left">Loans</th>
+            <th class="border-top border-left">Total Deduction Other</th>
             <th class="border-top border-left">Pph21</th>
             <th class="border-top border-left">Total Deduction</th>
             <th class="border-top border-left border-right">Take Home Pay</th>
@@ -100,6 +101,7 @@
             <td align="right" class="border-top border-right border-left border-bottom">{{ number_format($row->employee_total_pay_bpjs) }}</td>
             <td align="right" class="border-top border-right border-left border-bottom">{{ number_format($row->installment) }}</td>
             <td align="right" class="border-top border-right border-left border-bottom">{{ number_format($row->loans) }}</td>
+            <td align="right" class="border-top border-right border-left border-bottom">{{ number_format($row->total_deduction_other) }}</td>
             <td align="right" class="border-top border-right border-left border-bottom">{{ number_format($row->pph21) }}</td>
             <td align="right" class="border-top border-right border-left border-bottom">{{ number_format($row->total_deduction) }}</td>
             <td align="right" class="border-top border-right border-left border-bottom">{{ number_format($row->take_home_pay) }}</td>
