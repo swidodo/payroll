@@ -253,7 +253,7 @@
                             </div>
                         </td>
                         <td class="fs-5">
-                            <h2 class="text-center">PT. Penukal Integritas Indonesia</h2>
+                            <h2 class="text-center">{{ $salary->company_name }}</h2>
                         </td>
                     </tr>
                     <tr>

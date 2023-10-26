@@ -760,7 +760,7 @@ class PayrollController extends Controller
 
         $branch         = Auth::user()->branch_id;
         $data['salary'] = DB::table('take_home_pay')
-                            ->select('take_home_pay.*','employees.name as employee_name','branches.name as branch_name','position.position_name')
+                            ->select('take_home_pay.*','employees.name as employee_name','branches.name as branch_name','position.position_name','companies.name as company_name')
                             ->leftJoin('employees','employees.id','=','take_home_pay.employee_id')
                             ->leftJoin('branches','branches.id','=','take_home_pay.branch_id')
                             ->leftJoin('position','position.id','=','employees.position_id')
