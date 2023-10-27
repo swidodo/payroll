@@ -18,14 +18,69 @@
 
         <!-- Main CSS -->
         <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
+        <style>
+            .loader {
+                border: 16px solid #fff;
+                border-radius: 50%;
+                border-top: 16px solid #f7770f;
+                border-bottom: 16px solid #f7770f;
+                width: 100px;
+                height: 100px;
+                -webkit-animation: spin 1.5s linear infinite;
+                animation: spin 1.5s linear infinite;
+                }
+            .loader2{
+                z-index:[1-100];
+                position : absolute;
+                border: 12px solid #fff;
+                border-radius: 50%;
+                border-top: 12px solid #29b6f6;
+                border-bottom: 12px solid #29b6f6;
+                width: 70px;
+                height: 70px;
+                -webkit-animation: spin 2s linear infinite;
+                animation: spin2 2s linear infinite;
+            }
 
+            @-webkit-keyframes spin {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+            }
+
+            @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+            }
+            @keyframes spin2 {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-360deg); }
+            }
+        .containerLoader{
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            /* background: #7B7B7B; */
+            z-index: 13000;
+            display: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* background:rgba(0, 0, 0, 0.5); */
+        }
+        </style>
     </head>
     <body class="">
+        {{-- loader --}}
+        <div class="containerLoader" hidden>
+            <div class="loader"></div>
+            <div class="loader2"></div>
+        </div>
 
 		<!-- Main Wrapper -->
 			@yield('content')
 		<!-- /Main Wrapper -->
-
+        
         <!-- jQuery -->
         <script src="{{asset('assets/js/jquery-3.6.0.min.js')}}"></script>
 
@@ -43,5 +98,11 @@
         <!-- Custom JS -->
         <script src="{{asset('assets/js/app.js')}}"></script>
         @include('sweetalert::alert')
+        <script>
+            $('.containerLoader').attr('hidden',false)
+            $(document).ready(function () {
+                $('.containerLoader').attr('hidden',true)
+            })
+        </script>
     </body>
 </html>

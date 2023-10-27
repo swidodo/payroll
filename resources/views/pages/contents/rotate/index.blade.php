@@ -89,7 +89,9 @@
         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
         }
     });
+    $('.containerLoader').attr('hidden',false)
     $(document).ready(function () {
+        $('.containerLoader').attr('hidden',true)
         var branchId = $('#branch_id').val();
         loadData(branchId)
         function loadData(branchId){
@@ -149,7 +151,11 @@
                 type : 'post',
                 data : {branch_id : branch_id},
                 dataType : 'json',
+                beforeSend : function(){
+                    $('.containerLoader').attr('hidden',false)
+                },
                 success : function(respon){
+                    $('.containerLoader').attr('hidden',true)
                    $('#company').val
                    (respon.company[0].name);
                    $('#companyName').val(respon.company[0].name);
@@ -201,9 +207,10 @@
                 type : 'post',
                 data : data,
                 beforeSend : function(){
-
+                    $('.containerLoader').attr('hidden',false)
                 },
                 success : function(respon){
+                    $('.containerLoader').attr('hidden',true)
                     if(respon.status == 'success'){
                         $('#addRotate').modal('hide')
                         $('#formRotation')[0].reset();
@@ -229,9 +236,10 @@
                 data : {id : id},
                 dataType : 'json',
                 beforeSend : function(){
-
+                    $('.containerLoader').attr('hidden',false)
                 },
                 success : function(respon){
+                    $('.containerLoader').attr('hidden',true)
                     $('#editRotate').modal('show')
                     $('#editRotationDate').val(respon.rotation.rotate_date);
                     $('#editCompany').val(respon.company[0].name);
@@ -282,9 +290,10 @@
                 data : data,
                 dataType : 'json',
                 beforeSend : function(){
-
+                    $('.containerLoader').attr('hidden',false)
                 },
                 success : function(respon){
+                    $('.containerLoader').attr('hidden',true)
                     if (respon.status == 'success'){
                         $('#editRotate').modal('hide')
                         loadData(branchId)

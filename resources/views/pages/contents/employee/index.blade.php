@@ -124,80 +124,82 @@
         $.ajaxSetup({
             headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
         });
-            $(document).ready(function () {
-                /* When click show user */
-                /* datatable employees */
-                var branch_id = $('#branch_id').val();
-                tableEmp(branch_id);
-                function tableEmp(branch_id){
-                    $('#table-empolyees').DataTable({
-                        processing: true,
-                        serverSide: true,
-                        destroy: true,
-                        ajax : {
-                            url : "{{route('employees.get-data-employees')}}",
-                            type : 'post',
-                            data : {branch_id :branch_id}
+        $('.containerLoader').attr('hidden',false)
+        $(document).ready(function () {
+            $('.containerLoader').attr('hidden',true)
+            /* When click show user */
+            /* datatable employees */
+            var branch_id = $('#branch_id').val();
+            tableEmp(branch_id);
+            function tableEmp(branch_id){
+                $('#table-empolyees').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    destroy: true,
+                    ajax : {
+                        url : "{{route('employees.get-data-employees')}}",
+                        type : 'post',
+                        data : {branch_id :branch_id}
+                    },
+                    columns: [
+                        { data: 'no', name:'id', render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }},
+                        {
+                            data: 'view_profile',
+                            name: 'no_employee'
                         },
-                        columns: [
-                            { data: 'no', name:'id', render: function (data, type, row, meta) {
-                                return meta.row + meta.settings._iDisplayStart + 1;
-                            }},
+                        {
+                            data: 'name',
+                            name : 'name'
+                        },
+                        {
+                            data: 'email',
+                            name : 'email'
+                        },
+                        {
+                            data: 'phone',
+                            name : 'phone'
+                        },
+                        {
+                            data: 'branch.name',
+                            name : 'branch.name'
+                        },
+                        {
+                            data: 'company_doj',
+                            name : 'company_doj'
+                        },
+                        {
+                            data: 'view_status',
+                            name : 'status'
+                        },
+                        @can('delete employee')
                             {
-                                data: 'view_profile',
-                                name: 'no_employee'
-                            },
-                            {
-                                data: 'name',
-                                name : 'name'
-                            },
-                            {
-                                data: 'email',
-                                name : 'email'
-                            },
-                            {
-                                data: 'phone',
-                                name : 'phone'
-                            },
-                            {
-                                data: 'branch.name',
-                                name : 'branch.name'
-                            },
-                            {
-                                data: 'company_doj',
-                                name : 'company_doj'
-                            },
-                            {
-                                data: 'view_status',
-                                name : 'status'
-                            },
-                            @can('delete employee')
-                                {
-                                    data: 'view',
-                                    orderable: 'false',
-                                    searcharable: 'false'
-                                }
-                            @endcan
-                        ],
+                                data: 'view',
+                                orderable: 'false',
+                                searcharable: 'false'
+                            }
+                        @endcan
+                    ],
 
-                    });
-                }
-                $('#searchBranch').on('click',function(e){
-                    var branch_id = $('#branch_id').val();
-                     tableEmp(branch_id);
-                })
+                });
+            }
+            $('#searchBranch').on('click',function(e){
+                var branch_id = $('#branch_id').val();
+                    tableEmp(branch_id);
+            })
 
-                $('body').on('click', '#delete-employee', function(){
-                    const deleteURL = $(this).data('url');
-                    $('#employee-destroy-form').attr('action', deleteURL);
-                })
-                $('#export_excel').on('click', function(){
-                    $('#ExportExcelModal').modal('show');
-                });
-                $('#import_excel').on('click', function(){
-                    $('#ImportExcelModal').modal('show');
-                });
+            $('body').on('click', '#delete-employee', function(){
+                const deleteURL = $(this).data('url');
+                $('#employee-destroy-form').attr('action', deleteURL);
+            })
+            $('#export_excel').on('click', function(){
+                $('#ExportExcelModal').modal('show');
             });
+            $('#import_excel').on('click', function(){
+                $('#ImportExcelModal').modal('show');
+            });
+        });
 
     </script>
 @endpush
