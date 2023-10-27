@@ -830,7 +830,6 @@ class EmployeeController extends Controller
             }
 
         }
-        dd(count($employee_arr));
         $insert = Employee::Insert($employee_arr);
         return redirect('/employees');
     }
