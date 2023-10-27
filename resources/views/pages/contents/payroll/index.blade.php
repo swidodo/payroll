@@ -272,7 +272,6 @@
                         $('.containerLoader').attr('hidden',false)
                     },
                     success : function(respon){
-                        $('.containerLoader').attr('hidden',true)
                         $('#costumeView').html('');
                         var emp = `<option value="">-- Select Employee --</option>`;
                         $.each(respon.employee,function(key,val){
@@ -309,7 +308,7 @@
                                     </div>`;
                         })
                          $('#ListBpjs').html(bpjs)
-
+                         $('.containerLoader').attr('hidden',true)
                     },
                     error : function (){
                         alert('Sameting went wrong!');
@@ -356,7 +355,6 @@
                         $('.containerLoader').attr('hidden',false)
                     },
                     success : function(respon){
-                        $('.containerLoader').attr('hidden',true)
                         var bs = respon.payroll.amount;
                         $('#view_payroll').modal('show');
                         $('#empCode').html(respon.payroll.employee.employee_id)
@@ -382,6 +380,7 @@
                         }else{
                             $('#allowanceDtl').html('<tr><td>No Data</td></tr>')
                         }
+                        $('.containerLoader').attr('hidden',true)
                     }
                 })
 
@@ -398,7 +397,6 @@
                         $('.containerLoader').attr('hidden',false)
                     },
                     success : function(respon){
-                        $('.containerLoader').attr('hidden',true)
                         $('#edit_payroll').modal('show');
                         var payslip ='';
                         $.each(respon.payslip_type,function(key,val){
@@ -620,10 +618,11 @@
                             $('#editcostumeView').html(input);
                             $('#editcostumeView').attr('hidden',true);
                         }
-
+                        $('.containerLoader').attr('hidden',true)
                     },
                     error : function(){
                         alert('There is an error !, please try again')
+                        $('.containerLoader').attr('hidden',true)
                     }
                 })
             })

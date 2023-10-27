@@ -60,13 +60,13 @@
             top: 0;
             width: 100%;
             height: 100%;
-            /* background: #7B7B7B; */
+            background: #222222;
             z-index: 13000;
             display: cover;
             display: flex;
             align-items: center;
             justify-content: center;
-            /* background:rgba(0, 0, 0, 0.5); */
+            background:rgba(0, 0, 0, 0.5);
         }
         </style>
     </head>
