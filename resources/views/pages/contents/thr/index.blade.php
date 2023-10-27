@@ -196,9 +196,10 @@
                 data :{branch_id : branch,cutoff_thr:cutoff_thr},
                 dataType : 'json',
                 beforeSend : function(){
-
+                    $('.containerLoader').attr('hidden',false)
                 },
                 success:function(respon){
+                    $('.containerLoader').attr('hidden',true)
                     swal.fire({
                         icon : respon.status,
                         text : respon.msg
@@ -208,6 +209,7 @@
                 },
                 error : function(){
                     alert('Sameting went wrong !')
+                    $('.containerLoader').attr('hidden',true)
                 }
             })
         })

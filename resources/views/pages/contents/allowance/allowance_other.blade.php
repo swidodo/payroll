@@ -168,9 +168,10 @@
                 data : {branch_id:branchId},
                 dataType : 'json',
                 beforeSend : function(){
-
+                    $('.containerLoader').attr('hidden',false)
                 },
                 success : function(respon){
+                    $('.containerLoader').attr('hidden',true)
                     var emp = `<option value="">-- Select Employee --</option>`
                     $.each(respon.employee,function(key,val){
                         emp += `<option value="`+val.id+`">`+val.no_employee+` - `+val.name+`</option>`
@@ -179,6 +180,7 @@
                 },
                 error : function(){
                     Alert('Sameting went wrong !')
+                    $('.containerLoader').attr('hidden',true)
                 }
             })
         })
@@ -192,9 +194,10 @@
                 data : data,
                 dataType : 'json',
                 beforeSend : function(){
-
+                    $('.containerLoader').attr('hidden',false)
                 },
                 success : function(respon){
+                    $('.containerLoader').attr('hidden',true)
                      if(respon.status =="success"){
                         $('#add_modal_allowance_other').modal('hide')
                         $('#form-addallowanceOther')[0].reset();
@@ -208,8 +211,8 @@
                     
                 },
                 error : function(e){
-                    console.log(e.responseJSON.errors)
                     alert('There is an error !, please try again')
+                    $('.containerLoader').attr('hidden',true)
                 }
             })
         })
@@ -222,9 +225,10 @@
                 data : {id:id},
                 dataType : 'json',
                 beforeSend : function(){
-
+                    $('.containerLoader').attr('hidden',false)
                 },
                 success : function(respon){
+                    $('.containerLoader').attr('hidden',true)
                     var html ='';
                     var noemp = (respon.employee.no_employee !=null) ? respon.employee.no_employee :'';
                     $('#edit-date').val(respon.date);
@@ -240,11 +244,13 @@
                 },
                 error : function(){
                     alert('terjadi kesalahan !');
+                    $('.containerLoader').attr('hidden',true)
                 }
             })
         })
         $('#edit-addallowanceOther').on('submit',function(e){
             e.preventDefault();
+            var branchId = $('#branch_id').val();
             var data = $('#edit-addallowanceOther').serialize();
             $.ajax({
                 url : 'update-allowance-other',
@@ -252,19 +258,24 @@
                 data : data,
                 dataType : 'json',
                 beforeSend : function(){
-
+                    $('.containerLoader').attr('hidden',false)
                 },
                 success : function(respon){
-                    table.ajax.reload();
+                    $('.containerLoader').attr('hidden',true)
+                    if(respon.status == "success"){
+                        $('#edit_modal_allowance_other').modal('hide')
+                        loadData(branchId ,"")
+                    }
                     swal.fire({
                         icon : respon.status,
                         text : respon.msg
                     })
-                    $('#edit_modal_allowance_other').modal('hide')
-                     table.ajax.reload();
+                    
+                    
                 },
                 error : function(){
                     alert('There is an error !, please try again')
+                    $('.containerLoader').attr('hidden',true)
                 }
             })
         })
@@ -288,9 +299,10 @@
                     data : {id : id},
                     dataType : 'json',
                     beforeSend : function(){
-
+                        $('.containerLoader').attr('hidden',false)
                     },
                     success : function(respon){
+                        $('.containerLoader').attr('hidden',true)
                         swal.fire({
                             icon : respon.status,
                             text : respon.msg,

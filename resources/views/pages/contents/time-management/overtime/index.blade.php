@@ -145,7 +145,9 @@
     @endif
 
     <script>
+        $('.containerLoader').attr('hidden',false)
         $(document).ready(function () {
+            $('.containerLoader').attr('hidden',true)
             $.ajaxSetup({
                 headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
             });
@@ -346,9 +348,10 @@
                 data : {branch_id : branchId },
                 dataType : 'json',
                 beforeSend : function(){
-
+                    $('.containerLoader').attr('hidden',false)
                 },
                 success : function(respon){
+                    $('.containerLoader').attr('hidden',true)
                     var emp = '<option value="">-- Select Employee --</option>';
                     $.each(respon.employee,function(key,val){
                         emp +=`<option value="`+val.id+`">`+val.name+`</option>`
@@ -357,7 +360,8 @@
                     $('#branch_id_overtime').val($('#branchId').val())
                 },
                 error : function(){
-
+                    alert('Sameting went wrong!')
+                    $('.containerLoader').attr('hidden',true)
                 }
             })
         })
@@ -369,9 +373,10 @@
                 data : {id : id },
                 dataType : 'json',
                 beforeSend : function(){
-
+                    $('.containerLoader').attr('hidden',false)
                 },
                 success : function(respon){
+                    $('.containerLoader').attr('hidden',true)
                     $('#id').val(respon.data.id)
                     $('#branchInput').val(respon.data.branch_id)
                     $('#viewEmployee').val(respon.data.employee.name)
@@ -436,7 +441,8 @@
                     }
                 },
                 error : function(){
-
+                    alert('Sameting went wrong!')
+                    $('.containerLoader').attr('hidden',true)
                 }
             })
         })

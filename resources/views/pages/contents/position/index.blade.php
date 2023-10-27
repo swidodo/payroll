@@ -178,9 +178,10 @@
                     type : 'get',
                     dataType : 'json',
                     beforeSend : function(){
-
+                        $('.containerLoader').attr('hidden',false)
                     },
                     success : function(respon){
+                        $('.containerLoader').attr('hidden',true)
                         var branch = '';
                         $.each(respon.branch, function(key,val){
                             branch += `<option value="`+val.id+`">`+val.name+`</option>`
@@ -202,9 +203,10 @@
                     data : data,
                     dataType : 'json',
                     beforeSend : function(){
-
+                        $('.containerLoader').attr('hidden',false)
                     },
                     success : function(respon){
+                        $('.containerLoader').attr('hidden',true)
                         if (respon.status == "success"){
                             $('#add_modal_position').modal('hide');
                             $('#addFormPosition')[0].reset()
@@ -217,6 +219,7 @@
                     },
                     error : function(){
                         alert('Someting went wrong !');
+                        $('.containerLoader').attr('hidden',true)
                     }
                 })
             })
@@ -229,9 +232,10 @@
                     data : {id : id},
                     dataType : 'json',
                     beforeSend : function(){
-
+                        $('.containerLoader').attr('hidden',false)
                     },
                     success : function(respon){
+                        $('.containerLoader').attr('hidden',true)
                         $('#id').val(respon.data.id);
                         $('#editBranchId').val(respon.data.branch_id);
                         $('#editBranchName').val(respon.data.branch_name);
@@ -253,9 +257,10 @@
                     data : data,
                     dataType : 'json',
                     beforeSend : function(){
-
+                        $('.containerLoader').attr('hidden',false)
                     },
                     success : function(respon){
+                        $('.containerLoader').attr('hidden',true)
                         if (respon.status == "success"){
                             $('#edit_position').modal('hide');
                             loadData(branchId)
@@ -267,6 +272,7 @@
                     },
                     error : function(){
                         alert('Someting went wrong !');
+                        $('.containerLoader').attr('hidden',true)
                     }
                 })
             })
@@ -290,9 +296,10 @@
                                 data : {id : id},
                                 dataType : 'json',
                                 beforeSend : function (){
-
+                                    $('.containerLoader').attr('hidden',false)
                                 },
                                 success : function(respon){
+                                    $('.containerLoader').attr('hidden',true)
                                     swal.fire({
                                         icon : respon.status,
                                         text : respon.msg
@@ -301,6 +308,7 @@
                                 },
                                 error : function(){
                                     alert('Someting went wrong !');
+                                    $('.containerLoader').attr('hidden',true)
                                 }
                             })
                         }

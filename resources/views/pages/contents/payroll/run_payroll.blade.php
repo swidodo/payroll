@@ -510,10 +510,10 @@
                             text : respon.msg,
                         })
                     },
-                    // error : function(){
-                    //     alert('Sameting went wrong !');
-                    //     $('.containerLoader').attr('hidden',true)
-                    // }
+                    error : function(){
+                        alert('Sameting went wrong !');
+                        $('.containerLoader').attr('hidden',true)
+                    }
 
                 })
         })
