@@ -705,70 +705,100 @@ class PayrollController extends Controller
             return response()->json($res);
         }
     }
-    // public function import_run_payroll(Request $request){
-    //     $file_extension = request()->file('file-excel')->extension();
-    //     if ('csv' == $file_extension) {
-    //         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
-    //     } elseif ('xls' == $file_extension) {
-    //         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
-    //     } elseif ('xlsx' == $file_extension) {
-    //         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-    //     }
+    public function import_run_payroll(Request $request){
+        $file_extension = request()->file('file-excel')->extension();
+        if ('csv' == $file_extension) {
+            $res = [
+                'status' => 'success',
+                'msg'    => 'Import Data Successfuly !',
+            ];
+            return response()->json($res);
+            return true;
+        } elseif ('xls' == $file_extension) {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        } elseif ('xlsx' == $file_extension) {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        }
 
-    //     // $reader = new Xls();
-    //     $spreadsheet = $reader->load(request()->file('file-excel'));
-    //     $sheetData = $spreadsheet->getActiveSheet()->toArray();
-    //     $import =[];
-    //     foreach ($sheetData as $key => $value) {
-    //         if ($key > 0) :
-    //             $employeeId = employee::where('no_employee',$value[1])->first();
-    //             if ($employeeId != null ):
-    //                 $val_salarymonth = $value->$value[2] + $value->$value[3] + $value->$value[4];
-    //                 $total_loan      = $value->$value[6];
-    //                 $deduction_other = $value->$value[9] + $value->$value[10];
-    //                 $total_deduction = $value->$value[6] + $value->$value[9] + $value->$value[10] ;
-    //                 $data = [
-    //                     'employee_id'                       => $employeeId->id,
-    //                     'employee_code'                     => $employeeId->employee_id,
-    //                     'no_employee'                       => $employeeId->no_employee,
-    //                     'name'                              => $employeeId->name,
-    //                     'position_id'                       => $employeeId->position_id,
-    //                     // 'level'                          => $employeeId->position_id,
-    //                     'bank_name'                         => $employeeId->bank_name,
-    //                     'account_number'                    => $employeeId->account_number,
-    //                     'basic_salary'                      => $value->$value[2],
-    //                     'allowance_fixed'                   => $value->$value[3],
-    //                     'allowance_unfixed'                 => 0,
-    //                     'allowance_other'                   => 0,
-    //                     'overtime'                          => $value->$value[4],
-    //                     'salary_this_month'                 => $val_salarymonth,
-    //                     'company_pay_bpjs'                  => 0,
-    //                     'total_salary'                      => $val_salarymonth,
-    //                     'company_pay_bpjs_kesehatan'        => 0,
-    //                     'company_pay_bpjs_ketenagakerjaan'  => 0,
-    //                     'employee_pay_bpjs_kesehatan'       => 0,
-    //                     'employee_pay_bpjs_ketenagakerjaan' => 0,
-    //                     'company_total_pay_bpjs'            => $value->$value[8],
-    //                     'employee_total_pay_bpjs'           => $value->$value[8],
-    //                     'installment'                       => 0,
-    //                     'loans'                             => $value->$value[6],
-    //                     'total_pay_loans'                   => $total_loan,
-    //                     'sanksi_adm'                        => 0,
-    //                     'total_deduction_other'             => $deduction_other,
-    //                     'pph21'                             => 0,
-    //                     'total_deduction'                   => $total_deduction,
-    //                     'startdate'                         => $value->$value[12],
-    //                     'enddate'                           => $value->$value[13],
-    //                     'take_home_pay'                     => $value->$value[11],
-    //                 ];
-    //                 if (!in_array($data,$import)){
-    //                     array_push($import,$data);
-    //                 }
-    //             endif;
-    //         endif;
-    //     }
-    //     $run = DB::table('take_home_pay')->insert($import);
-    // }
+        // $reader = new Xls();
+        $spreadsheet = $reader->load(request()->file('file-excel'));
+        $sheetData = $spreadsheet->getActiveSheet()->toArray();
+        $import =[];
+        DB::beginTransaction();
+        foreach ($sheetData as $key => $value) {
+            if ($key > 0) :
+                $employeeId = employee::where('no_employee',$value[1])->first();
+                $takeHP = DB::table('take_home_pay')
+                            ->where('employee_id',$employeeId->id)
+                            ->where('startdate',$value[12])
+                            ->where('enddate',$value[13])
+                            ->count();
+                if ($takeHP > 0){
+                    DB::table('take_home_pay')
+                        ->where('employee_id',$employeeId->id)
+                        ->where('startdate',$value[12])
+                        ->where('enddate',$value[13])
+                        ->delete();
+                }
+                if ($employeeId != null ):
+                    $val_salarymonth = $value[2] + $value[3] + $value[4];
+                    $total_loan      = $value[6];
+                    $deduction_other = $value[9] + $value[10];
+                    $total_deduction = $value[6] + $value[9] + $value[10] ;
+                    $data = [
+                        'employee_id'                       => $employeeId->id,
+                        'employee_code'                     => $employeeId->employee_id,
+                        'no_employee'                       => $employeeId->no_employee,
+                        'name'                              => $employeeId->name,
+                        'position_id'                       => $employeeId->position_id,
+                        // 'level'                          => $employeeId->position_id,
+                        'bank_name'                         => $employeeId->bank_name,
+                        'account_number'                    => $employeeId->account_number,
+                        'basic_salary'                      => $value[2],
+                        'allowance_fixed'                   => $value[3],
+                        'allowance_unfixed'                 => 0,
+                        'allowance_other'                   => 0,
+                        'overtime'                          => $value[4],
+                        'salary_this_month'                 => $val_salarymonth,
+                        'company_pay_bpjs'                  => 0,
+                        'total_salary'                      => $val_salarymonth,
+                        'company_pay_bpjs_kesehatan'        => 0,
+                        'company_pay_bpjs_ketenagakerjaan'  => 0,
+                        'employee_pay_bpjs_kesehatan'       => 0,
+                        'employee_pay_bpjs_ketenagakerjaan' => 0,
+                        'company_total_pay_bpjs'            => $value[8],
+                        'employee_total_pay_bpjs'           => $value[8],
+                        'installment'                       => 0,
+                        'loans'                             => $value[6],
+                        'total_pay_loans'                   => $total_loan,
+                        'sanksi_adm'                        => 0,
+                        'total_deduction_other'             => $deduction_other,
+                        'pph21'                             => 0,
+                        'total_deduction'                   => $total_deduction,
+                        'startdate'                         => $value[12],
+                        'enddate'                           => $value[13],
+                        'take_home_pay'                     => $value[11],
+                    ];
+                    if (!in_array($data,$import)){
+                        array_push($import,$data);
+                    }
+                endif;
+            endif;
+        }
+        $run = DB::table('take_home_pay')->insert($import);
+        DB::commit();
+            $res = [
+                'status' => 'success',
+                'msg'    => 'Import Data Successfuly !',
+            ];
+            return response()->json($res);
+        DB::rollBack();
+            $res = [
+                'status' => 'error',
+                'msg'    => 'Someting went Wrong!',
+            ];
+            return response()->json($res);
+    }
     public function get_run_payroll(Request $request){
         $data   = DB::table('take_home_pay')
                     ->select('take_home_pay.*',

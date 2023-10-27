@@ -33,7 +33,7 @@ class AttendanceEmployeeController extends Controller
         if (Auth::user()->can('manage attendance')) {
             $branches = Branch::where('created_by', Auth::user()->creatorId())->get();
             $employees = Employee::where('created_by', Auth::user()->creatorId())->get();
-            if (Auth::user()->type != 'client' && Auth::user()->type != 'company') {
+            if (Auth::user()->initial !="HO") {
                 $emp = !empty(Auth::user()->employee) ? Auth::user()->employee->id : 0;
                 $attendanceEmployee = AttendanceEmployee::where('employee_id', $emp);
                 if ($request->type == 'monthly' && !empty($request->month)) {
