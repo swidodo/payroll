@@ -35,6 +35,10 @@ use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\EmployeeImportExcel;
 use Illuminate\Support\Facades\Hash;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\Reader\Xls;
+use PhpOffice\PhpSpreadsheet\Reader\Csv;
 
 class EmployeeController extends Controller
 {
@@ -724,21 +728,25 @@ class EmployeeController extends Controller
     }
     // import data
     public function import_data(Request $request){
-		// menangkap file excel
-		$file = $request->file('upload_file');
-		// membuat nama file unik
-		$nama_file = rand().str_replace(" ","-",$file->getClientOriginalName());
-		// upload ke folder file_upload di dalam folder public
-		$file->move('public/uploads',$nama_file);
-        chmod(public_path('uploads/'.$nama_file), 777);
+
+        $file_extension = request()->file('upload_file')->extension();
+        if ('csv' == $file_extension) {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+        } elseif ('xls' == $file_extension) {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        } elseif ('xlsx' == $file_extension) {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        }
 
 
-        // update new
-        $filpath = public_path('/uploads/'.$nama_file);
-        $data  = $this->read_files($filpath);
+         // $reader = new Xls();
+        $spreadsheet = $reader->load(request()->file('upload_file'));
+        $sheetData = $spreadsheet->getActiveSheet()->toArray();
+
         $employee_arr = [];
         $users        = [];
-        foreach ($data as $key => $row) {
+
+        foreach ($sheetData as $key => $row) {
             if ($key > 0){
             $branchId = DB::table('branches')
                             ->select('id')
@@ -750,10 +758,14 @@ class EmployeeController extends Controller
                 $departementId = DB::table('departements')->select("id")->where('departement_code',$row[14])->first();
                 if($departementId != null){
                     $departId = $departementId->id;
+                }else{
+                    $departId = 0;
                 }
                 $positionId = DB::table('position')->select("id")->where('position_code',$row[15])->first();
                 if($positionId != null){
                     $positId = $positionId->id;
+                }else{
+                     $positId = 0;
                 }
                 $check = DB::select("select no_employee
                                     from employees
@@ -762,6 +774,7 @@ class EmployeeController extends Controller
                                     from users
                                     where LOWER(name) = '$name'
                                     and email='$row[10]'");
+
                 if (count($check) <= 0) {
                     $user = new User();
                     $user->name     = $row[0];
@@ -810,27 +823,15 @@ class EmployeeController extends Controller
                         "created_at"            => date('Y-m-d h:m:s'),
                         "updated_at"            => date('Y-m-d h:m:s'),
                     ];
+
                     array_push($employee_arr,$employee);
                 }
                 }
             }
+
         }
         $insert = Employee::Insert($employee_arr);
         return redirect('/employees');
     }
-    public function read_files($filename)
-    {
-       if (($open = fopen($filename, "r")) !== FALSE) {
-			$array = [];
-            while (($data = fgetcsv($open, 100000, ";")) !== FALSE) {
-				if(count($data) > 0 ){
-                	$array[] = $data;
-				}
-            }
-
-            fclose($open);
-            return $array;
-        }
-        return false;
-    }
+    
 }

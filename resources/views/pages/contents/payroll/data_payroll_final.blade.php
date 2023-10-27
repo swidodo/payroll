@@ -48,8 +48,11 @@
                                     @endforeach
                                 </select>
                             </div>
-                             <div class="col-md-3 d-flex align-items-center mt-4"> 
+                            <div class="col-md-3 d-flex align-items-center mt-4"> 
                                 <button type="button" class="btn btn-primary" id="searchBranch">Search</button>
+                            </div>
+                            <div class="col-md-3 d-flex align-items-center mt-4"> 
+                                <button type="button" class="btn btn-primary" id="searchBranch">Export Pay Slip</button>
                             </div>
                         </div>
                     </div>
