@@ -483,16 +483,12 @@
             e.preventDefault();
             $('#modalImportPayroll').modal('show')
         })
-        $('#UploadDataPayroll').on('click',function(e){
+        $('#UploadDataPayroll').on('submit',function(e){
             e.preventDefault();
-            var req_date    = $('#date_request').val();
-               
-                var leave_reason    = $('#leave_reason').val();
-                var attachment_leave  = $('#attachment_leave')[0].files[0];
-                var formData = new FormData();
-                
-                formData.append('leave_reason',leave_reason)
-                formData.append('attachment_leave',attachment_leave)
+            var payroll  = $('#import-payroll')[0].files[0];
+            var formData = new FormData();
+            
+            formData.append('import-payroll',payroll)
                 $.ajax({
                     url : 'import-payroll',
                     type : 'post',
@@ -507,16 +503,17 @@
                     success : function(respon){
                         $('.containerLoader').attr('hidden',true)
                         if (respon.status == 'success'){
-                            $('#formLeave')[0].reset();
+                            $('#UploadDataPayroll')[0].reset();
                         }
                         swal.fire({
                             icon : respon.status,
                             text : respon.msg,
                         })
                     },
-                    error : function(){
-                        alert('Sameting went wrong !');
-                    }
+                    // error : function(){
+                    //     alert('Sameting went wrong !');
+                    //     $('.containerLoader').attr('hidden',true)
+                    // }
 
                 })
         })

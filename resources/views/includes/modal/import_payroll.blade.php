@@ -11,9 +11,15 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <form>
-                            <input type="file" name="import_payroll" id="import-payroll" class="form-control">
-                            <a href="" class="text-small">Download template import payroll</a>
+                        <form id="UploadDataPayroll">
+                            <div class="mb-3">
+                                <label>File Import</label>
+                                <input type="file" name="import_payroll" id="import-payroll" class="form-control" required>
+                                <a href="" class="text-small">Download template import payroll</a>
+                            </div>
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary">Import</button>
+                            </div>
                         </form>
                     </div>
                 </div>

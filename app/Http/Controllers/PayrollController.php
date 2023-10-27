@@ -14,6 +14,8 @@ use App\Models\AllowanceOption;
 use App\Models\Master_bpjs;
 use App\Models\Bpjs_value;
 use App\Models\Branch;
+use App\Models\LoanOption;
+use App\Models\Loan;
 use Carbon\Carbon;
 use Exception;
 use DataTables;
@@ -706,7 +708,7 @@ class PayrollController extends Controller
         }
     }
     public function import_run_payroll(Request $request){
-        $file_extension = request()->file('file-excel')->extension();
+        $file_extension = request()->file('import-payroll')->extension();
         if ('csv' == $file_extension) {
             $res = [
                 'status' => 'success',
@@ -721,7 +723,7 @@ class PayrollController extends Controller
         }
 
         // $reader = new Xls();
-        $spreadsheet = $reader->load(request()->file('file-excel'));
+        $spreadsheet = $reader->load(request()->file('import-payroll'));
         $sheetData = $spreadsheet->getActiveSheet()->toArray();
         $import =[];
         DB::beginTransaction();
@@ -743,7 +745,7 @@ class PayrollController extends Controller
                 if ($employeeId != null ):
                     $val_salarymonth = $value[2] + $value[3] + $value[4];
                     $total_loan      = $value[6];
-                    $deduction_other = $value[9] + $value[10];
+                    $deduction_other = $value[7] + $value[9] + $value[10];
                     $total_deduction = $value[6] + $value[9] + $value[10] ;
                     $data = [
                         'employee_id'                       => $employeeId->id,
@@ -781,6 +783,53 @@ class PayrollController extends Controller
                     ];
                     if (!in_array($data,$import)){
                         array_push($import,$data);
+                    }
+                    if ($value[6] !=null){
+                        $idopt = LoanOption::where('name','KASBON')->first();
+                        $loan = [
+                            'employee_id'           => $employeeId->id,
+                            'loan_type_id'          => $idopt->id,
+                            'installment'           => 0,
+                            'number_of_installment' => 0,
+                            'status'                => 'pay off',
+                            'amount'                => $value[6],
+                            'created_by'            => Auth::user()->id,
+                            'branch_id'             => $employeeId->branch_id,
+                        ];
+                        Loan::create($loan);
+                    }
+                    if ($value[7] != null){
+                        $deduc1 = [
+                            'employee_id'           => $employeeId->id,
+                            'branch_id'             => $employeeId->branch_id,
+                            'date'                  => date('Y-m-d'),
+                            'name'                  => 'ADM',
+                            'amount'                => $value[7],
+                            'created_by'            => Auth::user()->id,
+                        ];
+                        Deduction_other::create($deduc1);
+                    }
+                    if ($value[9] != null){
+                        $deduc2 = [
+                            'employee_id'           => $employeeId->id,
+                            'branch_id'             => $employeeId->branch_id,
+                            'date'                  => date('Y-m-d'),
+                            'name'                  => 'Koperasi',
+                            'amount'                => $value[9],
+                            'created_by'            => Auth::user()->id,
+                        ];
+                        Deduction_other::create($deduc1);
+                    }
+                    if ($value[10] != null){
+                        $deduc3 = [
+                            'employee_id'           => $employeeId->id,
+                            'branch_id'             => $employeeId->branch_id,
+                            'date'                  => date('Y-m-d'),
+                            'name'                  => 'Seragam',
+                            'amount'                => $value[10],
+                            'created_by'            => Auth::user()->id,
+                        ];
+                        Deduction_other::create($deduc1);
                     }
                 endif;
             endif;
