@@ -705,6 +705,26 @@ class PayrollController extends Controller
             return response()->json($res);
         }
     }
+    // public function import_run_payroll(Request $request){
+    //     $file_extension = request()->file('file-excel')->extension();
+    //     if ('csv' == $file_extension) {
+    //         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+    //     } elseif ('xls' == $file_extension) {
+    //         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+    //     } elseif ('xlsx' == $file_extension) {
+    //         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+    //     }
+
+    //     // $reader = new Xls();
+    //     $spreadsheet = $reader->load(request()->file('file-excel'));
+    //     $sheetData = $spreadsheet->getActiveSheet()->toArray();
+
+    //     foreach ($sheetData as $key => $value) {
+    //         if ($key > 0) :
+    //             $employeeId = employee::where('no_employee',$value[1])->first();
+
+    //         endif;
+    // }
     public function get_run_payroll(Request $request){
         $data   = DB::table('take_home_pay')
                     ->select('take_home_pay.*',
@@ -720,7 +740,6 @@ class PayrollController extends Controller
                     ->get();
         return DataTables::of($data)->make(true);
     }
-   
    public function data_payroll_final(){
         $companyId          = Branch::where('id',Auth::user()->branch_id)->first();
         $branch['branch']   = Branch::where('company_id',$companyId->company_id)->get();

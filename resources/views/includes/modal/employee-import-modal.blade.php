@@ -11,11 +11,11 @@
             {{ csrf_field() }}
             <div class="row">
                 <div class="col-md-6">
-                    <label>Pilih data :</label>
+                    <label>Pilih data : </label>
                     <input type="file" name="upload_file" class="form-control">
                 </div>
                 <div class="mt-4">
-                    <a href="{{URL::to('public/file/template-excel-employee/template-excel-employee.csv')}}"><p>Download Format Import Data</p></a>
+                    <a href="{{URL::to('public/file/template-excel-employee/template-excel-employee.xlxs ')}}"><p>Download Format Import Data</p></a>
                 </div>
             </div>
         </div>
