@@ -20,7 +20,7 @@
         <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
         <style>
             .loader {
-                border: 16px solid #fff;
+                border: 16px solid #7B7B7B;
                 border-radius: 50%;
                 border-top: 16px solid #f7770f;
                 border-bottom: 16px solid #f7770f;
@@ -32,7 +32,7 @@
             .loader2{
                 z-index:[1-100];
                 position : absolute;
-                border: 12px solid #fff;
+                border: 12px solid #7B7B7B;
                 border-radius: 50%;
                 border-top: 12px solid #29b6f6;
                 border-bottom: 12px solid #29b6f6;

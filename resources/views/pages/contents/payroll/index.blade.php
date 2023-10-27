@@ -129,7 +129,9 @@
         $.ajaxSetup({
             headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
         });
+        $('.containerLoader').attr('hidden',false)
             $(document).ready(function () {
+                $('.containerLoader').attr('hidden',true)
                 var branchId = $('#branch_id').val();
                 loadData(branchId ,employeeId="")
                 $('.itemAmount').attr('disabled',true)
@@ -267,9 +269,10 @@
                     data : {branch_id : branch_id },
                     dataType : 'json',
                     beforeSend : function (){
-
+                        $('.containerLoader').attr('hidden',false)
                     },
                     success : function(respon){
+                        $('.containerLoader').attr('hidden',true)
                         $('#costumeView').html('');
                         var emp = `<option value="">-- Select Employee --</option>`;
                         $.each(respon.employee,function(key,val){
@@ -323,9 +326,10 @@
                     data : data,
                     dataType : 'json',
                     beforeSend:function(){
-
+                        $('.containerLoader').attr('hidden',false)
                     },
                     success : function(respon){
+                        $('.containerLoader').attr('hidden',true)
                         swal.fire({
                             icon : respon.status,
                             text : respon.msg
@@ -349,9 +353,10 @@
                     data :{id :id },
                     dataType : 'json',
                     beforeSend : function(){
-
+                        $('.containerLoader').attr('hidden',false)
                     },
                     success : function(respon){
+                        $('.containerLoader').attr('hidden',true)
                         var bs = respon.payroll.amount;
                         $('#view_payroll').modal('show');
                         $('#empCode').html(respon.payroll.employee.employee_id)
@@ -390,9 +395,10 @@
                     data :{id :id },
                     dataType : 'json',
                     beforeSend : function(){
-
+                        $('.containerLoader').attr('hidden',false)
                     },
                     success : function(respon){
+                        $('.containerLoader').attr('hidden',true)
                         $('#edit_payroll').modal('show');
                         var payslip ='';
                         $.each(respon.payslip_type,function(key,val){
@@ -654,9 +660,10 @@
                     data :data,
                     dataType : 'json',
                     beforeSend : function(){
-
+                        $('.containerLoader').attr('hidden',false)
                     },
                     success : function(respon){
+                        $('.containerLoader').attr('hidden',true)
                         swal.fire({
                             icon : respon.status,
                             text : respon.msg
@@ -689,9 +696,10 @@
                             data :{id :id},
                             dataType : 'json',
                             beforeSend : function(){
-
+                                $('.containerLoader').attr('hidden',false)
                             },
                             success : function(respon){
+                                $('.containerLoader').attr('hidden',true)
                                 swal.fire({
                                     icon : respon.status,
                                     text : respon.msg
