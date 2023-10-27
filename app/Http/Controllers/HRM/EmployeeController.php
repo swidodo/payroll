@@ -745,7 +745,7 @@ class EmployeeController extends Controller
 
         $employee_arr = [];
         $users        = [];
-
+        
         foreach ($sheetData as $key => $row) {
             if ($key > 0){
             $branchId = DB::table('branches')
@@ -783,7 +783,7 @@ class EmployeeController extends Controller
                     $user->type     = 'user'; //default
                     $doj            = ($row[22] != "" ) ? $row[22] : '0000-00-00';
                     $doe            = ($row[23] != "" ) ? $row[23] : '0000-00-00';
-                    $dob            = ($row[4] !="") ? $row[4] : '0000-00-00';
+                    $dob            = ($row[4] !="") ? $row[4] : null;
                     if (count($checkUser) <= 0 ){
                         $data = $user->save();
                         $userId = $user->id;
@@ -830,6 +830,7 @@ class EmployeeController extends Controller
             }
 
         }
+        dd(count($sheetData));
         $insert = Employee::Insert($employee_arr);
         return redirect('/employees');
     }
