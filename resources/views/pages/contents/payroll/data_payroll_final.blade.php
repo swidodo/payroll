@@ -21,7 +21,7 @@
                     <h3 class="page-title">Pay Slip</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Payroll</li>
+                        <li class="breadcrumb-item active">Pay Slip</li>
                     </ul>
                 </div>
             </div>
@@ -49,10 +49,8 @@
                                 </select>
                             </div>
                             <div class="col-md-3 d-flex align-items-center mt-4"> 
-                                <button type="button" class="btn btn-primary" id="searchBranch">Search</button>
-                            </div>
-                            <div class="col-md-3 d-flex align-items-center mt-4"> 
-                                <button type="button" class="btn btn-primary" id="searchBranch">Export Pay Slip</button>
+                                <button type="button" class="btn btn-primary me-1" id="searchBranch">Search</button>
+                                <button type="button" class="btn btn-primary" id="ExportdataSlip">Export Pay Slip</button>
                             </div>
                         </div>
                     </div>
@@ -473,6 +471,20 @@
                 var enddate = $('#enddate').val();
                 var branch_id = $('#branch_id').val();
                 loadData(startdate,enddate,branch_id)
+            })
+            $('#ExportdataSlip').on('click',function(){
+                var startdate = $('#startdate').val()
+                var enddate = $('#enddate').val()
+                var branch_id = $('#branch_id').val()
+                $.ajax({
+                    url : 'export-payroll-pdf',
+                    type :'post',
+                    data :{branch_id : branch_id,startdate : startdate ,enddate : enddate},
+                    dataType : 'json',
+                    success : function(respon){
+                        console.log(respon)
+                    }
+                })
             })
     </script>
 @endpush

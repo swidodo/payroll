@@ -64,4 +64,5 @@ class RekapPayrollController extends Controller
         $fileName = 'Rekap_payroll_'.$date.'.xlsx';
         return Excel::download(new RekapPayrollExport($request), $fileName);
     }
+    
 }

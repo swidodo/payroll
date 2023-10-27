@@ -767,14 +767,34 @@ class PayrollController extends Controller
                             ->leftJoin('position','position.id','=','employees.position_id')
                             ->leftJoin('companies','companies.id','=','branches.company_id')
                             ->where('take_home_pay.id',$id)->first();
-        $data['allowance_fixed'] = DB::select("SELECT * from get_allowance_fixed('".$data['salary']->startdate."','".$data['salary']->enddate."','".$branch."') where employeeid = '".$data['salary']->employee_id."'");
-        $data['allowance_unfixed'] = DB::select("SELECT * from getallowance_unfixed('".$data['salary']->startdate."','".$data['salary']->enddate."','".$branch."') where employeeid = '". $data['salary']->employee_id."'");
-        $data['allowance_other'] = DB::select("SELECT * from get_other_allowance('".$data['salary']->startdate."','".$data['salary']->enddate."','".$branch."') where employeeid = '".$data['salary']->employee_id."'");
-        $data['reimbursement'] = DB::select("SELECT * FROM get_reimburstment('".$data['salary']->startdate."','".$data['salary']->enddate."','".$branch."') where employee_id = '".$data['salary']->employee_id."'");
-         $data['deduction_other'] = DB::select("SELECT * FROM get_deduction_other('".$data['salary']->startdate."','".$data['salary']->enddate."','".$branch."') where employeeid = '".$data['salary']->employee_id."'");
+        $data['allowance_fixed'] = DB::select("SELECT * from get_allowance_fixed('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employeeid = '".$data['salary']->employee_id."'");
+        $data['allowance_unfixed'] = DB::select("SELECT * from getallowance_unfixed('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employeeid = '". $data['salary']->employee_id."'");
+        $data['allowance_other'] = DB::select("SELECT * from get_other_allowance('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employeeid = '".$data['salary']->employee_id."'");
+        $data['reimbursement'] = DB::select("SELECT * FROM get_reimburstment('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employee_id = '".$data['salary']->employee_id."'");
+         $data['deduction_other'] = DB::select("SELECT * FROM get_deduction_other('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employeeid = '".$data['salary']->employee_id."'");
         $data['deduction'] = DB::table('v_deduction_acumulation')->where('employee_id',$data['salary']->employee_id)->first();
         $data['attendance'] = DB::select("SELECT * FROM getsalary('".$data['salary']->startdate."','".$data['salary']->enddate."','".$branch."') where employee_id = '". $data['salary']->employee_id."'");
         $pdf = PDF::loadview('pages.contents.payroll.payslip.pdf',$data);
         return $pdf->stream('payslip-'.$data['salary']->employee_name.'-'.substr($data['salary']->enddate,0,7));
+    }
+    public function ExportPayrollPdf(Request $request){
+        $data['salarys'] = DB::table('take_home_pay')
+                            ->select('take_home_pay.*','employees.name as employee_name','branches.name as branch_name','position.position_name','companies.name as company_name')
+                            ->leftJoin('employees','employees.id','=','take_home_pay.employee_id')
+                            ->leftJoin('branches','branches.id','=','take_home_pay.branch_id')
+                            ->leftJoin('position','position.id','=','employees.position_id')
+                            ->leftJoin('companies','companies.id','=','branches.company_id')
+                            ->where('take_home_pay.id',$request->branch_id)->get();
+        dd($data['salarys']);
+        $data['allowance_fixed'] = DB::select("SELECT * from get_allowance_fixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."')");
+        $data['allowance_unfixed'] = DB::select("SELECT * from getallowance_unfixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
+        $data['allowance_other'] = DB::select("SELECT * from get_other_allowance('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
+        $data['reimbursement'] = DB::select("SELECT * FROM get_reimburstment('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
+         $data['deduction_other'] = DB::select("SELECT * FROM get_deduction_other('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
+        $data['deduction'] = DB::table('v_deduction_acumulation')->where('branch_id',$request->branch_id)->get();
+        $data['attendance'] = DB::select("SELECT * FROM getsalary('".$request->startdate."','".$request->enddate."','".$branch."') ");
+
+        $pdf = PDF::loadview('pages.contents.payroll.payslip.export_pdf_payslip',$data);
+        return $pdf->stream('payslip-konsolidasi-cabang'.substr($data['salary']->enddate,0,7));
     }
 }

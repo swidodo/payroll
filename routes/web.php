@@ -222,6 +222,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('edit-data-payroll',[PayrollController::class,'edit'])->name('edit-data-payroll');
         Route::post('update-data-payroll',[PayrollController::class,'update'])->name('update-data-payroll');
         Route::post('delete-data-payroll',[PayrollController::class,'destroy'])->name('delete-data-payroll');
+        Route::get('export-payroll-pdf',[RekapPayrollController::class,'ExportPayrollPdf'])->name('export-payroll-pdf');
+        
         // payslip new
         Route::get('salary-payroll',[PayrollController::class,'data_payroll_final'])->name('salary-payroll');
         Route::get('run-payroll',[PayrollController::class,'run_payroll'])->name('run-payroll');
