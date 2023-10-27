@@ -15,7 +15,7 @@
                     <input type="file" name="upload_file" class="form-control">
                 </div>
                 <div class="mt-4">
-                    <a href="{{URL::to('public/file/template-excel-employee/template-excel-employees.xlsx ')}}"><p>Download Format Import Data</p></a>
+                    <a href="{{URL::to('public/file/template-excel-employee/template-excel-employees.xlsx')}}"><p>Download Format Import Data</p></a>
                 </div>
             </div>
         </div>
