@@ -772,8 +772,8 @@ class PayrollController extends Controller
                         'company_pay_bpjs_kesehatan'        => 0,
                         'company_pay_bpjs_ketenagakerjaan'  => 0,
                         'employee_pay_bpjs_kesehatan'       => 0,
-                        'employee_pay_bpjs_ketenagakerjaan' => 0,
-                        'company_total_pay_bpjs'            => $value[8],
+                        'employee_pay_bpjs_ketenagakerjaan' => $value[8],
+                        'company_total_pay_bpjs'            => 0,
                         'employee_total_pay_bpjs'           => $value[8],
                         'installment'                       => 0,
                         'loans'                             => $value[6],
@@ -808,7 +808,7 @@ class PayrollController extends Controller
                             'employee_id'           => $employeeId->id,
                             'branch_id'             => $employeeId->branch_id,
                             'date'                  => date('Y-m-d'),
-                            'name'                  => 'ADM',
+                            'name'                  => 'Admin',
                             'amount'                => $value[7],
                             'created_by'            => Auth::user()->id,
                         ];
@@ -823,7 +823,7 @@ class PayrollController extends Controller
                             'amount'                => $value[9],
                             'created_by'            => Auth::user()->id,
                         ];
-                        Deduction_other::create($deduc1);
+                        Deduction_other::create($deduc2);
                     }
                     if ($value[10] != null){
                         $deduc3 = [
@@ -834,7 +834,7 @@ class PayrollController extends Controller
                             'amount'                => $value[10],
                             'created_by'            => Auth::user()->id,
                         ];
-                        Deduction_other::create($deduc1);
+                        Deduction_other::create($deduc3);
                     }
                 endif;
             endif;
