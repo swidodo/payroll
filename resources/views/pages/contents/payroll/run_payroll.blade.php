@@ -503,6 +503,7 @@
                         $('.containerLoader').attr('hidden',true)
                         if (respon.status == 'success'){
                             $('#UploadDataPayroll')[0].reset();
+                            $('#modalImportPayroll').modal('show')
                         }
                         swal.fire({
                             icon : respon.status,
