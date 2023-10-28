@@ -793,7 +793,7 @@ class PayrollController extends Controller
                         'branch_id'                         => $employeeId->branch_id,
                     ];
                     if (!in_array($datas,$import)){
-                        array_push($import,$data);
+                        array_push($import,$datas);
                     }
                    
                     if ($value[6] !=null){
