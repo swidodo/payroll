@@ -749,51 +749,51 @@ class PayrollController extends Controller
                 }
                 
                 if ($employeeId != null ):
-                    if($employeeId->id =='' | $employeeId->id ==null){
-                        return true;
-                    }
-                    $val_salarymonth = (($value[2] !=null) ? $value[2] : 0 ) + (($value[3] !=null) ? $value[3] : 0 ) + (($value[4] !=null) ? $value[4] : 0 );
-                    $total_loan      = (($value[6] !=null) ? $value[6] : 0 );
-                    $deduction_other = (($value[7] !=null) ? $value[7] : 0 ) + (($value[9] !=null) ? $value[9] : 0 ) + (($value[10] !=null) ? $value[10] : 0 );
-                    $total_deduction = $total_loan + $deduction_other;
-                    $data = [
-                        'date'                              => date('Y-m-d'),
-                        'employee_id'                       => $employeeId->id,
-                        'employee_code'                     => $employeeId->employee_id,
-                        'no_employee'                       => $employeeId->no_employee,
-                        'name'                              => $employeeId->name,
-                        'position_id'                       => $employeeId->position_id,
-                        // 'level'                          => $employeeId->position_id,
-                        'bank_name'                         => $employeeId->bank_name,
-                        'account_number'                    => $employeeId->account_number,
-                        'basic_salary'                      =>  (($value[2] !=null) ? $value[2] : 0 ),
-                        'allowance_fixed'                   =>  (($value[3] !=null) ? $value[3] : 0 ),
-                        'allowance_unfixed'                 => 0,
-                        'allowance_other'                   => 0,
-                        'overtime'                          =>  (($value[4] !=null) ? $value[4] : 0 ),
-                        'salary_this_month'                 => $val_salarymonth,
-                        'company_pay_bpjs'                  => 0,
-                        'total_salary'                      => $val_salarymonth,
-                        'company_pay_bpjs_kesehatan'        => 0,
-                        'company_pay_bpjs_ketenagakerjaan'  => 0,
-                        'employee_pay_bpjs_kesehatan'       => 0,
-                        'employee_pay_bpjs_ketenagakerjaan' =>  (($value[8] !=null) ? $value[8] : 0 ),
-                        'company_total_pay_bpjs'            => 0,
-                        'employee_total_pay_bpjs'           => (($value[8] !=null) ? $value[8] : 0 ),
-                        'installment'                       => 0,
-                        'loans'                             => (($value[6] !=null) ? $value[6] : 0 ),
-                        'total_pay_loans'                   => $total_loan,
-                        'sanksi_adm'                        => 0,
-                        'total_deduction_other'             => $deduction_other,
-                        'pph21'                             => 0,
-                        'total_deduction'                   => $total_deduction,
-                        'startdate'                         => $value[12],
-                        'enddate'                           => $value[13],
-                        'take_home_pay'                     => (($value[11] !=null) ? $value[11] : 0 ),
-                    ];
-                    if (!in_array($data,$import)){
-                        array_push($import,$data);
-                    }
+                    // if($employeeId->id =='' | $employeeId->id ==null){
+                    //     return true;
+                    // }
+                    // $val_salarymonth = (($value[2] !=null) ? $value[2] : 0 ) + (($value[3] !=null) ? $value[3] : 0 ) + (($value[4] !=null) ? $value[4] : 0 );
+                    // $total_loan      = (($value[6] !=null) ? $value[6] : 0 );
+                    // $deduction_other = (($value[7] !=null) ? $value[7] : 0 ) + (($value[9] !=null) ? $value[9] : 0 ) + (($value[10] !=null) ? $value[10] : 0 );
+                    // $total_deduction = $total_loan + $deduction_other;
+                    // $data = [
+                    //     'date'                              => date('Y-m-d'),
+                    //     'employee_id'                       => $employeeId->id,
+                    //     'employee_code'                     => $employeeId->employee_id,
+                    //     'no_employee'                       => $employeeId->no_employee,
+                    //     'name'                              => $employeeId->name,
+                    //     'position_id'                       => $employeeId->position_id,
+                    //     // 'level'                          => $employeeId->position_id,
+                    //     'bank_name'                         => $employeeId->bank_name,
+                    //     'account_number'                    => $employeeId->account_number,
+                    //     'basic_salary'                      =>  (($value[2] !=null) ? $value[2] : 0 ),
+                    //     'allowance_fixed'                   =>  (($value[3] !=null) ? $value[3] : 0 ),
+                    //     'allowance_unfixed'                 => 0,
+                    //     'allowance_other'                   => 0,
+                    //     'overtime'                          =>  (($value[4] !=null) ? $value[4] : 0 ),
+                    //     'salary_this_month'                 => $val_salarymonth,
+                    //     'company_pay_bpjs'                  => 0,
+                    //     'total_salary'                      => $val_salarymonth,
+                    //     'company_pay_bpjs_kesehatan'        => 0,
+                    //     'company_pay_bpjs_ketenagakerjaan'  => 0,
+                    //     'employee_pay_bpjs_kesehatan'       => 0,
+                    //     'employee_pay_bpjs_ketenagakerjaan' =>  (($value[8] !=null) ? $value[8] : 0 ),
+                    //     'company_total_pay_bpjs'            => 0,
+                    //     'employee_total_pay_bpjs'           => (($value[8] !=null) ? $value[8] : 0 ),
+                    //     'installment'                       => 0,
+                    //     'loans'                             => (($value[6] !=null) ? $value[6] : 0 ),
+                    //     'total_pay_loans'                   => $total_loan,
+                    //     'sanksi_adm'                        => 0,
+                    //     'total_deduction_other'             => $deduction_other,
+                    //     'pph21'                             => 0,
+                    //     'total_deduction'                   => $total_deduction,
+                    //     'startdate'                         => $value[12],
+                    //     'enddate'                           => $value[13],
+                    //     'take_home_pay'                     => (($value[11] !=null) ? $value[11] : 0 ),
+                    // ];
+                    // if (!in_array($data,$import)){
+                    //     array_push($import,$data);
+                    // }
                     $empID = $employeeId->id;
                     
                     if ($value[6] !=null){
