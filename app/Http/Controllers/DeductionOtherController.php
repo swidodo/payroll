@@ -78,6 +78,7 @@ class DeductionOtherController extends Controller
     }
     public function update(Request $request){
         $data = [
+            'date'          => $request->date,
             'name'          => $request->name,
             'amount'        => $request->amount,
             'updated_by'    => Auth::user()->id,

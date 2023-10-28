@@ -742,6 +742,14 @@ class PayrollController extends Controller
                         ->where('enddate',$value[13])
                         ->delete();
                 }
+                $ded_other = Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[12],'enddate'=>$value[13]])->count();
+                if($ded_other > 0 ){
+                    Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[12],'enddate'=>$value[13]])->delete();
+                }
+                $bpjsTk = Bpjs_value::where('employee_id',$employeeId->id)->count();
+                if($bpjsTk > 0){
+                    Bpjs_value::where('employee_id',$employeeId->id)->delete();
+                }
                 if ($employeeId != null ):
                     $val_salarymonth = $value[2] + $value[3] + $value[4];
                     $total_loan      = $value[6];
