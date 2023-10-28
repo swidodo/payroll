@@ -757,6 +757,7 @@ class PayrollController extends Controller
                     $deduction_other = (($value[7] !=null) ? $value[7] : 0 ) + (($value[9] !=null) ? $value[9] : 0 ) + (($value[10] !=null) ? $value[10] : 0 );
                     $total_deduction = $total_loan + $deduction_other;
                     $data = [
+                        'date'                              => date('Y-m-d'),
                         'employee_id'                       => $employeeId->id,
                         'employee_code'                     => $employeeId->employee_id,
                         'no_employee'                       => $employeeId->no_employee,
