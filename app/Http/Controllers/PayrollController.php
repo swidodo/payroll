@@ -790,6 +790,7 @@ class PayrollController extends Controller
                         'startdate'                         => $value[12],
                         'enddate'                           => $value[13],
                         'take_home_pay'                     => (($value[11] !=null) ? $value[11] : 0 ),
+                        'branch_id'                         => $employeeId->branch_id,
                     ];
                     if (!in_array($datas,$import)){
                         array_push($import,$data);
