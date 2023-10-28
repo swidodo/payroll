@@ -811,7 +811,7 @@ class PayrollController extends Controller
                             'created_by'            => Auth::user()->id,
                             'branch_id'             => $employeeId->branch_id,
                         ];
-                        Loan::create($loan);
+                        Loan::insert($loan);
                     }
                     // if ($value[7] != null){
                     //     $deduc1 = [
