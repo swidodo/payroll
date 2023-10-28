@@ -15,7 +15,7 @@
                             <div class="mb-3">
                                 <label>File Import</label>
                                 <input type="file" name="import_payroll" id="import-payroll" class="form-control" required>
-                                <a href="{{asset('file/template-excel-payroll/template-import-payroll.xlsx')}}" class="text-small">Download template import payroll</a>
+                                <a download href="{{asset('file/template-excel-payroll/template-import-payroll.xlsx')}}" class="text-small">Download template import payroll</a>
                                 
                             </div>
                             <div class="mb-3">
