@@ -749,10 +749,10 @@ class PayrollController extends Controller
                 }
                 
                 if ($employeeId != null ):
-                    $val_salarymonth = $value[2] + $value[3] + $value[4];
-                    $total_loan      = $value[6];
-                    $deduction_other = $value[7] + $value[9] + $value[10];
-                    $total_deduction = $value[6] + $value[9] + $value[10] ;
+                    $val_salarymonth = (($value[2] !=null) ? $value[2] : 0 ) + (($value[3] !=null) ? $value[3] : 0 ) + (($value[4] !=null) ? $value[4] : 0 );
+                    $total_loan      = (($value[6] !=null) ? $value[6] : 0 );
+                    $deduction_other = (($value[7] !=null) ? $value[7] : 0 ) + (($value[9] !=null) ? $value[9] : 0 ) + (($value[10] !=null) ? $value[10] : 0 );
+                    $total_deduction = $total_loan + $deduction_other;
                     $data = [
                         'employee_id'                       => $employeeId->id,
                         'employee_code'                     => $employeeId->employee_id,
@@ -762,22 +762,22 @@ class PayrollController extends Controller
                         // 'level'                          => $employeeId->position_id,
                         'bank_name'                         => $employeeId->bank_name,
                         'account_number'                    => $employeeId->account_number,
-                        'basic_salary'                      => $value[2],
-                        'allowance_fixed'                   => $value[3],
+                        'basic_salary'                      =>  (($value[2] !=null) ? $value[2] : 0 ),
+                        'allowance_fixed'                   =>  (($value[3] !=null) ? $value[3] : 0 ),
                         'allowance_unfixed'                 => 0,
                         'allowance_other'                   => 0,
-                        'overtime'                          => $value[4],
+                        'overtime'                          =>  (($value[4] !=null) ? $value[4] : 0 ),
                         'salary_this_month'                 => $val_salarymonth,
                         'company_pay_bpjs'                  => 0,
                         'total_salary'                      => $val_salarymonth,
                         'company_pay_bpjs_kesehatan'        => 0,
                         'company_pay_bpjs_ketenagakerjaan'  => 0,
                         'employee_pay_bpjs_kesehatan'       => 0,
-                        'employee_pay_bpjs_ketenagakerjaan' => $value[8],
+                        'employee_pay_bpjs_ketenagakerjaan' =>  (($value[8] !=null) ? $value[8] : 0 ),
                         'company_total_pay_bpjs'            => 0,
-                        'employee_total_pay_bpjs'           => $value[8],
+                        'employee_total_pay_bpjs'           => (($value[8] !=null) ? $value[8] : 0 ),
                         'installment'                       => 0,
-                        'loans'                             => $value[6],
+                        'loans'                             => (($value[6] !=null) ? $value[6] : 0 ),
                         'total_pay_loans'                   => $total_loan,
                         'sanksi_adm'                        => 0,
                         'total_deduction_other'             => $deduction_other,
@@ -785,7 +785,7 @@ class PayrollController extends Controller
                         'total_deduction'                   => $total_deduction,
                         'startdate'                         => $value[12],
                         'enddate'                           => $value[13],
-                        'take_home_pay'                     => $value[11],
+                        'take_home_pay'                     => (($value[11] !=null) ? $value[11] : 0 ),
                     ];
                     if (!in_array($data,$import)){
                         array_push($import,$data);
