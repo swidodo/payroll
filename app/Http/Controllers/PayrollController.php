@@ -961,7 +961,7 @@ class PayrollController extends Controller
         $data['attendance'] = DB::select("SELECT * FROM getsalary('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
 
         $pdf = PDF::loadview('pages.contents.payroll.payslip.export_pdf_payslip',$data);
-        return $pdf->download('payslip-konsolidasi-cabang.pdf');
+        return $pdf->download('payslip-'.substr($request->enddate,0,7).'.pdf');
         // return $pdf->stream('payslip-konsolidasi-cabang'.substr($request->enddate,0,7));
     }
 }
