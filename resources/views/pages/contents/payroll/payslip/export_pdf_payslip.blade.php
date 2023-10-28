@@ -241,8 +241,8 @@
             return $hasil;
         }
     @endphp
-    @foreach(@salarys as @salary)
-    <div class="container p-2">
+    @foreach($salarys as $salary)
+    <div class="container p-2" style="page-break-after: always">
         <div class="center" style="padding: 8px">
             <table style="width: 90%">
                 <tbody>
@@ -332,32 +332,40 @@
                                 </tr>
                                
                                 @foreach($allowance_fixed as $fixed)
-                                <tr class="fs-14 " style="font-weight: 400">
-                                    <td style="width: 45%">{{ Ucwords(strtolower($fixed->allowance_name)) }}</td>
-                                    <td>:</td>
-                                    <td class="text-right">{{ ($fixed->allowance_amount =='' ) ? 0 : formatRupiah($fixed->allowance_amount) }}</td>
-                                </tr>
+                                    @if ($fixed->employeeid == $salary->employee_id)
+                                        <tr class="fs-14 " style="font-weight: 400">
+                                            <td style="width: 45%">{{ Ucwords(strtolower($fixed->allowance_name)) }}</td>
+                                            <td>:</td>
+                                            <td class="text-right">{{ ($fixed->allowance_amount =='' ) ? 0 : formatRupiah($fixed->allowance_amount) }}</td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                                 @foreach($allowance_unfixed as $unfixed)
-                                <tr class="fs-14 " style="font-weight: 400">
-                                    <td style="width: 45%">{{ Ucwords(strtolower($unfixed->allowance_name)) }}</td>
-                                    <td>:</td>
-                                    <td class="text-right">{{ ($unfixed->amount == '') ? 0 : formatRupiah($unfixed->amount)  }}</td>
-                                </tr>
+                                    @if ($unfixed->employee_id == $salary->employee_id)
+                                    <tr class="fs-14 " style="font-weight: 400">
+                                        <td style="width: 45%">{{ Ucwords(strtolower($unfixed->allowance_name)) }}</td>
+                                        <td>:</td>
+                                        <td class="text-right">{{ ($unfixed->amount == '') ? 0 : formatRupiah($unfixed->amount)  }}</td>
+                                    </tr>
+                                    @endif
                                 @endforeach
                                 @foreach($allowance_other as $other)
-                                <tr class="fs-14 " style="font-weight: 400">
-                                    <td style="width: 45%">{{ strtolower($other->allowance_name) }}</td>
-                                    <td>:</td>
-                                    <td class="text-right">{{ ($other->allowance_amount =='' ) ? 0 : formatRupiah($other->allowance_amount)}}</td>
-                                </tr>
+                                    @if ($other->employee_id == $salary->employee_id)
+                                    <tr class="fs-14 " style="font-weight: 400">
+                                        <td style="width: 45%">{{ strtolower($other->allowance_name) }}</td>
+                                        <td>:</td>
+                                        <td class="text-right">{{ ($other->allowance_amount =='' ) ? 0 : formatRupiah($other->allowance_amount)}}</td>
+                                    </tr>
+                                    @endif
                                 @endforeach
                                 @foreach($reimbursement as $remburst)
-                                <tr class="fs-14 " style="font-weight: 400">
-                                    <td style="width: 45%">{{ Ucwords(strtolower($remburst->reimburst_name)) }}</td>
-                                    <td>:</td>
-                                    <td class="text-right">{{ ($remburst->reimburst_amount == '' ) ? 0 : formatRupiah($remburst->reimburst_amount) }}</td>
-                                </tr>
+                                    @if ($remburst->employee_id == $salary->employee_id)
+                                        <tr class="fs-14 " style="font-weight: 400">
+                                            <td style="width: 45%">{{ Ucwords(strtolower($remburst->reimburst_name)) }}</td>
+                                            <td>:</td>
+                                            <td class="text-right">{{ ($remburst->reimburst_amount == '' ) ? 0 : formatRupiah($remburst->reimburst_amount) }}</td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                         </tbody>
                     </table>
@@ -457,37 +465,39 @@
                             <td style="width: 58%; padding: 0;margin:0;"></td>
                             <td class="text-left border-bottom"><p class="m-0 fs-11 text-bold pb-5">Attendance Summary</p></td>
                        </tr>
-                       @foreach($attendance as $a)
-                        <tr style="padding: 0px; margin: 0px">
-                            <td class="p-0 m-0" style="width: 58%; padding: 0px; margin: 0px"></td>
-                            <td class="clearfix p-0 m-0" style="padding: 0px;padding-top: 8px; margin: 0px" >
-                                <p class=" text-left m-0 p-0" style="font-size: 11px;float: left;padding: 0px;  margin-bottom: -8px;">Actual Working Day</p>
-                                <p class="text-right m-0 p-0" style="font-size: 11px;padding: 0px; margin-bottom: -8px;">
-                                    {{ ($a->work_actual_day == null )? 0 : $a->work_actual_day }}
-                                </p>
-                            </td>
-                        </tr>
-                        <tr >
-                            <td class="p-0 m-0" style="width: 58%;"></td>
-                            <td class="clearfix m-0 p-0" style="">
-                                <p class=" text-left m-0 p-0" style="font-size: 11px;float: left; margin-bottom: -8px;">Schedule Working Day</p>
-                                <p class=" text-right m-0 p-0" style="font-size: 11px;  margin-bottom: -8px;">
-                                    {{ ($a->work_day == null )? 0 : $a->work_day }}
-                                </p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width: 58%"></td>
-                            <td class="clearfix">
-                                <p class=" text-left m-0 " style="font-size: 11px;float: left">Attendance/Time Off Code  <br />
-                                   Alpa : {{ ($a->alpa == null )? 0 : $a->alpa }},
-                                   Izin : {{ ($a->izin == null )? 0 : $a->izin }},
-                                   Sakit: {{ (($a->sds == null )? 0 : $a->sds) }},
-                                   Cuti : {{ ($a->cuti == null )? 0 : $a->cuti }},
-                                   Dispensasi : {{ ($a->disp == null )? 0 : $a->disp }}
-                                </p>
-                            </td>
-                        </tr>
+                        @foreach($attendance as $a)
+                            @if($salary->employee_id == $a->employee_id)
+                                <tr style="padding: 0px; margin: 0px">
+                                    <td class="p-0 m-0" style="width: 58%; padding: 0px; margin: 0px"></td>
+                                    <td class="clearfix p-0 m-0" style="padding: 0px;padding-top: 8px; margin: 0px" >
+                                        <p class=" text-left m-0 p-0" style="font-size: 11px;float: left;padding: 0px;  margin-bottom: -8px;">Actual Working Day</p>
+                                        <p class="text-right m-0 p-0" style="font-size: 11px;padding: 0px; margin-bottom: -8px;">
+                                            {{ ($a->work_actual_day == null )? 0 : $a->work_actual_day }}
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr >
+                                    <td class="p-0 m-0" style="width: 58%;"></td>
+                                    <td class="clearfix m-0 p-0" style="">
+                                        <p class=" text-left m-0 p-0" style="font-size: 11px;float: left; margin-bottom: -8px;">Schedule Working Day</p>
+                                        <p class=" text-right m-0 p-0" style="font-size: 11px;  margin-bottom: -8px;">
+                                            {{ ($a->work_day == null )? 0 : $a->work_day }}
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 58%"></td>
+                                    <td class="clearfix">
+                                        <p class=" text-left m-0 " style="font-size: 11px;float: left">Attendance/Time Off Code  <br />
+                                        Alpa : {{ ($a->alpa == null )? 0 : $a->alpa }},
+                                        Izin : {{ ($a->izin == null )? 0 : $a->izin }},
+                                        Sakit: {{ (($a->sds == null )? 0 : $a->sds) }},
+                                        Cuti : {{ ($a->cuti == null )? 0 : $a->cuti }},
+                                        Dispensasi : {{ ($a->disp == null )? 0 : $a->disp }}
+                                        </p>
+                                    </td>
+                                </tr>
+                            @endif
                         @endforeach
                     </tbody>
                 </table>
