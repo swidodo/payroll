@@ -747,10 +747,10 @@ class PayrollController extends Controller
                 if($ded_other > 0 ){
                     Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[12],'enddate'=>$value[13]])->delete();
                 }
-                $ded_loan = Loan::whereBetweenRaw("date('created_at')",['startdate'=>$value[12],'enddate'=>$value[13]])->count();
-                if ($ded_loan > 0 ){
-                    Loan::whereBetweenRaw("date('created_at')",['startdate'=>$value[12],'enddate'=>$value[13]])->delete();
-                }
+                // $ded_loan = Loan::whereBetweenRaw("date('created_at')",['startdate'=>$value[12],'enddate'=>$value[13]])->count();
+                // if ($ded_loan > 0 ){
+                //     Loan::whereBetweenRaw("date('created_at')",['startdate'=>$value[12],'enddate'=>$value[13]])->delete();
+                // }
                 Loan::where("created_at",null)->delete();
                 if ($employeeId != null ):
                     if($employeeId->id =='' | $employeeId->id ==null){
