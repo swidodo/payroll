@@ -478,7 +478,7 @@
                 var branch_id = $('#branch_id').val()
                 $('.containerLoader').attr('hidden',false)
                 window.location.href = 'export-payroll-pdf?branch_id='+branch_id+'&startdate='+startdate+'&enddate='+enddate;
-                setTimeout(function(){ $('.containerLoader').attr('hidden',true);}, 3000);
+                setTimeout(function(){ $('.containerLoader').attr('hidden',true);}, 10000);
             })
     </script>
 @endpush
