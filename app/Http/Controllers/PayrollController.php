@@ -747,11 +747,10 @@ class PayrollController extends Controller
                 if($ded_other > 0 ){
                     Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[12],'enddate'=>$value[13]])->delete();
                 }
-                // $ded_loan = Loan::whereBetweenRaw("date('created_at')",['startdate'=>$value[12],'enddate'=>$value[13]])->count();
-                // if ($ded_loan > 0 ){
-                //     Loan::whereBetweenRaw("date('created_at')",['startdate'=>$value[12],'enddate'=>$value[13]])->delete();
-                // }
-                Loan::where("created_at",null)->delete();
+                $ded_loan = Loan::whereBetweenRaw("date(created_at)",['startdate'=>$value[12],'enddate'=>$value[13]])->count();
+                if ($ded_loan > 0 ){
+                    Loan::whereBetweenRaw("date(created_at)",['startdate'=>$value[12],'enddate'=>$value[13]])->delete();
+                }
                 if ($employeeId != null ):
                     if($employeeId->id =='' | $employeeId->id ==null){
                         return true;
@@ -813,6 +812,8 @@ class PayrollController extends Controller
                             'amount'                => $value[6],
                             'created_by'            => Auth::user()->id,
                             'branch_id'             => $employeeId->branch_id,
+                            'created_at'            => date('Y-m-d h:m:s'),
+                            'updated_at'            => date('Y-m-d h:m:s')
                         ];
                         Loan::insert($data);
                     }
@@ -824,6 +825,8 @@ class PayrollController extends Controller
                             'name'                  => 'Admin',
                             'amount'                => $value[7],
                             'created_by'            => Auth::user()->id,
+                            'created_at'            => date('Y-m-d h:m:s'),
+                            'updated_at'            => date('Y-m-d h:m:s')
                         ];
                         Deduction_other::create($deduc1);
                     }
@@ -835,6 +838,8 @@ class PayrollController extends Controller
                             'name'                  => 'Koperasi',
                             'amount'                => $value[9],
                             'created_by'            => Auth::user()->id,
+                            'created_at'            => date('Y-m-d h:m:s'),
+                            'updated_at'            => date('Y-m-d h:m:s')
                         ];
                         Deduction_other::create($deduc2);
                     }
@@ -846,6 +851,8 @@ class PayrollController extends Controller
                             'name'                  => 'Seragam',
                             'amount'                => $value[10],
                             'created_by'            => Auth::user()->id,
+                            'created_at'            => date('Y-m-d h:m:s'),
+                            'updated_at'            => date('Y-m-d h:m:s')
                         ];
                         Deduction_other::create($deduc3);
                     }
