@@ -756,7 +756,7 @@ class PayrollController extends Controller
                     $total_loan      = (($value[6] !=null) ? $value[6] : 0 );
                     $deduction_other = (($value[7] !=null) ? $value[7] : 0 ) + (($value[9] !=null) ? $value[9] : 0 ) + (($value[10] !=null) ? $value[10] : 0 );
                     $total_deduction = $total_loan + $deduction_other;
-                    $data = [
+                    $datas = [
                         'date'                              => date('Y-m-d'),
                         'employee_id'                       => $employeeId->id,
                         'employee_code'                     => $employeeId->employee_id,
@@ -791,7 +791,7 @@ class PayrollController extends Controller
                         'enddate'                           => $value[13],
                         'take_home_pay'                     => (($value[11] !=null) ? $value[11] : 0 ),
                     ];
-                    if (!in_array($data,$import)){
+                    if (!in_array($datas,$import)){
                         array_push($import,$data);
                     }
                    
@@ -810,39 +810,39 @@ class PayrollController extends Controller
                         ];
                         Loan::insert($data);
                     }
-                    // if ($value[7] != null){
-                    //     $deduc1 = [
-                    //         'employee_id'           => $employeeId->id,
-                    //         'branch_id'             => $employeeId->branch_id,
-                    //         'date'                  => date('Y-m-d'),
-                    //         'name'                  => 'Admin',
-                    //         'amount'                => $value[7],
-                    //         'created_by'            => Auth::user()->id,
-                    //     ];
-                    //     Deduction_other::create($deduc1);
-                    // }
-                    // if ($value[9] != null){
-                    //     $deduc2 = [
-                    //         'employee_id'           => $employeeId->id,
-                    //         'branch_id'             => $employeeId->branch_id,
-                    //         'date'                  => date('Y-m-d'),
-                    //         'name'                  => 'Koperasi',
-                    //         'amount'                => $value[9],
-                    //         'created_by'            => Auth::user()->id,
-                    //     ];
-                    //     Deduction_other::create($deduc2);
-                    // }
-                    // if ($value[10] != null){
-                    //     $deduc3 = [
-                    //         'employee_id'           => $employeeId->id,
-                    //         'branch_id'             => $employeeId->branch_id,
-                    //         'date'                  => date('Y-m-d'),
-                    //         'name'                  => 'Seragam',
-                    //         'amount'                => $value[10],
-                    //         'created_by'            => Auth::user()->id,
-                    //     ];
-                    //     Deduction_other::create($deduc3);
-                    // }
+                    if ($value[7] != null){
+                        $deduc1 = [
+                            'employee_id'           => $employeeId->id,
+                            'branch_id'             => $employeeId->branch_id,
+                            'date'                  => date('Y-m-d'),
+                            'name'                  => 'Admin',
+                            'amount'                => $value[7],
+                            'created_by'            => Auth::user()->id,
+                        ];
+                        Deduction_other::create($deduc1);
+                    }
+                    if ($value[9] != null){
+                        $deduc2 = [
+                            'employee_id'           => $employeeId->id,
+                            'branch_id'             => $employeeId->branch_id,
+                            'date'                  => date('Y-m-d'),
+                            'name'                  => 'Koperasi',
+                            'amount'                => $value[9],
+                            'created_by'            => Auth::user()->id,
+                        ];
+                        Deduction_other::create($deduc2);
+                    }
+                    if ($value[10] != null){
+                        $deduc3 = [
+                            'employee_id'           => $employeeId->id,
+                            'branch_id'             => $employeeId->branch_id,
+                            'date'                  => date('Y-m-d'),
+                            'name'                  => 'Seragam',
+                            'amount'                => $value[10],
+                            'created_by'            => Auth::user()->id,
+                        ];
+                        Deduction_other::create($deduc3);
+                    }
                 endif;
             endif;
         }
