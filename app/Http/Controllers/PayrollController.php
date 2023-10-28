@@ -747,7 +747,11 @@ class PayrollController extends Controller
                 if($ded_other > 0 ){
                     Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[12],'enddate'=>$value[13]])->delete();
                 }
-                
+                $ded_loan = Loan::whereBetweenRaw("date('created_at')",['startdate'=>$value[12],'enddate'=>$value[13]])->count();
+                if ($ded_loan > 0 ){
+                    Loan::whereBetweenRaw("date('created_at')",['startdate'=>$value[12],'enddate'=>$value[13]])->delete();
+                }
+                Loan::where("created_at",null)->delete();
                 if ($employeeId != null ):
                     if($employeeId->id =='' | $employeeId->id ==null){
                         return true;
@@ -791,6 +795,7 @@ class PayrollController extends Controller
                         'enddate'                           => $value[13],
                         'take_home_pay'                     => (($value[11] !=null) ? $value[11] : 0 ),
                         'branch_id'                         => $employeeId->branch_id,
+                        'created_at'                        => date('Y-m-d h:m:s'),
                     ];
                     if (!in_array($datas,$import)){
                         array_push($import,$datas);
