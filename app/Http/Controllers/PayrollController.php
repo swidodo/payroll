@@ -951,7 +951,7 @@ class PayrollController extends Controller
                             ->leftJoin('branches','branches.id','=','take_home_pay.branch_id')
                             ->leftJoin('position','position.id','=','employees.position_id')
                             ->leftJoin('companies','companies.id','=','branches.company_id')
-                            // ->where('take_home_pay.id',$request->branch_id)
+                            ->where('take_home_pay.branch_id',$request->branch_id)
                             ->get();
         $data['allowance_fixed'] = DB::select("SELECT * from get_allowance_fixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."')");
         $data['allowance_unfixed'] = DB::select("SELECT * from getallowance_unfixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
@@ -960,7 +960,7 @@ class PayrollController extends Controller
          $data['deduction_other'] = DB::select("SELECT * FROM get_deduction_other('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
         $data['deduction'] = DB::table('v_deduction_acumulation')->where('branch_id',$request->branch_id)->get();
         $data['attendance'] = DB::select("SELECT * FROM getsalary('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
-        dd($data['salarys']);
+
         $pdf = PDF::loadview('pages.contents.payroll.payslip.export_pdf_payslip',$data);
         return $pdf->download('payslip-'.substr($request->enddate,0,7).'.pdf');
         // return $pdf->stream('payslip-konsolidasi-cabang'.substr($request->enddate,0,7));
