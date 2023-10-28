@@ -801,7 +801,7 @@ class PayrollController extends Controller
                         if($empID == null){
                             dd($employeeId->no_employee);
                         };
-                        $loans = [
+                        $data = [
                             'employee_id'           => 1,
                             'loan_type_id'          => $idopt->id,
                             'installment'           => 0,
@@ -811,7 +811,7 @@ class PayrollController extends Controller
                             'created_by'            => Auth::user()->id,
                             'branch_id'             => $employeeId->branch_id,
                         ];
-                        Loan::create($loans);
+                        Loan::insert($loans);
                     }
                     // if ($value[7] != null){
                     //     $deduc1 = [
