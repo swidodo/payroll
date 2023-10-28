@@ -749,6 +749,9 @@ class PayrollController extends Controller
                 }
                 
                 if ($employeeId != null ):
+                    if($employeeId->id =='' | $employeeId->id ==null){
+                        return true;
+                    }
                     $val_salarymonth = (($value[2] !=null) ? $value[2] : 0 ) + (($value[3] !=null) ? $value[3] : 0 ) + (($value[4] !=null) ? $value[4] : 0 );
                     $total_loan      = (($value[6] !=null) ? $value[6] : 0 );
                     $deduction_other = (($value[7] !=null) ? $value[7] : 0 ) + (($value[9] !=null) ? $value[9] : 0 ) + (($value[10] !=null) ? $value[10] : 0 );
@@ -791,7 +794,6 @@ class PayrollController extends Controller
                         array_push($import,$data);
                     }
                     if ($value[6] !=null){
-                        dd($employeeId->id);
                         $idopt = LoanOption::where('name','KASBON')->first();
                         $loan = [
                             'employee_id'           => $employeeId->id,
