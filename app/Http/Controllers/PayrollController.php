@@ -794,7 +794,7 @@ class PayrollController extends Controller
                     if (!in_array($data,$import)){
                         array_push($import,$data);
                     }
-                    $empID = $employeeId->id
+                    $empID = $employeeId->id;
                     if ($value[6] !=null){
                         $idopt = LoanOption::where('name','KASBON')->first();
                         $loan = [
