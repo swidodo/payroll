@@ -620,8 +620,8 @@ class PayrollController extends Controller
                     ->where('loans.employee_id',$thp->employee_id)
                     ->where('loans.branch_id',$request->branch_id)
                     ->where('loans.status','ongoing')
-                    ->whereMonth('loans.updated_at', $month)
-                    ->whereYear('loans.updated_at', $year)
+                    // ->whereMonth('loans.updated_at', $month)
+                    // ->whereYear('loans.updated_at', $year)
                     ->get();
 
                     if ($loans !=null){
@@ -636,7 +636,7 @@ class PayrollController extends Controller
                                 $dataLoans = [
                                     'status' =>  $status,
                                     'number_of_installment' => $numberInstallment,
-                                    'updated_at' => date('Y-m-d h:m:s'),
+                                    'updated_at' => $request->enddate.' '.date('h:m:s'),
                                 ];
                                 DB::table('loans')->where('employee_id',$empLoans->employee_id)
                                                  ->where('installment','!=',0)
@@ -644,7 +644,7 @@ class PayrollController extends Controller
                             }else if($empLoans->installment == 0){
                                 $dataLoans = [
                                     'status' =>'paid off',
-                                    'updated_at' => date('Y-m-d h:m:s'),
+                                    'updated_at' => $request->enddate.' '.date('h:m:s'),
                                 ];
                                 DB::table('loans')->where('employee_id',$empLoans->employee_id)
                                                  ->where('installment','=',0)
@@ -812,8 +812,8 @@ class PayrollController extends Controller
                             'amount'                => $value[6],
                             'created_by'            => Auth::user()->id,
                             'branch_id'             => $employeeId->branch_id,
-                            'created_at'            => date('Y-m-d h:m:s'),
-                            'updated_at'            => date('Y-m-d h:m:s')
+                            'created_at'            => $value[13].' '.date('h:m:s'),
+                            'updated_at'            => $value[13].' '.date('h:m:s')
                         ];
                         Loan::insert($data);
                     }
@@ -825,8 +825,8 @@ class PayrollController extends Controller
                             'name'                  => 'Admin',
                             'amount'                => $value[7],
                             'created_by'            => Auth::user()->id,
-                            'created_at'            => date('Y-m-d h:m:s'),
-                            'updated_at'            => date('Y-m-d h:m:s')
+                            'created_at'            => $value[13].' '.date('h:m:s'),
+                            'updated_at'            => $value[13].' '.date('h:m:s')
                         ];
                         Deduction_other::create($deduc1);
                     }
@@ -838,8 +838,8 @@ class PayrollController extends Controller
                             'name'                  => 'Koperasi',
                             'amount'                => $value[9],
                             'created_by'            => Auth::user()->id,
-                            'created_at'            => date('Y-m-d h:m:s'),
-                            'updated_at'            => date('Y-m-d h:m:s')
+                            'created_at'            => $value[13].' '.date('h:m:s'),
+                            'updated_at'            => $value[13].' '.date('h:m:s')
                         ];
                         Deduction_other::create($deduc2);
                     }
@@ -851,8 +851,8 @@ class PayrollController extends Controller
                             'name'                  => 'Seragam',
                             'amount'                => $value[10],
                             'created_by'            => Auth::user()->id,
-                            'created_at'            => date('Y-m-d h:m:s'),
-                            'updated_at'            => date('Y-m-d h:m:s')
+                            'created_at'            => $value[13].' '.date('h:m:s'),
+                            'updated_at'            => $value[13].' '.date('h:m:s')
                         ];
                         Deduction_other::create($deduc3);
                     }
@@ -905,7 +905,8 @@ class PayrollController extends Controller
                     ->leftJoin('employees','employees.id','=','take_home_pay.employee_id')
                     ->leftJoin('position','position.id','=','take_home_pay.position_id')
                     ->where('take_home_pay.branch_id','=',$request->branch_id)
-                    ->whereBetween('take_home_pay.date',[$request->startdate,$request->enddate])
+                    ->where('take_home_pay.startdate','>=',$request->startdate)
+                    ->where('take_home_pay.enddate','<=',$request->enddate)
                     ->get();
         return DataTables::of($data)
                 ->addIndexColumn()
