@@ -791,7 +791,7 @@ class PayrollController extends Controller
                         array_push($import,$data);
                     }
                     if ($value[6] !=null){
-                        dd($employeeId);
+                        dd($employeeId->id);
                         $idopt = LoanOption::where('name','KASBON')->first();
                         $loan = [
                             'employee_id'           => $employeeId->id,
