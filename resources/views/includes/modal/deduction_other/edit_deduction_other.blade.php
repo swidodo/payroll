@@ -14,7 +14,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>Date <span class="text-danger">*</span></label>
-                                    <input type="text" name="date" id="date_edit" class="form-control">
+                                    <input type="date" name="date" id="date_edit" class="form-control">
                                     <input type="hidden" name="id" id="id">
                                     <input type="hidden" name="branch_id_edit" id="branchInput_edit">
                                 </div>
