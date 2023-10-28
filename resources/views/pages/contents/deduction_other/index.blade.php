@@ -106,6 +106,9 @@
     <script src="{{asset('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
 
     <script>
+        $('.select-employee').select2({
+            dropdownParent: $("#add_modal_deduction_other"),
+        })
         $.ajaxSetup({
             headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
         });
@@ -171,9 +174,10 @@
                 data : {branch_id:branchId},
                 dataType : 'json',
                 beforeSend : function(){
-
+                    $('.containerLoader').attr('hidden',false)
                 },
                 success : function(respon){
+                    $('.containerLoader').attr('hidden',true)
                     $('#add_modal_deduction_other').modal('show')
                     
                     var emp = '<option value="" selected disabled>-- Select employee --</option>';

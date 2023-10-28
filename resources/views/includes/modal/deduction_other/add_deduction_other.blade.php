@@ -13,8 +13,12 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
+                                    <label>Date <span class="text-danger">*</span></label>
+                                    <input type="date" name="date" class="form-control" id="dateInput">
+                                </div>
+                                <div class="form-group">
                                     <label>Employee <span class="text-danger">*</span></label>
-                                    <select class="form-control select-employee" id="employee_id" name="employee_id">
+                                    <select class="form-control select-employee" id="employee_id" name="employee_id" style=" width :100%">
                                     </select>
                                     <input type="hidden" name="branch_id" id="branchInput">
                                 </div>

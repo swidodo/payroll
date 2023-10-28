@@ -55,7 +55,7 @@ class DeductionOtherController extends Controller
             'branch_id'     => $request->branch_id,
             'name'          => $request->name,
             'amount'        => $request->amount,
-            'date'          => date('Y-m-d'),
+            'date'          => $request->date,
             'created_by'    => Auth::user()->id,
         ];
         $insert = Deduction_other::create($data);

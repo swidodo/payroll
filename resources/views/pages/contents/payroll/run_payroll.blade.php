@@ -487,7 +487,6 @@
             e.preventDefault();
             var payroll  = $('#import-payroll')[0].files[0];
             var formData = new FormData();
-            
             formData.append('import-payroll',payroll)
                 $.ajax({
                     url : 'import-payroll',

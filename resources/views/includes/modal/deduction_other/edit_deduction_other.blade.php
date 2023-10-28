@@ -20,7 +20,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Employee <span class="text-danger">*</span></label>
-                                    <select class="form-control select-employee" id="employee_id_edit" name="employee_id">
+                                    <select class="form-control" id="employee_id_edit" name="employee_id">
                                     </select>
                                 </div>
                                 <div class="form-group">
