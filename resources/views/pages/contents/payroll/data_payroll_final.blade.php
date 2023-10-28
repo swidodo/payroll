@@ -476,7 +476,9 @@
                 var startdate = $('#startdate').val()
                 var enddate = $('#enddate').val()
                 var branch_id = $('#branch_id').val()
+                $('.containerLoader').attr('hidden',false)
                 window.location.href = 'export-payroll-pdf?branch_id='+branch_id+'&startdate='+startdate+'&enddate='+enddate;
+                $('.containerLoader').attr('hidden',true)
             })
     </script>
 @endpush
