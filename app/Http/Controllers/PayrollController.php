@@ -798,7 +798,9 @@ class PayrollController extends Controller
                     
                     if ($value[6] !=null){
                         $idopt = LoanOption::where('name','KASBON')->first();
-                        dd($empID);
+                        if($empID == null){
+                            dd($employeeId->no_employee);
+                        };
                         $loan = [
                             'employee_id'           => $empID,
                             'loan_type_id'          => $idopt->id,
