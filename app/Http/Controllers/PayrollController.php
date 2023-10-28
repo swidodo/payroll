@@ -807,39 +807,39 @@ class PayrollController extends Controller
                     //     ];
                     //     Loan::create($loan);
                     // }
-                    if ($value[7] != null){
-                        $deduc1 = [
-                            'employee_id'           => $employeeId->id,
-                            'branch_id'             => $employeeId->branch_id,
-                            'date'                  => date('Y-m-d'),
-                            'name'                  => 'Admin',
-                            'amount'                => $value[7],
-                            'created_by'            => Auth::user()->id,
-                        ];
-                        Deduction_other::create($deduc1);
-                    }
-                    if ($value[9] != null){
-                        $deduc2 = [
-                            'employee_id'           => $employeeId->id,
-                            'branch_id'             => $employeeId->branch_id,
-                            'date'                  => date('Y-m-d'),
-                            'name'                  => 'Koperasi',
-                            'amount'                => $value[9],
-                            'created_by'            => Auth::user()->id,
-                        ];
-                        Deduction_other::create($deduc2);
-                    }
-                    if ($value[10] != null){
-                        $deduc3 = [
-                            'employee_id'           => $employeeId->id,
-                            'branch_id'             => $employeeId->branch_id,
-                            'date'                  => date('Y-m-d'),
-                            'name'                  => 'Seragam',
-                            'amount'                => $value[10],
-                            'created_by'            => Auth::user()->id,
-                        ];
-                        Deduction_other::create($deduc3);
-                    }
+                    // if ($value[7] != null){
+                    //     $deduc1 = [
+                    //         'employee_id'           => $employeeId->id,
+                    //         'branch_id'             => $employeeId->branch_id,
+                    //         'date'                  => date('Y-m-d'),
+                    //         'name'                  => 'Admin',
+                    //         'amount'                => $value[7],
+                    //         'created_by'            => Auth::user()->id,
+                    //     ];
+                    //     Deduction_other::create($deduc1);
+                    // }
+                    // if ($value[9] != null){
+                    //     $deduc2 = [
+                    //         'employee_id'           => $employeeId->id,
+                    //         'branch_id'             => $employeeId->branch_id,
+                    //         'date'                  => date('Y-m-d'),
+                    //         'name'                  => 'Koperasi',
+                    //         'amount'                => $value[9],
+                    //         'created_by'            => Auth::user()->id,
+                    //     ];
+                    //     Deduction_other::create($deduc2);
+                    // }
+                    // if ($value[10] != null){
+                    //     $deduc3 = [
+                    //         'employee_id'           => $employeeId->id,
+                    //         'branch_id'             => $employeeId->branch_id,
+                    //         'date'                  => date('Y-m-d'),
+                    //         'name'                  => 'Seragam',
+                    //         'amount'                => $value[10],
+                    //         'created_by'            => Auth::user()->id,
+                    //     ];
+                    //     Deduction_other::create($deduc3);
+                    // }
                 endif;
             endif;
         }
