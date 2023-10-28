@@ -387,11 +387,13 @@
                                 </tr>
                                 @if(isset($deduction_other))
                                     @foreach($deduction_other as $do)
+                                    @if ($do->employeeid == $salary->employee_id)
                                     <tr class="fs-14 " style="font-weight: 400">
                                         <td style="width: 45%">{{ Ucwords($do->deduction_name) }}</td>
                                         <td>:</td>
                                         <td class="text-right">{{ ($do->amount_deduction == '') ? 0 : formatRupiah($do->amount_deduction) }}</td>
                                     </tr>
+                                    @endif
                                     @endforeach
                                 @endif
 
