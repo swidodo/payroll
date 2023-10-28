@@ -926,7 +926,6 @@ class PayrollController extends Controller
                 ->make(true);
     }
    public function generate_slip_payroll($id){
-
         $branch         = Auth::user()->branch_id;
         $data['salary'] = DB::table('take_home_pay')
                             ->select('take_home_pay.*','employees.name as employee_name','branches.name as branch_name','position.position_name','companies.name as company_name')
@@ -941,7 +940,7 @@ class PayrollController extends Controller
         $data['reimbursement'] = DB::select("SELECT * FROM get_reimburstment('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employee_id = '".$data['salary']->employee_id."'");
          $data['deduction_other'] = DB::select("SELECT * FROM get_deduction_other('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employeeid = '".$data['salary']->employee_id."'");
         $data['deduction'] = DB::table('v_deduction_acumulation')->where('employee_id',$data['salary']->employee_id)->first();
-        $data['attendance'] = DB::select("SELECT * FROM getsalary('".$data['salary']->startdate."','".$data['salary']->enddate."','".$branch."') where employee_id = '". $data['salary']->employee_id."'");
+        $data['attendance'] = DB::select("SELECT * FROM getsalary('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employee_id = '". $data['salary']->employee_id."'");
         $pdf = PDF::loadview('pages.contents.payroll.payslip.pdf',$data);
         return $pdf->stream('payslip-'.$data['salary']->employee_name.'-'.substr($data['salary']->enddate,0,7));
     }

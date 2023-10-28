@@ -485,6 +485,10 @@
         })
         $('#UploadDataPayroll').on('submit',function(e){
             e.preventDefault();
+            var startdate       = $('#startdate').val();
+            var enddate        = $('#enddate').val();
+            var branch_id   = $('#branch_id').val();
+            
             var payroll  = $('#import-payroll')[0].files[0];
             var formData = new FormData();
             formData.append('import-payroll',payroll)
@@ -504,6 +508,7 @@
                         if (respon.status == 'success'){
                             $('#UploadDataPayroll')[0].reset();
                             $('#modalImportPayroll').modal('show')
+                            loadData(startdate,enddate,branch_id)
                         }
                         swal.fire({
                             icon : respon.status,
