@@ -510,7 +510,7 @@
                         })
                     },
                     error : function(){
-                        alert('Sameting went wrong !');
+                        alert('Someting went wrong !');
                         $('.containerLoader').attr('hidden',true)
                     }
 

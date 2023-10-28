@@ -176,8 +176,9 @@
                                     <label for="leave_type" class="form-label">Work Type</label>
                                     <select class="form-control select"  id="work_type" name="work_type">
                                         <option value="">Select Type</option>
-                                        <option value="61" {{($employee->work_type == '61') ? 'selected' : ''}}>6-1 (6 days Work) </option>
-                                        <option value="52"  {{($employee->work_type == '52') ? 'selected' : ''}}>5-2 (5 days Work) </option>
+                                        <option value="61" {{($employee->work_type == '61') ? 'selected' : ''}}>6-1 (6 Days Work) </option>
+                                        <option value="52"  {{($employee->work_type == '52') ? 'selected' : ''}}>5-2 (5 Days Work) </option>
+                                        <option value="30"  {{($employee->work_type == '30') ? 'selected' : ''}}>3-0 (Full Days Work) </option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">

@@ -16,6 +16,7 @@ use App\Models\Bpjs_value;
 use App\Models\Branch;
 use App\Models\LoanOption;
 use App\Models\Loan;
+use App\Models\Deduction_other;
 use Carbon\Carbon;
 use Exception;
 use DataTables;
