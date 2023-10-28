@@ -802,7 +802,7 @@ class PayrollController extends Controller
                             dd($employeeId->no_employee);
                         };
                         $loans = [
-                            'employee_id'           => $empID,
+                            'employee_id'           => 1,
                             'loan_type_id'          => $idopt->id,
                             'installment'           => 0,
                             'number_of_installment' => 0,
