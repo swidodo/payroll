@@ -17,6 +17,7 @@ use App\Models\Branch;
 use App\Models\LoanOption;
 use App\Models\Loan;
 use App\Models\Deduction_other;
+use App\Models\Deduction_admin;
 use Carbon\Carbon;
 use Exception;
 use DataTables;
@@ -600,7 +601,7 @@ class PayrollController extends Controller
                     'loans' => $thp->loans,
                     'total_pay_loans' => $thp->total_pay_loans,
                     'total_deduction_other' => $thp->total_pay_deduction_other,
-                    'sanksi_adm' => '0',
+                    'sanksi_adm' => $thp->total_pay_adm,
                     'pph21' => $thp->pph21,
                     'total_deduction' => $thp->total_deduction,
                     'take_home_pay' => $thp->take_home_pay,
@@ -654,7 +655,7 @@ class PayrollController extends Controller
                     }
             }
             DB::table('take_home_pay')->insert($data_thp);  
-
+    
             $pph = DB::select("SELECT * from get_rekap_pph21_final('".$request->startdate."','".$request->enddate."','".$request->branch_id."')");
                 $pph21Final = [];
                 foreach($pph as $pph21){
@@ -682,9 +683,14 @@ class PayrollController extends Controller
                         'startdate' => $request->startdate,
                         'enddate' => $request->enddate,
                     ];
-                    if (!in_array($pphData,$pph21Final)){
-                        array_push($pph21Final,$pphData);
+
+                    $cekPayroll = Payroll::where('employee_id',$pph21->employee_id)->first();
+                    if ($cekPayroll->status_pph21 == '1' || $cekPayroll->status_pph21 == 1){
+                        if (!in_array($pphData,$pph21Final)){
+                            array_push($pph21Final,$pphData);
+                        }
                     }
+
                 }
                 if (count($pph21Final) > 0){
                     $checkPayrollpph = DB::table('rekap_pph21s')->where('startdate','<=',$request->startdate)->where('enddate','>=',$request->enddate)->get();
@@ -817,19 +823,19 @@ class PayrollController extends Controller
                         ];
                         Loan::insert($data);
                     }
-                    if ($value[8] != null){
-                        $deduc1 = [
-                            'employee_id'           => $employeeId->id,
-                            'branch_id'             => $employeeId->branch_id,
-                            'date'                  => $value[14],
-                            'name'                  => 'Admin',
-                            'amount'                => $value[8],
-                            'created_by'            => Auth::user()->id,
-                            'created_at'            => $value[14].' '.date('h:m:s'),
-                            'updated_at'            => $value[14].' '.date('h:m:s')
-                        ];
-                        Deduction_other::create($deduc1);
-                    }
+                    // if ($value[8] != null){
+                    //     $deduc1 = [
+                    //         'employee_id'           => $employeeId->id,
+                    //         'branch_id'             => $employeeId->branch_id,
+                    //         'date'                  => $value[14],
+                    //         'name'                  => 'Admin',
+                    //         'amount'                => $value[8],
+                    //         'created_by'            => Auth::user()->id,
+                    //         'created_at'            => $value[14].' '.date('h:m:s'),
+                    //         'updated_at'            => $value[14].' '.date('h:m:s')
+                    //     ];
+                    //     Deduction_other::create($deduc1);
+                    // }
                     if ($value[10] != null){
                         $deduc2 = [
                             'employee_id'           => $employeeId->id,
@@ -970,7 +976,7 @@ class PayrollController extends Controller
          $data['deduction_other'] = DB::select("SELECT * FROM get_deduction_other('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
         // $data['deductions'] = DB::table('v_deduction_acumulation')->where('branch_id',$request->branch_id)->get();
         $data['attendance'] = DB::select("SELECT * FROM getsalary('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
-
+        $data['adm']    = Deduction_admin::where('branch_id',$request->branch_id)->get();
         $pdf = PDF::loadview('pages.contents.payroll.payslip.export_pdf_payslip',$data);
         $download = $pdf->download('payslip-'.substr($request->enddate,0,7).'.pdf');
         return  $download ;
