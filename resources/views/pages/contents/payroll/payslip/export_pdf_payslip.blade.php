@@ -350,7 +350,7 @@
                                         @endif
                                     @endforeach
                                     @foreach($allowance_other as $other)
-                                        @if ($other->employee_id == $salary->employee_id)
+                                        @if ($other->employee_id == $salary->employee_id && $other->allowance_date >= $salary->startdate && $other->allowance_date <= $salary->enddate)
                                         <tr class="fs-14 " style="font-weight: 400">
                                             <td style="width: 45%">{{ strtolower($other->allowance_name) }}</td>
                                             <td>:</td>
@@ -396,12 +396,13 @@
                                         @endif
                                         @endforeach
                                     @endif
-
+                                    @if (isset($deduction))
+                                    @foreach ($deductions as $deduction)
                                     <tr class="fs-14 " style="font-weight: 400">
                                         <td style="width: 45%">BPJS Kesehatan</td>
                                         <td>:</td>
                                         <td class="text-right">
-                                            @if (isset($deduction->bpjs_kesehatan))
+                                            @if ($deduction->employee_id == $salary->employee_id)
                                             {{ ($deduction->bpjs_kesehatan =='') ? 0 : formatRupiah($deduction->bpjs_kesehatan) }}
                                             @else
                                             {{ '0' }}
@@ -412,14 +413,15 @@
                                         <td style="width: 45%">BPJS Ketenagakerjaan</td>
                                         <td>:</td>
                                         <td class="text-right">
-                                            @if(isset($deduction->bpjs_ketenagakerjaan))
+                                            @if($deduction->employee_id == $salary->employee_id)
                                             {{ ($deduction->bpjs_ketenagakerjaan == '') ? 0 : formatRupiah($deduction->bpjs_ketenagakerjaan) }}
                                             @else
                                             {{ '0' }}
                                             @endif
                                         </td>
                                     </tr>
-                                
+                                    @endforeach 
+                                    @endif
                                     <tr class="fs-14 " style="font-weight: 400">
                                         <td style="width: 45%">PPH21</td>
                                         <td>:</td>
