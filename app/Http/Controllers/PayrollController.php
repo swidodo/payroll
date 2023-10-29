@@ -821,7 +821,7 @@ class PayrollController extends Controller
                         $deduc1 = [
                             'employee_id'           => $employeeId->id,
                             'branch_id'             => $employeeId->branch_id,
-                            'date'                  => date('Y-m-d'),
+                            'date'                  => $value[13],
                             'name'                  => 'Admin',
                             'amount'                => $value[7],
                             'created_by'            => Auth::user()->id,
@@ -834,7 +834,7 @@ class PayrollController extends Controller
                         $deduc2 = [
                             'employee_id'           => $employeeId->id,
                             'branch_id'             => $employeeId->branch_id,
-                            'date'                  => date('Y-m-d'),
+                            'date'                  => $value[13],
                             'name'                  => 'Koperasi',
                             'amount'                => $value[9],
                             'created_by'            => Auth::user()->id,
@@ -847,7 +847,7 @@ class PayrollController extends Controller
                         $deduc3 = [
                             'employee_id'           => $employeeId->id,
                             'branch_id'             => $employeeId->branch_id,
-                            'date'                  => date('Y-m-d'),
+                            'date'                  => $value[13],
                             'name'                  => 'Seragam',
                             'amount'                => $value[10],
                             'created_by'            => Auth::user()->id,
