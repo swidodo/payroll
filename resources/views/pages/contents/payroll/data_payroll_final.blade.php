@@ -517,7 +517,7 @@
                
                 $('.containerLoader').attr('hidden',false)
                 window.location.href = 'export-payroll-pdf?branch_id='+branch_id+'&startdate='+startdate+'&enddate='+enddate+'&employee_id='+employee_id;
-                setTimeout(function(){ $('.containerLoader').attr('hidden',true);}, 70000);
+                setTimeout(function(){ $('.containerLoader').attr('hidden',true);}, 7000);
                 
             })
     </script>
