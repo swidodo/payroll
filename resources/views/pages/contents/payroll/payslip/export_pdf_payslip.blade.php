@@ -527,7 +527,7 @@
             </div>           
         </div>
     </div> 
-    <div  style="page-break-after: always"></div>
+    <div  style="page-break-after: auto"></div>
     @endforeach
 </body>
 </html>
