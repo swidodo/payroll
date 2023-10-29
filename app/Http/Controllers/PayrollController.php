@@ -946,8 +946,12 @@ class PayrollController extends Controller
     }
     public function ExportPayrollPdf(Request $request){
         $emp = explode(',',$request->employee_id);
-        $employeId = implode(',',$emp);
-        dd($employeId);
+        $employee =[];
+        foreach($emp as $arr){
+            $empId = "'".$arr."'";
+            array_push($empId);
+        }
+        dd( $employee);
         $data['salarys'] = DB::table('take_home_pay')
                             ->select('take_home_pay.*','employees.name as employee_name','branches.name as branch_name','position.position_name','companies.name as company_name')
                             ->leftJoin('employees','employees.id','=','take_home_pay.employee_id')
@@ -955,7 +959,7 @@ class PayrollController extends Controller
                             ->leftJoin('position','position.id','=','employees.position_id')
                             ->leftJoin('companies','companies.id','=','branches.company_id')
                             ->where('take_home_pay.branch_id',$request->branch_id)
-                            ->whereIn('take_home_pay.employee_id',[$request->employee_id])
+                            ->whereIn('take_home_pay.employee_id', $employee)
                             // ->limit(50)
                             ->get();
         $data['allowance_fixed'] = DB::select("SELECT * from get_allowance_fixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."')");
