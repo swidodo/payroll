@@ -968,7 +968,7 @@ class PayrollController extends Controller
         $data['allowance_other'] = DB::select("SELECT * from get_other_allowance('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
         $data['reimbursement'] = DB::select("SELECT * FROM get_reimburstment('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
          $data['deduction_other'] = DB::select("SELECT * FROM get_deduction_other('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
-        $data['deduction'] = DB::table('v_deduction_acumulation')->where('branch_id',$request->branch_id)->get();
+        $data['deductions'] = DB::table('v_deduction_acumulation')->where('branch_id',$request->branch_id)->get();
         $data['attendance'] = DB::select("SELECT * FROM getsalary('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
 
         $pdf = PDF::loadview('pages.contents.payroll.payslip.export_pdf_payslip',$data);
