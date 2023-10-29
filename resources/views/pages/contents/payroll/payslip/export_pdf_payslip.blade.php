@@ -396,32 +396,25 @@
                                         @endif
                                         @endforeach
                                     @endif
-                                    @if (isset($deduction))
-                                    @foreach ($deductions as $deduction)
                                     <tr class="fs-14 " style="font-weight: 400">
                                         <td style="width: 45%">BPJS Kesehatan</td>
                                         <td>:</td>
                                         <td class="text-right">
-                                            @if ($deduction->employee_id == $salary->employee_id)
-                                            {{ ($deduction->bpjs_kesehatan =='') ? 0 : formatRupiah($deduction->bpjs_kesehatan) }}
-                                            @else
-                                            {{ '0' }}
-                                            @endif
+                                           {{ ($salary->employee_pay_bpjs_kesehatan =='') ? 0 : formatRupiah($salary->employee_pay_bpjs_kesehatan) }}
                                         </td>
                                     </tr>
                                     <tr class="fs-14 " style="font-weight: 400">
                                         <td style="width: 45%">BPJS Ketenagakerjaan</td>
                                         <td>:</td>
                                         <td class="text-right">
-                                            @if($deduction->employee_id == $salary->employee_id)
-                                            {{ ($deduction->bpjs_ketenagakerjaan == '') ? 0 : formatRupiah($deduction->bpjs_ketenagakerjaan) }}
+                                            @if(isset($deduction->bpjs_ketenagakerjaan))
+                                            {{ ($salary->employee_pay_bpjs_ketenagakerjaan == '') ? 0 : formatRupiah($salary->employee_pay_bpjs_ketenagakerjaan) }}
                                             @else
                                             {{ '0' }}
                                             @endif
                                         </td>
                                     </tr>
-                                    @endforeach 
-                                    @endif
+                                
                                     <tr class="fs-14 " style="font-weight: 400">
                                         <td style="width: 45%">PPH21</td>
                                         <td>:</td>
