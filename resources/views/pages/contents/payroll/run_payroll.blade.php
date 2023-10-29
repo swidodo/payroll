@@ -507,7 +507,7 @@
                         $('.containerLoader').attr('hidden',true)
                         if (respon.status == 'success'){
                             $('#UploadDataPayroll')[0].reset();
-                            $('#modalImportPayroll').modal('show')
+                            $('#modalImportPayroll').modal('hide')
                             loadData(startdate,enddate,branch_id)
                         }
                         swal.fire({
