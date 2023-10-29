@@ -24,10 +24,10 @@
                         <li class="breadcrumb-item active">Deduction fixed</li>
                     </ul>
                 </div>
+                @can('create deduction admin')
                     <div class="col-auto float-end ms-auto">
                         <a href="#" class="btn add-btn" id="add-deductionadmin"><i class="fa fa-plus"></i> Deduction</a>
                     </div>
-                @can('create deduction')
                 @endcan
             </div>
         </div>
