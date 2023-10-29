@@ -951,7 +951,6 @@ class PayrollController extends Controller
             $empId = $arr;
             array_push($employee,$empId);
         }
-        // ?dd( $employee);
         $data['salarys'] = DB::table('take_home_pay')
                             ->select('take_home_pay.*','employees.name as employee_name','branches.name as branch_name','position.position_name','companies.name as company_name')
                             ->leftJoin('employees','employees.id','=','take_home_pay.employee_id')
@@ -959,6 +958,8 @@ class PayrollController extends Controller
                             ->leftJoin('position','position.id','=','employees.position_id')
                             ->leftJoin('companies','companies.id','=','branches.company_id')
                             ->where('take_home_pay.branch_id',$request->branch_id)
+                            ->where('take_home_pay.startdate','>=',$request->startdate)
+                            ->where('take_home_pay.enddate','<=',$request->enddate)
                             ->whereIn('take_home_pay.employee_id', $employee)
                             // ->limit(50)
                             ->get();

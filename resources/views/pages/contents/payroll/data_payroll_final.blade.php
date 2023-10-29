@@ -517,25 +517,8 @@
                
                 $('.containerLoader').attr('hidden',false)
                 window.location.href = 'export-payroll-pdf?branch_id='+branch_id+'&startdate='+startdate+'&enddate='+enddate+'&employee_id='+employee_id;
-                setTimeout(function(){ $('.containerLoader').attr('hidden',true);}, 10000);
-                // $.ajax({
-                //     type: "POST",
-                //     url: 'export-payroll-pdf',
-                //     data: {employee_id : employee_id,startdate:startdate,enddate:enddate,branch_id:branch_id},
-                //     cache: false,
-                //     success: function(response)
-                //     {
-                //         alert('got response');
-                //         window.open('http://localhost/payroll/salary-payroll', '_self');
-                //         // window.open(response);
-                //     },
-                //     error: function (XMLHttpRequest, textStatus, errorThrown) 
-                //     {
-                //         alert('Error occurred while opening fax template');
-                //     }
-                // });
-
-
+                setTimeout(function(){ $('.containerLoader').attr('hidden',true);}, 70000);
+                
             })
     </script>
 @endpush
