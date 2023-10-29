@@ -474,7 +474,7 @@
                         { orderable: false, targets: 0 },
                         
                     ],
-                    "lengthMenu": [ 50 ],
+                    "lengthMenu": [ 10,30,50 ],
                     "pageLength": 50,
                 })
             }
