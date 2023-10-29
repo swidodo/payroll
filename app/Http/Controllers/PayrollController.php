@@ -33,7 +33,7 @@ class PayrollController extends Controller
 {
     public function index()
     {
-        
+     Deduction_other::where('')   
         if (Auth::user()->can('manage payroll')) {
             $branch = Branch::where('id',Auth::user()->branch_id)->first();
             if (Auth::user()->initial == "HO"){
@@ -751,7 +751,7 @@ class PayrollController extends Controller
                 }
                 $ded_other = Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[13],'enddate'=>$value[14]])->count();
                 if($ded_other > 0 ){
-                    Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[4],'enddate'=>$value[14]])->delete();
+                    Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[13],'enddate'=>$value[14]])->delete();
                 }
                 $ded_loan = Loan::whereBetween("created_at",[$value[13],$value[14]])->count();
                 if ($ded_loan > 0 ){
