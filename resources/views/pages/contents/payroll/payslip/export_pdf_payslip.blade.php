@@ -408,7 +408,6 @@
                                         <td>:</td>
                                         <td class="text-right">
                                             {{ ($salary->employee_pay_bpjs_ketenagakerjaan == '') ? 0 : formatRupiah($salary->employee_pay_bpjs_ketenagakerjaan) }}
-                                            @endif
                                         </td>
                                     </tr>
                                 
