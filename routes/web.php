@@ -56,6 +56,7 @@ use App\Http\Controllers\RequestController;
 use App\Http\Controllers\ThrController;
 // deduction other
 use App\Http\Controllers\DeductionOtherController;
+use App\Http\Controllers\DeductionadminController;
 
 // report
 use App\Http\Controllers\HRM\EmployeeReportController;
@@ -270,6 +271,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('edit-deduction-other', [DeductionOtherController::class, 'edit'])->name('edit-deduction-other');
         Route::post('update-deduction-other', [DeductionOtherController::class, 'update'])->name('update-deduction-other');
         Route::post('delete-deduction-other', [DeductionOtherController::class, 'destroy'])->name('delete-deduction-other');
+        // deduction fixed
+        Route::get('deduction-admin', [DeductionadminController::class, 'index'])->name('deduction-admin');
+        Route::post('get-deduction-admin', [DeductionadminController::class, 'get_data'])->name('get-deduction-admin');
+        Route::post('store-deduction-admin', [DeductionadminController::class, 'store'])->name('store-deduction-admin');
+        Route::post('edit-deduction-admin', [DeductionadminController::class, 'edit'])->name('edit-deduction-admin');
+        Route::post('update-deduction-admin', [DeductionadminController::class, 'update'])->name('update-deduction-admin');
+        Route::post('delete-deduction-admin', [DeductionadminController::class, 'destroy'])->name('delete-deduction-admin');
+        
         // import
         Route::post('import-excel-attendance', [AttendanceEmployeeController::class, 'importExcel'])->name('import.excel.attendace');
 
