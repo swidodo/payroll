@@ -33,7 +33,7 @@ class PayrollController extends Controller
 {
     public function index()
     {
-     Deduction_other::where('')   
+     
         if (Auth::user()->can('manage payroll')) {
             $branch = Branch::where('id',Auth::user()->branch_id)->first();
             if (Auth::user()->initial == "HO"){
