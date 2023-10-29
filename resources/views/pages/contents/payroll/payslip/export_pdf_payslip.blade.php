@@ -242,7 +242,7 @@
         }
     @endphp
     @foreach($salarys as $salary)
-    <div class="container p-2">
+    <div class="container p-2" style="page-break-after: always">
         <div class="center" style="padding: 8px">
             <table style="width: 90%">
                 <tbody>
@@ -504,7 +504,7 @@
                     </tbody>
                 </table>
             </div> 
-            <div class="mt-5" style=" padding: 5px 40px;page-break-after: always">
+            <div class="mt-5" style=" padding: 5px 40px;">
                 <div style="display: block;">
                     <table style="width: 100%">
                         <tbody>
@@ -527,6 +527,7 @@
             </div>           
         </div>
     </div> 
+    <div  style="page-break-after: always"></div>
     @endforeach
 </body>
 </html>
