@@ -59,6 +59,7 @@
                     <table class="table table-striped custom-table" id="payrollDataFinal">
                         <thead>
                             <tr>
+                                <th><input type="checkbox" class="form-check-input" id="checkedAll"></th>
                                 <th>Date</th>
                                 <th>Employee ID</th>
                                 <th>Employee Name</th>
@@ -161,7 +162,12 @@
                             "data" : {startdate:startdate,enddate:enddate,branch_id:branch_id},
                         },
                     columns: [
-                       
+                        {
+                            data: 'employee_id',
+                            render : function( data,row,type){
+                               return '<input type="checkbox" class="form-check-input itemsCheck" name="empid[]" value="'+data+'">';
+                            },
+                        },
                         {
                             data: 'date',
                             name: 'date'
@@ -464,6 +470,9 @@
                             name: 'action'
                         },
                     ],
+                    columnDefs: [
+                        { orderable: false, targets: 0 }
+                    ]
                 })
             }
             $('#searchBranch').on('click',function(){
@@ -472,13 +481,61 @@
                 var branch_id = $('#branch_id').val();
                 loadData(startdate,enddate,branch_id)
             })
+            var checkedData = [];
+            $('#checkedAll').on('change',function(){
+                if($(this).prop('checked')){
+                    $('.itemsCheck').prop('checked',true);
+                    $('.itemsCheck').each(function(){
+                        if($('.itemsCheck').prop('checked')){
+                            if(!(checkedData.includes($(this).val())))
+                            checkedData.push($('.itemsCheck').val());
+                        }
+                    });
+                }else{
+                    $('.itemsCheck').prop('checked',false);
+                    checkedData=[];
+                }
+                console.log(checkedData)
+            })
+            $(document).on('change','.itemsCheck',function(){
+                if($(this).prop('checked')){
+                    if(!(checkedData.includes($(this).val())))
+                    checkedData.push($(this).val());
+                }else{
+                    const index = checkedData.indexOf($(this).val());
+                    if (index > -1) { 
+                        checkedData.splice(index, 1); 
+                    }
+                }
+                console.log(checkedData)
+            })
             $('#ExportdataSlip').on('click',function(){
+               var employee_id=  checkedData;
                 var startdate = $('#startdate').val()
                 var enddate = $('#enddate').val()
                 var branch_id = $('#branch_id').val()
+               
                 $('.containerLoader').attr('hidden',false)
-                window.location.href = 'export-payroll-pdf?branch_id='+branch_id+'&startdate='+startdate+'&enddate='+enddate;
+                window.location.href = 'export-payroll-pdf?branch_id='+branch_id+'&startdate='+startdate+'&enddate='+enddate+'&employee_id='+employee_id;
                 setTimeout(function(){ $('.containerLoader').attr('hidden',true);}, 10000);
+                // $.ajax({
+                //     type: "POST",
+                //     url: 'export-payroll-pdf',
+                //     data: {employee_id : employee_id,startdate:startdate,enddate:enddate,branch_id:branch_id},
+                //     cache: false,
+                //     success: function(response)
+                //     {
+                //         alert('got response');
+                //         window.open('http://localhost/payroll/salary-payroll', '_self');
+                //         // window.open(response);
+                //     },
+                //     error: function (XMLHttpRequest, textStatus, errorThrown) 
+                //     {
+                //         alert('Error occurred while opening fax template');
+                //     }
+                // });
+
+
             })
     </script>
 @endpush

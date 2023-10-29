@@ -888,7 +888,7 @@ class PayrollController extends Controller
                     ->get();
         return DataTables::of($data)->make(true);
     }
-   public function data_payroll_final(){
+    public function data_payroll_final(){
         $companyId          = Branch::where('id',Auth::user()->branch_id)->first();
         $branch['branch']   = Branch::where('company_id',$companyId->company_id)->get();
         return  view('pages.contents.payroll.data_payroll_final',$branch);
@@ -925,7 +925,7 @@ class PayrollController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
     }
-   public function generate_slip_payroll($id){
+    public function generate_slip_payroll($id){
         $branch         = Auth::user()->branch_id;
         $data['salary'] = DB::table('take_home_pay')
                             ->select('take_home_pay.*','employees.name as employee_name','branches.name as branch_name','position.position_name','companies.name as company_name')
@@ -945,6 +945,8 @@ class PayrollController extends Controller
         return $pdf->stream('payslip-'.$data['salary']->employee_name.'-'.substr($data['salary']->enddate,0,7));
     }
     public function ExportPayrollPdf(Request $request){
+        // $emp = implode(',',$request->employee_id)
+        // dd();
         $data['salarys'] = DB::table('take_home_pay')
                             ->select('take_home_pay.*','employees.name as employee_name','branches.name as branch_name','position.position_name','companies.name as company_name')
                             ->leftJoin('employees','employees.id','=','take_home_pay.employee_id')
@@ -952,7 +954,8 @@ class PayrollController extends Controller
                             ->leftJoin('position','position.id','=','employees.position_id')
                             ->leftJoin('companies','companies.id','=','branches.company_id')
                             ->where('take_home_pay.branch_id',$request->branch_id)
-                            ->limit(50)
+                            ->whereIn('take_home_pay.employee_id',[$request->employee_id])
+                            // ->limit(50)
                             ->get();
         $data['allowance_fixed'] = DB::select("SELECT * from get_allowance_fixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."')");
         $data['allowance_unfixed'] = DB::select("SELECT * from getallowance_unfixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
@@ -963,7 +966,8 @@ class PayrollController extends Controller
         $data['attendance'] = DB::select("SELECT * FROM getsalary('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
 
         $pdf = PDF::loadview('pages.contents.payroll.payslip.export_pdf_payslip',$data);
-        return $pdf->download('payslip-'.substr($request->enddate,0,7).'.pdf');
+        $download = $pdf->download('payslip-'.substr($request->enddate,0,7).'.pdf');
+        return  $download ;
         // return $pdf->stream('payslip-konsolidasi-cabang'.substr($request->enddate,0,7));
     }
 }
