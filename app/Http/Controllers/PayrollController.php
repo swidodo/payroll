@@ -949,7 +949,7 @@ class PayrollController extends Controller
         $employee =[];
         foreach($emp as $arr){
             $empId = "'".$arr."'";
-            array_push($empId);
+            array_push($employee,$empId);
         }
         dd( $employee);
         $data['salarys'] = DB::table('take_home_pay')
