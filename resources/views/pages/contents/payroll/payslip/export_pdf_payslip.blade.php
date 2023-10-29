@@ -242,7 +242,7 @@
         }
     @endphp
     @foreach($salarys as $salary)
-    <div class="container p-2" style="page-break-after: auto">
+    <div class="container p-2" style="page-break-after: avoid">
         <div class="center" style="padding: 8px">
             <table style="width: 90%">
                 <tbody>
