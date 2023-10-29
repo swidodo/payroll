@@ -33,7 +33,6 @@ class PayrollController extends Controller
 {
     public function index()
     {
-     
         if (Auth::user()->can('manage payroll')) {
             $branch = Branch::where('id',Auth::user()->branch_id)->first();
             if (Auth::user()->initial == "HO"){
@@ -947,6 +946,8 @@ class PayrollController extends Controller
          $data['deduction_other'] = DB::select("SELECT * FROM get_deduction_other('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employeeid = '".$data['salary']->employee_id."'");
         $data['deduction'] = DB::table('v_deduction_acumulation')->where('employee_id',$data['salary']->employee_id)->first();
         $data['attendance'] = DB::select("SELECT * FROM getsalary('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employee_id = '". $data['salary']->employee_id."'");
+        $data['adm']    = Deduction_admin::where('branch_id',$request->branch_id)->get();
+        
         $pdf = PDF::loadview('pages.contents.payroll.payslip.pdf',$data);
         return $pdf->stream('payslip-'.$data['salary']->employee_name.'-'.substr($data['salary']->enddate,0,7));
     }
@@ -973,13 +974,13 @@ class PayrollController extends Controller
         $data['allowance_unfixed'] = DB::select("SELECT * from getallowance_unfixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
         $data['allowance_other'] = DB::select("SELECT * from get_other_allowance('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
         $data['reimbursement'] = DB::select("SELECT * FROM get_reimburstment('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
-         $data['deduction_other'] = DB::select("SELECT * FROM get_deduction_other('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
+        $data['deduction_other'] = DB::select("SELECT * FROM get_deduction_other('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
         // $data['deductions'] = DB::table('v_deduction_acumulation')->where('branch_id',$request->branch_id)->get();
         $data['attendance'] = DB::select("SELECT * FROM getsalary('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
         $data['adm']    = Deduction_admin::where('branch_id',$request->branch_id)->get();
+
         $pdf = PDF::loadview('pages.contents.payroll.payslip.export_pdf_payslip',$data);
         $download = $pdf->download('payslip-'.substr($request->enddate,0,7).'.pdf');
         return  $download ;
-        // return $pdf->stream('payslip-konsolidasi-cabang'.substr($request->enddate,0,7));
     }
 }

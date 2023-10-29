@@ -386,6 +386,15 @@
                                     </tr>
                                     @endforeach
                                 @endif
+                                @if(isset($adm))
+                                    @foreach($adm as $admin)
+                                    <tr class="fs-14 " style="font-weight: 400">
+                                        <td style="width: 45%">{{ Ucwords($admin->name) }}</td>
+                                        <td>:</td>
+                                        <td class="text-right">{{ ($admin->amount == '') ? 0 : formatRupiah($admin->amount) }}</td>
+                                    </tr>
+                                    @endforeach
+                                @endif
 
                                 <tr class="fs-14 " style="font-weight: 400">
                                     <td style="width: 45%">BPJS Kesehatan</td>
