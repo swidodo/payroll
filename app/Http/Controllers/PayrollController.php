@@ -946,7 +946,8 @@ class PayrollController extends Controller
     }
     public function ExportPayrollPdf(Request $request){
         $emp = explode(',',$request->employee_id);
-        dd($emp);
+        $employeId = implode(',',$emp);
+        dd($employeId);
         $data['salarys'] = DB::table('take_home_pay')
                             ->select('take_home_pay.*','employees.name as employee_name','branches.name as branch_name','position.position_name','companies.name as company_name')
                             ->leftJoin('employees','employees.id','=','take_home_pay.employee_id')
