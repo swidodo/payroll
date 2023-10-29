@@ -959,7 +959,7 @@ class PayrollController extends Controller
                             ->leftJoin('position','position.id','=','employees.position_id')
                             ->leftJoin('companies','companies.id','=','branches.company_id')
                             ->where('take_home_pay.branch_id',$request->branch_id)
-                            ->whereIn('take_home_pay.employee_id', $employee)
+                            ->whereIn('take_home_pay.employee_id', [$emp])
                             // ->limit(50)
                             ->get();
         $data['allowance_fixed'] = DB::select("SELECT * from get_allowance_fixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."')");
