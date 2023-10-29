@@ -154,7 +154,7 @@
                                 </a>
                             </li>
                             @endcanany
-                            @canany(['manage loan', 'create loan','manage deduction other'])
+                            @canany(['manage loan', 'create loan','manage deduction other','manage deduction admin'])
                             <li class="submenu" >
                                 <a style="padding: 9px 10px 9px 44px" href="#"> <span> Deduction</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
@@ -167,7 +167,7 @@
                                     @canany(['manage deduction other'])
                                         <li class="{{(request()->routeIs('deduction-other')) ? 'active' : ''}}"><a class="{{(request()->routeIs('deduction-other')) ? 'active' : ''}}" href="{{route('deduction-other')}}">Deduction Other</a></li>
                                     @endcanany
-                                    @canany(['manage deduction other'])
+                                    @canany(['manage deduction admin'])
                                         <li class="{{(request()->routeIs('deduction-admin')) ? 'active' : ''}}"><a class="{{(request()->routeIs('deduction-admin')) ? 'active' : ''}}" href="{{route('deduction-admin')}}">Deduction Fixed</a></li>
                                     @endcanany
 

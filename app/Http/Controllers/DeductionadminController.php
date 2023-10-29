@@ -29,17 +29,17 @@ class DeductionadminController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action',function($row){
                  $btn ='';
-                    // if(Auth()->user()->canany('edit deduction admin','delete deduction admin')){
+                    if(Auth()->user()->canany('edit deduction admin','delete deduction admin')){
                         $btn .= '<div class="dropdown dropdown-action">
                                 <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                 <div class="dropdown-menu dropdown-menu-right">';
-                    //    if(Auth()->user()->can('edit deduction admin')){
+                       if(Auth()->user()->can('edit deduction admin')){
                             $btn .= '<a  data-id ="'.$row->id.'" class="dropdown-item edit-deduction_admin" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_deduction_admin"><i class="fa fa-pencil m-r-5"></i> Edit</a>';
-                        // }
-                        // if(Auth()->user()->can('delete deduction admin')){
+                        }
+                        if(Auth()->user()->can('delete deduction admin')){
                             $btn .='<a  data-id="'.$row->id.'" class="dropdown-item delete-data-deduction_admin" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
-                        // }
-                    // }
+                        }
+                    }
                     return $btn;
                     })
                 ->rawColumns(['action'])
