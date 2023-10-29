@@ -474,8 +474,8 @@
                         { orderable: false, targets: 0 },
                         
                     ],
-                    "lengthMenu": [ 10, 25, 50, 75, 100 ],
-"pageLength": 50,
+                    "lengthMenu": [ 50 ],
+                    "pageLength": 50,
                 })
             }
             $('#searchBranch').on('click',function(){
