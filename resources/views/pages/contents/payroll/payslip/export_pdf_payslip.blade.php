@@ -407,10 +407,7 @@
                                         <td style="width: 45%">BPJS Ketenagakerjaan</td>
                                         <td>:</td>
                                         <td class="text-right">
-                                            @if(isset($deduction->bpjs_ketenagakerjaan))
                                             {{ ($salary->employee_pay_bpjs_ketenagakerjaan == '') ? 0 : formatRupiah($salary->employee_pay_bpjs_ketenagakerjaan) }}
-                                            @else
-                                            {{ '0' }}
                                             @endif
                                         </td>
                                     </tr>
