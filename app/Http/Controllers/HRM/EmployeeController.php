@@ -782,8 +782,8 @@ class EmployeeController extends Controller
                     $user->email    = $row[10];
                     $user->password = Hash::make('12345678');
                     $user->type     = 'user'; //default
-                    $doj            = ($row[22] != "" ) ? $row[22] : '0000-00-00';
-                    $doe            = ($row[23] != "" ) ? $row[23] : '0000-00-00';
+                    $doj            = ($row[22] != "" ) ? $row[22] : null;
+                    $doe            = ($row[23] != "" ) ? $row[23] : null;
                     $dob            = ($row[4] !="") ? $row[4] : null;
                     if (count($checkUser) <= 0 ){
                         $data = $user->save();
