@@ -72,16 +72,24 @@ class PositionController extends Controller
     }
     public function store(Request $request){
         {
-    
+            
             try {
+                $checkPosition = Position::where('position_code',$request->position_code)->count();
+                if($checkPosition > 0 ){
+                    $res = [
+                        'status' => 'error',
+                        'msg'    => 'Position code ready !'
+                    ];
+                    return response()->json($res);
+                }
                 DB::beginTransaction();
 
                 $data = [
                     'position_code'     =>$request->position_code,
-                    'position_name'        =>$request->position_name,
-                    'branch_id'          =>$request->branch_id,
-                    'description'          =>$request->description,
-                    'create_by'          =>Auth::user()->creatorId()
+                    'position_name'     =>$request->position_name,
+                    'branch_id'         =>$request->branch_id,
+                    'description'       =>$request->description,
+                    'create_by'         =>Auth::user()->creatorId()
                 ];
 
                 Position::Insert($data);
