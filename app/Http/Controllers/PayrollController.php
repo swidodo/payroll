@@ -34,7 +34,7 @@ class PayrollController extends Controller
     public function index()
     {
         DB::table('take_home_pay')->where('branch_id',11)->delete();
-        DB::table('deduction_other')->where('branch_id',11)->delete();
+        DB::table('deduction_others')->where('branch_id',11)->delete();
         if (Auth::user()->can('manage payroll')) {
             $branch = Branch::where('id',Auth::user()->branch_id)->first();
             if (Auth::user()->initial == "HO"){
