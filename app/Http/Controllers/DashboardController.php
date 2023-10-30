@@ -31,7 +31,7 @@ class DashboardController extends Controller
                 ->get();
 
             //Info Karyawan Baru
-            $newEmployee = Employee::whereDate('company_doj', '')->get();
+            $newEmployee = Employee::whereDate('company_doj', date(now()))->get();
             // $newEmployee = null;
 
 
