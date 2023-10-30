@@ -784,7 +784,7 @@ class EmployeeController extends Controller
                     $user->type     = 'user'; //default
                     $doj            = ($row[22] != "" ) ? $row[22] : null;
                     $doe            = ($row[23] != "" ) ? $row[23] : null;
-                    $dob            = ($row[4] !="") ? $row[4] : null;
+                    $dob            = ($row[4] !="" && $row[4] !='0000-00-00') ? $row[4] : null;
                     if (count($checkUser) <= 0 ){
                         $data = $user->save();
                         $userId = $user->id;
