@@ -565,6 +565,7 @@ class PayrollController extends Controller
                                     ->get();
             if($tochecked !=null){
                 DB::table('take_home_pay')
+                ->where('branch_id','=',$request->branch_id)
                 ->where('startdate','>=',$request->startdate)
                 ->where('enddate','<=',$request->enddate)
                 ->delete();
@@ -756,9 +757,9 @@ class PayrollController extends Controller
                     if($ded_other > 0 ){
                         Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[13],'enddate'=>$value[14]])->delete();
                     }
-                    $ded_loan = Loan::whereBetween("created_at",[$value[13],$value[14]])->count();
+                    $ded_loan = Loan::where('employee_id',$employeeId->id)->whereBetween("created_at",[$value[13],$value[14]])->count();
                     if ($ded_loan > 0 ){
-                        Loan::whereBetween("created_at",[$value[13],$value[14]])->delete();
+                        Loan::where('employee_id',$employeeId->id)->whereBetween("created_at",[$value[13],$value[14]])->delete();
                     }
                     if ($employeeId != null ):
                     if($employeeId->id =='' | $employeeId->id ==null){
