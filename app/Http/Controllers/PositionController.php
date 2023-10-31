@@ -63,8 +63,8 @@ class PositionController extends Controller
     public function create(Request $request){
          $initial = Auth::user()->initial;
         if ($initial == "HO"){
-            $companYId = Branch::select('company_id')->where('id',Auth::user()->branch_id)->first();
-            $data['branch'] = Branch::where('company_id',$companyId)->get();
+            $companyId = Branch::select('company_id')->where('id',Auth::user()->branch_id)->first();
+            $data['branch'] = Branch::where('company_id',$companyId->company_id)->get();
         }else{
             $data['branch'] = Branch::where('id',Auth::user()->branch_id)->get();
         }
