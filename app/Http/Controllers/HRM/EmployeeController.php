@@ -777,7 +777,6 @@ class EmployeeController extends Controller
                                             where LOWER(name) = '$name'
                                             and email='$row[10]'");
                         if(count($check) > 0){
-                            dd( $check);
                             $uptemployee = [
                                 "name"                  =>$row[0],
                                 "identity_card"         =>$row[1],
@@ -814,6 +813,7 @@ class EmployeeController extends Controller
                             Employee::where('no_employee',$row[11])->update($uptemployee);
                         }
                         if (count($check) <= 0) {
+                            dd( $check);
                             $user = new User();
                             $user->name     = $row[0];
                             $user->email    = $row[10];
