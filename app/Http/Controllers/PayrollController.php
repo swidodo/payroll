@@ -741,7 +741,7 @@ class PayrollController extends Controller
                 }else{
                     $brId = "false";
                 }
-                dd($brch->id);
+                dd($brId);
                 $employeeId = Employee::where('no_employee',$value[1])
                                         ->where('branch_id',$brId)
                                         ->first();
