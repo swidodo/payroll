@@ -137,7 +137,8 @@ class OvertimeController extends Controller
             if (Auth::user()->initial == 'HO'){
                 $data['branch']     = Branch::Where('company_id','=',$branch->company_id)->get();
                 $data['dayTypes']   = DayType::select('day_types.id','day_types.name')
-                                               ->get();
+                                                ->leftJoin('branches','branches.id','=','day_types.branch_id')
+                                                ->where('branches.company_id',$branch->company_id)->get();
                 $data['date']       = date('Y-m-d');
                 return view('pages.contents.time-management.overtime.index',$data );
             }else{
