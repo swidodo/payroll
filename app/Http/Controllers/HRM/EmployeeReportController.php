@@ -22,8 +22,7 @@ class EmployeeReportController extends Controller
             $status = DB::table('v_employee_status')
                         ->select(DB::raw("sum(v_employee_status.permanent) as permanent,sum(v_employee_status.contract) as contract,sum(v_employee_status.freelance) as freelance"))
                         ->leftJoin('branches','branches.id','v_employee_status.branch_id')
-                        ->leftJoin('companies','companies.id','branches.company_id')
-                        ->where('companies.company_id',$branch->company_id)
+                        ->where('branches.company_id',$branch->company_id)
                         ->get();
             $response['data'] = $status;
         }else{
