@@ -546,7 +546,11 @@
                     var daily_work = parseInt(data[0].daily_work) / total * 100;
                     var probation = parseInt(data[0].probation) / total * 100;
                     var freelance = parseInt(data[0].freelance) / total * 100;
-
+                    console.log(contract);
+                    console.log(permanent);
+                    console.log(daily_work);
+                    console.log(probation);
+                    console.log(data);
                     $('#ides-total-employee').text(total)
                     $('#ides-contract').text(data[0].contract)
                     $('#ides-progress-contract').text(Math.round(contract)+'%')

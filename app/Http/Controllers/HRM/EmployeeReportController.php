@@ -31,7 +31,11 @@ class EmployeeReportController extends Controller
             $response['data'] = $status;
         }else{
             $status = DB::table('v_employee_status')
-                        ->select('*')
+                            ->select(DB::raw("sum(v_employee_status.permanent) as permanent,
+                            sum(v_employee_status.contract) as contract,
+                            sum(v_employee_status.probation) as probation,
+                            sum(v_employee_status.daily_worker) as daily_work,
+                            sum(v_employee_status.freelance) as freelance"))
                         ->where('branch_id',$request->branch_id)
                         ->get();
             $response['data'] = $status;
