@@ -813,7 +813,7 @@ class EmployeeController extends Controller
                                 "created_at"            => date('Y-m-d h:m:s'),
                                 "updated_at"            => date('Y-m-d h:m:s'),
                             ];
-                            Employee::where('no_employee',$row[11])->update($uptemployee);
+                            Employee::where('no_employee',$row[11])->where('branch_id',$branchId->id)->update($uptemployee);
                         }
                         if (count($check) <= 0) {
                             $user = new User();
