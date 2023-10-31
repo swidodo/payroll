@@ -8,7 +8,7 @@ use App\Exports\EmployeesExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\models\Branch;
+use App\Models\Branch;
 
 class EmployeeReportController extends Controller
 {
