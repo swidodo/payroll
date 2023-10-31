@@ -540,10 +540,13 @@
                 $(area).html(`@include("pages.contents.dashboard.filter_data.employee_status")`)
                 var data = response.data;
                 if (data.length > 0){
-                    var total = parseInt(data[0].contract) + parseInt(data[0].permanent) + parseInt(data[0].freelance);
+                    var total = parseInt(data[0].contract) + parseInt(data[0].permanent) + parseInt(data[0].probation) + parseInt(data[0].daily_work) + parseInt(data[0].freelance);
                     var contract = parseInt(data[0].contract) / total * 100;
                     var permanent = parseInt(data[0].permanent) / total * 100;
+                    var daily_work = parseInt(data[0].daily_work) / total * 100;
+                    var probation = parseInt(data[0].probation) / total * 100;
                     var freelance = parseInt(data[0].freelance) / total * 100;
+
                     $('#ides-total-employee').text(total)
                     $('#ides-contract').text(data[0].contract)
                     $('#ides-progress-contract').text(Math.round(contract)+'%')
@@ -554,6 +557,16 @@
                     $('#ides-progress-jobholder').text(Math.round(permanent)+'%')
                     $('#ides-progress-jobholder').attr('aria-valuenow',Math.round(permanent))
                     $('#ides-progress-jobholder').css("width",Math.round(permanent) +'%');
+
+                    $('#ides-probation').text(data[0].probation)
+                    $('#ides-progress-probation').text(Math.round(probation)+'%')
+                    $('#ides-progress-probation').attr('aria-valuenow',Math.round(probation))
+                    $('#ides-progress-probation').css("width", Math.round(probation)+'%');
+
+                    $('#ides-daily_work').text(data[0].daily_work)
+                    $('#ides-progress-daily_work').text(Math.round(daily_work)+'%')
+                    $('#ides-progress-daily_work').attr('aria-valuenow',Math.round(daily_work))
+                    $('#ides-progress-daily_work').css("width", Math.round(daily_work)+'%');
 
                     $('#ides-freelance').text(data[0].freelance)
                     $('#ides-progress-freelance').text(Math.round(freelance)+'%')

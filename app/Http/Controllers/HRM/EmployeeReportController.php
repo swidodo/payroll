@@ -20,7 +20,11 @@ class EmployeeReportController extends Controller
         if($request->branch_id == '0'){
             $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
             $status = DB::table('v_employee_status')
-                        ->select(DB::raw("sum(v_employee_status.permanent) as permanent,sum(v_employee_status.contract) as contract,sum(v_employee_status.freelance) as freelance"))
+                        ->select(DB::raw("sum(v_employee_status.permanent) as permanent,
+                        sum(v_employee_status.contract) as contract,
+                        sum(v_employee_status.probation) as probation,
+                        sum(v_employee_status.daily_worker) as daily_work,
+                        sum(v_employee_status.freelance) as freelance"))
                         ->leftJoin('branches','branches.id','v_employee_status.branch_id')
                         ->where('branches.company_id',$branch->company_id)
                         ->get();
