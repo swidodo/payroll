@@ -140,6 +140,7 @@ class EmployeeReportController extends Controller
                         ->select('bulan_des',DB::raw("count(subtotal) as subtotal"))
                         ->where('branch_id',$request->branch_id)
                         ->groupBy('bulan_des')
+                        ->groupBy('bulan')
                         ->orderBy('bulan','ASC')
                         ->get();
             $response['data'] = $staff;
