@@ -736,28 +736,29 @@ class PayrollController extends Controller
         foreach ($sheetData as $key => $value) {
             if ($key > 0) :
                 $branch = Branch::where('alias',$value[15])->first();
-                $employeeId = employee::where('no_employee',$value[1])->where('branch_id',$branch->id)->first();
-                $takeHP = DB::table('take_home_pay')
+                if ($branch != null) :
+                    $employeeId = employee::where('no_employee',$value[1])->where('branch_id',$branch->id)->first();
+                    $takeHP = DB::table('take_home_pay')
+                                ->where('employee_id',$employeeId->id)
+                                ->where('startdate',$value[13])
+                                ->where('enddate',$value[14])
+                                ->count();
+                    if ($takeHP > 0){
+                        DB::table('take_home_pay')
                             ->where('employee_id',$employeeId->id)
                             ->where('startdate',$value[13])
                             ->where('enddate',$value[14])
-                            ->count();
-                if ($takeHP > 0){
-                    DB::table('take_home_pay')
-                        ->where('employee_id',$employeeId->id)
-                        ->where('startdate',$value[13])
-                        ->where('enddate',$value[14])
-                        ->delete();
-                }
-                $ded_other = Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[13],'enddate'=>$value[14]])->count();
-                if($ded_other > 0 ){
-                    Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[13],'enddate'=>$value[14]])->delete();
-                }
-                $ded_loan = Loan::whereBetween("created_at",[$value[13],$value[14]])->count();
-                if ($ded_loan > 0 ){
-                    Loan::whereBetween("created_at",[$value[13],$value[14]])->delete();
-                }
-                if ($employeeId != null ):
+                            ->delete();
+                    }
+                    $ded_other = Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[13],'enddate'=>$value[14]])->count();
+                    if($ded_other > 0 ){
+                        Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[13],'enddate'=>$value[14]])->delete();
+                    }
+                    $ded_loan = Loan::whereBetween("created_at",[$value[13],$value[14]])->count();
+                    if ($ded_loan > 0 ){
+                        Loan::whereBetween("created_at",[$value[13],$value[14]])->delete();
+                    }
+                    if ($employeeId != null ):
                     if($employeeId->id =='' | $employeeId->id ==null){
                         return true;
                     }
@@ -862,6 +863,7 @@ class PayrollController extends Controller
                         ];
                         Deduction_other::create($deduc3);
                     }
+                    endif;
                 endif;
             endif;
         }
