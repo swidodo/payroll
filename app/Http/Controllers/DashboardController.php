@@ -221,14 +221,12 @@ class DashboardController extends Controller
 
             $data['totalEmployees'] = Employee::leftJoin('branches','branches.id','employees.branch_id')->where('company_id', '=', $bch->company_id)
                 ->count();
-            $data['totalEmployeesJobholder'] = Employee::where('created_by', '=', Auth::user()->creatorId())
-                ->where('employee_type', 'jobholder')
+            $data['totalEmployeesJobholder'] = Employee::leftJoin('branches','branches.id','employees.branch_id')->where('employee_type', 'jobholder')
                 ->count();
-            $data['totalEmployeesContract'] = Employee::where('created_by', '=', Auth::user()->creatorId())
-                ->where('employee_type', '!=', 'jobholder')
+            $data['totalEmployeesContract'] = Employee::leftJoin('branches','branches.id','employees.branch_id')->where('employee_type', '!=', 'jobholder')
                 ->where('employee_type', '!=', 'freelancers')
                 ->count();
-            $data['totalEmployeesFreelance'] = Employee::where('created_by', '=', Auth::user()->creatorId())
+            $data['totalEmployeesFreelance'] = Employee::leftJoin('branches','branches.id','employees.branch_id')
                 ->where('employee_type', 'freelancers')
                 ->count();
 
