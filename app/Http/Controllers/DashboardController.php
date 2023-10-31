@@ -217,7 +217,9 @@ class DashboardController extends Controller
                 'data'    => $data
             ], 200);
         } else {
-            $data['totalEmployees'] = Employee::where('created_by', '=', Auth::user()->creatorId())
+            $bch = Branch::where('id',Auth::user()->branch_id)->first();
+
+            $data['totalEmployees'] = Employee::leftJoin('branches','branches.id','employees.branch_id')->where('company_id', '=', $bch->company_id)
                 ->count();
             $data['totalEmployeesJobholder'] = Employee::where('created_by', '=', Auth::user()->creatorId())
                 ->where('employee_type', 'jobholder')
