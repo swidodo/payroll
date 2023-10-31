@@ -813,7 +813,6 @@ class EmployeeController extends Controller
                             Employee::where('no_employee',$row[11])->update($uptemployee);
                         }
                         if (count($check) <= 0) {
-                            dd( $check);
                             $user = new User();
                             $user->name     = $row[0];
                             $user->email    = $row[10];
@@ -870,7 +869,7 @@ class EmployeeController extends Controller
             }
             $insert = Employee::Insert($employee_arr);
             DB::commit();
-            return redirect('/employees');
+            // return redirect('/employees');
         }catch(Exeption $e){
             DB::rollback();
             return redirect('/employees');
