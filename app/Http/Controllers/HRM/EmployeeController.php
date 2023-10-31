@@ -749,12 +749,12 @@ class EmployeeController extends Controller
             $users        = [];
         
             foreach ($sheetData as $key => $row) {
-                dd($row);
                 if ($key > 0){
                 $branchId = DB::table('branches')
                                 ->select('id')
                                 ->where('alias','=',$row[24])
                                 ->get()->first();
+                                dd($branchId );
                 // $active = (strtolower($row[24]) === "true") ? true : false;
                     if ($branchId != null){
                         $name = strtolower($row[0]);
