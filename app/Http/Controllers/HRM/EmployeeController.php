@@ -749,6 +749,7 @@ class EmployeeController extends Controller
             $users        = [];
         
             foreach ($sheetData as $key => $row) {
+                dd($row);
                 if ($key > 0){
                 $branchId = DB::table('branches')
                                 ->select('id')
@@ -869,7 +870,7 @@ class EmployeeController extends Controller
             }
             $insert = Employee::Insert($employee_arr);
             DB::commit();
-            // return redirect('/employees');
+            return redirect('/employees');
         }catch(Exeption $e){
             DB::rollback();
             return redirect('/employees');
