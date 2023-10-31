@@ -146,6 +146,7 @@
                     ajax : {
                         url : "get-position",
                         type : 'post',
+                        data : {branch_id : branchId}
                     },
                     columns: [
                         {

@@ -729,110 +729,152 @@ class EmployeeController extends Controller
     }
     // import data
     public function import_data(Request $request){
-
-        $file_extension = request()->file('upload_file')->extension();
-        if ('csv' == $file_extension) {
-            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
-        } elseif ('xls' == $file_extension) {
-            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
-        } elseif ('xlsx' == $file_extension) {
-            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-        }
-
-
-         // $reader = new Xls();
-        $spreadsheet = $reader->load(request()->file('upload_file'));
-        $sheetData = $spreadsheet->getActiveSheet()->toArray();
-
-        $employee_arr = [];
-        $users        = [];
-        
-        foreach ($sheetData as $key => $row) {
-            if ($key > 0){
-            $branchId = DB::table('branches')
-                            ->select('id')
-                            ->where('alias','=',$row[24])
-                            ->get()->first();
-            // $active = (strtolower($row[24]) === "true") ? true : false;
-            if ($branchId != null){
-                $name = strtolower($row[0]);
-                $departementId = DB::table('departements')->select("id")->where('departement_code',$row[14])->first();
-                if($departementId != null){
-                    $departId = $departementId->id;
-                }else{
-                    $departId = 0;
-                }
-                $positionId = DB::table('position')->select("id")->where('position_code',$row[15])->first();
-                if($positionId != null){
-                    $positId = $positionId->id;
-                }else{
-                     $positId = 0;
-                }
-                $check = DB::select("select no_employee
-                                    from employees
-                                    where no_employee ='$row[11]'");
-                $checkUser = DB::select("select id,email,name
-                                    from users
-                                    where LOWER(name) = '$name'
-                                    and email='$row[10]'");
-
-                if (count($check) <= 0) {
-                    $user = new User();
-                    $user->name     = $row[0];
-                    $user->email    = $row[10];
-                    $user->password = Hash::make('12345678');
-                    $user->type     = 'user'; //default
-                    $doj            = ($row[22] != "" ) ? $row[22] : null;
-                    $doe            = ($row[23] != "" ) ? $row[23] : null;
-                    $dob            = ($row[4] !="" && $row[4] !='0000-00-00') ? $row[4] : null;
-                    if (count($checkUser) <= 0 ){
-                        $data = $user->save();
-                        $userId = $user->id;
-                    }else{
-                        $userId = $checkUser[0]->id;
-                    }
-                    $employee = [
-                        "name"                  =>$row[0],
-                        "identity_card"         =>$row[1],
-                        "family_card"           =>$row[2],
-                        "npwp_number"           =>$row[3],
-                        "dob"                   =>$dob,
-                        "gender"                =>$row[5],
-                        "religion"              =>$row[6],
-                        "marital_status"        =>$row[7],
-                        "phone"                 =>$row[8],
-                        "address"               =>$row[9],
-                        "email"                 =>$row[10],
-                        "no_employee"           =>$row[11],
-                        "employee_type"         =>$row[12],
-                        "work_type"             =>$row[13],
-                        "department_id"         =>$departId,
-                        "position_id"           =>$positId,
-                        "account_holder_name"   =>$row[16],
-                        "bank_name"             =>$row[17],
-                        "account_number"        =>$row[18],
-                        "bank_identifier_code"  =>$row[19],
-                        "branch_location"       =>$row[20],
-                        "status"                =>$row[21],
-                         "company_doj"          => $doj,
-                        "company_doe"           => $doe,
-                        "branch_id"             =>$branchId->id,
-                        "employee_id"           =>User::employeeIdFormat($branchId->id, self::employeeNumber(Auth::user()->creatorId())),
-                        "user_id"               =>$userId,
-                        // "is_active"             =>$active,
-                        "created_by"            =>Auth::user()->creatorId(),
-                        "created_at"            => date('Y-m-d h:m:s'),
-                        "updated_at"            => date('Y-m-d h:m:s'),
-                    ];
-
-                    array_push($employee_arr,$employee);
-                }
-                }
+        try {
+            DB::beginTransaction();
+            $file_extension = request()->file('upload_file')->extension();
+            if ('csv' == $file_extension) {
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+            } elseif ('xls' == $file_extension) {
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+            } elseif ('xlsx' == $file_extension) {
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
             }
 
+
+            // $reader = new Xls();
+            $spreadsheet = $reader->load(request()->file('upload_file'));
+            $sheetData = $spreadsheet->getActiveSheet()->toArray();
+
+            $employee_arr = [];
+            $users        = [];
+        
+            foreach ($sheetData as $key => $row) {
+                if ($key > 0){
+                $branchId = DB::table('branches')
+                                ->select('id')
+                                ->where('alias','=',$row[24])
+                                ->get()->first();
+                // $active = (strtolower($row[24]) === "true") ? true : false;
+                    if ($branchId != null){
+                        $name = strtolower($row[0]);
+                        $departementId = DB::table('departements')->select("id")->where('departement_code',$row[14])->first();
+                        if($departementId != null){
+                            $departId = $departementId->id;
+                        }else{
+                            $departId = 0;
+                        }
+                        $positionId = DB::table('position')->select("id")->where('position_code',$row[15])->first();
+                        if($positionId != null){
+                            $positId = $positionId->id;
+                        }else{
+                            $positId = 0;
+                        }
+                        $check = DB::select("select no_employee
+                                            from employees
+                                            where no_employee ='$row[11]'");
+                        $checkUser = DB::select("select id,email,name
+                                            from users
+                                            where LOWER(name) = '$name'
+                                            and email='$row[10]'");
+                        if(count($check) > 0){
+                            $uptemployee = [
+                                "name"                  =>$row[0],
+                                "identity_card"         =>$row[1],
+                                "family_card"           =>$row[2],
+                                "npwp_number"           =>$row[3],
+                                "dob"                   =>$dob,
+                                "gender"                =>$row[5],
+                                "religion"              =>$row[6],
+                                "marital_status"        =>$row[7],
+                                "phone"                 =>$row[8],
+                                "address"               =>$row[9],
+                                "email"                 =>$row[10],
+                                "no_employee"           =>$row[11],
+                                "employee_type"         =>$row[12],
+                                "work_type"             =>$row[13],
+                                "department_id"         =>$departId,
+                                "position_id"           =>$positId,
+                                "account_holder_name"   =>$row[16],
+                                "bank_name"             =>$row[17],
+                                "account_number"        =>$row[18],
+                                "bank_identifier_code"  =>$row[19],
+                                "branch_location"       =>$row[20],
+                                "status"                =>$row[21],
+                                "company_doj"          => $doj,
+                                "company_doe"           => $doe,
+                                "branch_id"             =>$branchId->id,
+                                "employee_id"           =>User::employeeIdFormat($branchId->id, self::employeeNumber(Auth::user()->creatorId())),
+                                "user_id"               =>$userId,
+                                // "is_active"             =>$active,
+                                "created_by"            =>Auth::user()->creatorId(),
+                                "created_at"            => date('Y-m-d h:m:s'),
+                                "updated_at"            => date('Y-m-d h:m:s'),
+                            ];
+                            Employee::where('no_employee',$row[11])->update($uptemployee);
+                        }
+                        if (count($check) <= 0) {
+                            $user = new User();
+                            $user->name     = $row[0];
+                            $user->email    = $row[10];
+                            $user->password = Hash::make('12345678');
+                            $user->type     = 'user'; //default
+                            $doj            = ($row[22] != "" ) ? $row[22] : null;
+                            $doe            = ($row[23] != "" ) ? $row[23] : null;
+                            $dob            = ($row[4] !="" && $row[4] !='0000-00-00') ? $row[4] : null;
+                            if (count($checkUser) <= 0 ){
+                                $data = $user->save();
+                                $userId = $user->id;
+                            }else{
+                                $userId = $checkUser[0]->id;
+                            }
+                            $employee = [
+                                "name"                  =>$row[0],
+                                "identity_card"         =>$row[1],
+                                "family_card"           =>$row[2],
+                                "npwp_number"           =>$row[3],
+                                "dob"                   =>$dob,
+                                "gender"                =>$row[5],
+                                "religion"              =>$row[6],
+                                "marital_status"        =>$row[7],
+                                "phone"                 =>$row[8],
+                                "address"               =>$row[9],
+                                "email"                 =>$row[10],
+                                "no_employee"           =>$row[11],
+                                "employee_type"         =>$row[12],
+                                "work_type"             =>$row[13],
+                                "department_id"         =>$departId,
+                                "position_id"           =>$positId,
+                                "account_holder_name"   =>$row[16],
+                                "bank_name"             =>$row[17],
+                                "account_number"        =>$row[18],
+                                "bank_identifier_code"  =>$row[19],
+                                "branch_location"       =>$row[20],
+                                "status"                =>$row[21],
+                                "company_doj"          => $doj,
+                                "company_doe"           => $doe,
+                                "branch_id"             =>$branchId->id,
+                                "employee_id"           =>User::employeeIdFormat($branchId->id, self::employeeNumber(Auth::user()->creatorId())),
+                                "user_id"               =>$userId,
+                                // "is_active"             =>$active,
+                                "created_by"            =>Auth::user()->creatorId(),
+                                "created_at"            => date('Y-m-d h:m:s'),
+                                "updated_at"            => date('Y-m-d h:m:s'),
+                            ];
+
+                            array_push($employee_arr,$employee);
+                        }
+                    }
+                }
+
+            }
+            $insert = Employee::Insert($employee_arr);
+            DB::commit();
+            return redirect('/employees');
+        }catch(Exeption $e){
+            DB::rollback();
+            return redirect('/employees');
         }
-        $insert = Employee::Insert($employee_arr);
-        return redirect('/employees');
+        // return redirect('/employees');
     }
     
 }
