@@ -86,15 +86,20 @@ class EmployeeReportController extends Controller
     }
     public function employee_gender(Request $request){
         if($request->branch_id == '0'){
+            $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
             $gender = DB::table('v_employee_gender')
-                        ->select('label',DB::raw("SUM(value) as value"))
+                        ->select('v_employee_gender.label',DB::raw("SUM(value) as value"))
+                        ->leftJoin('branches','branches.id','=','v_employee_gender.branch_id')
+                        ->where('branches.company_id',$branch->company_id)
                         ->groupBy('label')
                         ->get();
             $response['data'] = $gender;
         }else{
             $gender = DB::table('v_employee_gender')
-                        ->select('*')
+                        ->select('label',DB::raw("SUM(value) as value"))
                         ->where('branch_id',$request->branch_id)
+                        ->groupBy('branch_id')
+                        ->groupBy('label')
                         ->get();
             $response['data'] = $gender;
         }

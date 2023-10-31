@@ -609,11 +609,11 @@
                     var male = '0';
                     var female = '0';
                     $.each(data,function(key,val){
-                        if(val.label == 'Male')
+                        if(val.label == 'MALE')
                         {
                             male = val.value;
                         }
-                        if(val.label == 'Female'){
+                        if(val.label == 'FEMALE'){
                             female = val.value;
                         }
                     })
