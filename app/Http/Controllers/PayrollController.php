@@ -742,7 +742,9 @@ class PayrollController extends Controller
                     $brId = -1;
                 }
                 $employeeId = Employee::where('no_employee',$value[1])
-                                        ->where('branch_id',$brId)
+                                        // ->where('branch_id',$brId)
+                                        ->leftJoin('branches','branches.id','employees.branch_id')
+                                        ->where($value[15])
                                         ->first();
                 $takeHP = DB::table('take_home_pay')
                             ->where('employee_id',$employeeId->id)
