@@ -139,8 +139,6 @@ class EmployeeReportController extends Controller
             $staff = DB::table('v_employee_active_staff')
                         ->select('*')
                         ->where('branch_id',$request->branch_id)
-                        ->groupBy('bulan_des')
-                        ->groupBy('bulan')
                         ->orderBy('bulan','ASC')
                         ->get();
             $response['data'] = $staff;
