@@ -737,7 +737,7 @@ class PayrollController extends Controller
             if ($key > 0) :
                 $brch = Branch::where('alias',$value[15])->first();
                 if ($brch == null ){
-                    dd($brch);
+                    dd($value[1]);
                 }
                 $employeeId = Employee::where('no_employee',$value[1])
                                         ->where('branch_id',$brch->id)
