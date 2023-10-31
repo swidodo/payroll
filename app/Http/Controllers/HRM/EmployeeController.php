@@ -872,7 +872,8 @@ class EmployeeController extends Controller
             return redirect('/employees');
         }catch(Exeption $e){
             DB::rollback();
-            return redirect('/employees');
+            // return redirect('/employees');
+            dd($e);
         }
         // return redirect('/employees');
     }
