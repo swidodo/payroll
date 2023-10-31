@@ -779,7 +779,7 @@ class EmployeeController extends Controller
                             $doj            = ($row[22] != "" ) ? $row[22] : null;
                             $doe            = ($row[23] != "" ) ? $row[23] : null;
                             $dob            = ($row[4] !="" && $row[4] !='0000-00-00') ? $row[4] : null;
-                            
+                            $userId         = $checkUser[0]->id;
                             $uptemployee = [
                                 "name"                  =>$row[0],
                                 "identity_card"         =>$row[1],
