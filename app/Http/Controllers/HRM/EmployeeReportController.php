@@ -130,14 +130,14 @@ class EmployeeReportController extends Controller
                         ->select('bulan_des',DB::raw("count(subtotal) as subtotal"))
                         ->leftJoin('branches','branches.id','v_employee_active_staff.branch_id')
                         ->where('branches.company_id',$branch->company_id)
-                        ->groupBy('v_employee_active_staff.bulan_des')
-                        ->groupBy('v_employee_active_staff.bulan')
-                        ->orderBy('v_employee_active_staff.bulan','ASC')
+                        ->groupBy('bulan_des')
+                        ->groupBy('bulan')
+                        ->orderBy('bulan','ASC')
                         ->get();
             $response['data'] = $staff;
         }else{
             $staff = DB::table('v_employee_active_staff')
-                        ->select('bulan_des',DB::raw("count(subtotal) as subtotal"))
+                        ->select('*')
                         ->where('branch_id',$request->branch_id)
                         ->groupBy('bulan_des')
                         ->groupBy('bulan')
