@@ -79,7 +79,6 @@
                             <th>Date</th>
                             {{-- <th>End Date</th> --}}
                             <th>Day Type</th>
-                            <th>Overtime Type</th>
                             <th>Start Time</th>
                             <th>End Time</th>
                             <th>Multiplier</th>
@@ -257,10 +256,6 @@
                         {
                             data: 'day_name',
                             name: 'day_name'
-                        },
-                        {
-                            data: 'overtime_type',
-                            name: 'overtime_type'
                         },
                         {
                             data: 'start_time',
