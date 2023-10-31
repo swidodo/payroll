@@ -148,7 +148,9 @@ class EmployeeReportController extends Controller
     public function employee_lenght_of_service(Request $request){
         if($request->branch_id != '0') :
             $service3 = DB::table('v_lenght_of_service')
-                        ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
+                        ->select(DB::raw("(v_lenght_of_service.subtotal/count(b.id))*100  as tot"))
+                        ->leftJoin('employees','employees.branch_id','v_lenght_of_service.branch_id')
+                        ->groupBy('v_lenght_of_service.branch_id')
                         ->where('service' ,'<=',3)
                         ->where('branch_id',$request->branch_id)
                         ->get();
