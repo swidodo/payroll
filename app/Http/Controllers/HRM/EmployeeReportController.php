@@ -125,8 +125,11 @@ class EmployeeReportController extends Controller
     }
     public function employee_active_staff(Request $request){
         if ($request->branch_id == 0){
+            $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
             $staff = DB::table('v_employee_active_staff')
                         ->select('bulan_des',DB::raw("count(subtotal) as subtotal"))
+                        ->leftJoin('branches','branches.id','v_employee_active_staff.branch_id')
+                        ->where('branches.company_id',$branch->company_id)
                         ->groupBy('bulan_des')
                         ->groupBy('bulan')
                         ->orderBy('bulan','ASC')
@@ -134,7 +137,7 @@ class EmployeeReportController extends Controller
             $response['data'] = $staff;
         }else{
             $staff = DB::table('v_employee_active_staff')
-                        ->select('*')
+                        ->select('bulan_des',DB::raw("count(subtotal) as subtotal"))
                         ->where('branch_id',$request->branch_id)
                         ->orderBy('bulan','ASC')
                         ->get();
