@@ -736,7 +736,9 @@ class PayrollController extends Controller
         foreach ($sheetData as $key => $value) {
             if ($key > 0) :
                 $brch = Branch::where('alias',$value[15])->first();
-                $employeeId = employee::where('no_employee',$value[1])->where('branch_id',$brch->id)->first();
+                $employeeId = Employee::where('no_employee',$value[1])
+                                        ->where('branch_id',$brch->id)
+                                        ->first();
                 $takeHP = DB::table('take_home_pay')
                             ->where('employee_id',$employeeId->id)
                             ->where('startdate',$value[13])
