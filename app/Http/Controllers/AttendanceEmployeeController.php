@@ -704,7 +704,7 @@ class AttendanceEmployeeController extends Controller
                             'updated_at'        => date('Y-m-d h:m:s'),
                             'created_by'        => Auth::user()->id,
                         ];
-                        $status = AttendanceEmployee::update($dataEmployee);
+                        $status = AttendanceEmployee::where('employee_id')->update($data);
                         return true;
                     endif;
                 endif;
