@@ -973,12 +973,13 @@
             }
         });
     }
-    function lenght_service(area){
+    function lenght_service(area,branch){
         header();
         $.ajax({
             url :'chart-employee_lenght_of_service',
             type : 'GET',
             dataType : 'json',
+            data : {branch_id :branch},
             beforeSend : function(){
                 $(area).html(`
                 <div class="d-flex justify-content-center align-items-center mt-5 mt-2">
