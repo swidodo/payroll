@@ -45,14 +45,15 @@ class EmployeeReportController extends Controller
     public function employee_jobLevel(Request $request){
         if($request->branch_id == '0'){
             $job = DB::table('v_employee_joblevel')
-                        ->select('job_level',DB::raw("SUM(subtotal)/count(branch_id) as subtotal") )
-                        ->groupBy('job_level')
+                        ->select('position_name',DB::raw("SUM(subtotal)/count(branch_id) as subtotal") )
+                        ->groupBy('position_name')
                         ->get();
             $response['data'] = $job;
         }else{
             $job = DB::table('v_employee_joblevel')
-                        ->select('*')
+                        ->select('position_name',DB::raw("SUM(subtotal)/count(branch_id) as subtotal") )
                         ->where('branch_id',$request->branch_id)
+                        ->groupBy('position_name')
                         ->get();
             $response['data'] = $job;
         }
@@ -142,34 +143,88 @@ class EmployeeReportController extends Controller
         return response()->json($response);
     }
     public function employee_lenght_of_service(Request $request){
-        $service3 = DB::table('v_lenght_of_service')
-                    ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
-                    ->where('service' ,'<=',3)
-                    ->get();
-        $service5 = DB::table('v_lenght_of_service')
-                    ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
-                    ->where('service', '>', 3)
-                    ->where('service', '<=' ,5)
-                    ->get();
-        $service10 = DB::table('v_lenght_of_service')
-                    ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
-                    ->where('service' ,'>', 5)
-                    ->where('service', '<=', 10)
-                    ->get();
-        $service15 = DB::table('v_lenght_of_service')
-                    ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
-                    ->where('service', '>', 10)
-                    ->where('service', '<=', 15)
-                    ->get();
-        $service20 = DB::table('v_lenght_of_service')
-                    ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
-                    ->where('service', '>', 15)
-                    ->where('service','<=', 20)
-                    ->get();
-        $service_30 = DB::table('v_lenght_of_service')
-                    ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
-                    ->where('service', '>', 20)
-                    ->get();
+        if($request->branch_id != '0') :
+            $service3 = DB::table('v_lenght_of_service')
+                        ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
+                        ->where('service' ,'<=',3)
+                        ->where('branch_id',$request->branch_id)
+                        ->get();
+            $service5 = DB::table('v_lenght_of_service')
+                        ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
+                        ->where('service', '>', 3)
+                        ->where('service', '<=' ,5)
+                        ->get();
+            $service10 = DB::table('v_lenght_of_service')
+                        ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
+                        ->where('service' ,'>', 5)
+                        ->where('service', '<=', 10)
+                        ->where('branch_id',$request->branch_id)
+                        ->get();
+            $service15 = DB::table('v_lenght_of_service')
+                        ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
+                        ->where('service', '>', 10)
+                        ->where('service', '<=', 15)
+                        ->where('branch_id',$request->branch_id)
+                        ->get();
+            $service20 = DB::table('v_lenght_of_service')
+                        ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
+                        ->where('service', '>', 15)
+                        ->where('service','<=', 20)
+                        ->where('branch_id',$request->branch_id)
+                        ->get();
+            $service_30 = DB::table('v_lenght_of_service')
+                        ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
+                        ->where('service', '>', 20)
+                        ->where('branch_id',$request->branch_id)
+                        ->get();
+        endif;
+        if($request->branch_id == '0') :
+            $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
+            $service3 = DB::table('v_lenght_of_service')
+                        ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
+                        ->leftJoin('branches','branches.id','v_lenght_of_service.branch_id')
+                        ->where('branches.company_id',$branch->company_id_id)
+                        ->where('service' ,'<=',3)
+                        ->get();
+            $service5 = DB::table('v_lenght_of_service')
+                        ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
+                        ->leftJoin('branches','branches.id','v_lenght_of_service.branch_id')
+                        ->where('branches.company_id',$branch->company_id_id)
+                        ->where('service', '>', 3)
+                        ->where('service', '<=' ,5)
+                        ->get();
+            $service10 = DB::table('v_lenght_of_service')
+                        ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
+                        ->leftJoin('branches','branches.id','v_lenght_of_service.branch_id')
+                        ->where('branches.company_id',$branch->company_id_id)
+                        ->where('service' ,'>', 5)
+                        ->where('service', '<=', 10)
+                        ->where('branch_id',$request->branch_id)
+                        ->get();
+            $service15 = DB::table('v_lenght_of_service')
+                        ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
+                        ->leftJoin('branches','branches.id','v_lenght_of_service.branch_id')
+                        ->where('branches.company_id',$branch->company_id_id)
+                        ->where('service', '>', 10)
+                        ->where('service', '<=', 15)
+                        ->where('branch_id',$request->branch_id)
+                        ->get();
+            $service20 = DB::table('v_lenght_of_service')
+                        ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
+                        ->leftJoin('branches','branches.id','v_lenght_of_service.branch_id')
+                        ->where('branches.company_id',$branch->company_id_id)
+                        ->where('service', '>', 15)
+                        ->where('service','<=', 20)
+                        ->where('branch_id',$request->branch_id)
+                        ->get();
+            $service_30 = DB::table('v_lenght_of_service')
+                        ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
+                        ->leftJoin('branches','branches.id','v_lenght_of_service.branch_id')
+                        ->where('branches.company_id',$branch->company_id_id)
+                        ->where('service', '>', 20)
+                        ->where('branch_id',$request->branch_id)
+                        ->get();
+        endif;
         $response['lenght_3']  = $service3 ;
         $response['lenght_5']  = $service5;
         $response['lenght_10'] = $service10;
