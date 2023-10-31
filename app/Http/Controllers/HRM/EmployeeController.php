@@ -777,6 +777,7 @@ class EmployeeController extends Controller
                                             where LOWER(name) = '$name'
                                             and email='$row[10]'");
                         if(count($check) > 0){
+                            dd( $check);
                             $uptemployee = [
                                 "name"                  =>$row[0],
                                 "identity_card"         =>$row[1],
