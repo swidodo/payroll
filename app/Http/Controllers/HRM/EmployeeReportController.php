@@ -147,7 +147,6 @@ class EmployeeReportController extends Controller
     }
     public function employee_lenght_of_service(Request $request){
         if($request->branch_id != '0') :
-            dd($request->branch_id);
             $service3 = DB::table('v_lenght_of_service')
                         ->select(DB::raw("subtotal/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
                         ->where('service' ,'<=',3)
