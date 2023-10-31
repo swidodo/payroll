@@ -87,12 +87,12 @@
 
             {{-- Ulang Tahun --}}
             @foreach ($birthDay as $data)
-                <div class="card">
+                {{-- <div class="card">
                     <div class="card-body"
                         style="border-left-style: solid; border-radius: 4px; border-width: 5px;border-color: #e71304; background-color: #faff85">
                         <div class="row">
                             <div class="col-8 fs-6">
-                                Selamat ulang tahun  {{ $data->nama }}, semoga selalu sukses !
+                                Selamat ulang tahun, {{ $data->nama }}, semoga selalu sukses !
                             </div>
                             <div class="col-4">
                                 <button type="button" class="btn-close btn-sm float-end .bg-info-subtle"
@@ -100,7 +100,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             @endforeach
 
             <div class="row">

@@ -157,12 +157,19 @@
                     type : 'post',
                     data : {startdate:startdate,enddate:enddate,branch_id:branch_id},
                     dataType : 'json',
+                    beforeSend : function(){
+                        $('.containerLoader').attr('hidden',false)
+                    },
                     success: function(e){
+                        $('.containerLoader').attr('hidden',true)
                         swal.fire({
                             icon : e.status,
                             text : e.msg,
                         })
                         loadData(startdate,enddate,branch_id)
+                    },
+                    error: function(){
+                        $('.containerLoader').attr('hidden',true)
                     }
                 })
             })
