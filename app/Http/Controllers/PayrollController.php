@@ -736,12 +736,11 @@ class PayrollController extends Controller
         foreach ($sheetData as $key => $value) {
             if ($key > 0) :
                 $brch = Branch::where('alias',$value[15])->first();
-                if ($brch == null ){
+                if ($brch != null ){
                     $brId = $brch->id;
                 }else{
-                    $brId = "false";
+                    $brId = -1;
                 }
-                dd($brId);
                 $employeeId = Employee::where('no_employee',$value[1])
                                         ->where('branch_id',$brId)
                                         ->first();
