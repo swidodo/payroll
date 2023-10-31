@@ -711,7 +711,6 @@ class EmployeeController extends Controller
             return redirect()->back();
         } catch (Exception $th) {
             DB::rollBack();
-            dd($th);
             toast('Something went wrong.', 'error');
             return redirect()->back();
         }
@@ -754,7 +753,6 @@ class EmployeeController extends Controller
                                 ->select('id')
                                 ->where('alias','=',$row[24])
                                 ->get()->first();
-                                dd($branchId );
                 // $active = (strtolower($row[24]) === "true") ? true : false;
                     if ($branchId != null){
                         $name = strtolower($row[0]);
