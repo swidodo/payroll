@@ -705,7 +705,6 @@ class AttendanceEmployeeController extends Controller
                             'created_by'        => Auth::user()->id,
                         ];
                         $status = AttendanceEmployee::where('employee_id')->update($data);
-                        return true;
                     endif;
                 endif;
                 if (ucwords($value[9]) == 'Present' || 
@@ -721,24 +720,26 @@ class AttendanceEmployeeController extends Controller
                      $status = '';
                 }
                 if ($employeeId != null ):
-                $data = [
-                    'employee_id'       => $employeeId->id,
-                    'date'              => $value[3],
-                    'clock_in'          => $value[4],
-                    'clock_out'         => $value[5],
-                    'late'              => $value[6],
-                    'early_leaving'     => $value[7],
-                    'overtime'          => $value[8],
-                    'status'            => ucwords($status),
-                    'total_rest'        => '00:00:00',
-                    'created_at'        => date('Y-m-d h:m:s'),
-                    'updated_at'        => date('Y-m-d h:m:s'),
-                    'created_by'        => Auth::user()->id,
-                ];
-                if(!in_array($data,$dataEmployee)){
-                    array_push($dataEmployee,$data);
-                }
-            endif;
+                    if ($checked ==null):
+                        $data = [
+                            'employee_id'       => $employeeId->id,
+                            'date'              => $value[3],
+                            'clock_in'          => $value[4],
+                            'clock_out'         => $value[5],
+                            'late'              => $value[6],
+                            'early_leaving'     => $value[7],
+                            'overtime'          => $value[8],
+                            'status'            => ucwords($status),
+                            'total_rest'        => '00:00:00',
+                            'created_at'        => date('Y-m-d h:m:s'),
+                            'updated_at'        => date('Y-m-d h:m:s'),
+                            'created_by'        => Auth::user()->id,
+                        ];
+                        if(!in_array($data,$dataEmployee)){
+                            array_push($dataEmployee,$data);
+                        }
+                    endif;
+                endif;
             endif;
         }
         if (count($dataEmployee) > 0){
