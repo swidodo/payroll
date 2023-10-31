@@ -540,9 +540,9 @@
                 $(area).html(`@include("pages.contents.dashboard.filter_data.employee_status")`)
                 var data = response.data;
                 if (data.length > 0){
-                    var total = parseInt(data[0].contract) + parseInt(data[0].jobholders) + parseInt(data[0].freelance);
+                    var total = parseInt(data[0].contract) + parseInt(data[0].permanent) + parseInt(data[0].freelance);
                     var contract = parseInt(data[0].contract) / total * 100;
-                    var jobholders = parseInt(data[0].jobholders) / total * 100;
+                    var permanent = parseInt(data[0].permanent) / total * 100;
                     var freelance = parseInt(data[0].freelance) / total * 100;
                     $('#ides-total-employee').text(total)
                     $('#ides-contract').text(data[0].contract)
@@ -550,10 +550,10 @@
                     $('#ides-progress-contract').attr('aria-valuenow',Math.round(contract))
                     $('#ides-progress-contract').css("width", Math.round(contract)+'%');
 
-                    $('#ides-jobholder').text(data[0].jobholders)
-                    $('#ides-progress-jobholder').text(Math.round(jobholders)+'%')
-                    $('#ides-progress-jobholder').attr('aria-valuenow',Math.round(jobholders))
-                    $('#ides-progress-jobholder').css("width",Math.round(jobholders) +'%');
+                    $('#ides-jobholder').text(data[0].permanent)
+                    $('#ides-progress-jobholder').text(Math.round(permanent)+'%')
+                    $('#ides-progress-jobholder').attr('aria-valuenow',Math.round(permanent))
+                    $('#ides-progress-jobholder').css("width",Math.round(permanent) +'%');
 
                     $('#ides-freelance').text(data[0].freelance)
                     $('#ides-progress-freelance').text(Math.round(freelance)+'%')

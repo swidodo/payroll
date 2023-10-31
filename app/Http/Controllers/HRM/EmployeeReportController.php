@@ -8,6 +8,7 @@ use App\Exports\EmployeesExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\models\Branch;
 
 class EmployeeReportController extends Controller
 {
@@ -17,8 +18,12 @@ class EmployeeReportController extends Controller
     }
     public function employee_status(Request $request){
         if($request->branch_id == '0'){
+            $branch = Branch::where('id',Auth::user()->branch_id)->first();
             $status = DB::table('v_employee_status')
-                        ->select(DB::raw("sum(jobholders) as jobholders,sum(contract) as contract,sum(freelance) as freelance"))
+                        ->select(DB::raw("sum(v_employee_status.permanent) as permanent,sum(v_employee_status.contract) as contract,sum(v_employee_status.freelance) as freelance"))
+                        ->leftJoin('branches','branches.id','v_employee_status.branch_id')
+                        ->leftJoin('companies','companies.id','branches.company_id')
+                        ->where('companies.company_id',$branch->company_id)
                         ->get();
             $response['data'] = $status;
         }else{

@@ -92,7 +92,7 @@
                         style="border-left-style: solid; border-radius: 4px; border-width: 5px;border-color: #e71304; background-color: #faff85">
                         <div class="row">
                             <div class="col-8 fs-6">
-                                Hooray! {{ $data->nama }} ulang tahun nih hari ini!
+                                Selemat ulang tahun  {{ $data->nama }}, semoga selalu sukses !
                             </div>
                             <div class="col-4">
                                 <button type="button" class="btn-close btn-sm float-end .bg-info-subtle"
