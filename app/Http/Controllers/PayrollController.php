@@ -873,7 +873,7 @@ class PayrollController extends Controller
                 //         ];
                 //         Deduction_other::create($deduc3);
                 //     }
-                // endif;
+                endif;
             endif;
         }
         dd($bch);
