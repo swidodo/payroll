@@ -48,9 +48,10 @@
                         <div class="col-md-6">
                             <h3><strong>{{ ($employee == null) ?  '' : $employee->name }}</strong></h3>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" id="btnAct">
                             <div class="float-end">
                                 <button class="btn btn-primary" id="editProfile"><i class="fa fa-edit"></i>Edit</button>
+                                <button class="btn btn-primary" id="Bataledit" hidden><i class="fa fa-cancel"></i>Cancel</button>
                             </div>
                         </div>
                     </div>
@@ -168,6 +169,13 @@
         $(document).ready(function () {
            $('#editProfile').on('click',function(){
                 $('.data').attr('readonly',false);
+                $('#editProfile').attr('hidden',true)
+                $('#Bataledit').attr('hidden',false)
+           })
+           $('#Bataledit').on('click',function(){
+                $('.data').attr('readonly',true);
+                $('#editProfile').attr('hidden',false)
+                $('#Bataledit').attr('hidden',true)
            })
 
             // $(document).on('click','.delete-user',function(e){
@@ -207,5 +215,6 @@
             //         })
             // })
         });
+       
     </script>
 @endpush
