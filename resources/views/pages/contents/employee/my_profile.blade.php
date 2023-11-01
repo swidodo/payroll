@@ -211,7 +211,7 @@
                                         text : respon.msg
                                     })
                                     $('.containerLoader').attr('hidden',true)
-                                    window.location.href ={{route('get-my-profile')}}
+                                    document.location.href ='{{route("get-my-profile")}}''
                                 },
                                 error : function(){
                                     alert('Someting went wrong !');
