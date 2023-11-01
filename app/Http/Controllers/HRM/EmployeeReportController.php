@@ -70,6 +70,8 @@ class EmployeeReportController extends Controller
                         ->get();
             $total   = DB::table('v_employee_education')
                         ->select(DB::raw("SUM(count) as count"))
+                        ->leftJoin('branches','branches.id','v_employee_education.branch_id')
+                        ->where('branches.company_id',$branch->company_id)
                         ->get();
             $response['data'] = $education;
             $response['total'] = $total;
