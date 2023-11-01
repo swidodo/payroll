@@ -459,7 +459,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('get-approve-attendance',[RequestController::class,'approve_attendance'])->name('get-approve-attendance');
         // my profile
         Route::get('get-my-profile',[EmployeeController::class,'my_profile'])->name('get-my-profile');
-        Route::get('change-profile',[EmployeeController::class,'change_profile'])->name('change-profile');
+        Route::post('change-profile',[EmployeeController::class,'change_profile'])->name('change-profile');
         });
 
 

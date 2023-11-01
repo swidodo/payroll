@@ -58,8 +58,8 @@
                     </div>
                 </div>
                     <div class="card-body">
-                        <div class="row">
-                            <form id="formProfile">
+                        <form id="formProfile">
+                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Username</label>
@@ -124,8 +124,8 @@
                                     </div>
                                 </div>
                                 @endif
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                </div>
             </div>
@@ -183,7 +183,7 @@
                 $('#Simpanedit').attr('hidden',true)
            })
            $('#Simpanedit').on('click', function(){
-                $('#formProfile').serialize()
+                var data = $('#formProfile').serialize()
                 Swal.fire({
                             title: 'Are you sure?',
                             text: "You Change profile!",
@@ -197,7 +197,7 @@
                             $.ajax({
                                 url : 'change-profile',
                                 type :'post',
-                                data : {id : id},
+                                data : data,
                                 dataType : 'json',
                                 beforeSend : function (){
                                     $('.containerLoader').attr('hidden',false)
