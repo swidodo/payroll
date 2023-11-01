@@ -150,7 +150,7 @@ class EmployeeReportController extends Controller
             $service3 = DB::table('v_lenght_of_service')
                         ->select(DB::raw("(v_lenght_of_service.subtotal/count(employees.id))*100  as tot"))
                         ->leftJoin('employees','employees.branch_id','v_lenght_of_service.branch_id')
-                        ->groupBy('v_lenght_of_service.branch_id')
+                        ->groupBy('v_lenght_of_service.subtotal')
                         ->where('v_lenght_of_service.service' ,'<=',3)
                         ->where('v_lenght_of_service.branch_id',$request->branch_id)
                         ->get();
