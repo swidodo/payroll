@@ -61,8 +61,11 @@ class EmployeeReportController extends Controller
     }
     public function employee_education(Request $request){
         if($request->branch_id == '0'){
+            $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
             $education = DB::table('v_employee_education')
                         ->select('level',DB::raw("SUM(count) as count"))
+                        ->leftJoin('branches','branches.id','v_employee_education.branch_id')
+                        ->where('branches.company_id',$branch->company_id)
                         ->groupBy('level')
                         ->get();
             $total   = DB::table('v_employee_education')
