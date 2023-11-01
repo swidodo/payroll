@@ -33,18 +33,26 @@
         @endif
 
         <div class="row">
+            {{-- <div class="card">
+                <div class="row">
+                <div class="col-md-2">Head office</div>
+                <div class="col-md-2">{{ $company->name}}</div>
+                <div class="col-md-2">Branch</div>
+                <div class="col-md-2">{{ $branch->name }}</div>
+                </div>
+            </div> --}}
             <div class="col-md-12">
                <div class="card">
                 <div class="card-header">
-                    <h3><strong>{{ ($employee == null) ?  '' : $employee->name }}</strong></h3>
-                   {{-- <div class="row">
-                    <div class="col-md-2">Head office</div>
-                    <div class="col-md-2">{{ $company->name}}</div>
-                    <div class="col-md-2">Branch</div>
-                    <div class="col-md-2">{{ $branch->name }}</div>
-                   </div> --}}
-                   <div class="float-end">
-                        <button class="btn btn-primary"><i class="fa fa-edit"></i>Edit</button>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3><strong>{{ ($employee == null) ?  '' : $employee->name }}</strong></h3>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="float-end">
+                                <button class="btn btn-primary" id="editProfile"><i class="fa fa-edit"></i>Edit</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                     <div class="card-body">
@@ -121,8 +129,6 @@
     </div>
     <!-- /Page Content -->
 
-    @include('includes.modal.users-modal')
-
 </div>
 @endsection
 
@@ -160,218 +166,46 @@
             headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
         });
         $(document).ready(function () {
-            var branchId = $('#branchId').val();
-            LoadData(branchId)
-            function LoadData(branch_id){
-                $('#tableUser').DataTable({
-                        processing: true,
-                        serverSide: true,
-                        destroy: true,
-                        ajax : {
-                            url : "get-data-user",
-                            type : 'post',
-                            data : {branch_id :branch_id},
-                        },
-                        columns: [
-                            { data: 'no', name:'id', render: function (data, type, row, meta) {
-                                return meta.row + meta.settings._iDisplayStart + 1;
-                            }},
-                            {
-                                data: 'name',
-                                name: 'name'
-                            },
-                            {
-                                data: 'email',
-                                name : 'email'
-                            },
-                            {
-                                data: 'type',
-                                name : 'type'
-                            },
-                            {
-                                data: 'action',
-                                name : 'action'
-                            },
-                        ],
+           $('#editProfile').on('click',function(){
+                $('.data').attr('readonly',false);
+           })
 
-                    });
-            }
-            $('#AddUser').on('click',function(e){
-                e.preventDefault();
-                $.ajax({
-                    url : 'add-user-data',
-                    type:'post',
-                    dataType : 'json',
-                    beforeSend :function(){
+            // $(document).on('click','.delete-user',function(e){
+            //     e.preventDefault()
+            //     var id = $(this).attr('data-id')
+            //      var branchId = $('#branchId').val();
+            //     Swal.fire({
+            //                 title: 'Are you sure?',
+            //                 text: "You won't be able to revert this!",
+            //                 icon: 'warning',
+            //                 showCancelButton: true,
+            //                 confirmButtonColor: '#3085d6',
+            //                 cancelButtonColor: '#d33',
+            //                 confirmButtonText: 'Yes, delete it!'
+            //             }).then(function(confirm){
+            //             if (confirm.value == true){
+            //                 $.ajax({
+            //                     url : 'destroy-user',
+            //                     type :'post',
+            //                     data : {id : id},
+            //                     dataType : 'json',
+            //                     beforeSend : function (){
 
-                    },
-                    success : function(respon){
-                        var branch ='';
-                        $.each(respon.branches,function(key,val){
-                            if (respon.user.branch_id == val.id){
-                                 branch +=`<option value="`+val.id+`" selected>`+val.name+`</option>`;
-                            }else{
-                                branch +=`<option value="`+val.id+`">`+val.name+`</option>`; 
-                            }
-                        }) 
-
-                        $('#addbranch_id').html(branch)
-                        var role ='<option value="" selected disabled>Select Role</option>';
-                        $.each(respon.role,function(key,val){
-                            role +=`<option value="`+val.id+`">`+val.name+`</option>`;
-                        })
-                        $('#role').html(role);
-                        $('#add_user').modal('show');
-                    },
-                    error :function(){
-                        alert('Someting went wrong !')
-                    }
-                }) 
-            })
-            $('#formAddUser').on('submit',function(e){
-                e.preventDefault();
-                var pass = 8;
-                if (pass < 8){
-                    $('#errpass').html('password must be 8 character!')
-                    return true;
-                }
-                var branchId = $('#branchId').val();
-                var data = $('#formAddUser').serialize();
-                $.ajax({
-                    url : 'store-user',
-                    type :'post',
-                    data : data,
-                    dataType : 'json',
-                    beforeSend : function(){
-
-                    },
-                    success : function(respon){
-                        if (respon.status == "success"){
-                            $('#formAddUser')[0].reset();
-                            $('#add_user').modal('hide')
-                        }
-                        swal.fire({
-                            icon : respon.status,
-                            text : respon.msg
-                        })
-                        LoadData(branchId)
-                    },
-                    error :function(){
-                        alert('Someting went Wrong !')
-                    }
-                })
-            })
-            $(document).on('click','.edit-user',function(e){
-                var id = $(this).attr('data-id')
-                $.ajax({
-                    url : 'edit-user',
-                    type : 'post',
-                    data : {id :id },
-                    dataType : 'json',
-                    beforeSend : function(){
-
-                    },
-                    success : function(respon){
-                        var branch ='';
-                        $.each(respon.branches,function(key,val){
-                            if (respon.user.branch_id == val.id){
-                                 branch +=`<option value="`+val.id+`" selected>`+val.name+`</option>`;
-                            }
-                            else{
-                                branch +=`<option value="`+val.id+`">`+val.name+`</option>`; 
-                            }
-                        }) 
-
-                        $('#branch-id-edit').html(branch)
-                        var role ='<option value="" selected disabled>Select Role</option>';
-                        $.each(respon.role,function(key,val){
-                            
-                             if (respon.user.type == val.name){
-                                role +=`<option value="`+val.id+`" selected>`+val.name+`</option>`;
-                            }else{
-                                 role +=`<option value="`+val.id+`">`+val.name+`</option>`;
-                            }
-                        })
-                        $('#id').val(respon.user.id);
-                        $('#editrole').html(role);
-                        $('#editname').val(respon.user.name);
-                        $('#edit-email').val(respon.user.email);
-                        $('#edit_usermodal').modal('show');
-                    },
-                    error : function(){
-                        Alert('Someting went wrong!')
-                    }
-                })
-            })
-            $('#editFormUser').on('submit',function(e){
-                e.preventDefault()
-                var data = $('#editFormUser').serialize();
-                $.ajax({
-                    url : 'update-user',
-                    type :'post',
-                    data : data,
-                    dataType : 'json',
-                    beforeSend : function(){
-
-                    },
-                    success : function(respon){
-                        if (respon.status == "success"){
-                            $('#editFormUser')[0].reset();
-                            $('#edit_usermodal').modal('hide')
-                        }
-                        swal.fire({
-                            icon : respon.status,
-                            text : respon.msg
-                        })
-                        LoadData(branchId)
-                    },
-                    error :function(){
-                        alert('Someting went Wrong !')
-                    }
-                })
-            })
-            $('#search').on('click', function(e){
-                e.preventDefault();
-                var branchId = $('#branchId').val();
-                // var compny = $('#company').val();
-                LoadData(branchId)
-            })
-            $(document).on('click','.delete-user',function(e){
-                e.preventDefault()
-                var id = $(this).attr('data-id')
-                 var branchId = $('#branchId').val();
-                Swal.fire({
-                            title: 'Are you sure?',
-                            text: "You won't be able to revert this!",
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Yes, delete it!'
-                        }).then(function(confirm){
-                        if (confirm.value == true){
-                            $.ajax({
-                                url : 'destroy-user',
-                                type :'post',
-                                data : {id : id},
-                                dataType : 'json',
-                                beforeSend : function (){
-
-                                },
-                                success : function(respon){
-                                    swal.fire({
-                                        icon : respon.status,
-                                        text : respon.msg
-                                    })
-                                     LoadData(branchId)
-                                },
-                                error : function(){
-                                    alert('Someting went wrong !');
-                                }
-                            })
-                        }
-                    })
-            })
+            //                     },
+            //                     success : function(respon){
+            //                         swal.fire({
+            //                             icon : respon.status,
+            //                             text : respon.msg
+            //                         })
+            //                          LoadData(branchId)
+            //                     },
+            //                     error : function(){
+            //                         alert('Someting went wrong !');
+            //                     }
+            //                 })
+            //             }
+            //         })
+            // })
         });
     </script>
 @endpush
