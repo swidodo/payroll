@@ -80,8 +80,11 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Gander</label>
-                                        <input type="text" name="gander" class="form-control data" readOnly>
-                                    </div>
+                                        <select class="form-control" name="gender">
+                                            <option value="MALE">MALE</option>
+                                            <option value="FEMALE">FEMALE</option>
+                                        </select>
+                                        </div>
                                     <div class="form-group">
                                         <label>Phone</label>
                                         <input type="text" name="phone" value="{{ $employee->phone }}" class="form-control data" readOnly>

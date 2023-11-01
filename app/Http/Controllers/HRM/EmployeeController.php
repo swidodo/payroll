@@ -894,7 +894,7 @@ class EmployeeController extends Controller
         $employee = [
             'name'          => $request->name,
             'dob'           => $request->doe,
-            'gander'        => $request->gander,
+            'gender'        => $request->gender,
             'phone'         => $request->phone,
             'address'       => $request->address,
             'identity_card' => $request->identity_card,
