@@ -879,5 +879,12 @@ class EmployeeController extends Controller
         }
         // return redirect('/employees');
     }
+    public function my_profile(){
+        $data['employee'] = Employee::where('user_id',Auth::user()->id)->first();
+        $data['user'] = User::where('id',Auth::user()->id)->first();
+        $data['branch'] = Branch::where('id',Auth::user()->branch_id)->first();
+        $data['company'] = Branch::where('id',$data['branch']->company_id)->first();
+        return view('pages.contents.employee.my_profile',$data);
+    }
     
 }

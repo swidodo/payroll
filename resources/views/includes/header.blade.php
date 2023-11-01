@@ -265,7 +265,7 @@
                 <span>{{Auth::user()->name}}</span>
             </a>
             <div class="dropdown-menu">
-                <!-- <a class="dropdown-item" href="#">My Profile</a> -->
+                <a class="dropdown-item" href="{{route('get-my-profile')}}">My Profile</a>
                 <!-- <a class="dropdown-item" href="{{ route('change_password')}}">Change Password</a> -->
                 <form action="{{route('logout')}}" method="POST">
                 @csrf

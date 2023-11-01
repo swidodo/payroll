@@ -457,7 +457,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('get-approve-overtime',[RequestController::class,'approve_overtime'])->name('get-approve-overtime');
         Route::post('get-approve-timesheet',[RequestController::class,'approve_timesheet'])->name('get-approve-timesheet');
         Route::post('get-approve-attendance',[RequestController::class,'approve_attendance'])->name('get-approve-attendance');
-    });
+        // my profile
+        Route::get('get-my-profile',[EmployeeController::class,'my_profile'])->name('get-my-profile');
+        });
 
 
 
