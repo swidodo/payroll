@@ -886,5 +886,33 @@ class EmployeeController extends Controller
         $data['company'] = Branch::where('id',$data['branch']->company_id)->first();
         return view('pages.contents.employee.my_profile',$data);
     }
+    public function change_profile(Request $request){
+        $user = [
+            'name'  => $request->username,
+            'email' => $request->email,
+        ];
+        $employee = [
+            'name'          => $request->name,
+            'dob'           => $request->doe,
+            'gander'        => $request->gander,
+            'phone'         => $request->phone,
+            'address'       => $request->address,
+            'identity_card' => $request->identity_card,
+            'family_card'   => $request->family_card,
+            'npwp_number'   => $request->npwp_number,
+            'religion'      => $request->religion,
+            'bank_name'     => $request->bank_name,
+            'account_number'        => $request->account_number,
+            'account_holder_name'   => $request->account_holder_name,
+        ];
+
+        User::where('id',Auth::user()->id)->update($user);
+        Employee::where('id',Auth::user()->id)->update($employee);
+        $res = [
+            'status' =>'success',
+            'msg' => 'Update Profile successfuly',
+        ];
+        return response()->json($res);
+    }
     
 }
