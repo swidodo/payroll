@@ -47,7 +47,7 @@ class EmployeeReportController extends Controller
             $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
             $job = DB::table('v_employee_joblevel')
                         ->select('position_name',DB::raw("SUM(subtotal)/count(branch_id) as subtotal") )
-                        ->leftJoin('branches','branches.id','=','v_employee_gender.branch_id')
+                        ->leftJoin('branches','branches.id','=','v_employee_joblevel.branch_id')
                         ->where('branches.company_id',$branch->company_id)
                         ->groupBy('position_name')
                         ->get();
