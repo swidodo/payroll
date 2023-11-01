@@ -44,8 +44,11 @@ class EmployeeReportController extends Controller
     }
     public function employee_jobLevel(Request $request){
         if($request->branch_id == '0'){
+            $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
             $job = DB::table('v_employee_joblevel')
                         ->select('position_name',DB::raw("SUM(subtotal)/count(branch_id) as subtotal") )
+                        ->leftJoin('branches','branches.id','=','v_employee_gender.branch_id')
+                        ->where('branches.company_id',$branch->company_id)
                         ->groupBy('position_name')
                         ->get();
             $response['data'] = $job;
