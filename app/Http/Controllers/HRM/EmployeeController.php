@@ -893,17 +893,17 @@ class EmployeeController extends Controller
         ];
         $employee = [
             'name'          => $request->name,
-            'dob'           => $request->doe,
-            'gender'        => $request->gender,
-            'phone'         => $request->phone,
-            'address'       => $request->address,
-            'identity_card' => $request->identity_card,
-            'family_card'   => $request->family_card,
-            'npwp_number'   => $request->npwp_number,
-            'religion'      => $request->religion,
-            'bank_name'     => $request->bank_name,
-            'account_number'        => $request->account_number,
-            'account_holder_name'   => $request->account_holder_name,
+            // 'dob'           => $request->doe,
+            // 'gender'        => $request->gender,
+            // 'phone'         => $request->phone,
+            // 'address'       => $request->address,
+            // 'identity_card' => $request->identity_card,
+            // 'family_card'   => $request->family_card,
+            // 'npwp_number'   => $request->npwp_number,
+            // 'religion'      => $request->religion,
+            // 'bank_name'     => $request->bank_name,
+            // 'account_number'        => $request->account_number,
+            // 'account_holder_name'   => $request->account_holder_name,
         ];
         User::where('id',Auth::user()->id)->update($user);
         $Emp = Employee::where('id',Auth::user()->id)->update($employee);
