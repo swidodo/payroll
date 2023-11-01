@@ -905,9 +905,9 @@ class EmployeeController extends Controller
             'account_number'        => $request->account_number,
             'account_holder_name'   => $request->account_holder_name,
         ];
-dd($employee);
         User::where('id',Auth::user()->id)->update($user);
-        Employee::where('id',Auth::user()->id)->update($employee);
+        $Emp = Employee::where('id',Auth::user()->id)->update($employee);
+        dd($Emp);
         $res = [
             'status' =>'success',
             'msg' => 'Update Profile successfuly',
