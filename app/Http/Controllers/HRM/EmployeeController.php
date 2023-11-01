@@ -883,7 +883,7 @@ class EmployeeController extends Controller
         $data['employee'] = Employee::where('user_id',Auth::user()->id)->first();
         $data['user'] = User::where('id',Auth::user()->id)->first();
         $data['branch'] = Branch::where('id',Auth::user()->branch_id)->first();
-        $data['company'] = Branch::where('id',$data['branch']->company_id)->first();
+        $data['company'] = DB::table('companies')->where('id',$data['branch']->company_id)->first();
         return view('pages.contents.employee.my_profile',$data);
     }
     public function change_profile(Request $request){
@@ -905,7 +905,7 @@ class EmployeeController extends Controller
             'account_number'        => $request->account_number,
             'account_holder_name'   => $request->account_holder_name,
         ];
-
+dd(employee);
         User::where('id',Auth::user()->id)->update($user);
         Employee::where('id',Auth::user()->id)->update($employee);
         $res = [
