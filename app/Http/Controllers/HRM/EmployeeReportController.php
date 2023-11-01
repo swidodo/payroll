@@ -241,12 +241,12 @@ class EmployeeReportController extends Controller
                         ->where('branch_id',$request->branch_id)
                         ->get();
         endif;
-        $response['lenght_3']  = $service3 ;
-        $response['lenght_5']  = $service5;
-        $response['lenght_10'] = $service10;
-        $response['lenght_15'] = $service15;
-        $response['lenght_20'] = $service20;
-        $response['lenght_30'] = $service_30 ;
+        $response['lenght_3']  = ($service3 !=[]) ? $service3 : 0;
+        $response['lenght_5']  = ($service5  !=[]) ? $service5 : 0;
+        $response['lenght_10'] = ($service10  !=[]) ? $service10 : 0;
+        $response['lenght_15'] = ($service15  !=[]) ? $service15 : 0;
+        $response['lenght_20'] = ($service20  !=[]) ? $service20 : 0;
+        $response['lenght_30'] = ($service_30  !=[]) ? $service_30 : 0;
         return response()->json($response);
     }
     public function monthly_turnover(Request $request){
