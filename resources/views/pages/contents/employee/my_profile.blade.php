@@ -80,7 +80,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Gander</label>
-                                        <select class="form-control data" name="gender">
+                                        <select class="form-control data" name="gender" readonly>
                                             <option value="MALE" {{ ($employee->gender =='MALE') ? 'selected':'';}}>MALE</option>
                                             <option value="FEMALE" {{ ($employee->gender =='FEMALE') ? 'selected':'';}}>FEMALE</option>
                                         </select>
