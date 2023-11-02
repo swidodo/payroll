@@ -430,4 +430,8 @@ class UsersController extends Controller
             return redirect()->back();
         }
     }
+    public function change_pass(){
+        $data['user'] = User::where('id',Auth::user()->id)->first();
+        return view('pages.contents.users management.users.change_password',$data);
+    }
 }

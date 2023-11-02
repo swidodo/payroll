@@ -220,42 +220,7 @@
                         }
                     })
            })
-            // $(document).on('click','.delete-user',function(e){
-            //     e.preventDefault()
-            //     var id = $(this).attr('data-id')
-            //      var branchId = $('#branchId').val();
-            //     Swal.fire({
-            //                 title: 'Are you sure?',
-            //                 text: "You won't be able to revert this!",
-            //                 icon: 'warning',
-            //                 showCancelButton: true,
-            //                 confirmButtonColor: '#3085d6',
-            //                 cancelButtonColor: '#d33',
-            //                 confirmButtonText: 'Yes, delete it!'
-            //             }).then(function(confirm){
-            //             if (confirm.value == true){
-            //                 $.ajax({
-            //                     url : 'destroy-user',
-            //                     type :'post',
-            //                     data : {id : id},
-            //                     dataType : 'json',
-            //                     beforeSend : function (){
-
-            //                     },
-            //                     success : function(respon){
-            //                         swal.fire({
-            //                             icon : respon.status,
-            //                             text : respon.msg
-            //                         })
-            //                          LoadData(branchId)
-            //                     },
-            //                     error : function(){
-            //                         alert('Someting went wrong !');
-            //                     }
-            //                 })
-            //             }
-            //         })
-            // })
+           
         });
        
     </script>
