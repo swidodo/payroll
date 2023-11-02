@@ -334,8 +334,7 @@ class EmployeeController extends Controller
             }else{
                 $request['total_leave'] = 0;
             }
-            dd($request);
-            // $employee->update($request->except(['educations', 'experiences', 'families']));
+            $employee->update($request->except(['educations', 'experiences', 'families']));
             
             //education
             
