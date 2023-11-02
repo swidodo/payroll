@@ -336,8 +336,9 @@ class EmployeeController extends Controller
             }
             
             // $employee->update($request->except(['educations', 'experiences', 'families']));
+            
             //education
-            // dd($request->department);
+            
             if (isset($request->educations)) {
                 foreach ($request->educations as $education) {
                     $employeeEducation = EmployeeEducation::find($education['id-education'] ?? 0);
@@ -404,7 +405,7 @@ class EmployeeController extends Controller
                     }
                 }
             }
-
+dd($request->department);
             //family
             if (isset($request->families)) {
                 foreach ($request->families as $family) {
