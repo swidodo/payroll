@@ -282,7 +282,7 @@ class EmployeeController extends Controller
                     }
                 }
             }
-
+            
             $getId = Departement::where('departement_code',$request->department)->first();
             if (isset($getId)){
                 $request['department'] = $getId->id;
@@ -334,9 +334,10 @@ class EmployeeController extends Controller
             }else{
                 $request['total_leave'] = 0;
             }
-
-            $employee->update($request->except(['educations', 'experiences', 'families']));
+            
+            // $employee->update($request->except(['educations', 'experiences', 'families']));
             //education
+            dd($request->department);
             if (isset($request->educations)) {
                 foreach ($request->educations as $education) {
                     $employeeEducation = EmployeeEducation::find($education['id-education'] ?? 0);
