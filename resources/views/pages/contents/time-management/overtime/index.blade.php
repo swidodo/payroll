@@ -349,7 +349,7 @@
                     $('.containerLoader').attr('hidden',true)
                     var emp = '<option value="">-- Select Employee --</option>';
                     $.each(respon.employee,function(key,val){
-                        emp +=`<option value="`+val.id+`">`+val.name+`</option>`
+                        emp +=`<option value="`+val.id+`">`+val.no_employee+` - `+val.name+`</option>`
                     })
                     $('#employee_id_add').html(emp)
                     $('#branch_id_overtime').val($('#branchId').val())
