@@ -49,7 +49,6 @@
                         </div>
                         <div class="d-flex justify-content-end">
                             <button class="btn btn-primary me-3">Save</button>
-                            <button class="btn btn-warning">Cancel</button>
                         </div>
                     </form>
                 </div>
