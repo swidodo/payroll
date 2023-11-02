@@ -55,7 +55,7 @@
                             <div class="form-group">
                                 <label>Confirm Password</label>
                                 <input type="password" class="form-control" name="pass_confirm" id="pass_confirm" required>
-                                <div class="text-small" id="error"></div>
+                                <div class="text-small text-danger" id="error"></div>
                             </div>
                             <button class="btn btn-primary" type="submit" id="btnsend">Change Password</button>
                        </form>
@@ -114,8 +114,8 @@
                     $('#btnsend').attr('disabled',false)
                 }
            })
-           $('#Simpanedit').on('click', function(){
-                var data = $('#formProfile').serialize()
+           $('#btnsend').on('click', function(){
+                var data = $('#formChangePassword').serialize()
                 Swal.fire({
                             title: 'Are you sure?',
                             text: "You Change profile!",
