@@ -116,9 +116,12 @@ class EmployeeReportController extends Controller
     }
     public function employee_age_average(Request $request){
         if ($request->branch_id == 0){
+            $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
             $age = DB::table('v_employee_age_average')
                     ->select(DB::raw("(SUM(range_18) / count(branch_id)) as range_18,(SUM(range_20_30) / count(branch_id)) as range_20_30,
                     (SUM(range_31_40) / count(branch_id)) as range_31_40,(SUM(range_41_50) / count(branch_id)) as range_41_50"))
+                    ->leftJoin('branches','branches.id','=','v_employee_gender.branch_id')
+                    ->where('branches.company_id',$branch->company_id)
                     ->get();
             $response['data'] = $age;
         }else{
