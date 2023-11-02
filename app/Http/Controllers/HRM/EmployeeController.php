@@ -404,7 +404,6 @@ class EmployeeController extends Controller
                     }
                 }
             }
-dd($request->department);
             //family
             if (isset($request->families)) {
                 foreach ($request->families as $family) {
