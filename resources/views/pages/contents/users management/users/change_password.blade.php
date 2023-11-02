@@ -1,6 +1,6 @@
 @extends('pages.dashboard')
 
-@section('title', 'My Profile')
+@section('title', 'Change Password')
 @section('class', '')
 
 @section('dashboard-content')
@@ -13,10 +13,10 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">My Profile</h3>
+                    <h3 class="page-title">Change Password</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">my profile</li>
+                        <li class="breadcrumb-item active">Change Password</li>
                     </ul>
                 </div>
             </div>
