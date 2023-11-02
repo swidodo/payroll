@@ -97,7 +97,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="religion" class="form-label">Religion</label>
-                                        <select class="form-control form-select"  id="religion" name="religion">
+                                        <select class="form-control form-select"  id="religion" name="religion" required>
                                             <option value="" disabled>-- Select Religion --</option>
                                             <option value="ISLAM" {{ (strtoupper($employee->religion) =="ISLAM") ? 'selected' : '' }} >Islam</option>
                                             <option value="KATHOLIK" {{ (strtoupper($employee->religion) =="KATHOLIK")? 'selected' : ''}}>Katholik</option>
@@ -157,7 +157,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="employee_id" class="form-label">Employee ID</label>
-                                    <input class="form-control" name="no_employee" type="text" value="{{$employee->no_employee ?? ''}}" id="employee_id">
+                                    <input class="form-control" name="no_employee" type="text" value="{{$employee->no_employee ?? ''}}" id="employee_id" required>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label class="form-label">Employee Type</label>
@@ -192,7 +192,7 @@
                                 <hr >
                                 <div class="form-group col-md-6">
                                     <label for="branch_id" class="form-label">Branch</label>
-                                    <select class="form-control select" name="branch_id">
+                                    <select class="form-control select" name="branch_id" required>
                                         <option value="" selected>Select Branch</option>
                                         @foreach ($branches as $branch)
                                             <option value="{{$branch->id }}" {{($branch->id == $employee->branch_id) ? 'selected' : ''}}>{{$branch->name}}</option>
@@ -209,11 +209,13 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="branch_id" class="form-label">Department </label>
-                                     <input class="form-control" value="{{$employee->department_id  ?? ''}}" name="department_id"  type="text" id="departementId" readonly>
-                                    </div>
+                                     <input class="form-control" value="{{$employee->departement_name  ?? ''}}"   type="text" id="departementId" readonly>
+                                     <input type="hidden" value="{{$employee->department_id  ?? ''}}"   name="department_id">
+                                </div>
                                 <div class="form-group col-md-6">
                                     <label for="branch_id" class="form-label">Position </label>
-                                     <input class="form-control" value="{{$employee->position_name  ?? ''}}"   name="position_id" type="text" id="positionId" readonly>
+                                     <input class="form-control" value="{{$employee->position_name  ?? ''}}" type="text" id="positionId" readonly>
+                                     <input type="hidden" value="{{$employee->position_id  ?? ''}}" name="position_id">
                                 </div>
                             </div>
                         </div>
