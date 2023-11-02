@@ -300,7 +300,7 @@ class EmployeeController extends Controller
                 $request['out_date'] = date('Y-m-d');
             }
             //total leavez
-            if ($employee->company_doj != ''){
+            if ($employee->company_doj != '' || $employee->company_doj != '-'){
                 $work       = Carbon::parse($employee->company_doj)->diffInMonths(date('Y-m-d'));
                 $thisMonth  = date('m',strtotime($employee->company_doj));
                 $thisday    = date('d',strtotime($employee->company_doj));
