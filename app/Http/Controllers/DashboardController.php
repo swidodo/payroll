@@ -59,14 +59,12 @@ class DashboardController extends Controller
     {
         $branch = Branch::find($request->branch_id);
         $data = [];
-        $branch = Branch::where('id',Auth::user()->branch_id)->first();
+        $branchId = Branch::where('id',Auth::user()->branch_id)->first();
         $logAttendanceQuery = LogAttendance::select('employees.name', 'log_attendances.date', 'log_attendances.activity')
             ->join('employees', 'log_attendances.employee_id', '=', 'employees.id')
             ->leftJoin('branches','employees.branch_id','=','branches.id')
-            ->where('branches.company_id',$branch->company_id);
-            // ->where('log_attendances.created_by', '=', Auth::user()->creatorId());
+            ->where('branches.company_id',$branchId->company_id);
 
-        // dd($logAttendanceQuery);
         if (!is_null($branch)) {
             $data['totalEmployees'] = Employee::where('created_by', '=', Auth::user()->creatorId())
                 ->where('branch_id', $branch->id)
