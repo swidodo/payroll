@@ -279,6 +279,7 @@ class EmployeeReportController extends Controller
     }
     public function employee_religion(Request $request){
         if($request->branch_id == 0){
+            $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
             $religion = DB::table('v_employee_religion')
                         ->select(DB::raw("(SUM(islam) / count(branch_id)) as islam,
                         (SUM(kristen) / count(branch_id)) as kristen,
@@ -286,6 +287,8 @@ class EmployeeReportController extends Controller
                         (SUM(hindu) / count(branch_id)) as hindu,
                         (SUM(budha) / count(branch_id)) as budha,
                         (SUM(lain) / count(branch_id)) as lain"))
+                        ->leftJoin('branches','branches.id','=','v_employee_religion.branch_id')
+                        ->where('branches.company_id',$branch->company_id)
                         ->get();
             $response['data'] = $religion;
         }else{
