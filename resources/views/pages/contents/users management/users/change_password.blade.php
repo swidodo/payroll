@@ -114,9 +114,28 @@
                     $('#btnsend').attr('disabled',false)
                 }
            })
-           $('#btnsend').on('click', function(){
-                var data = $('#formChangePassword').serialize()
-                Swal.fire({
+           $('#pass_new').on('keyup',function(){
+            var conf = $('#pass_confirm').val()
+            var pass = $('#pass_new').val()
+                if (conf != ''){
+                    if (pass != conf){
+                        $('#error').html('confirm password no metch !')
+                        $('#btnsend').attr('disabled',true)
+                    }else{
+                        $('#error').html('')
+                        $('#btnsend').attr('disabled',false)
+                    }
+                }
+           })
+           $('#formChangePassword').on('submit', function(e){
+            e.preventDefault();
+                var conf = $('#pass_confirm').val()
+                var pass = $('#pass_new').val()
+                if(conf =='' & pass ==''){
+                    return true;
+                }
+                    var data = $('#formChangePassword').serialize()
+                    Swal.fire({
                             title: 'Are you sure?',
                             text: "You Change profile!",
                             icon: 'warning',
@@ -127,7 +146,7 @@
                         }).then(function(confirm){
                         if (confirm.value == true){
                             $.ajax({
-                                url : 'change-profile',
+                                url : 'change-password-new',
                                 type :'post',
                                 data : data,
                                 dataType : 'json',
@@ -140,7 +159,7 @@
                                         text : respon.msg
                                     })
                                     $('.containerLoader').attr('hidden',true)
-                                    document.location.href ='{{route("get-my-profile")}}';
+                                    // document.location.href ='{{route("change_password")}}';
                                 },
                                 error : function(){
                                     alert('Someting went wrong !');

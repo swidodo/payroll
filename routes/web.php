@@ -107,6 +107,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('update-user', [UsersController::class,'update'])->name('update-user');
         Route::post('destroy-user', [UsersController::class,'destroy'])->name('update-user');
         Route::get('change_password',[UsersController::class,'change_pass'])->name('change_password');
+        Route::post('change-password-new',[UsersController::class,'change_password_new'])->name('change-password-new');
         Route::post('change_store',[UsersController::class,'change_store'])->name('change_store');
         // role
         Route::get('setup-aplication',[RolesController::class,'setup_app'])->name('setup-app');

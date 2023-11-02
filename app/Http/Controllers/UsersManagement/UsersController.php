@@ -434,4 +434,30 @@ class UsersController extends Controller
         $data['user'] = User::where('id',Auth::user()->id)->first();
         return view('pages.contents.users management.users.change_password',$data);
     }
+    public function change_password_new(Request $request){
+        $user = User::find(Auth::user()->id);
+        $hasher = app('hash');
+        if ($hasher->check($request->pass_old, $user->password)) {
+            $passNew = Hash::make($request->pass_new);
+            $update = User::where('id',Auth::user()->id)->update(['password' => $passNew]);
+            if ($update){
+                $res = [
+                    'status' => 'success',
+                    'msg'    => 'Change Password Successfuly !'
+                ];
+            }else{
+                $res = [
+                    'status' => 'error',
+                    'msg'    => 'Sameting went wrong !'
+                ];
+            }
+            return response()->json($res);
+        }else{
+            $res = [
+                'status' => 'error',
+                'msg'    => 'your password old wrong !'
+            ];
+            return response()->json($res);
+        }
+    }
 }
