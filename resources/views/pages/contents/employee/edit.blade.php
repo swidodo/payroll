@@ -201,17 +201,16 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="company_doj" class="form-label">Join Date</label>
-                                    <input class="form-control" value="{{$employee->company_doj  ?? ''}}"   name="company_doj" type="date" id="company_doj">
+                                    <input class="form-control" value="{{$employee->company_doj  ?? ''}}"   name="company_doj" type="date" id="company_doj" required>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="company_doe" class="form-label">End Date</label>
-                                    <input class="form-control" value="{{$employee->company_doe  ?? ''}}"   name="company_doe" type="date" id="company_doj">
+                                    <input class="form-control" value="{{$employee->company_doe  ?? ''}}"   name="company_doe" type="date">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="branch_id" class="form-label">Department </label>
-                                     <input class="form-control" value="{{$employee->departement_name  ?? ''}}"   type="text" id="departementId" readonly>
-                                     <input type="hidden" value="{{$employee->department_id  ?? ''}}"   name="department_id">
-                                </div>
+                                     <input class="form-control" value="{{$employee->department_id  ?? ''}}" name="department_id"  type="text" id="departementId" readonly>
+                                    </div>
                                 <div class="form-group col-md-6">
                                     <label for="branch_id" class="form-label">Position </label>
                                      <input class="form-control" value="{{$employee->position_name  ?? ''}}"   name="position_id" type="text" id="positionId" readonly>
