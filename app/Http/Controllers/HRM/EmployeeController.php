@@ -300,13 +300,14 @@ class EmployeeController extends Controller
             $request['work_type'] = $request->work_type == 0 ? null : $request->work_type;
             $request['status'] = $request->employee_status == 0 ? null : $request->employee_status;
             $request['no_employee'] = $request->no_employee == 0 ? null : $request->no_employee;
-            // dd($request->work_type);
+            
             if ($request['status'] == 'fired' || $request['status'] == 'pension' || $request['status'] == 'resign') {
                 $request['is_active'] = 0;
                 $request['out_date'] = date('Y-m-d');
             }
-            //total leavez
-            if ($employee->company_doj != '' || $employee->company_doj != "-" || $employee->company_doj != null){
+            //total leave
+            // dd($request->work_type);
+            if ($$request->company_doj != '' || $$request->company_doj != "-" || $$request->company_doj != null){
                 $work       = Carbon::parse($employee->company_doj)->diffInMonths(date('Y-m-d'));
                 $thisMonth  = date('m',strtotime($employee->company_doj));
                 $thisday    = date('d',strtotime($employee->company_doj));
