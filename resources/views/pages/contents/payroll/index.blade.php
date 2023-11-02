@@ -312,6 +312,7 @@
                     },
                     error : function (){
                         alert('Sameting went wrong!');
+                        $('.containerLoader').attr('hidden',true)
                     }
                 })
             })

@@ -384,7 +384,7 @@ class DashboardController extends Controller
 
     public function employeeResumeFilterByBranch(Request $request)
     {
-        $query = LogEmployeeResume::where('created_by', Auth::user()->creatorId())
+        $query = LogEmployeeResume::where('branch_id', Auth::user()->branch_id)
             ->orderBy('date', 'desc')
             ->limit(5);
 
