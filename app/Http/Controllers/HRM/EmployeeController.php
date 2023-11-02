@@ -283,6 +283,12 @@ class EmployeeController extends Controller
                 }
             }
 
+            $getId = Departement::where('departement_code',$request->department)->first();
+            if (isset($getId)){
+                $request['department'] = $getId->id;
+            }else{
+                $request['department'] = '';
+            }
             $employee = Employee::findOrFail($id);
             $request['leave_type'] = $request->leave_type == 0 ? null : $request->leave_type;
             $request['marital_status'] = $request->marital_status == 0 ? null : $request->marital_status;
@@ -300,18 +306,17 @@ class EmployeeController extends Controller
                 $request['out_date'] = date('Y-m-d');
             }
             //total leavez
-            // dd($employee->company_doj);
-            // if ($employee->company_doj != '' || $employee->company_doj != "-" || $employee->company_doj != null){
-            //     $work       = Carbon::parse($employee->company_doj)->diffInMonths(date('Y-m-d'));
-            //     $thisMonth  = date('m',strtotime($employee->company_doj));
-            //     $thisday    = date('d',strtotime($employee->company_doj));
-            //     $moreMonth  =  12 - (int)$thisMonth;
-            // }else{
+            if ($employee->company_doj != '' || $employee->company_doj != "-" || $employee->company_doj != null){
+                $work       = Carbon::parse($employee->company_doj)->diffInMonths(date('Y-m-d'));
+                $thisMonth  = date('m',strtotime($employee->company_doj));
+                $thisday    = date('d',strtotime($employee->company_doj));
+                $moreMonth  =  12 - (int)$thisMonth;
+            }else{
                 $work       = date('Y-m-d');
                 $thisMonth  = date('m',strtotime($employee->company_doj));
                 $thisday    = date('d',strtotime($employee->company_doj));
                 $moreMonth  =  12 - (int)$thisMonth;
-            // }
+            }
 
             if ($work >= 12 ){
                 $total_leave =0;
