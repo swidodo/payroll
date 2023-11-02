@@ -209,7 +209,8 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="branch_id" class="form-label">Department </label>
-                                     <input class="form-control" value="{{$employee->departement_name  ?? ''}}"   name="department_id" type="text" id="departementId" readonly>
+                                     <input class="form-control" value="{{$employee->departement_name  ?? ''}}"   type="text" id="departementId" readonly>
+                                     <input type="hidden" value="{{$employee->departement_name  ?? ''}}"   name="department_id">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="branch_id" class="form-label">Position </label>
