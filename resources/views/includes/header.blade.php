@@ -280,9 +280,12 @@
     <div class="dropdown mobile-user-menu">
         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
         <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" href="profile.html">My Profile</a>
-            <a class="dropdown-item" href="settings.html">Settings</a>
-            <a class="dropdown-item" href="index.html">Logout</a>
+            <a class="dropdown-item" href="{{route('get-my-profile')}}">My Profile</a>
+            <a class="dropdown-item" href="{{ route('change_password')}}">Change Password</a>
+            <form action="{{route('logout')}}" method="POST">
+                @csrf
+                <button type="submit" class="dropdown-item">Logout</button>
+                </form>
         </div>
     </div>
     <!-- /Mobile Menu -->
