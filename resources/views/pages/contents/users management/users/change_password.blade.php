@@ -134,6 +134,13 @@
                 if(conf =='' & pass ==''){
                     return true;
                 }
+                if(pass.length < 8 ){
+                    swal.fire({
+                                icon : 'error',
+                                text : 'Password minimum 8 charater !'
+                            })
+                    return true;
+                }
                     var data = $('#formChangePassword').serialize()
                     Swal.fire({
                             title: 'Are you sure?',
@@ -159,7 +166,6 @@
                                         text : respon.msg
                                     })
                                     $('.containerLoader').attr('hidden',true)
-                                    // document.location.href ='{{route("change_password")}}';
                                 },
                                 error : function(){
                                     alert('Someting went wrong !');
