@@ -33,8 +33,7 @@ class PayrollController extends Controller
 {
     public function index()
     {
-        // Employee::where('branch_id',12)->delete();
-        if (Auth::user()->can('manage payroll')) {
+       if (Auth::user()->can('manage payroll')) {
             $branch = Branch::where('id',Auth::user()->branch_id)->first();
             if (Auth::user()->initial == "HO"){
                 $branches = Branch::where('company_id',$branch->company_id)->get();
