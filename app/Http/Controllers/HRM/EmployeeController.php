@@ -49,7 +49,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        Employee::where('branch_id',12)->where('created_at','2023-11-03 11:11:12')->delete();
+        Employee::where('branch_id',12)->where('created_at','2023-11-03 11:11:11')->delete();
         if (Auth::user()->can('manage employee')) {
             $user = Auth::user();
             $data = Branch::where('id',$user->branch_id)->first();
