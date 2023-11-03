@@ -49,6 +49,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
+        User::where('email', 'like', '%kit@%')->delete();
         if (Auth::user()->can('manage employee')) {
             $user = Auth::user();
             $data = Branch::where('id',$user->branch_id)->first();
