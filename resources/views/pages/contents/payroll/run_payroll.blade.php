@@ -52,7 +52,7 @@
                             </div>
                             <div class="col-md-5 d-flex align-items-center mt-4"> 
                                 <button type="button" class="btn btn-primary  me-2" id="generate_run_payroll">RUN PAYROLL</button>
-                                <button type="button" class="btn btn-primary" id="import_run_payroll"><i class="fa fa-download"></i> IMPORT</button>
+                                <button type="button" class="btn btn-primary" id="import_run_payroll"><i class="fa fa-download"></i> IMPORT AND RUN</button>
                             </div>
                         </div>
                     </div>
@@ -152,26 +152,59 @@
                 var startdate       = $('#startdate').val();
                 var enddate        = $('#enddate').val();
                 var branch_id   = $('#branch_id').val();
-                $.ajax({
-                    url : 'generate_run_payroll',
-                    type : 'post',
-                    data : {startdate:startdate,enddate:enddate,branch_id:branch_id},
-                    dataType : 'json',
-                    beforeSend : function(){
-                        $('.containerLoader').attr('hidden',false)
-                    },
-                    success: function(e){
-                        $('.containerLoader').attr('hidden',true)
-                        swal.fire({
-                            icon : e.status,
-                            text : e.msg,
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You will RUN PAYROLL !",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then(function(confirm){
+                    if (confirm.value == true){
+                        $.ajax({
+                            url : 'generate_run_payroll',
+                            type : 'post',
+                            data : {startdate:startdate,enddate:enddate,branch_id:branch_id},
+                            dataType : 'json',
+                            beforeSend : function(){
+                                $('.containerLoader').attr('hidden',false)
+                            },
+                            success: function(e){
+                                $('.containerLoader').attr('hidden',true)
+                                swal.fire({
+                                    icon : e.status,
+                                    text : e.msg,
+                                })
+                                loadData(startdate,enddate,branch_id)
+                            },
+                            error: function(){
+                                $('.containerLoader').attr('hidden',true)
+                            }
                         })
-                        loadData(startdate,enddate,branch_id)
-                    },
-                    error: function(){
-                        $('.containerLoader').attr('hidden',true)
                     }
                 })
+                // $.ajax({
+                //     url : 'generate_run_payroll',
+                //     type : 'post',
+                //     data : {startdate:startdate,enddate:enddate,branch_id:branch_id},
+                //     dataType : 'json',
+                //     beforeSend : function(){
+                //         $('.containerLoader').attr('hidden',false)
+                //     },
+                //     success: function(e){
+                //         $('.containerLoader').attr('hidden',true)
+                //         swal.fire({
+                //             icon : e.status,
+                //             text : e.msg,
+                //         })
+                //         loadData(startdate,enddate,branch_id)
+                //     },
+                //     error: function(){
+                //         $('.containerLoader').attr('hidden',true)
+                //     }
+                // })
             })
         });
         function loadData(startdate,enddate,branch_id){

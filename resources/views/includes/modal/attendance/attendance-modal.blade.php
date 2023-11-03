@@ -10,13 +10,14 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{route('import.excel.attendace')}}" method="POST" enctype="multipart/form-data">
+                    <form id="formImportAttendance">
+                    {{-- <form action="{{route('import.excel.attendace')}}" method="POST" enctype="multipart/form-data"> --}}
                         @csrf
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>File <span class="text-danger">*</span></label>
-                                    <input class="form-control" type="file" name="file-excel">
+                                    <input class="form-control" type="file" id="attendance-file-excel" name="file-excel">
                                     <a style="font-size: 11px;" download href="{{asset('file/template-excel-attendance/AttendanceReport.xlsx')}}">Click here for template</a>
 
                                     @if ($errors->has('file-excel'))

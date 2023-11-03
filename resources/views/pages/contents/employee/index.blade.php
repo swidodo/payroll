@@ -199,6 +199,41 @@
             $('#import_excel').on('click', function(){
                 $('#ImportExcelModal').modal('show');
             });
+            $('#formImportEmployee').on('submit', function(e){
+                e.preventDefault();
+                var employee  = $('#employee_upload_file')[0].files[0];
+                var formData = new FormData();
+                formData.append('upload_file',employee)
+                $.ajax({
+                    url : 'import-employee-excel',
+                    type : 'post',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    data : formData,
+                    dataType : 'json',
+                    beforeSend : function(){
+                        $('.containerLoader').attr('hidden',false)
+                    },
+                    success : function(respon){
+                        $('.containerLoader').attr('hidden',true)
+                        if (respon.status == 'success'){
+                            $('#formImportAttendance')[0].reset();
+                            $('#ImportExcelModal').modal('hide')
+                            // loadData(startdate,enddate,branch_id)
+                        }
+                        swal.fire({
+                            icon : respon.status,
+                            text : respon.msg,
+                        })
+                    },
+                    error : function(){
+                        alert('Someting went wrong !');
+                        $('.containerLoader').attr('hidden',true)
+                    }
+
+                })
+            })
         });
 
     </script>

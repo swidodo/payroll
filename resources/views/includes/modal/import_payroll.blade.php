@@ -19,7 +19,7 @@
                                 
                             </div>
                             <div class="mb-3">
-                                <button type="submit" class="btn btn-primary">Import</button>
+                                <button type="submit" class="btn btn-primary">IMPORT AND RUN</button>
                             </div>
                         </form>
                     </div>

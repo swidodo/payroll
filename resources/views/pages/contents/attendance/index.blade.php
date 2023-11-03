@@ -395,7 +395,7 @@
                 success : function(respon){
                     var html = '<option value="">-- employee --</option>';
                     $.each(respon.employee, function(key,val){
-                        html += `<option value="`+val.id+`">`+val.name+`</option>`;
+                        html += `<option value="`+val.id+`">`+val.no_employee+`-`+val.name+`</option>`;
                     })
                     $('#employeAjustment').html(html)
                     $('#adjustment').modal('show')
@@ -465,6 +465,41 @@
                 }
              })
               
+        })
+        $('#formImportAttendance').on('submit',function(e){
+            e.preventDefault();
+            var attendance  = $('#attendance-file-excel')[0].files[0];
+            var formData = new FormData();
+            formData.append('file-excel',attendance)
+                $.ajax({
+                    url : 'import-excel-attendance',
+                    type : 'post',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    data : formData,
+                    dataType : 'json',
+                    beforeSend : function(){
+                        $('.containerLoader').attr('hidden',false)
+                    },
+                    success : function(respon){
+                        $('.containerLoader').attr('hidden',true)
+                        if (respon.status == 'success'){
+                            $('#formImportAttendance')[0].reset();
+                            $('#add_import').modal('hide')
+                            // loadData(startdate,enddate,branch_id)
+                        }
+                        swal.fire({
+                            icon : respon.status,
+                            text : respon.msg,
+                        })
+                    },
+                    error : function(){
+                        alert('Someting went wrong !');
+                        $('.containerLoader').attr('hidden',true)
+                    }
+
+                })
         })
     </script>
 @endpush

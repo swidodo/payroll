@@ -793,6 +793,7 @@ class EmployeeController extends Controller
                                             from users
                                             where LOWER(name) = '$name'
                                             and email='$row[10]'");
+
                         if(count($check) > 0){
                             $doj            = ($row[22] != "" ) ? $row[22] : null;
                             $doe            = ($row[23] != "" ) ? $row[23] : null;
@@ -837,6 +838,7 @@ class EmployeeController extends Controller
                             $user = new User();
                             $user->name     = $row[0];
                             $user->email    = $row[10];
+                            $user->branch_id = $branchId->id;
                             $user->password = Hash::make('12345678');
                             $user->type     = 'user'; //default
                             $doj            = ($row[22] != "" ) ? $row[22] : null;
@@ -890,10 +892,20 @@ class EmployeeController extends Controller
             }
             $insert = Employee::Insert($employee_arr);
             DB::commit();
-            return redirect('/employees');
+            $res = [
+                'status' => 'success',
+                'msg'    => 'Import Employee successfuly !'
+            ];
+            return response()->json($res);
+            // return redirect('/employees');
         }catch(Exeption $e){
             DB::rollback();
-            return redirect('/employees');
+            $res = [
+                'status' => 'error',
+                'msg'    => 'Someting went wrong !'
+            ];
+            return response()->json($res);
+            // return redirect('/employees');
         }
         // return redirect('/employees');
     }

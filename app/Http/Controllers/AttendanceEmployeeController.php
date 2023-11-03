@@ -625,7 +625,7 @@ class AttendanceEmployeeController extends Controller
     }
     public function get_employee_adustment(Request $request){
         $branch = $request->branch_id;
-        $data['employee'] = Employee::select('id','name')->where('branch_id',$branch)->get();
+        $data['employee'] = Employee::select('id','no_employee','name')->where('branch_id',$branch)->get();
         return response()->json($data);
     }
     public function ajdustment(Request $request){
@@ -746,12 +746,21 @@ class AttendanceEmployeeController extends Controller
             $status = AttendanceEmployee::insert($dataEmployee);
         }
         if ($status) {
-            toast('Successfully Import Attendance', 'success');
-            return redirect()->back();
+            $res = [
+                'status' => 'success',
+                'msg'    => 'Successfully Import Attendance !'
+            ];
+            // toast('Successfully Import Attendance', 'success');
+            // return redirect()->back();
         }else{
-            toast('Something wrong went Import Attendance', 'error');
-            return redirect()->back();
+            $res = [
+                'status' => 'success',
+                'msg'    => 'Someting went wrong !'
+            ];
+            // toast('Something wrong went Import Attendance', 'error');
+            // return redirect()->back();
         }
+        return response()->json($res);
         
     }
 }

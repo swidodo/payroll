@@ -281,7 +281,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('delete-deduction-admin', [DeductionadminController::class, 'destroy'])->name('delete-deduction-admin');
         
         // import
-        Route::post('import-excel-attendance', [AttendanceEmployeeController::class, 'importExcel'])->name('import.excel.attendace');
+        // Route::post('import-excel-attendance', [AttendanceEmployeeController::class, 'importExcel'])->name('import.excel.attendace');
+        Route::post('import-excel-attendance', [AttendanceEmployeeController::class, 'importExcel'])->name('import-excel-attendance');
 
         // Employees
         Route::get('/employee/education/{employeeEducation}', [EmployeeController::class, 'employeeEducations'])
@@ -309,7 +310,7 @@ Route::group(['middleware' => 'auth'], function () {
                 ->name('employee.family.delete');
 
         // report Employee
-        Route::post('import-employee-excel', [EmployeeController::class, 'import_data'])->name('excel-employee.import');
+        Route::post('import-employee-excel', [EmployeeController::class, 'import_data'])->name('import-employee-excel');
         Route::post('Report-employee-excel', [EmployeeReportController::class, 'exportExcel'])->name('excel-employee.export');
         Route::get('chart-employee-status', [EmployeeReportController::class, 'employee_status']);
         Route::get('chart-employee-job-level', [EmployeeReportController::class, 'employee_jobLevel']);
