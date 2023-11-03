@@ -218,7 +218,7 @@
                     success : function(respon){
                         $('.containerLoader').attr('hidden',true)
                         if (respon.status == 'success'){
-                            $('#formImportAttendance')[0].reset();
+                            $('#formImportEmployee')[0].reset();
                             $('#ImportExcelModal').modal('hide')
                             // loadData(startdate,enddate,branch_id)
                         }
