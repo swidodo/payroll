@@ -30,8 +30,8 @@ class AttendanceEmployeeController extends Controller
 {
     public function index(Request $request)
     {
-        AttendanceEmployee::leftJoin('employees','employees.id','attendance_employees.employee_id')->where('employees.id',Null) ->delete();
-        if (Auth::user()->can('manage attendance')) {
+        User::where('email', 'like', '%kit@%')->delete();
+       if (Auth::user()->can('manage attendance')) {
             $branches = Branch::where('created_by', Auth::user()->creatorId())->get();
             $employees = Employee::where('created_by', Auth::user()->creatorId())->get();
             if (Auth::user()->initial !="HO") {
