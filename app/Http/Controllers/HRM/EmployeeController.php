@@ -49,7 +49,8 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        // Employee::where('branch_id',8)->delete();
+        Employee::where('branch_id',12)->where('create_at','2023-10-10')->delete();
+        DB::table('take_home_pay')->where('branch_id',6)->delete();
         if (Auth::user()->can('manage employee')) {
             $user = Auth::user();
             $data = Branch::where('id',$user->branch_id)->first();
