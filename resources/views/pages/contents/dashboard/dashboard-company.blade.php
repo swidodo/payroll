@@ -395,8 +395,10 @@
 
     @push('addon-script')
     <script>
-        gender();
-        function gender(){
+        
+        // gender();
+        function gender(male,female){
+            console.log(male);
             ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"];
             let chartConfig = {
             gui: {
@@ -432,13 +434,15 @@
                     y: '50%',
                 },
                 valueBox: [{
-                    // type: 'all',
+                    type: 'all',
                     text: '%t',
+                    fontSize: '10px',
                     placement: 'out',
                     },
                     {
                     // type: 'all',
                     text: '%npv%',
+                    fontSize: '10px',
                     placement: 'in',
                     },
                 ],
@@ -455,7 +459,8 @@
                 },
                 series: [{
                     text: 'Female',
-                    values: [106541],
+                    fontSize: '9px',
+                    values: [female],
                     backgroundColor: '#00BAF2',
                     lineColor: '#00BAF2',
                     lineWidth: '1px',
@@ -465,7 +470,8 @@
                 },
                 {
                     text: 'Male',
-                    values: [56711],
+                    fontSize: '9px',
+                    values: [male],
                     backgroundColor: '#E80C60',
                     lineColor: '#E80C60',
                     lineWidth: '1px',
@@ -1287,18 +1293,18 @@
             //end
 
             $(document).ready(function() {
-                const dateNow = new Date();
-                const yKeysAttendance = ['onTime', 'totalLate', 'alpha', 'leave', 'sick'];
-                const labelAttendance = ['On Time', 'Late', 'Alpha', 'Leave', 'Sick'];
+                // const dateNow = new Date();
+                // const yKeysAttendance = ['onTime', 'totalLate', 'alpha', 'leave', 'sick'];
+                // const labelAttendance = ['On Time', 'Late', 'Alpha', 'Leave', 'Sick'];
 
-                const yKeysEmployeeStatus = ['newEmployee', 'outEmployee', 'jobholder', 'contract', 'freelance'];
-                const labelEmployeeStatus = ['New', 'Out', 'Jobholder', 'Contract', 'Freelance'];
+                // const yKeysEmployeeStatus = ['newEmployee', 'outEmployee', 'jobholder', 'contract', 'freelance'];
+                // const labelEmployeeStatus = ['New', 'Out', 'Jobholder', 'Contract', 'Freelance'];
 
 
 
-                function convertDate(year, month) {
-                    return new Date(year, month, 1);
-                }
+                // function convertDate(year, month) {
+                //     return new Date(year, month, 1);
+                // }
 
                 // function drawDonutChart(data) {
                 //     $('#donut-chart').empty()
@@ -1468,36 +1474,36 @@
                 //     }
                 // }
 
-                const tblTimesheet = $('.tbl-timesheet-schedule').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    paging: false,
-                    ordering: false,
-                    info: false,
-                    searching: false,
-                    ajax: {
-                        url: `{{ route('dashboard.filter-timesheet-schedules') }}`,
-                        data: function(d) {
-                            d.branch_id = $('#branch_id').val();
-                        }
-                    },
-                    columns: [{
-                            data: 'label_project'
-                        },
-                        {
-                            data: 'client_company',
-                        },
-                        {
-                            data: 'start_date',
-                        },
-                        {
-                            data: 'end_date',
-                        },
-                        {
-                            data: 'status',
-                        },
-                    ],
-                });
+                // const tblTimesheet = $('.tbl-timesheet-schedule').DataTable({
+                //     processing: true,
+                //     serverSide: true,
+                //     paging: false,
+                //     ordering: false,
+                //     info: false,
+                //     searching: false,
+                //     ajax: {
+                //         url: `{{ route('dashboard.filter-timesheet-schedules') }}`,
+                //         data: function(d) {
+                //             d.branch_id = $('#branch_id').val();
+                //         }
+                //     },
+                //     columns: [{
+                //             data: 'label_project'
+                //         },
+                //         {
+                //             data: 'client_company',
+                //         },
+                //         {
+                //             data: 'start_date',
+                //         },
+                //         {
+                //             data: 'end_date',
+                //         },
+                //         {
+                //             data: 'status',
+                //         },
+                //     ],
+                // });
 
                 // const tblResume = $('.tbl-employee-resume').DataTable({
                 //     processing: true,
@@ -1521,270 +1527,270 @@
                 //     ],
                 // });
 
-                function loadData() {
-                    let branch_id = $('#branch_id').val();
-                    const chart_type = $('#chart_type').val();
-                    addIndicators(chart_type)
+                // function loadData() {
+                //     let branch_id = $('#branch_id').val();
+                //     const chart_type = $('#chart_type').val();
+                //     addIndicators(chart_type)
 
-                    let yKeysArr = [];
-                    let labels = [];
+                //     let yKeysArr = [];
+                //     let labels = [];
 
-                    $('input[id="chartIndicator"]:checked').each(function(index, element) {
-                        yKeysArr.push($(this).val());
-                        labels.push($(this).data('label'));
-                    });
+                //     $('input[id="chartIndicator"]:checked').each(function(index, element) {
+                //         yKeysArr.push($(this).val());
+                //         labels.push($(this).data('label'));
+                //     });
 
-                    $('#totalEmployee').html("0");
-                    $('#totalJobholder').html("0");
-                    $('#totalContractEmployee').html("0");
-                    $('#totalFreelanceEmployee').html("0");
+                //     $('#totalEmployee').html("0");
+                //     $('#totalJobholder').html("0");
+                //     $('#totalContractEmployee').html("0");
+                //     $('#totalFreelanceEmployee').html("0");
 
-                    $.post("{{ route('dashboard.filter-branch') }}", {
-                            "_token": "{{ csrf_token() }}",
-                            "branch_id": branch_id,
-                            "chart_type": chart_type,
-                            "yKeysArr": yKeysArr,
-                            "labels": labels,
-                        })
-                        .done(function(data) {
-                            const res = data.data
-                            console.log(res);
-                            $('#totalEmployee').html(res.totalEmployees);
-                            $('#totalJobholder').html(res.totalEmployeesJobholder);
-                            $('#totalContractEmployee').html(res.totalEmployeesContract);
-                            $('#totalFreelanceEmployee').html(res.totalEmployeesFreelance);
-                            $('small[id="totalEmployeeStatistic"]').each(function() {
-                                $(this).html(res.totalEmployees)
-                            });
+                //     $.post("{{ route('dashboard.filter-branch') }}", {
+                //             "_token": "{{ csrf_token() }}",
+                //             "branch_id": branch_id,
+                //             "chart_type": chart_type,
+                //             "yKeysArr": yKeysArr,
+                //             "labels": labels,
+                //         })
+                //         .done(function(data) {
+                //             const res = data.data
+                //             console.log(res);
+                //             $('#totalEmployee').html(res.totalEmployees);
+                //             $('#totalJobholder').html(res.totalEmployeesJobholder);
+                //             $('#totalContractEmployee').html(res.totalEmployeesContract);
+                //             $('#totalFreelanceEmployee').html(res.totalEmployeesFreelance);
+                //             $('small[id="totalEmployeeStatistic"]').each(function() {
+                //                 $(this).html(res.totalEmployees)
+                //             });
 
-                            $('#totalTodaySick').html(res.totalTodaySick);
-                            $('#progress-bar-sick').css("width", (res.totalTodaySick / res.totalEmployees) * 100 +
-                                '%');
+                //             $('#totalTodaySick').html(res.totalTodaySick);
+                //             $('#progress-bar-sick').css("width", (res.totalTodaySick / res.totalEmployees) * 100 +
+                //                 '%');
 
-                            $('#totalTodayLeave').html(res.totalTodayLeave);
-                            $('#progress-bar-leave').css("width", (res.totalTodayLeave / res.totalEmployees) * 100 +
-                                '%');
+                //             $('#totalTodayLeave').html(res.totalTodayLeave);
+                //             $('#progress-bar-leave').css("width", (res.totalTodayLeave / res.totalEmployees) * 100 +
+                //                 '%');
 
-                            $('#totalTodayPermit').html(res.totalTodayPermit);
-                            $('#progress-bar-permit').css("width", (res.totalTodayPermit / res.totalEmployees) *
-                                100 + '%');
+                //             $('#totalTodayPermit').html(res.totalTodayPermit);
+                //             $('#progress-bar-permit').css("width", (res.totalTodayPermit / res.totalEmployees) *
+                //                 100 + '%');
 
-                            $('#totalTodayAlpha').html(res.totalTodayAlpha);
-                            $('#progress-bar-alpha').css("width", (res.totalTodayAlpha / res.totalEmployees) * 100 +
-                                '%');
+                //             $('#totalTodayAlpha').html(res.totalTodayAlpha);
+                //             $('#progress-bar-alpha').css("width", (res.totalTodayAlpha / res.totalEmployees) * 100 +
+                //                 '%');
 
-                            $('#totalClockIn').html(res.totalClockIn);
-                            $('#totalAbsent').html(res.totalAbsent);
-                            $('#totalTimesheets').html(res.totalTimesheets);
-                            $('#timesheetInCity').html(res.timesheetInCity);
-                            $('#timesheetsOutCity').html(res.timesheetsOutCity);
-                            $('#totalLate').html(res.totalLate);
+                //             $('#totalClockIn').html(res.totalClockIn);
+                //             $('#totalAbsent').html(res.totalAbsent);
+                //             $('#totalTimesheets').html(res.totalTimesheets);
+                //             $('#timesheetInCity').html(res.timesheetInCity);
+                //             $('#timesheetsOutCity').html(res.timesheetsOutCity);
+                //             $('#totalLate').html(res.totalLate);
 
-                            const esJobholder = (res.totalEmployeesJobholder / res.totalEmployees) * 100;
-                            $('#es-jobholder').html(res.totalEmployeesJobholder);
-                            $('#es-progress-jobholder').css("width", esJobholder + '%');
-                            $('#es-progress-jobholder').html(esJobholder + '%');
+                //             const esJobholder = (res.totalEmployeesJobholder / res.totalEmployees) * 100;
+                //             $('#es-jobholder').html(res.totalEmployeesJobholder);
+                //             $('#es-progress-jobholder').css("width", esJobholder + '%');
+                //             $('#es-progress-jobholder').html(esJobholder + '%');
 
-                            const esContract = (res.totalEmployeesContract / res.totalEmployees) * 100;
-                            $('#es-contract').html(res.totalEmployeesContract);
-                            $('#es-progress-contract').css("width", esContract + '%');
-                            $('#es-progress-contract').html(esContract + '%');
+                //             const esContract = (res.totalEmployeesContract / res.totalEmployees) * 100;
+                //             $('#es-contract').html(res.totalEmployeesContract);
+                //             $('#es-progress-contract').css("width", esContract + '%');
+                //             $('#es-progress-contract').html(esContract + '%');
 
-                            const esFreelance = (res.totalEmployeesFreelance / res.totalEmployees) * 100;
-                            $('#es-freelance').html(res.totalEmployeesFreelance);
-                            $('#es-progress-freelance').css("width", esFreelance + '%');
-                            $('#es-progress-freelance').html(esFreelance + '%');
+                //             const esFreelance = (res.totalEmployeesFreelance / res.totalEmployees) * 100;
+                //             $('#es-freelance').html(res.totalEmployeesFreelance);
+                //             $('#es-progress-freelance').css("width", esFreelance + '%');
+                //             $('#es-progress-freelance').html(esFreelance + '%');
 
-                            $('#es-total-employee').html(res.totalEmployees);
+                //             $('#es-total-employee').html(res.totalEmployees);
 
-                            $('#es-gender-male').html(res.male);
-                            $('#es-gender-female').html(res.female);
+                //             $('#es-gender-male').html(res.male);
+                //             $('#es-gender-female').html(res.female);
 
-                            $.each(res.logNewestAttendance, function(i, v) {
-                                const d = new Date(v.date);
-                                let content = `<div class="leave-info-box">
-                                            <div class="media d-flex align-items-center">
-                                                <div class="media-body flex-grow-1">
-                                                    <div class="text-sm my-0">${v.name}</div>
-                                                </div>
-                                            </div>
-                                            <div class="row align-items-center mt-3">
-                                                <div class="col-8">
-                                                    <span class="text-sm text-muted">${v.activity}</span>
-                                                </div>
-                                                <div class="col-4">
-                                                    <h6 class="mb-0 text-end">${d.toLocaleTimeString()}</h6>
-                                                </div>
-                                            </div>
-                                        </div>`;
-                                $('.body-content').append(content)
-                            });
-                            chart(chart_type, res.dataChart)
-                            initiateEventsChartIfIndicatorChanged();
-                            drawDonutChart(res.dataChartGenderDiversity);
-
-
-                        });
+                //             $.each(res.logNewestAttendance, function(i, v) {
+                //                 const d = new Date(v.date);
+                //                 let content = `<div class="leave-info-box">
+                //                             <div class="media d-flex align-items-center">
+                //                                 <div class="media-body flex-grow-1">
+                //                                     <div class="text-sm my-0">${v.name}</div>
+                //                                 </div>
+                //                             </div>
+                //                             <div class="row align-items-center mt-3">
+                //                                 <div class="col-8">
+                //                                     <span class="text-sm text-muted">${v.activity}</span>
+                //                                 </div>
+                //                                 <div class="col-4">
+                //                                     <h6 class="mb-0 text-end">${d.toLocaleTimeString()}</h6>
+                //                                 </div>
+                //                             </div>
+                //                         </div>`;
+                //                 $('.body-content').append(content)
+                //             });
+                //             chart(chart_type, res.dataChart)
+                //             initiateEventsChartIfIndicatorChanged();
+                //             drawDonutChart(res.dataChartGenderDiversity);
 
 
-
-                }
-                loadData();
-
-                $("#branch_id").change(function() {
-                    $('#loader-wrapper').css('display', 'block')
-                    let branch_id = $(this).val();
-                    const chart_type = $('#chart_type').val();
-                    addIndicators(chart_type)
-
-                    let yKeysArr = [];
-                    let labels = [];
-
-                    $('input[id="chartIndicator"]:checked').each(function(index, element) {
-                        yKeysArr.push($(this).val());
-                        labels.push($(this).data('label'));
-                    });
-
-                    $.post("{{ route('dashboard.filter-branch') }}", {
-                            "_token": "{{ csrf_token() }}",
-                            "branch_id": branch_id,
-                            "chart_type": chart_type,
-                            "yKeysArr": yKeysArr,
-                            "labels": labels,
-                        })
-                        .done(function(data) {
-                            const res = data.data
-                            // console.log(res);
-                            $('.body-content').empty()
-
-                            $('#totalEmployee').html(res.totalEmployees);
-                            $('#totalJobholder').html(res.totalEmployeesJobholder);
-                            $('#totalContractEmployee').html(res.totalEmployeesContract);
-                            $('#totalFreelanceEmployee').html(res.totalEmployeesFreelance);
-
-                            $('small[id="totalEmployeeStatistic"]').each(function() {
-                                $(this).html(res.totalEmployees)
-                            });
-
-                            $('#totalTodaySick').html(res.totalTodaySick);
-                            $('#progress-bar-sick').css("width", (res.totalTodaySick / res.totalEmployees) *
-                                100 + '%');
-
-                            $('#totalTodayLeave').html(res.totalTodayLeave);
-                            $('#progress-bar-leave').css("width", (res.totalTodayLeave / res
-                                .totalEmployees) * 100 + '%');
-
-                            $('#totalTodayPermit').html(res.totalTodayPermit);
-                            $('#progress-bar-permit').css("width", (res.totalTodayPermit / res
-                                .totalEmployees) * 100 + '%');
-
-                            $('#totalTodayAlpha').html(res.totalTodayAlpha);
-                            $('#progress-bar-alpha').css("width", (res.totalTodayAlpha / res
-                                .totalEmployees) * 100 + '%');
-
-                            $('#totalClockIn').html(res.totalClockIn);
-                            $('#totalAbsent').html(res.totalAbsent);
-                            $('#totalTimesheets').html(res.totalTimesheets);
-                            $('#timesheetInCity').html(res.timesheetsInCity);
-                            $('#timesheetsOutCity').html(res.timesheetsOutCity);
-                            $('#totalLate').html(res.totalLate);
-
-                            const esJobholder = (res.totalEmployeesJobholder / res.totalEmployees) * 100;
-                            $('#es-jobholder').html(res.totalEmployeesJobholder);
-                            $('#es-progress-jobholder').css("width", esJobholder + '%');
-                            $('#es-progress-jobholder').html(esJobholder + '%');
-
-                            const esContract = (res.totalEmployeesContract / res.totalEmployees) * 100;
-                            $('#es-contract').html(res.totalEmployeesContract);
-                            $('#es-progress-contract').css("width", esContract + '%');
-                            $('#es-progress-contract').html(esContract + '%');
-
-                            const esFreelance = (res.totalEmployeesFreelance / res.totalEmployees) * 100;
-                            $('#es-freelance').html(res.totalEmployeesFreelance);
-                            $('#es-progress-freelance').css("width", esFreelance + '%');
-                            $('#es-progress-freelance').html(esFreelance + '%');
-
-                            $('#es-total-employee').html(res.totalEmployees);
-
-                            $.each(res.logNewestAttendance, function(i, v) {
-                                const d = new Date(v.date);
-                                let content = `<div class="leave-info-box">
-                                            <div class="media d-flex align-items-center">
-                                                <div class="media-body flex-grow-1">
-                                                    <div class="text-sm my-0">${v.name}</div>
-                                                </div>
-                                            </div>
-                                            <div class="row align-items-center mt-3">
-                                                <div class="col-8">
-                                                    <span class="text-sm text-muted">${v.activity}</span>
-                                                </div>
-                                                <div class="col-4">
-                                                    <h6 class="mb-0 text-end">${d.toLocaleTimeString()}</h6>
-                                                </div>
-                                            </div>
-                                        </div>`;
-                                $('.body-content').append(content)
-                            });
-
-                            $('#es-gender-male').html(res.male);
-                            $('#es-gender-female').html(res.female);
-
-                            tblResume.draw();
-                            tblTimesheet.draw();
-                            chart(chart_type, res.dataChart)
-                            initiateEventsChartIfIndicatorChanged();
-                            drawDonutChart(res.dataChartGenderDiversity);
-                        });
+                //         });
 
 
-                    setTimeout(() => {
-                        $('#loader-wrapper').css('display', 'none')
-                    }, 400);
-                });
 
-                $('#apply-filter').click(function(e) {
-                    e.preventDefault();
-                    const dateFrom = $('.datepickerFrom').val();
-                    const dateTo = $('.datepickerTo').val();
-                    const branch_id = $('#branch_id').val();
-                    const chart_type = $('#chart_type').val();
-                    addIndicators(chart_type)
+                // }
+                // loadData();
 
-                    let yKeysArr = [];
-                    let labels = [];
+                // $("#branch_id").change(function() {
+                //     $('#loader-wrapper').css('display', 'block')
+                //     let branch_id = $(this).val();
+                //     const chart_type = $('#chart_type').val();
+                //     addIndicators(chart_type)
 
-                    $('input[id="chartIndicator"]:checked').each(function(index, element) {
-                        yKeysArr.push($(this).val());
-                        labels.push($(this).data('label'));
-                    });
+                //     let yKeysArr = [];
+                //     let labels = [];
 
-                    $.post("{{ route('dashboard.filter-chart-attendance') }}", {
-                            "_token": "{{ csrf_token() }}",
-                            "dateFrom": dateFrom,
-                            "dateTo": dateTo,
-                            "branch_id": branch_id,
-                            "chart_type": chart_type,
-                            "yKeysArr": yKeysArr,
-                            "labels": labels,
-                        })
-                        .done(function(data) {
-                            chart(chart_type, data)
+                //     $('input[id="chartIndicator"]:checked').each(function(index, element) {
+                //         yKeysArr.push($(this).val());
+                //         labels.push($(this).data('label'));
+                //     });
 
-                            initiateEventsChartIfIndicatorChanged();
-                        });
-                });
+                //     $.post("{{ route('dashboard.filter-branch') }}", {
+                //             "_token": "{{ csrf_token() }}",
+                //             "branch_id": branch_id,
+                //             "chart_type": chart_type,
+                //             "yKeysArr": yKeysArr,
+                //             "labels": labels,
+                //         })
+                //         .done(function(data) {
+                //             const res = data.data
+                //             // console.log(res);
+                //             $('.body-content').empty()
 
-                $(".datepickerFrom").datetimepicker({
-                    useCurrent: false,
-                    format: 'MMM YYYY',
-                    defaultDate: convertDate(dateNow.getFullYear(), 0),
-                });
+                //             $('#totalEmployee').html(res.totalEmployees);
+                //             $('#totalJobholder').html(res.totalEmployeesJobholder);
+                //             $('#totalContractEmployee').html(res.totalEmployeesContract);
+                //             $('#totalFreelanceEmployee').html(res.totalEmployeesFreelance);
 
-                $(".datepickerTo").datetimepicker({
-                    useCurrent: false,
-                    format: 'MMM YYYY',
-                    defaultDate: dateNow,
-                });
+                //             $('small[id="totalEmployeeStatistic"]').each(function() {
+                //                 $(this).html(res.totalEmployees)
+                //             });
+
+                //             $('#totalTodaySick').html(res.totalTodaySick);
+                //             $('#progress-bar-sick').css("width", (res.totalTodaySick / res.totalEmployees) *
+                //                 100 + '%');
+
+                //             $('#totalTodayLeave').html(res.totalTodayLeave);
+                //             $('#progress-bar-leave').css("width", (res.totalTodayLeave / res
+                //                 .totalEmployees) * 100 + '%');
+
+                //             $('#totalTodayPermit').html(res.totalTodayPermit);
+                //             $('#progress-bar-permit').css("width", (res.totalTodayPermit / res
+                //                 .totalEmployees) * 100 + '%');
+
+                //             $('#totalTodayAlpha').html(res.totalTodayAlpha);
+                //             $('#progress-bar-alpha').css("width", (res.totalTodayAlpha / res
+                //                 .totalEmployees) * 100 + '%');
+
+                //             $('#totalClockIn').html(res.totalClockIn);
+                //             $('#totalAbsent').html(res.totalAbsent);
+                //             $('#totalTimesheets').html(res.totalTimesheets);
+                //             $('#timesheetInCity').html(res.timesheetsInCity);
+                //             $('#timesheetsOutCity').html(res.timesheetsOutCity);
+                //             $('#totalLate').html(res.totalLate);
+
+                //             const esJobholder = (res.totalEmployeesJobholder / res.totalEmployees) * 100;
+                //             $('#es-jobholder').html(res.totalEmployeesJobholder);
+                //             $('#es-progress-jobholder').css("width", esJobholder + '%');
+                //             $('#es-progress-jobholder').html(esJobholder + '%');
+
+                //             const esContract = (res.totalEmployeesContract / res.totalEmployees) * 100;
+                //             $('#es-contract').html(res.totalEmployeesContract);
+                //             $('#es-progress-contract').css("width", esContract + '%');
+                //             $('#es-progress-contract').html(esContract + '%');
+
+                //             const esFreelance = (res.totalEmployeesFreelance / res.totalEmployees) * 100;
+                //             $('#es-freelance').html(res.totalEmployeesFreelance);
+                //             $('#es-progress-freelance').css("width", esFreelance + '%');
+                //             $('#es-progress-freelance').html(esFreelance + '%');
+
+                //             $('#es-total-employee').html(res.totalEmployees);
+
+                //             $.each(res.logNewestAttendance, function(i, v) {
+                //                 const d = new Date(v.date);
+                //                 let content = `<div class="leave-info-box">
+                //                             <div class="media d-flex align-items-center">
+                //                                 <div class="media-body flex-grow-1">
+                //                                     <div class="text-sm my-0">${v.name}</div>
+                //                                 </div>
+                //                             </div>
+                //                             <div class="row align-items-center mt-3">
+                //                                 <div class="col-8">
+                //                                     <span class="text-sm text-muted">${v.activity}</span>
+                //                                 </div>
+                //                                 <div class="col-4">
+                //                                     <h6 class="mb-0 text-end">${d.toLocaleTimeString()}</h6>
+                //                                 </div>
+                //                             </div>
+                //                         </div>`;
+                //                 $('.body-content').append(content)
+                //             });
+
+                //             $('#es-gender-male').html(res.male);
+                //             $('#es-gender-female').html(res.female);
+
+                //             tblResume.draw();
+                //             tblTimesheet.draw();
+                //             chart(chart_type, res.dataChart)
+                //             initiateEventsChartIfIndicatorChanged();
+                //             drawDonutChart(res.dataChartGenderDiversity);
+                //         });
+
+
+                //     setTimeout(() => {
+                //         $('#loader-wrapper').css('display', 'none')
+                //     }, 400);
+                // });
+
+                // $('#apply-filter').click(function(e) {
+                //     e.preventDefault();
+                //     const dateFrom = $('.datepickerFrom').val();
+                //     const dateTo = $('.datepickerTo').val();
+                //     const branch_id = $('#branch_id').val();
+                //     const chart_type = $('#chart_type').val();
+                //     addIndicators(chart_type)
+
+                //     let yKeysArr = [];
+                //     let labels = [];
+
+                //     $('input[id="chartIndicator"]:checked').each(function(index, element) {
+                //         yKeysArr.push($(this).val());
+                //         labels.push($(this).data('label'));
+                //     });
+
+                //     $.post("{{ route('dashboard.filter-chart-attendance') }}", {
+                //             "_token": "{{ csrf_token() }}",
+                //             "dateFrom": dateFrom,
+                //             "dateTo": dateTo,
+                //             "branch_id": branch_id,
+                //             "chart_type": chart_type,
+                //             "yKeysArr": yKeysArr,
+                //             "labels": labels,
+                //         })
+                //         .done(function(data) {
+                //             chart(chart_type, data)
+
+                //             initiateEventsChartIfIndicatorChanged();
+                //         });
+                // });
+
+                // $(".datepickerFrom").datetimepicker({
+                //     useCurrent: false,
+                //     format: 'MMM YYYY',
+                //     defaultDate: convertDate(dateNow.getFullYear(), 0),
+                // });
+
+                // $(".datepickerTo").datetimepicker({
+                //     useCurrent: false,
+                //     format: 'MMM YYYY',
+                //     defaultDate: dateNow,
+                // });
             });
         </script>
     @endpush
