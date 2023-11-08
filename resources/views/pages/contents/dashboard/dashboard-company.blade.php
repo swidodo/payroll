@@ -760,7 +760,7 @@
             })
             if (html.length <= 0 ){
               html =  [{
-                    text : 'Department',
+                    text : 'No department',
                     values: [0],
                     backgroundColor: '#2870B1'
                 }]
