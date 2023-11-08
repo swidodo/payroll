@@ -1,8 +1,8 @@
 <script>
-    $('.filter_1').attr('data-bs-toggle',"dropdown");
-    $('.filter_2').attr('data-bs-toggle',"dropdown");
-    $('.filter_3').attr('data-bs-toggle',"dropdown");
-    $('.filter_4').attr('data-bs-toggle',"dropdown");
+    // $('.filter_1').attr('data-bs-toggle',"dropdown");
+    // $('.filter_2').attr('data-bs-toggle',"dropdown");
+    // $('.filter_3').attr('data-bs-toggle',"dropdown");
+    // $('.filter_4').attr('data-bs-toggle',"dropdown");
 
     // default load halaman
     var defaultbranch = $('#branch_id').val();
@@ -23,489 +23,489 @@
     var area4 = '#filter_area_4';
     employee_religion(area4, defaultbranch)
 
-    $('.filter_1').on('click',function(e){
-        e.preventDefault();
-        var menu = `
-        <a href="" class="dropdown-item">View on insight</a>
-        <a href="" class="dropdown-item">Refresh data</a>
-        <hr style="margin-top:-3px;">
-        <a href="" class="dropdown-item disabled" style="margin-top:-12px !important;font-size:9pt;font-weight:bold">CHANGE CHART</a>
-        <a href="#" id="active_staff1" class="dropdown-item `+validate_at()+`">Active Staff</a>
-        <a href="" id="age_average1" class="dropdown-item `+validate_aa()+`">Age Average</a>
-        <a href="" id="education_level1" class="dropdown-item `+validate_el()+`">Education Level</a>
-        <a href="" id="employee_religion1" class="dropdown-item `+validate_er()+`">Employee Religion</a>
-        <a href="" id="employee_status1" class="dropdown-item `+validate_es()+`">Employee Status</a>
-        <a href="" id="gender_diversity1" class="dropdown-item `+validate_gd()+`">Gender Diversity</a>
-        <a href="" id="job_level1" class="dropdown-item `+validate_jl()+`">Job Level</a>
-        <a href="" id="length_of_service1" class="dropdown-item `+validate_los()+`">Length Of Service</a>
-        <a href="" id="monthly_turnover1" class="dropdown-item `+validate_mt()+`">Monthly Turnover</a>
-        `;
-        $('#result_filter_1').html(menu)
-    })
-    $('.filter_2').on('click',function(e){
-        e.preventDefault();
-        var menu = `
-        <a href="" class="dropdown-item">View on insight</a>
-        <a href="" class="dropdown-item">Refresh data</a>
-        <hr style="margin-top:-3px;">
-        <a href="" class="dropdown-item disabled" style="margin-top:-12px !important;font-size:9pt;font-weight:bold">CHANGE CHART</a>
-        <a href="#" id="active_staff2" class="dropdown-item `+validate_at()+`">Active Staff</a>
-        <a href="" id="age_average2" class="dropdown-item `+validate_aa()+`">Age Average</a>
-        <a href="" id="education_level2" class="dropdown-item `+validate_el()+`">Education Level</a>
-        <a href="" id="employee_religion2" class="dropdown-item `+validate_er()+`">Employee Religion</a>
-        <a href="" id="employee_status2" class="dropdown-item `+validate_es()+`">Employee Status</a>
-        <a href="" id="gender_diversity2" class="dropdown-item `+validate_gd()+`">Gender Diversity</a>
-        <a href="" id="job_level2" class="dropdown-item  `+validate_jl()+`">Job Level</a>
-        <a href="" id="length_of_service2" class="dropdown-item `+validate_los()+`">Length Of Service</a>
-        <a href="" id="monthly_turnover2" class="dropdown-item `+validate_mt()+`">Monthly Turnover</a>
-        `;
-        $('#result_filter_2').html(menu)
-    })
-    $('.filter_3').on('click',function(e){
-        e.preventDefault();
-        var menu = `
-        <a href="" class="dropdown-item">View on insight</a>
-        <a href="" class="dropdown-item">Refresh data</a>
-        <hr style="margin-top:-3px;">
-        <a href="" class="dropdown-item disabled" style="margin-top:-12px !important;font-size:9pt;font-weight:bold">CHANGE CHART</a>
-        <a href="#" id="active_staff3" class="dropdown-item `+validate_at()+`">Active Staff</a>
-        <a href="" id="age_average3" class="dropdown-item `+validate_aa()+`">Age Average</a>
-        <a href="" id="education_level3" class="dropdown-item `+validate_el()+`">Education Level</a>
-        <a href="" id="employee_religion3" class="dropdown-item `+validate_er()+`">Employee Religion</a>
-        <a href="" id="employee_status3" class="dropdown-item `+validate_es()+`">Employee Status</a>
-        <a href="" id="gender_diversity3" class="dropdown-item `+validate_gd()+`">Gender Diversity</a>
-        <a href="" id="job_level3" class="dropdown-item  `+validate_jl()+`">Job Level</a>
-        <a href="" id="length_of_service3" class="dropdown-item `+validate_los()+`">Length Of Service</a>
-        <a href="" id="monthly_turnover3" class="dropdown-item `+validate_mt()+`">Monthly Turnover</a>
-        `;
-        $('#result_filter_3').html(menu)
-    })
-    $('.filter_4').on('click',function(e){
-        e.preventDefault();
-        var menu = `
-        <a href="" class="dropdown-item">View on insight</a>
-        <a href="" class="dropdown-item">Refresh data</a>
-        <hr style="margin-top:-3px;">
-        <a href="" class="dropdown-item disabled" style="margin-top:-12px !important;font-size:9pt;font-weight:bold">CHANGE CHART</a>
-        <a href="#" id="active_staff4" class="dropdown-item `+validate_at()+`">Active Staff</a>
-        <a href="" id="age_average4" class="dropdown-item `+validate_aa()+`">Age Average</a>
-        <a href="" id="education_level4" class="dropdown-item `+validate_el()+`">Education Level</a>
-        <a href="" id="employee_religion4" class="dropdown-item `+validate_er()+`">Employee Religion</a>
-        <a href="" id="employee_status4" class="dropdown-item `+validate_es()+`">Employee Status</a>
-        <a href="" id="gender_diversity4" class="dropdown-item  `+validate_gd()+`">Gender Diversity</a>
-        <a href="" id="job_level4" class="dropdown-item `+validate_jl()+`">Job Level</a>
-        <a href="" id="length_of_service4" class="dropdown-item `+validate_los()+`">Length Of Service</a>
-        <a href="" id="monthly_turnover4" class="dropdown-item `+validate_mt()+`">Monthly Turnover</a>
-        `;
-        $('#result_filter_4').html(menu)
-    })
+    // $('.filter_1').on('click',function(e){
+    //     e.preventDefault();
+    //     var menu = `
+    //     <a href="" class="dropdown-item">View on insight</a>
+    //     <a href="" class="dropdown-item">Refresh data</a>
+    //     <hr style="margin-top:-3px;">
+    //     <a href="" class="dropdown-item disabled" style="margin-top:-12px !important;font-size:9pt;font-weight:bold">CHANGE CHART</a>
+    //     <a href="#" id="active_staff1" class="dropdown-item `+validate_at()+`">Active Staff</a>
+    //     <a href="" id="age_average1" class="dropdown-item `+validate_aa()+`">Age Average</a>
+    //     <a href="" id="education_level1" class="dropdown-item `+validate_el()+`">Education Level</a>
+    //     <a href="" id="employee_religion1" class="dropdown-item `+validate_er()+`">Employee Religion</a>
+    //     <a href="" id="employee_status1" class="dropdown-item `+validate_es()+`">Employee Status</a>
+    //     <a href="" id="gender_diversity1" class="dropdown-item `+validate_gd()+`">Gender Diversity</a>
+    //     <a href="" id="job_level1" class="dropdown-item `+validate_jl()+`">Job Level</a>
+    //     <a href="" id="length_of_service1" class="dropdown-item `+validate_los()+`">Length Of Service</a>
+    //     <a href="" id="monthly_turnover1" class="dropdown-item `+validate_mt()+`">Monthly Turnover</a>
+    //     `;
+    //     $('#result_filter_1').html(menu)
+    // })
+    // $('.filter_2').on('click',function(e){
+    //     e.preventDefault();
+    //     var menu = `
+    //     <a href="" class="dropdown-item">View on insight</a>
+    //     <a href="" class="dropdown-item">Refresh data</a>
+    //     <hr style="margin-top:-3px;">
+    //     <a href="" class="dropdown-item disabled" style="margin-top:-12px !important;font-size:9pt;font-weight:bold">CHANGE CHART</a>
+    //     <a href="#" id="active_staff2" class="dropdown-item `+validate_at()+`">Active Staff</a>
+    //     <a href="" id="age_average2" class="dropdown-item `+validate_aa()+`">Age Average</a>
+    //     <a href="" id="education_level2" class="dropdown-item `+validate_el()+`">Education Level</a>
+    //     <a href="" id="employee_religion2" class="dropdown-item `+validate_er()+`">Employee Religion</a>
+    //     <a href="" id="employee_status2" class="dropdown-item `+validate_es()+`">Employee Status</a>
+    //     <a href="" id="gender_diversity2" class="dropdown-item `+validate_gd()+`">Gender Diversity</a>
+    //     <a href="" id="job_level2" class="dropdown-item  `+validate_jl()+`">Job Level</a>
+    //     <a href="" id="length_of_service2" class="dropdown-item `+validate_los()+`">Length Of Service</a>
+    //     <a href="" id="monthly_turnover2" class="dropdown-item `+validate_mt()+`">Monthly Turnover</a>
+    //     `;
+    //     $('#result_filter_2').html(menu)
+    // })
+    // $('.filter_3').on('click',function(e){
+    //     e.preventDefault();
+    //     var menu = `
+    //     <a href="" class="dropdown-item">View on insight</a>
+    //     <a href="" class="dropdown-item">Refresh data</a>
+    //     <hr style="margin-top:-3px;">
+    //     <a href="" class="dropdown-item disabled" style="margin-top:-12px !important;font-size:9pt;font-weight:bold">CHANGE CHART</a>
+    //     <a href="#" id="active_staff3" class="dropdown-item `+validate_at()+`">Active Staff</a>
+    //     <a href="" id="age_average3" class="dropdown-item `+validate_aa()+`">Age Average</a>
+    //     <a href="" id="education_level3" class="dropdown-item `+validate_el()+`">Education Level</a>
+    //     <a href="" id="employee_religion3" class="dropdown-item `+validate_er()+`">Employee Religion</a>
+    //     <a href="" id="employee_status3" class="dropdown-item `+validate_es()+`">Employee Status</a>
+    //     <a href="" id="gender_diversity3" class="dropdown-item `+validate_gd()+`">Gender Diversity</a>
+    //     <a href="" id="job_level3" class="dropdown-item  `+validate_jl()+`">Job Level</a>
+    //     <a href="" id="length_of_service3" class="dropdown-item `+validate_los()+`">Length Of Service</a>
+    //     <a href="" id="monthly_turnover3" class="dropdown-item `+validate_mt()+`">Monthly Turnover</a>
+    //     `;
+    //     $('#result_filter_3').html(menu)
+    // })
+    // $('.filter_4').on('click',function(e){
+    //     e.preventDefault();
+    //     var menu = `
+    //     <a href="" class="dropdown-item">View on insight</a>
+    //     <a href="" class="dropdown-item">Refresh data</a>
+    //     <hr style="margin-top:-3px;">
+    //     <a href="" class="dropdown-item disabled" style="margin-top:-12px !important;font-size:9pt;font-weight:bold">CHANGE CHART</a>
+    //     <a href="#" id="active_staff4" class="dropdown-item `+validate_at()+`">Active Staff</a>
+    //     <a href="" id="age_average4" class="dropdown-item `+validate_aa()+`">Age Average</a>
+    //     <a href="" id="education_level4" class="dropdown-item `+validate_el()+`">Education Level</a>
+    //     <a href="" id="employee_religion4" class="dropdown-item `+validate_er()+`">Employee Religion</a>
+    //     <a href="" id="employee_status4" class="dropdown-item `+validate_es()+`">Employee Status</a>
+    //     <a href="" id="gender_diversity4" class="dropdown-item  `+validate_gd()+`">Gender Diversity</a>
+    //     <a href="" id="job_level4" class="dropdown-item `+validate_jl()+`">Job Level</a>
+    //     <a href="" id="length_of_service4" class="dropdown-item `+validate_los()+`">Length Of Service</a>
+    //     <a href="" id="monthly_turnover4" class="dropdown-item `+validate_mt()+`">Monthly Turnover</a>
+    //     `;
+    //     $('#result_filter_4').html(menu)
+    // })
     // action filter 1
-    $(document).on('click','#active_staff1',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_1').text(text);
-        var area = '#filter_area_1';
-        active_staff(area,branch);
-    })
-    $(document).on('click','#age_average1',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_1').text(text)
-        var area = '#filter_area_1';
-        age_average(area,branch);
+    // $(document).on('click','#active_staff1',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_1').text(text);
+    //     var area = '#filter_area_1';
+    //     active_staff(area,branch);
+    // })
+    // $(document).on('click','#age_average1',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_1').text(text)
+    //     var area = '#filter_area_1';
+    //     age_average(area,branch);
 
-    })
-    $(document).on('click','#education_level1',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_1').text(text)
-        var area = '#filter_area_1';
-        parse_employee_education(area,branch);
-    })
-    $(document).on('click','#employee_religion1',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_1').text(text)
-        var area = '#filter_area_1';
-        employee_religion(area,branch)
-    })
-    $(document).on('click','#employee_status1',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_1').text(text)
-        var area = '#filter_area_1';
-        employee_status(area,branch);
+    // })
+    // $(document).on('click','#education_level1',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_1').text(text)
+    //     var area = '#filter_area_1';
+    //     parse_employee_education(area,branch);
+    // })
+    // $(document).on('click','#employee_religion1',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_1').text(text)
+    //     var area = '#filter_area_1';
+    //     employee_religion(area,branch)
+    // })
+    // $(document).on('click','#employee_status1',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_1').text(text)
+    //     var area = '#filter_area_1';
+    //     employee_status(area,branch);
 
-    })
-    $(document).on('click','#gender_diversity1',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_1').text(text)
-        var area = '#filter_area_1';
-        parse_employee_gander(area,branch);
-    })
-    $(document).on('click','#job_level1',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_1').text(text)
-        var area = '#filter_area_1';
-        job_level(area,branch);
-    })
-    $(document).on('click','#length_of_service1',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_1').text(text)
-        var area = '#filter_area_1';
-        lenght_service(area,branch);
-    })
-    $(document).on('click','#monthly_turnover1',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_1').text(text)
-        var area = '#filter_area_1';
-        monthly_turnover(area,branch);
-    })
-    // end filter 1
-    // start filter 2
-    $(document).on('click','#active_staff2',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_2').text(text)
-        var area = '#filter_area_2';
-        active_staff(area,branch);
-    })
-    $(document).on('click','#age_average2',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_2').text(text);
-        var area = '#filter_area_2';
-        age_average(area,branch);
-    })
-    $(document).on('click','#education_level2',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_2').text(text)
-        var area = '#filter_area_2';
-        parse_employee_education(area,branch);
-    })
-    $(document).on('click','#employee_religion2',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_2').text(text)
-        var area = '#filter_area_2';
-        employee_religion(area,branch)
-    })
-    $(document).on('click','#employee_status2',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text2 = $(this).text();
-        $('#header_2').text(text2)
-        var area = '#filter_area_2';
-        employee_status(area,branch);
-    })
-    $(document).on('click','#gender_diversity2',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_2').text(text)
-        var area = '#filter_area_2';
-        parse_employee_gander(area,branch);
-    })
-    $(document).on('click','#job_level2',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_2').text(text)
-        var area = '#filter_area_2';
-        job_level(area,branch);
-    })
-    $(document).on('click','#length_of_service2',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_2').text(text)
-        var area = '#filter_area_2';
-        lenght_service(area,branch);
-    })
-    $(document).on('click','#monthly_turnover2',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_2').text(text)
-        var area = '#filter_area_2';
-        monthly_turnover(area,branch);
-    })
+    // })
+    // $(document).on('click','#gender_diversity1',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_1').text(text)
+    //     var area = '#filter_area_1';
+    //     parse_employee_gander(area,branch);
+    // })
+    // $(document).on('click','#job_level1',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_1').text(text)
+    //     var area = '#filter_area_1';
+    //     job_level(area,branch);
+    // })
+    // $(document).on('click','#length_of_service1',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_1').text(text)
+    //     var area = '#filter_area_1';
+    //     lenght_service(area,branch);
+    // })
+    // $(document).on('click','#monthly_turnover1',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_1').text(text)
+    //     var area = '#filter_area_1';
+    //     monthly_turnover(area,branch);
+    // })
+    // // end filter 1
+    // // start filter 2
+    // $(document).on('click','#active_staff2',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_2').text(text)
+    //     var area = '#filter_area_2';
+    //     active_staff(area,branch);
+    // })
+    // $(document).on('click','#age_average2',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_2').text(text);
+    //     var area = '#filter_area_2';
+    //     age_average(area,branch);
+    // })
+    // $(document).on('click','#education_level2',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_2').text(text)
+    //     var area = '#filter_area_2';
+    //     parse_employee_education(area,branch);
+    // })
+    // $(document).on('click','#employee_religion2',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_2').text(text)
+    //     var area = '#filter_area_2';
+    //     employee_religion(area,branch)
+    // })
+    // $(document).on('click','#employee_status2',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text2 = $(this).text();
+    //     $('#header_2').text(text2)
+    //     var area = '#filter_area_2';
+    //     employee_status(area,branch);
+    // })
+    // $(document).on('click','#gender_diversity2',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_2').text(text)
+    //     var area = '#filter_area_2';
+    //     parse_employee_gander(area,branch);
+    // })
+    // $(document).on('click','#job_level2',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_2').text(text)
+    //     var area = '#filter_area_2';
+    //     job_level(area,branch);
+    // })
+    // $(document).on('click','#length_of_service2',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_2').text(text)
+    //     var area = '#filter_area_2';
+    //     lenght_service(area,branch);
+    // })
+    // $(document).on('click','#monthly_turnover2',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_2').text(text)
+    //     var area = '#filter_area_2';
+    //     monthly_turnover(area,branch);
+    // })
     // end filter 2
     // start filter 3
-    $(document).on('click','#active_staff3',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_3').text(text)
-        var area = '#filter_area_3';
-        active_staff(area,branch);
-    })
-    $(document).on('click','#age_average3',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_3').text(text)
-        var area = '#filter_area_3';
-        age_average(area,branch);
-    })
-    $(document).on('click','#education_level3',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_3').text(text)
-        var area = '#filter_area_3';
-        parse_employee_education(area,branch);
-    })
-    $(document).on('click','#employee_religion3',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_3').text(text)
-        var area = '#filter_area_3';
-        employee_religion(area,branch)
-    })
-    $(document).on('click','#employee_status3',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text3 = $(this).text();
-        $('#header_3').text(text3)
-        var area = '#filter_area_3';
-        employee_status(area,branch);
-    })
-    $(document).on('click','#gender_diversity3',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_3').text(text)
-        var area = '#filter_area_3';
-        parse_employee_gander(area,branch);
-    })
-    $(document).on('click','#job_level3',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_3').text(text)
-        var area = '#filter_area_3';
-        job_level(area,branch);
-    })
-    $(document).on('click','#length_of_service3',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_3').text(text)
-        var area = '#filter_area_3';
-        lenght_service(area,branch);
-    })
-    $(document).on('click','#monthly_turnover3',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_3').text(text)
-        var area = '#filter_area_3';
-        monthly_turnover(area,branch);
-    })
+    // $(document).on('click','#active_staff3',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_3').text(text)
+    //     var area = '#filter_area_3';
+    //     active_staff(area,branch);
+    // })
+    // $(document).on('click','#age_average3',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_3').text(text)
+    //     var area = '#filter_area_3';
+    //     age_average(area,branch);
+    // })
+    // $(document).on('click','#education_level3',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_3').text(text)
+    //     var area = '#filter_area_3';
+    //     parse_employee_education(area,branch);
+    // })
+    // $(document).on('click','#employee_religion3',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_3').text(text)
+    //     var area = '#filter_area_3';
+    //     employee_religion(area,branch)
+    // })
+    // $(document).on('click','#employee_status3',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text3 = $(this).text();
+    //     $('#header_3').text(text3)
+    //     var area = '#filter_area_3';
+    //     employee_status(area,branch);
+    // })
+    // $(document).on('click','#gender_diversity3',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_3').text(text)
+    //     var area = '#filter_area_3';
+    //     parse_employee_gander(area,branch);
+    // })
+    // $(document).on('click','#job_level3',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_3').text(text)
+    //     var area = '#filter_area_3';
+    //     job_level(area,branch);
+    // })
+    // $(document).on('click','#length_of_service3',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_3').text(text)
+    //     var area = '#filter_area_3';
+    //     lenght_service(area,branch);
+    // })
+    // $(document).on('click','#monthly_turnover3',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_3').text(text)
+    //     var area = '#filter_area_3';
+    //     monthly_turnover(area,branch);
+    // })
     // end filter 3
     // start filter 4
-    $(document).on('click','#active_staff4',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_4').text(text)
-        var area = '#filter_area_4';
-        active_staff(area,branch);
-    })
-    $(document).on('click','#age_average4',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_4').text(text)
-        var area = '#filter_area_4';
-        age_average(area,branch);
-    })
-    $(document).on('click','#education_level4',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_4').text(text)
-        var area = '#filter_area_4';
-        parse_employee_education(area,branch);
-    })
-    $(document).on('click','#employee_religion4',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_4').text(text)
-        var area = '#filter_area_4';
-        employee_religion(area,branch)
-    })
-    $(document).on('click','#employee_status4',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text4 = $(this).text();
-        $('#header_4').text(text4)
-        var area = '#filter_area_4';
-        employee_status(area,branch);
-    })
-    $(document).on('click','#gender_diversity4',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_4').text(text)
-        var area = '#filter_area_4';
-        parse_employee_gander(area,branch);
-    })
-    $(document).on('click','#job_level4',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_4').text(text)
-        var area = '#filter_area_4';
-        job_level(area,branch);
-    })
-    $(document).on('click','#length_of_service4',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_4').text(text)
-        var area = '#filter_area_4';
-        lenght_service(area,branch);
-    })
-    $(document).on('click','#monthly_turnover4',function(e){
-        e.preventDefault();
-        var branch = $('#branch_id').val();
-        var text = $(this).text();
-        $('#header_4').text(text)
-        var area = '#filter_area_4';
-        monthly_turnover(area,branch);
-    })
+    // $(document).on('click','#active_staff4',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_4').text(text)
+    //     var area = '#filter_area_4';
+    //     active_staff(area,branch);
+    // })
+    // $(document).on('click','#age_average4',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_4').text(text)
+    //     var area = '#filter_area_4';
+    //     age_average(area,branch);
+    // })
+    // $(document).on('click','#education_level4',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_4').text(text)
+    //     var area = '#filter_area_4';
+    //     parse_employee_education(area,branch);
+    // })
+    // $(document).on('click','#employee_religion4',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_4').text(text)
+    //     var area = '#filter_area_4';
+    //     employee_religion(area,branch)
+    // })
+    // $(document).on('click','#employee_status4',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text4 = $(this).text();
+    //     $('#header_4').text(text4)
+    //     var area = '#filter_area_4';
+    //     employee_status(area,branch);
+    // })
+    // $(document).on('click','#gender_diversity4',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_4').text(text)
+    //     var area = '#filter_area_4';
+    //     parse_employee_gander(area,branch);
+    // })
+    // $(document).on('click','#job_level4',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_4').text(text)
+    //     var area = '#filter_area_4';
+    //     job_level(area,branch);
+    // })
+    // $(document).on('click','#length_of_service4',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_4').text(text)
+    //     var area = '#filter_area_4';
+    //     lenght_service(area,branch);
+    // })
+    // $(document).on('click','#monthly_turnover4',function(e){
+    //     e.preventDefault();
+    //     var branch = $('#branch_id').val();
+    //     var text = $(this).text();
+    //     $('#header_4').text(text)
+    //     var area = '#filter_area_4';
+    //     monthly_turnover(area,branch);
+    // })
     // end filter 4
 
-    function validate_at(){
-        var h_1 = $('#header_1').text();
-        var h_2 = $('#header_2').text();
-        var h_3 = $('#header_3').text();
-        var h_4 = $('#header_4').text();
-        if (h_1 ==="Active Staff" | h_2 ==="Active Staff" | h_3 ==="Active Staff" | h_4 ==="Active Staff"){
-            var link = 'disabled';
-        }else{
-            var link = '';
-        }
-        return link;
-    }
-    function validate_aa(){
-        var h_1 = $('#header_1').text();
-        var h_2 = $('#header_2').text();
-        var h_3 = $('#header_3').text();
-        var h_4 = $('#header_4').text();
-        if (h_1 ==="Age Average" | h_2 ==="Age Average" | h_3 ==="Age Average" | h_4 ==="Age Average"){
-            var link = 'disabled';
-        }else{
-            var link = '';
-        }
-        return link;
-    }
-    function validate_el(){
-        var h_1 = $('#header_1').text();
-        var h_2 = $('#header_2').text();
-        var h_3 = $('#header_3').text();
-        var h_4 = $('#header_4').text();
-        if (h_1 ==="Education Level" | h_2 ==="Education Level" | h_3 ==="Education Level" | h_4 ==="Education Level"){
-            var link = 'disabled';
-        }else{
-            var link = '';
-        }
-        return link;
-    }
-    function validate_er(){
-        var h_1 = $('#header_1').text();
-        var h_2 = $('#header_2').text();
-        var h_3 = $('#header_3').text();
-        var h_4 = $('#header_4').text();
-        if (h_1 ==="Employee Religion" | h_2 ==="Employee Religion" | h_3 ==="Employee Religion" | h_4 ==="Employee Religion"){
-            var link = 'disabled';
-        }else{
-            var link = '';
-        }
-        return link;
-    }
-    function validate_es(){
-        var h_1 = $('#header_1').text();
-        var h_2 = $('#header_2').text();
-        var h_3 = $('#header_3').text();
-        var h_4 = $('#header_4').text();
-        if (h_1 ==="Employee Status" | h_2 ==="Employee Status" | h_3 ==="Employee Status" | h_4 ==="Employee Status"){
-            var link = 'disabled';
-        }else{
-            var link = '';
-        }
-        return link;
-    }
-    function validate_gd(){
-        var h_1 = $('#header_1').text();
-        var h_2 = $('#header_2').text();
-        var h_3 = $('#header_3').text();
-        var h_4 = $('#header_4').text();
-        if (h_1 ==="Gender Diversity" | h_2 ==="Gender Diversity" | h_3 ==="Gender Diversity" | h_4 ==="Gender Diversity"){
-            var link = 'disabled';
-        }else{
-            var link = '';
-        }
-        return link;
-    }
-    function validate_jl(){
-        var h_1 = $('#header_1').text();
-        var h_2 = $('#header_2').text();
-        var h_3 = $('#header_3').text();
-        var h_4 = $('#header_4').text();
-        if (h_1 ==="Job Level" | h_2 ==="Job Level" | h_3 ==="Job Level" | h_4 ==="Job Level"){
-            var link = 'disabled';
-        }else{
-            var link = '';
-        }
-        return link;
-    }
-    function validate_los(){
-        var h_1 = $('#header_1').text();
-        var h_2 = $('#header_2').text();
-        var h_3 = $('#header_3').text();
-        var h_4 = $('#header_4').text();
-        if (h_1 ==="Length Of Service" | h_2 ==="Length Of Service" | h_3 ==="Length Of Service" | h_4 ==="Length Of Service"){
-            var link = 'disabled';
-        }else{
-            var link = '';
-        }
-        return link;
-    }
-    function validate_mt(){
-        var h_1 = $('#header_1').text();
-        var h_2 = $('#header_2').text();
-        var h_3 = $('#header_3').text();
-        var h_4 = $('#header_4').text();
-        if (h_1 ==="Monthly Turnover" | h_2 ==="Monthly Turnover" | h_3 ==="Monthly Turnover" | h_4 ==="Monthly Turnover"){
-            var link = 'disabled';
-        }else{
-            var link = '';
-        }
-        return link;
-    }
+    // function validate_at(){
+    //     var h_1 = $('#header_1').text();
+    //     var h_2 = $('#header_2').text();
+    //     var h_3 = $('#header_3').text();
+    //     var h_4 = $('#header_4').text();
+    //     if (h_1 ==="Active Staff" | h_2 ==="Active Staff" | h_3 ==="Active Staff" | h_4 ==="Active Staff"){
+    //         var link = 'disabled';
+    //     }else{
+    //         var link = '';
+    //     }
+    //     return link;
+    // }
+    // function validate_aa(){
+    //     var h_1 = $('#header_1').text();
+    //     var h_2 = $('#header_2').text();
+    //     var h_3 = $('#header_3').text();
+    //     var h_4 = $('#header_4').text();
+    //     if (h_1 ==="Age Average" | h_2 ==="Age Average" | h_3 ==="Age Average" | h_4 ==="Age Average"){
+    //         var link = 'disabled';
+    //     }else{
+    //         var link = '';
+    //     }
+    //     return link;
+    // }
+    // function validate_el(){
+    //     var h_1 = $('#header_1').text();
+    //     var h_2 = $('#header_2').text();
+    //     var h_3 = $('#header_3').text();
+    //     var h_4 = $('#header_4').text();
+    //     if (h_1 ==="Education Level" | h_2 ==="Education Level" | h_3 ==="Education Level" | h_4 ==="Education Level"){
+    //         var link = 'disabled';
+    //     }else{
+    //         var link = '';
+    //     }
+    //     return link;
+    // }
+    // function validate_er(){
+    //     var h_1 = $('#header_1').text();
+    //     var h_2 = $('#header_2').text();
+    //     var h_3 = $('#header_3').text();
+    //     var h_4 = $('#header_4').text();
+    //     if (h_1 ==="Employee Religion" | h_2 ==="Employee Religion" | h_3 ==="Employee Religion" | h_4 ==="Employee Religion"){
+    //         var link = 'disabled';
+    //     }else{
+    //         var link = '';
+    //     }
+    //     return link;
+    // }
+    // function validate_es(){
+    //     var h_1 = $('#header_1').text();
+    //     var h_2 = $('#header_2').text();
+    //     var h_3 = $('#header_3').text();
+    //     var h_4 = $('#header_4').text();
+    //     if (h_1 ==="Employee Status" | h_2 ==="Employee Status" | h_3 ==="Employee Status" | h_4 ==="Employee Status"){
+    //         var link = 'disabled';
+    //     }else{
+    //         var link = '';
+    //     }
+    //     return link;
+    // }
+    // function validate_gd(){
+    //     var h_1 = $('#header_1').text();
+    //     var h_2 = $('#header_2').text();
+    //     var h_3 = $('#header_3').text();
+    //     var h_4 = $('#header_4').text();
+    //     if (h_1 ==="Gender Diversity" | h_2 ==="Gender Diversity" | h_3 ==="Gender Diversity" | h_4 ==="Gender Diversity"){
+    //         var link = 'disabled';
+    //     }else{
+    //         var link = '';
+    //     }
+    //     return link;
+    // }
+    // function validate_jl(){
+    //     var h_1 = $('#header_1').text();
+    //     var h_2 = $('#header_2').text();
+    //     var h_3 = $('#header_3').text();
+    //     var h_4 = $('#header_4').text();
+    //     if (h_1 ==="Job Level" | h_2 ==="Job Level" | h_3 ==="Job Level" | h_4 ==="Job Level"){
+    //         var link = 'disabled';
+    //     }else{
+    //         var link = '';
+    //     }
+    //     return link;
+    // }
+    // function validate_los(){
+    //     var h_1 = $('#header_1').text();
+    //     var h_2 = $('#header_2').text();
+    //     var h_3 = $('#header_3').text();
+    //     var h_4 = $('#header_4').text();
+    //     if (h_1 ==="Length Of Service" | h_2 ==="Length Of Service" | h_3 ==="Length Of Service" | h_4 ==="Length Of Service"){
+    //         var link = 'disabled';
+    //     }else{
+    //         var link = '';
+    //     }
+    //     return link;
+    // }
+    // function validate_mt(){
+    //     var h_1 = $('#header_1').text();
+    //     var h_2 = $('#header_2').text();
+    //     var h_3 = $('#header_3').text();
+    //     var h_4 = $('#header_4').text();
+    //     if (h_1 ==="Monthly Turnover" | h_2 ==="Monthly Turnover" | h_3 ==="Monthly Turnover" | h_4 ==="Monthly Turnover"){
+    //         var link = 'disabled';
+    //     }else{
+    //         var link = '';
+    //     }
+    //     return link;
+    // }
 
     // process get data
     function header(){
@@ -580,6 +580,7 @@
 
         })
     }
+    
     function parse_employee_gander(area,branch){
         header();
         $. ajax({
@@ -602,7 +603,7 @@
                 </div>`);
             },
             success : function(response){
-                $(area).html(`@include("pages.contents.dashboard.filter_data.gender_diversity")`)
+                // $(area).html(`@include("pages.contents.dashboard.filter_data.gender_diversity")`)
                 var data = response.data;
                 if (data.length > 0){
                     drawDonutChart(data);

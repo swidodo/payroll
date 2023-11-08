@@ -26,6 +26,35 @@
         .card-header button {
             float: right;
         }
+        .chartdonat--container {
+            height: 100%;
+            width: 100%;
+            min-height: 30px;
+        }
+        .chartgauge--container {
+            height: 100%;
+            width: 100%;
+            min-height: 350px;
+        }
+        .chart--container {
+            min-height: 350px;
+            width: 100%;
+            height: 100%;
+        }
+        .chartleft--container {
+            min-height: 285px;
+            width: 100%;
+            height: 100%;
+        }
+
+        .zc-ref {
+        display: none;
+        }
+        .spece{
+            margin-top:-20px;
+            background-color: #FBFCFE;
+        }
+        
     </style>
 @endpush
 
@@ -85,73 +114,87 @@
                 </div>
             @endforeach
 
-            {{-- Ulang Tahun --}}
-            @foreach ($birthDay as $data)
-                {{-- <div class="card">
-                    <div class="card-body"
-                        style="border-left-style: solid; border-radius: 4px; border-width: 5px;border-color: #e71304; background-color: #faff85">
-                        <div class="row">
-                            <div class="col-8 fs-6">
-                                Selamat ulang tahun, {{ $data->nama }}, semoga selalu sukses !
-                            </div>
-                            <div class="col-4">
-                                <button type="button" class="btn-close btn-sm float-end .bg-info-subtle"
-                                    aria-label="Close"></button>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
-            @endforeach
-
             <div class="row">
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="card dash-widget">
-                        <div class="card-body">
-                            <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
-                            <div class="dash-widget-info">
-                                <h3 id="totalEmployee"></h3>
-                                <span>Employees</span>
+                <div class="col-md-3">
+                    <div class="col-md-12">
+                        <div class="card" style="margin-top:-30px;background-color:#FBFCFE;">
+                            <div class="card-body">
+                                <div class="dash-widget-info text-center">
+                                    <span>Employees</span>
+                                    <h3 id="totalEmployee"></h3>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="card dash-widget">
-                        <div class="card-body">
-                            <span class="dash-widget-icon"><i class="fa fa-list"></i></span>
-                            <div class="dash-widget-info">
-                                <h3 id="totalJobholder"></h3>
-                                <span>Permanent</span>
+                    <div class="col-md-12">
+                        <div class="card spece">
+                            <div class="card-body">
+                                <div class="dash-widget-info text-center">
+                                    <span>Permanent</span>
+                                    <h3 id="totalJobholder"></h3>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="card dash-widget">
-                        <div class="card-body">
-                            <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
-                            <div class="dash-widget-info">
-                                <h3 id="totalContractEmployee"></h3>
-                                <span>Contract</span>
+                    <div class="col-md-12">
+                        <div class="card spece">
+                            <div class="card-body">
+                                <div class="dash-widget-info text-center">
+                                    <h3 id="totalContractEmployee"></h3>
+                                    <span>Contract</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="card dash-widget">
-                        <div class="card-body">
-                            <span class="dash-widget-icon"><i class="fa fa-files-o"></i></span>
-                            <div class="dash-widget-info">
-                                <h3 id="totalFreelanceEmployee"></h3>
-                                <span>Freelance</span>
+                    <div class="col-md-12">
+                        <div class="card spece">
+                            <div class="card-body">
+                                <div class="dash-widget-info text-center">
+                                    <span>Probation</span>
+                                    <h3 id="totalFreelanceEmployee"></h3>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-12">
+                        <div class="card spece">
+                            <div class="card-body">
+                                <div class="dash-widget-info text-center">
+                                    <h3 id="totalFreelanceEmployee"></h3>
+                                    <span>Worker day</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        {{-- <div class="card spece">
+                            <div class="card-body"> --}}
+                                <div id="cilinderChart" class="chartleft--container">
+                                </div>
+                            {{-- </div>
+                        </div> --}}
+                    </div>
                 </div>
-
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-6" style="margin-left:-10px;">
+                            <div id="gaugeChart" class="chartgauge--container">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div id="myChart" class="chartdonat--container" style="margin-left:-10px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="diagramChart" class="chart--container" style="margin-left:-10px;">
+                        </div>
+                    </div>
+                </div>
+                
             </div>
 
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-md-3 d-flex">
                     <div class="card flex-fill">
                         <div class="card-body">
@@ -232,68 +275,18 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="row">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-12 text-center">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-10">
-                                            <div class="filter-bar mt-3 mb-3">
-                                                <!-- Search Filter -->
-                                                <div class="row filter-row justify-content-center">
-                                                    <div class="col-sm-6 col-md-3">
-                                                        <div class="form-group form-focus select-focus">
-                                                            <select class="select floating" id="chart_type">
-                                                                {{-- <option value="0" selected>Select type</option> --}}
-                                                                <option value="attendance" selected>Attendance</option>
-                                                                <option value="employee_status">Employee Status</option>
-                                                            </select>
-                                                            <label class="focus-label">Type</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6 col-md-3">
-                                                        <div class="form-group form-focus">
-                                                            <div class="cal-icon">
-                                                                <input class="form-control floating datepickerFrom"
-                                                                    type="text">
-                                                            </div>
-                                                            <label class="focus-label">From</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6 col-md-3">
-                                                        <div class="form-group form-focus">
-                                                            <div class="cal-icon">
-                                                                <input class="form-control floating datepickerTo"
-                                                                    type="text">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6 col-md-3">
-                                                        <a href="#" id="apply-filter"
-                                                            class="btn btn-success w-100">Apply Filter</a>
-                                                    </div>
-                                                </div>
-                                                <!-- /Search Filter -->
-                                            </div>
-                                            <div id="bar-charts"></div>
-                                        </div>
-                                        <div class="col-md-2 p-3" id="wrapper-indicator">
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                
+                
+                <!-- Statistics Widget -->
+                
+                <div class="row">
+                    <div class="col-md-12 col-lg-6 col-xl-4 d-flex">
+                        <div id="departChart" class="chart--container">
                         </div>
                     </div>
-                </div>
-
-                <!-- Statistics Widget -->
-
-                <div class="row">
                     <div class="col-md-12 col-lg-12 col-xl-4 d-flex">
                         <div class="card flex-fill dash-statistics">
                             <div class="card-body">
@@ -341,23 +334,6 @@
                         <div class="card flex-fill">
                             <div class="card-body">
                                 <h4 class="card-title">Task Statistics</h4>
-                                <div class="statistics">
-                                    <div class="row">
-                                        <div class="col-md-6 col-6 text-center">
-                                            <div class="stats-box mb-4">
-                                                <p>Total Clock In</p>
-                                                <h3 id="totalClockIn">0</h3>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-6 text-center">
-                                            <div class="stats-box mb-4">
-                                                <p>Total Absent</p>
-                                                <h3 id="totalAbsent">0</h3>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div>
                                     <p><i class="fa fa-dot-circle-o text-purple me-2"></i>Timesheets <span
                                             class="float-end" id="totalTimesheets">0</span></p>
@@ -371,254 +347,27 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-md-12 col-lg-6 col-xl-4 d-flex">
-                        <div class="card flex-fill">
-                            <div class="card-body">
-                                <h4 class="card-title">Today Absent</h4>
-                                <div class="body-content">
-
-                                </div>
-                                {{-- @if (count($topThreeEmployeeClockIn) > 0)
-                            <div class="load-more text-center">
-                                <a class="text-dark" href="javascript:void(0);">Load More</a>
-                            </div>
-                        @endif --}}
-                            </div>
-                        </div>
+                </div>
+                <!-- /Statistics Widget -->      
+               <div class="row">
+                <div class="card shadow-sm">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr colspan="6" class="text-center">UNISMENT</tr>
+                                <tr>
+                                    <th>No</th>
+                                    <th>employee Id</th>
+                                    <th>employee</th>
+                                    <th>Department</th>
+                                    <th>position</th>
+                                    <th>Branch</th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
-                <!-- /Statistics Widget -->
-
-
-
-                <div class="row">
-                    <div class="col-md-6 d-flex">
-                        <div class="card card-table flex-fill">
-                            <div class="card-header">
-                                <h3 class="card-title mb-0">Time sheets Schedule</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive p-2">
-                                    <table class="table table-nowrap custom-table tbl-timesheet-schedule">
-                                        <thead>
-                                            <tr>
-                                                <th>Project / Task</th>
-                                                <th>Client</th>
-                                                <th>Start Date</th>
-                                                <th>End Date</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            {{-- <div class="card-footer">
-                        <a href="#">More Details</a>
-                    </div> --}}
-                        </div>
-                    </div>
-                    <div class="col-md-6 d-flex">
-                        <div class="card card-table flex-fill">
-                            <div class="card-header">
-                                <h3 class="card-title mb-0">Employee Resume</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive p-2">
-                                    <table class="table custom-table table-nowrap tbl-employee-resume">
-                                        <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Activity</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            {{-- <div class="card-footer">
-                        <a href="#">More Details</a>
-                    </div> --}}
-                        </div>
-                    </div>
-                </div>
-
-                {{-- <div class="row">
-            <div class="col-md-6 d-flex">
-                <div class="card card-table flex-fill">
-                    <div class="card-header">
-                        <h3 class="card-title mb-0">Absent employees </h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive p-2">
-                            <table class="table table-nowrap custom-table ">
-                                <thead>
-                                    <tr>
-                                        <th>Nama</th>
-                                        <th>Branch</th>
-                                        <th>Sick</th>
-                                        <th>Alpha</th>
-                                        <th>Cuti</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($absentEmployees as $item)
-                                        <tr>
-                                            <td>
-                                                {{$item['employeeName']}}
-                                            </td>
-                                            <td>
-                                                {{$item['branch']}}
-                                            </td>
-                                            <td>
-                                                {{$item['totalSick']}}
-                                            </td>
-                                            <td>
-                                                {{$item['alpha']}}
-                                            </td>
-                                            <td>
-                                                {{$item['leave']}}
-                                            </td>
-                                        </tr>
-                                    @empty
-
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#">More Details</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 d-flex">
-                <div class="card card-table flex-fill">
-                    <div class="card-header">
-                        <h3 class="card-title mb-0">Employee Birthday</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive p-2">
-                            <table class="table custom-table table-nowrap ">
-                                <thead>
-                                    <tr>
-                                        <th>Nama</th>
-                                        <th>Branch</th>
-                                        <th>Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($birthdayEmployees as $item)
-                                        <tr>
-                                            <td>
-                                                {{$item['employeeName']}}
-                                            </td>
-                                            <td>
-                                                {{$item['branch']}}
-                                            </td>
-                                            <td>
-                                                {{$item['birth']}}
-                                            </td>
-                                        </tr>
-                                    @empty
-
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#">More Details</a>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
-
-                {{-- <div class="row">
-            <div class="col-md-6 d-flex">
-                <div class="card card-table flex-fill">
-                    <div class="card-header">
-                        <h3 class="card-title mb-0">Employee Contract Will End </h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive p-2">
-                            <table class="table table-nowrap custom-table datatable">
-                                <thead>
-                                    <tr>
-                                        <th>Nama</th>
-                                        <th>Branch</th>
-                                        <th>End Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if (isset($employeesContractWillExpire))
-                                        @foreach ($employeesContractWillExpire as $item)
-                                            <tr>
-                                                <td>
-                                                    {{$item['employeeName']}}
-                                                </td>
-                                                <td>
-                                                    {{$item['branch']}}
-                                                </td>
-                                                <td>
-                                                    {{$item['end_date']}}
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @else
-
-                                    @endif
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 d-flex">
-                <div class="card card-table flex-fill">
-                    <div class="card-header">
-                        <h3 class="card-title mb-0">Best Employee </h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive p-2">
-                            <table class="table table-nowrap custom-table datatable">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nama</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if (isset($bestEmployees))
-                                        @php
-                                            $no = 1;
-                                        @endphp
-                                        @foreach ($bestEmployees as $item)
-                                            <tr>
-                                                <td>
-                                                    {{$no++}}
-                                                </td>
-                                                <td>
-                                                    {{$item['name']}}
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @else
-
-                                    @endif
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div> --}}
+               </div>
             </div>
             <!-- /Page Content -->
 
@@ -634,12 +383,874 @@
         <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css') }}">
         <!-- Select2 CSS -->
         <link rel="stylesheet" href="{{ asset('assets/css/select2.min.css') }}">
+
+
+
+        <script nonce="undefined" src="https://cdn.zingchart.com/zingchart.min.js"></script>
+        <style>
+            @import 'https://fonts.googleapis.com/css?family=Montserrat';
+            @import 'https://fonts.googleapis.com/css?family=Lato:400';
+        </style>
     @endpush
 
     @push('addon-script')
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        gender();
+        function gender(){
+            ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"];
+            let chartConfig = {
+            gui: {
+                contextMenu: {
+                backgroundColor: '#306EAA', // sets background for entire contextMenu
+                },
+            },
+            graphset: [{
+                type: 'ring',
+                backgroundColor: '#FBFCFE',
+                title: {
+                text: 'Gender',
+                fontColor: '#1E5D9E',
+                fontFamily: 'Lato',
+                fontSize: '12px',
+                padding: '5px',
+                },
+                
+                plot: {
+                tooltip: {
+                    text: '<span style="color:%color">%t</span><br><span style="color:%color">%v</span>',
+                    anchor: 'c',
+                    backgroundColor: 'none',
+                    borderWidth: '0px',
+                    fontSize: '12px',
+                    mediaRules: [{
+                    maxWidth: '500px',
+                    y: '54%',
+                    }, ],
+                    sticky: true,
+                    thousandsSeparator: ',',
+                    x: '50%',
+                    y: '50%',
+                },
+                valueBox: [{
+                    // type: 'all',
+                    text: '%t',
+                    placement: 'out',
+                    },
+                    {
+                    // type: 'all',
+                    text: '%npv%',
+                    placement: 'in',
+                    },
+                ],
+                animation: {
+                    effect: 'ANIMATION_EXPAND_VERTICAL',
+                    sequence: 'ANIMATION_BY_PLOT_AND_NODE',
+                },
+                backgroundColor: '#FBFCFE',
+                borderWidth: '0px',
+                hoverState: {
+                    cursor: 'hand',
+                },
+                slice: '40%',
+                },
+                series: [{
+                    text: 'Female',
+                    values: [106541],
+                    backgroundColor: '#00BAF2',
+                    lineColor: '#00BAF2',
+                    lineWidth: '1px',
+                    marker: {
+                    backgroundColor: '#00BAF2',
+                    },
+                },
+                {
+                    text: 'Male',
+                    values: [56711],
+                    backgroundColor: '#E80C60',
+                    lineColor: '#E80C60',
+                    lineWidth: '1px',
+                    marker: {
+                    backgroundColor: '#E80C60',
+                    },
+                },
+                
+                ],
+                noData: {
+                text: 'No Selection',
+                alpha: 0.6,
+                backgroundColor: '#20b2db',
+                bold: true,
+                fontSize: '12px',
+                textAlpha: 0.9,
+                },
+            }, ],
+            };
 
+            zingchart.render({
+            id: 'myChart',
+            data: chartConfig,
+            height: '90%',
+            width: '100%',
+            });
+        }
+    </script>
+    <script>
+        ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"];
+        window.feed = function(callback) {
+        var tick = {};
+        // tick.plot0 = Math.ceil(350 + (Math.random() * 500));
+        callback(JSON.stringify(tick));
+        };
+ 
+        var myConfig = {
+            type: "gauge",
+            title: {
+            text: 'Turnover',
+            bold: true,
+            fontColor: '#515151',
+            backgroundColor : '#FBFCFE',
+        },
+        globals: {
+            fontSize: 12
+        },
+        plotarea: {
+            // csize: '4px',
+            backgroundColor: 'none',
+            borderWidth: '0px',
+            margin: '50px 5px 0px 5px',
+        },
+        backgroundColor: '#FBFCFE',
+        scaleR: {
+            aperture: 180,
+            minValue: 0,
+            maxValue: 100,
+            center: {
+                backgroundColor: '#CDCDCD',
+                size : '8px',
+                borderWidth: '0px',
+            },
+            borderWidth: '0px',
+            tick: {
+                visible: false
+            },
+            item: {
+                fontColor: '#1E5D9E',
+                fontFamily: 'Montserrat',
+                offsetR: 0,
+                padding: '5px',
+            },
+            step: 50,
+            ring: {
+                size: '40px',
+                },
+        },
+        series: [{
+            values: [50], // starting value
+            backgroundColor: 'black',
+            animation: {
+            effect: 2,
+            method: 1,
+            sequence: 4,
+            speed: 900
+            },
+        }]
+        };
+ 
+        zingchart.render({
+        id: 'gaugeChart',
+        data: myConfig,
+        height: '90%',
+        width: '100%'
+        });
+    </script>
+       <script>
+        ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"];
+        let chartData = [
+            {
+            type: 'line',
+            values: [69, 68, 54, 80, 70, 74, 90, 70, 72, 68, 49, 69],
+            scales: 'scale-x,scale-y',
+            lineColor: '#0D47A1',
+            legendMarker: {
+              type: 'circle',
+            },
+            marker: {
+              backgroundColor: '#0D47A1',
+            },
+          },
+          {
+            type: 'bar',
+            values: [22, 25, 14, 22, 26, 29, 34, 22, 26, 18, 22, 21],
+            scales: 'scale-x,scale-y-3',
+            backgroundColor: '#1B5E20',
+            tooltip: {
+              text: 'The number being shown is the percentage of the node when compared to its plot',
+              width: '200px',
+              wrapText: true,
+            },
+            valueBox: {
+              text: '%pper%',
+              decimals: 1,
+              fontAngle: 90,
+              fontColor: '#fff',
+              offsetY: '5px',
+              placement: 'top-in',
+            },
+          },
+          {
+        type: 'bar',
+        values: [
+          250000, 150000, 260000, 210000, 240000, 260000, 330000, 150000, 410000,
+          250000, 220000, 240000,
+        ],
+        scales: 'scale-x,scale-y-4',
+        backgroundColor: '#E65100',
+        text: 'Dell',
+        tooltip: {
+          text: 'The number being shown above the bar is the value of the node',
+          width: '200px',
+          wrapText: true,
+        },
+        valueBox: {
+          bold: true,
+          fontAngle: 90,
+          fontColor: '#fff',
+          offsetY: '5px',
+          placement: 'top-in',
+          short: true,
+        },
+      },
+        ];
+    
+        let barchartConfig = {
+          type: 'mixed',
+          backgroundColor: '#FBFCFE',
+          title: {
+            text: 'employee report',
+            align: 'left',
+            backgroundColor: '#FBFCFE',
+            fontSize: '14px',
+            height: '5%',
+          },
+       
+          scaleX: {
+            values: [
+              'Jan',
+              'Feb',
+              'Mar',
+              'Apr',
+              'May',
+              'Jun',
+              'Jul',
+              'Aug',
+              'Sep',
+              'Oct',
+              'Nov',
+              'Dec',
+            ],
+           
+            label: {
+              text: 'X label',
+            },
+            
+          },
+        
+          scaleY3: {
+            values: '0:50:10',
+            decimals: 2,
+            guide: {
+              visible: false,
+            },
+            label: {
+              text: 'Y-3 label',
+            },
+            zooming: true,
+          },
+          scaleY4: {
+        values: '0:1000000:100000',
+        format: '$%v',
+        guide: {
+          visible: false,
+        },
+        label: {
+          text: 'Y-4 label',
+        },
+        multiplier: true,
+        zooming: true,
+      },
+          zoom: {
+            alpha: 0.2,
+            backgroundColor: '#B71C1C',
+            label: {
+              borderColor: '#B71C1C',
+              visible: true,
+            },
+          },
+          scrollX: {
+            bar: {
+              backgroundColor: '#757575',
+              height: '8px',
+            },
+            handle: {
+              backgroundColor: '#E0E0E0',
+              height: '4px',
+              offsetY: '-1px',
+            },
+          },
+          scrollY: {
+            bar: {
+              width: '8px',
+              backgroundColor: '#757575',
+            },
+            handle: {
+              backgroundColor: '#E0E0E0',
+              offsetX: '-1px',
+              width: '4px',
+            },
+          },
+       
+          series: chartData,
+        };
+    
+        zingchart.render({
+          id: 'diagramChart',
+          data: barchartConfig,
+          height: '97%',
+          width: '100%',
+        });
+      </script>
+    <script>
+      ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"];
+      let departchartConfig = {
+        type: 'pie',
+        backgroundColor: '#FBFCFE',
+        title: {
+          text: 'Department',
+          backgroundColor: '#FBFCFE',
+          fontColor: '#1A1B26',
+          fontSize: '12px',
+          height: '20px'
+        },
+        // subtitle: {
+        //   backgroundColor: '#202235',
+        //   height: '35px',
+        //   y: '40px'
+        // },
+        legend: {
+          backgroundColor: 'none',
+          borderWidth: '0px',
+          item: {
+            fontColor: '#000'
+          },
+          layout: 'h',
+          marker: {
+            type: 'circle',
+            borderColor: 'white'
+          },
+          shadow: true,
+          toggleAction: 'remove',
+           y: '40px'
+        },
+        plotarea: {
+          margin: '90px 30px 25px 30px'
+        },
+        tooltip: {
+          borderColor: '#fff',
+          borderRadius: '3px',
+          borderWidth: '1px',
+          fontColor: '#1A1B26',
+          fontSize: '12px',
+          shadow: true
+        },
+        series: [{
+            text : 'Produksi',
+            values: [400],
+            backgroundColor: '#2870B1'
+          },
+          {
+            text : 'QE',
+            values: [350],
+            backgroundColor: '#FFA72A'
+          },
+          {
+            text : 'assemble',
+            values: [250],
+            backgroundColor: '#7E971C'
+          }
+        ]
+      };
+  
+      zingchart.render({
+        id: 'departChart',
+        data: departchartConfig,
+        height: '90%',
+        width: '100%',
+      });
+    </script>
 
+<script>
+    ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"];
+    let cilinderchartConfig = {
+      backgroundColor: '#ecf2f6',
+      graphset: [
+        // {
+        //   type: 'bar',
+        //   backgroundColor: '#fff',
+        //   borderWidth: '1px',
+        //   borderColor: '#dae5ec',
+        //   width: '96%',
+        //   height: '30%',
+        //   x: '2%',
+        //   y: '3%',
+        //   title: {
+        //     text: 'employee per year',
+        //     marginTop: '7px',
+        //     marginLeft: '9px',
+        //     backgroundColor: 'none',
+        //     fontColor: '#707d94',
+        //     fontFamily: 'Arial',
+        //     fontSize: '11px',
+        //     fontWeight: 'bold',
+        //     shadow: false,
+        //     textAlign: 'left',
+        //   },
+        //   plot: {
+        //     tooltip: {
+        //       padding: '5px 10px',
+        //       backgroundColor: '#707e94',
+        //       borderRadius: '6px',
+        //       fontColor: '#fff',
+        //       fontFamily: 'Arial',
+        //       fontSize: '11px',
+        //       shadow: false,
+        //     },
+        //     animation: {
+        //       delay: 500,
+        //       effect: 'ANIMATION_SLIDE_BOTTOM',
+        //     },
+        //     barWidth: '33px',
+        //     hoverState: {
+        //       visible: false,
+        //     },
+        //   },
+        //   plotarea: {
+        //     margin: '45px 20px 38px 45px',
+        //   },
+        //   scaleX: {
+        //     values: [
+        //       'Apparel',
+        //       'Drug',
+        //       'Footwear',
+        //       'Gift Card',
+        //       'Home',
+        //       'Jewelry',
+        //       'Garden',
+        //       'Other',
+        //     ],
+        //     guide: {
+        //       visible: false,
+        //     },
+        //     item: {
+        //       paddingTop: '2px',
+        //       fontColor: '#8391a5',
+        //       fontFamily: 'Arial',
+        //       fontSize: '11px',
+        //     },
+        //     itemsOverlap: true,
+        //     lineColor: '#d2dae2',
+        //     maxItems: 9999,
+        //     offsetY: '1px',
+        //     tick: {
+        //       lineColor: '#d2dae2',
+        //       visible: false,
+        //     },
+        //   },
+        //   scaleY: {
+        //     values: '0:300:100',
+        //     guide: {
+        //       rules: [{
+        //           lineWidth: '0px',
+        //           rule: '%i == 0',
+        //         },
+        //         {
+        //           alpha: 0.4,
+        //           lineColor: '#d2dae2',
+        //           lineStyle: 'solid',
+        //           lineWidth: '1px',
+        //           rule: '%i > 0',
+        //         },
+        //       ],
+        //     },
+        //     item: {
+        //       paddingRight: '5px',
+        //       fontColor: '#8391a5',
+        //       fontFamily: 'Arial',
+        //       fontSize: '10px',
+        //     },
+        //     lineColor: 'none',
+        //     maxItems: 4,
+        //     maxTicks: 4,
+        //     tick: {
+        //       visible: false,
+        //     },
+        //   },
+        //   series: [{
+        //     values: [150, 165, 173, 201, 185, 195, 162, 125],
+        //     styles: [{
+        //         backgroundColor: '#4dbac0',
+        //       },
+        //       {
+        //         backgroundColor: '#25a6f7',
+        //       },
+        //       {
+        //         backgroundColor: '#ad6bae',
+        //       },
+        //       {
+        //         backgroundColor: '#707d94',
+        //       },
+        //       {
+        //         backgroundColor: '#f3950d',
+        //       },
+        //       {
+        //         backgroundColor: '#e62163',
+        //       },
+        //       {
+        //         backgroundColor: '#4e74c0',
+        //       },
+        //       {
+        //         backgroundColor: '#9dc012',
+        //       },
+        //     ],
+        //   }, ],
+        // },
+        // {
+        //   type: 'hbar',
+        //   backgroundColor: '#fff',
+        //   borderColor: '#dae5ec',
+        //   borderWidth: '1px',
+        //   width: '30%',
+        //   height: '63%',
+        //   x: '2%',
+        //   y: '35.2%',
+        //   title: {
+        //     text: 'BRAND PERFORMANCE',
+        //     marginTop: '7px',
+        //     marginLeft: '9px',
+        //     backgroundColor: 'none',
+        //     fontColor: '#707d94',
+        //     fontFamily: 'Arial',
+        //     fontSize: '11px',
+        //     shadow: false,
+        //     textAlign: 'left',
+        //   },
+        //   plot: {
+        //     tooltip: {
+        //       padding: '5px 10px',
+        //       backgroundColor: '#707e94',
+        //       borderRadius: '6px',
+        //       fontColor: '#ffffff',
+        //       fontFamily: 'Arial',
+        //       fontSize: '11px',
+        //       shadow: false,
+        //     },
+        //     animation: {
+        //       delay: 500,
+        //       effect: 'ANIMATION_EXPAND_LEFT',
+        //     },
+        //     barsOverlap: '100%',
+        //     barWidth: '12px',
+        //     hoverState: {
+        //       backgroundColor: '#707e94',
+        //     },
+        //     thousandsSeparator: ',',
+        //   },
+        //   plotarea: {
+        //     margin: '50px 15px 10px 15px',
+        //   },
+        //   scaleX: {
+        //     values: [
+        //       'Kenmore',
+        //       'Craftsman',
+        //       'DieHard',
+        //       "Land's End",
+        //       'Laclyn Smith',
+        //       'Joe Boxer',
+        //     ],
+        //     guide: {
+        //       visible: false,
+        //     },
+        //     item: {
+        //       paddingBottom: '8px',
+        //       fontColor: '#8391a5',
+        //       fontFamily: 'Arial',
+        //       fontSize: '11px',
+        //       offsetX: '206px',
+        //       offsetY: '-12px',
+        //       textAlign: 'left',
+        //       width: '200px',
+        //     },
+        //     lineColor: 'none',
+        //     tick: {
+        //       visible: false,
+        //     },
+        //   },
+        //   scaleY: {
+        //     guide: {
+        //       visible: false,
+        //     },
+        //     item: {
+        //       visible: false,
+        //     },
+        //     lineColor: 'none',
+        //     tick: {
+        //       visible: false,
+        //     },
+        //   },
+        //   series: [{
+        //       values: [103902, 112352, 121823, 154092, 182023, 263523],
+        //       styles: [{
+        //           backgroundColor: '#4dbac0',
+        //         },
+        //         {
+        //           backgroundColor: '#4dbac0',
+        //         },
+        //         {
+        //           backgroundColor: '#4dbac0',
+        //         },
+        //         {
+        //           backgroundColor: '#4dbac0',
+        //         },
+        //         {
+        //           backgroundColor: '#4dbac0',
+        //         },
+        //         {
+        //           backgroundColor: '#4dbac0',
+        //         },
+        //       ],
+        //       tooltipText: '$%node-value',
+        //       zIndex: 2,
+        //     },
+        //     {
+        //       values: [300000, 300000, 300000, 300000, 300000, 300000],
+        //       valueBox: {
+        //         text: '$%data-rvalues',
+        //         paddingBottom: '8px',
+        //         fontColor: '#8391a5',
+        //         fontFamily: 'Arial',
+        //         fontSize: '11px',
+        //         offsetX: '-54px',
+        //         offsetY: '-12px',
+        //         textAlign: 'right',
+        //         visible: true,
+        //       },
+        //       backgroundColor: '#d9e4eb',
+        //       dataRvalues: [103902, 112352, 121823, 154092, 182023, 263523],
+        //       maxTrackers: 0,
+        //       zIndex: 1,
+        //     },
+        //   ],
+        // },
+        {
+          type: 'line',
+          backgroundColor: '#fff',
+          borderColor: '#dae5ec',
+          borderWidth: '1px',
+          width: '100%',
+          height: '100%',
+        //   x: '34%',
+        //   y: '35.2%',
+          title: {
+            text: "TODAY'S SALES",
+            marginTop: '7px',
+            marginLeft: '12px',
+            backgroundColor: 'none',
+            fontColor: '#707d94',
+            fontFamily: 'Arial',
+            fontSize: '11px',
+            shadow: false,
+            textAlign: 'left',
+          },
+          legend: {
+            margin: 'auto auto 15 auto',
+            backgroundColor: 'none',
+            borderWidth: '0px',
+            item: {
+              margin: '0px',
+              padding: '0px',
+              fontColor: '#707d94',
+              fontFamily: 'Arial',
+              fontSize: '9px',
+            },
+            layout: 'x4',
+            marker: {
+              type: 'match',
+              padding: '3px',
+              fontFamily: 'Arial',
+              fontSize: '10px',
+              lineWidth: '2px',
+              showLine: 'true',
+              size: 4,
+            },
+            shadow: false,
+          },
+          plot: {
+            tooltip: {
+              visible: false,
+            },
+            animation: {
+              delay: 500,
+              effect: 'ANIMATION_SLIDE_LEFT',
+            },
+          },
+          plotarea: {
+            margin: '50px 25px 70px 46px',
+          },
+        //   scaleX: {
+        //     values: [
+        //       'Jan',
+        //       'Feb',
+        //       'Mar',
+        //       'Apr',
+        //       'May',
+        //       'Jun',
+        //       'Jul',
+        //       'Aug',
+        //       'Sep',
+        //       'Oct',
+        //       'Nov',
+        //       'Dec',
+        //     ],
+        //     guide: {
+        //       visible: false,
+        //     },
+        //     item: {
+        //       paddingTop: '5px',
+        //       fontColor: '#8391a5',
+        //       fontFamily: 'Arial',
+        //       fontSize: '10px',
+        //     },
+        //     lineColor: '#d2dae2',
+        //     lineWidth: '2px',
+        //     tick: {
+        //       lineColor: '#d2dae2',
+        //       lineWidth: '1px',
+        //     },
+        //   },
+        //   scaleY: {
+        //     values: '0:100:25',
+        //     guide: {
+        //       alpha: 0.5,
+        //       lineColor: '#d2dae2',
+        //       lineStyle: 'solid',
+        //       lineWidth: '1px',
+        //     },
+        //     item: {
+        //       paddingRight: '5px',
+        //       fontColor: '#8391a5',
+        //       fontFamily: 'Arial',
+        //       fontSize: '10px',
+        //     },
+        //     lineColor: 'none',
+        //     tick: {
+        //       visible: false,
+        //     },
+        //   },
+        //   scaleLabel: {
+        //     padding: '5px 10px',
+        //     backgroundColor: '#707d94',
+        //     borderRadius: '5px',
+        //     fontColor: '#ffffff',
+        //     fontFamily: 'Arial',
+        //     fontSize: '10px',
+        //   },
+        //   crosshairX: {
+        //     lineColor: '#707d94',
+        //     lineWidth: '1px',
+        //     plotLabel: {
+        //       padding: '5px 10px',
+        //       alpha: 1,
+        //       borderRadius: '5px',
+        //       fontColor: '#000',
+        //       fontFamily: 'Arial',
+        //       fontSize: '10px',
+        //       shadow: false,
+        //     },
+        //   },
+          series: [{
+              text: 'Kenmore',
+              values: [69, 68, 54, 48, 70],
+              lineColor: '#4dbac0',
+              lineWidth: '2px',
+              marker: {
+                backgroundColor: '#fff',
+                borderColor: '#36a2a8',
+                borderWidth: '1px',
+                shadow: false,
+                size: 3,
+              },
+              palette: 0,
+              shadow: false,
+            },
+            {
+              text: 'Craftsman',
+              values: [51, 53, 47, 60, 48],
+              lineColor: '#25a6f7',
+              lineWidth: '2px',
+              marker: {
+                backgroundColor: '#fff',
+                borderColor: '#1993e0',
+                borderWidth: '1px',
+                shadow: false,
+                size: 3,
+              },
+              palette: 1,
+              shadow: false,
+              visible: true,
+            },
+            {
+              text: 'DieHard',
+              values: [42, 43, 30, 50, 31],
+              lineColor: '#ad6bae',
+              lineWidth: '2px',
+              marker: {
+                backgroundColor: '#fff',
+                borderColor: '#975098',
+                borderWidth: '1px',
+                shadow: false,
+                size: 3,
+              },
+              palette: 2,
+              shadow: false,
+              visible: true,
+            },
+            {
+              text: "Land's End",
+              values: [25, 15, 26, 21, 24],
+              lineColor: '#f3950d',
+              lineWidth: '2px',
+              marker: {
+                backgroundColor: '#fff',
+                borderColor: '#d37e04',
+                borderWidth: '1px',
+                shadow: false,
+                size: 3,
+              },
+              palette: 3,
+              shadow: false,
+            },
+          ],
+        },
+      ],
+    };
+
+    zingchart.render({
+      id: 'cilinderChart',
+      data: cilinderchartConfig,
+      height: '100%',
+      width: '100%',
+    });
+  </script>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
         <!-- Datatable JS -->
         <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
@@ -662,6 +1273,7 @@
         <script src="{{ asset('assets/js/bootstrap-datetimepicker.min.js') }}"></script>
         <!-- jquery -->
         <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
+        {{-- <script src="{{ asset('assets/plugins/modules/zingchart-pie.min.js') }} defer></script> --}}
 
         @include('includes.dashboard.filter_js');
         <script>
@@ -688,173 +1300,173 @@
                     return new Date(year, month, 1);
                 }
 
-                function drawDonutChart(data) {
-                    $('#donut-chart').empty()
-                    Morris.Donut({
-                        element: 'donut-chart',
-                        redrawOnParentResize: true,
-                        data: data,
-                        redraw: true
-                    });
-                }
+                // function drawDonutChart(data) {
+                //     $('#donut-chart').empty()
+                //     Morris.Donut({
+                //         element: 'donut-chart',
+                //         redrawOnParentResize: true,
+                //         data: data,
+                //         redraw: true
+                //     });
+                // }
 
-                function updateDataChartAttendance(data) {
-                    return data;
-                }
+                // function updateDataChartAttendance(data) {
+                //     return data;
+                // }
 
-                function addIndicators(chart_type) {
-                    $('#wrapper-indicator').empty()
-                    if (chart_type == 'attendance') {
-                        const indicators = `<div class="form-group d-flex justify-content-start">
-                                            <input id="chartIndicator" checked data-label="On Time" value="onTime" type="checkbox" class="checkmail me-2">
-                                            <label class="label">On Time</label>
-                                        </div>
-                                        <div class="form-group d-flex justify-content-start">
-                                            <input id="chartIndicator" checked data-label="Late" value="totalLate" type="checkbox" class="checkmail me-2">
-                                            <label class="label">Late</label>
-                                        </div>
-                                        <div class="form-group d-flex justify-content-start">
-                                            <input id="chartIndicator" checked data-label="Alpha" value="alpha" type="checkbox" class="checkmail me-2">
-                                            <label class="label">Alpha</label>
-                                        </div>
-                                        <div class="form-group d-flex justify-content-start">
-                                            <input id="chartIndicator" checked data-label="Leave" value="leave" type="checkbox" class="checkmail me-2">
-                                            <label class="label">Leave</label>
-                                        </div>
-                                        <div class="form-group d-flex justify-content-start">
-                                            <input id="chartIndicator" checked data-label="Sick" value="sick" type="checkbox" class="checkmail me-2">
-                                            <label class="label">Sick</label>
-                                        </div>`;
-                        $('#wrapper-indicator').append(indicators)
-                    } else if (chart_type == 'employee_status') {
-                        const indicators = `<div class="form-group d-flex justify-content-start">
-                                                <input id="chartIndicator" checked data-label="New" value="newEmployee" type="checkbox" class="checkmail me-2">
-                                                <label class="label">New</label>
-                                            </div>
-                                            <div class="form-group d-flex justify-content-start">
-                                                <input id="chartIndicator" checked data-label="Out" value="outEmployee" type="checkbox" class="checkmail me-2">
-                                                <label class="label">Out</label>
-                                            </div>
-                                            <div class="form-group d-flex justify-content-start">
-                                                <input id="chartIndicator" checked data-label="Jobholder" value="jobholder" type="checkbox" class="checkmail me-2">
-                                                <label class="label">Jobholder</label>
-                                            </div>
-                                            <div class="form-group d-flex justify-content-start">
-                                                <input id="chartIndicator" checked data-label="Contract" value="contract" type="checkbox" class="checkmail me-2">
-                                                <label class="label">Contract</label>
-                                            </div>
-                                            <div class="form-group d-flex justify-content-start">
-                                                <input id="chartIndicator" checked data-label="Freelance" value="freelance" type="checkbox" class="checkmail me-2">
-                                                <label class="label">Freelance</label>
-                                            </div>`;
-                        $('#wrapper-indicator').append(indicators)
-                    }
-                }
+                // function addIndicators(chart_type) {
+                //     $('#wrapper-indicator').empty()
+                //     if (chart_type == 'attendance') {
+                //         const indicators = `<div class="form-group d-flex justify-content-start">
+                //                             <input id="chartIndicator" checked data-label="On Time" value="onTime" type="checkbox" class="checkmail me-2">
+                //                             <label class="label">On Time</label>
+                //                         </div>
+                //                         <div class="form-group d-flex justify-content-start">
+                //                             <input id="chartIndicator" checked data-label="Late" value="totalLate" type="checkbox" class="checkmail me-2">
+                //                             <label class="label">Late</label>
+                //                         </div>
+                //                         <div class="form-group d-flex justify-content-start">
+                //                             <input id="chartIndicator" checked data-label="Alpha" value="alpha" type="checkbox" class="checkmail me-2">
+                //                             <label class="label">Alpha</label>
+                //                         </div>
+                //                         <div class="form-group d-flex justify-content-start">
+                //                             <input id="chartIndicator" checked data-label="Leave" value="leave" type="checkbox" class="checkmail me-2">
+                //                             <label class="label">Leave</label>
+                //                         </div>
+                //                         <div class="form-group d-flex justify-content-start">
+                //                             <input id="chartIndicator" checked data-label="Sick" value="sick" type="checkbox" class="checkmail me-2">
+                //                             <label class="label">Sick</label>
+                //                         </div>`;
+                //         $('#wrapper-indicator').append(indicators)
+                //     } else if (chart_type == 'employee_status') {
+                //         const indicators = `<div class="form-group d-flex justify-content-start">
+                //                                 <input id="chartIndicator" checked data-label="New" value="newEmployee" type="checkbox" class="checkmail me-2">
+                //                                 <label class="label">New</label>
+                //                             </div>
+                //                             <div class="form-group d-flex justify-content-start">
+                //                                 <input id="chartIndicator" checked data-label="Out" value="outEmployee" type="checkbox" class="checkmail me-2">
+                //                                 <label class="label">Out</label>
+                //                             </div>
+                //                             <div class="form-group d-flex justify-content-start">
+                //                                 <input id="chartIndicator" checked data-label="Jobholder" value="jobholder" type="checkbox" class="checkmail me-2">
+                //                                 <label class="label">Jobholder</label>
+                //                             </div>
+                //                             <div class="form-group d-flex justify-content-start">
+                //                                 <input id="chartIndicator" checked data-label="Contract" value="contract" type="checkbox" class="checkmail me-2">
+                //                                 <label class="label">Contract</label>
+                //                             </div>
+                //                             <div class="form-group d-flex justify-content-start">
+                //                                 <input id="chartIndicator" checked data-label="Freelance" value="freelance" type="checkbox" class="checkmail me-2">
+                //                                 <label class="label">Freelance</label>
+                //                             </div>`;
+                //         $('#wrapper-indicator').append(indicators)
+                //     }
+                // }
 
-                function initiateEventsChartIfIndicatorChanged() {
-                    $('input[id="chartIndicator"]').click(function(e) {
-                        let yKeysArr = [];
-                        let labels = [];
-                        const dateFrom = $('.datepickerFrom').val();
-                        const dateTo = $('.datepickerTo').val();
-                        const branch_id = $('#branch_id').val();
-                        const chart_type = $('#chart_type').val();
+                // function initiateEventsChartIfIndicatorChanged() {
+                //     $('input[id="chartIndicator"]').click(function(e) {
+                //         let yKeysArr = [];
+                //         let labels = [];
+                //         const dateFrom = $('.datepickerFrom').val();
+                //         const dateTo = $('.datepickerTo').val();
+                //         const branch_id = $('#branch_id').val();
+                //         const chart_type = $('#chart_type').val();
 
-                        $('input[id="chartIndicator"]:checked').each(function(index, element) {
-                            yKeysArr.push($(this).val());
-                            labels.push($(this).data('label'));
-                        });
-                        $.post("{{ route('dashboard.filter-chart-attendance') }}", {
-                                "_token": "{{ csrf_token() }}",
-                                "dateFrom": dateFrom,
-                                "dateTo": dateTo,
-                                "branch_id": branch_id,
-                                "chart_type": chart_type,
-                                "yKeysArr": yKeysArr,
-                                "labels": labels,
-                            })
-                            .done(function(data) {
-                                $('#bar-charts').empty()
+                //         $('input[id="chartIndicator"]:checked').each(function(index, element) {
+                //             yKeysArr.push($(this).val());
+                //             labels.push($(this).data('label'));
+                //         });
+                //         $.post("{{ route('dashboard.filter-chart-attendance') }}", {
+                //                 "_token": "{{ csrf_token() }}",
+                //                 "dateFrom": dateFrom,
+                //                 "dateTo": dateTo,
+                //                 "branch_id": branch_id,
+                //                 "chart_type": chart_type,
+                //                 "yKeysArr": yKeysArr,
+                //                 "labels": labels,
+                //             })
+                //             .done(function(data) {
+                //                 $('#bar-charts').empty()
 
-                                if (chart_type == 'attendance') {
-                                    const chartAttendance = Morris.Bar({
-                                        element: 'bar-charts',
-                                        redrawOnParentResize: true,
-                                        data: updateDataChartAttendance(data),
-                                        xkey: 'month',
-                                        ykeys: yKeysArr,
-                                        // ykeys: yKeysAttendance,
-                                        labels: labels,
-                                        // labels: labelAttendance,
-                                        lineColors: ['#ff9b44', '#fc6075', '#0000FF', '#808080',
-                                            '#0ad0FF'
-                                        ],
-                                        lineWidth: '5px',
-                                        barColors: ['#ff9b44', '#fc6075', '#0000FF', '#808080',
-                                            '#0ad0FF'
-                                        ],
-                                        resize: true,
-                                        redraw: true
-                                    });
-                                } else if (chart_type == 'employee_status') {
-                                    const chartAttendance = Morris.Bar({
-                                        element: 'bar-charts',
-                                        redrawOnParentResize: true,
-                                        data: updateDataChartAttendance(data),
-                                        xkey: 'month',
-                                        ykeys: yKeysArr,
-                                        // ykeys: yKeysEmployeeStatus,
-                                        labels: labels,
-                                        // labels: labelEmployeeStatus,
-                                        lineColors: ['#ff9b44', '#fc6075', '#0000FF', '#808080',
-                                            '#ddd'
-                                        ],
-                                        lineWidth: '5px',
-                                        barColors: ['#ff9b44', '#fc6075', '#0000FF', '#808080',
-                                            '#ddd'
-                                        ],
-                                        resize: true,
-                                        redraw: true
-                                    });
-                                }
-                                // chartAttendance.setData(updateDataChartAttendance(JSON.parse(data)))
-                            });
-                    });
-                }
+                //                 if (chart_type == 'attendance') {
+                //                     const chartAttendance = Morris.Bar({
+                //                         element: 'bar-charts',
+                //                         redrawOnParentResize: true,
+                //                         data: updateDataChartAttendance(data),
+                //                         xkey: 'month',
+                //                         ykeys: yKeysArr,
+                //                         // ykeys: yKeysAttendance,
+                //                         labels: labels,
+                //                         // labels: labelAttendance,
+                //                         lineColors: ['#ff9b44', '#fc6075', '#0000FF', '#808080',
+                //                             '#0ad0FF'
+                //                         ],
+                //                         lineWidth: '5px',
+                //                         barColors: ['#ff9b44', '#fc6075', '#0000FF', '#808080',
+                //                             '#0ad0FF'
+                //                         ],
+                //                         resize: true,
+                //                         redraw: true
+                //                     });
+                //                 } else if (chart_type == 'employee_status') {
+                //                     const chartAttendance = Morris.Bar({
+                //                         element: 'bar-charts',
+                //                         redrawOnParentResize: true,
+                //                         data: updateDataChartAttendance(data),
+                //                         xkey: 'month',
+                //                         ykeys: yKeysArr,
+                //                         // ykeys: yKeysEmployeeStatus,
+                //                         labels: labels,
+                //                         // labels: labelEmployeeStatus,
+                //                         lineColors: ['#ff9b44', '#fc6075', '#0000FF', '#808080',
+                //                             '#ddd'
+                //                         ],
+                //                         lineWidth: '5px',
+                //                         barColors: ['#ff9b44', '#fc6075', '#0000FF', '#808080',
+                //                             '#ddd'
+                //                         ],
+                //                         resize: true,
+                //                         redraw: true
+                //                     });
+                //                 }
+                //                 // chartAttendance.setData(updateDataChartAttendance(JSON.parse(data)))
+                //             });
+                //     });
+                // }
 
-                function chart(chart_type, data) {
-                    $('#bar-charts').empty()
+                // function chart(chart_type, data) {
+                //     $('#bar-charts').empty()
 
-                    if (chart_type == 'attendance') {
-                        const chartAttendance = Morris.Bar({
-                            element: 'bar-charts',
-                            redrawOnParentResize: true,
-                            data: updateDataChartAttendance(data),
-                            xkey: 'month',
-                            ykeys: yKeysAttendance,
-                            labels: labelAttendance,
-                            lineColors: ['#ff9b44', '#fc6075', '#0000FF', '#808080', '#0ad0FF'],
-                            lineWidth: '5px',
-                            barColors: ['#ff9b44', '#fc6075', '#0000FF', '#808080', '#0ad0FF'],
-                            resize: true,
-                            redraw: true
-                        });
-                    } else if (chart_type == 'employee_status') {
-                        const chartAttendance = Morris.Bar({
-                            element: 'bar-charts',
-                            redrawOnParentResize: true,
-                            data: updateDataChartAttendance(data),
-                            xkey: 'month',
-                            ykeys: yKeysEmployeeStatus,
-                            labels: labelEmployeeStatus,
-                            lineColors: ['#ff9b44', '#fc6075', '#0000FF', '#808080', '#ddd'],
-                            lineWidth: '5px',
-                            barColors: ['#ff9b44', '#fc6075', '#0000FF', '#808080', '#ddd'],
-                            resize: true,
-                            redraw: true
-                        });
-                    }
-                }
+                //     if (chart_type == 'attendance') {
+                //         const chartAttendance = Morris.Bar({
+                //             element: 'bar-charts',
+                //             redrawOnParentResize: true,
+                //             data: updateDataChartAttendance(data),
+                //             xkey: 'month',
+                //             ykeys: yKeysAttendance,
+                //             labels: labelAttendance,
+                //             lineColors: ['#ff9b44', '#fc6075', '#0000FF', '#808080', '#0ad0FF'],
+                //             lineWidth: '5px',
+                //             barColors: ['#ff9b44', '#fc6075', '#0000FF', '#808080', '#0ad0FF'],
+                //             resize: true,
+                //             redraw: true
+                //         });
+                //     } else if (chart_type == 'employee_status') {
+                //         const chartAttendance = Morris.Bar({
+                //             element: 'bar-charts',
+                //             redrawOnParentResize: true,
+                //             data: updateDataChartAttendance(data),
+                //             xkey: 'month',
+                //             ykeys: yKeysEmployeeStatus,
+                //             labels: labelEmployeeStatus,
+                //             lineColors: ['#ff9b44', '#fc6075', '#0000FF', '#808080', '#ddd'],
+                //             lineWidth: '5px',
+                //             barColors: ['#ff9b44', '#fc6075', '#0000FF', '#808080', '#ddd'],
+                //             resize: true,
+                //             redraw: true
+                //         });
+                //     }
+                // }
 
                 const tblTimesheet = $('.tbl-timesheet-schedule').DataTable({
                     processing: true,
@@ -887,27 +1499,27 @@
                     ],
                 });
 
-                const tblResume = $('.tbl-employee-resume').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    paging: false,
-                    ordering: false,
-                    info: false,
-                    searching: false,
-                    ajax: {
-                        url: `{{ route('dashboard.filter-employee-resume') }}`,
-                        data: function(d) {
-                            d.branch_id = $('#branch_id').val();
-                        }
-                    },
-                    columns: [{
-                            data: 'date'
-                        },
-                        {
-                            data: 'activity'
-                        },
-                    ],
-                });
+                // const tblResume = $('.tbl-employee-resume').DataTable({
+                //     processing: true,
+                //     serverSide: true,
+                //     paging: false,
+                //     ordering: false,
+                //     info: false,
+                //     searching: false,
+                //     ajax: {
+                //         url: `{{ route('dashboard.filter-employee-resume') }}`,
+                //         data: function(d) {
+                //             d.branch_id = $('#branch_id').val();
+                //         }
+                //     },
+                //     columns: [{
+                //             data: 'date'
+                //         },
+                //         {
+                //             data: 'activity'
+                //         },
+                //     ],
+                // });
 
                 function loadData() {
                     let branch_id = $('#branch_id').val();
