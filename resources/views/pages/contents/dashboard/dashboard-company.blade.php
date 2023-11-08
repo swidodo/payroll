@@ -758,7 +758,7 @@
                 })
                 i++;
             })
-            if (count(html) > 0 ){
+            if (count(html) < 0 ){
               html =  [{
                     text : "department",
                     values: [0],
