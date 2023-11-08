@@ -322,6 +322,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('chart-employee_lenght_of_service', [EmployeeReportController::class, 'employee_lenght_of_service']);
         Route::get('chart-employee_monthly_turnover', [EmployeeReportController::class, 'monthly_turnover']);
         Route::get('chart-employee_religion', [EmployeeReportController::class, 'employee_religion']);
+        Route::get('chart-employee_department', [EmployeeReportController::class, 'employee_department']);
 
 
         // HR Management

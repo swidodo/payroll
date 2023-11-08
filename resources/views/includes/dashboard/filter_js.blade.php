@@ -3,6 +3,8 @@
     var defaultbranch = $('#branch_id').val();
     parse_employee_gander(defaultbranch)
     employee_status(defaultbranch)
+    department(defaultbranch)
+    // monthly_turnover(defaultbranch)
 
    
 
@@ -69,5 +71,41 @@
             }
         })
     }
-    
+    // function monthly_turnover(branch){
+    //     header();
+    //     $.ajax({
+    //         url :'chart-employee_monthly_turnover',
+    //         type : 'GET',
+    //         data :{branch_id :branch},
+    //         dataType : 'json',
+    //         success :function (response){
+    //             console.log(response);
+                // var data = response.data;
+                // var label = [0,];
+                // var value = [0,];
+                // if (data.length > 0 ){
+                //     $.each(data,function(key,val){
+                //         label.push(val.bulan);
+                //         value.push(val.turnover);
+                //     })
+                // }
+                // turnover_chart(label,value);
+    //         },
+    //     });
+    // }
+    function department(branch){
+        header();
+        $.ajax({
+            url :'chart-employee_department',
+            type : 'GET',
+            data :{branch_id :branch},
+            dataType : 'json',
+            success :function (respon){
+                chartdepartment(respon.data)
+                // $.each(respon.data, function(key,val){
+
+                // })
+            }
+        })
+    }
     </script>

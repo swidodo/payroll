@@ -395,10 +395,7 @@
 
     @push('addon-script')
     <script>
-        
-        // gender();
         function gender(male,female){
-            console.log(male);
             ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"];
             let chartConfig = {
             gui: {
@@ -726,72 +723,95 @@
         });
       </script>
     <script>
-      ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"];
-      let departchartConfig = {
-        type: 'pie',
-        backgroundColor: '#FBFCFE',
-        title: {
-          text: 'Department',
-          backgroundColor: '#FBFCFE',
-          fontColor: '#1A1B26',
-          fontSize: '12px',
-          height: '20px'
-        },
-        // subtitle: {
-        //   backgroundColor: '#202235',
-        //   height: '35px',
-        //   y: '40px'
-        // },
-        legend: {
-          backgroundColor: 'none',
-          borderWidth: '0px',
-          item: {
-            fontColor: '#000'
-          },
-          layout: 'h',
-          marker: {
-            type: 'circle',
-            borderColor: 'white'
-          },
-          shadow: true,
-          toggleAction: 'remove',
-           y: '40px'
-        },
-        plotarea: {
-          margin: '90px 30px 25px 30px'
-        },
-        tooltip: {
-          borderColor: '#fff',
-          borderRadius: '3px',
-          borderWidth: '1px',
-          fontColor: '#1A1B26',
-          fontSize: '12px',
-          shadow: true
-        },
-        series: [{
-            text : 'Produksi',
-            values: [400],
-            backgroundColor: '#2870B1'
-          },
-          {
-            text : 'QE',
-            values: [350],
-            backgroundColor: '#FFA72A'
-          },
-          {
-            text : 'assemble',
-            values: [250],
-            backgroundColor: '#7E971C'
-          }
-        ]
-      };
-  
-      zingchart.render({
-        id: 'departChart',
-        data: departchartConfig,
-        height: '90%',
-        width: '100%',
-      });
+        function chartdepartment(data){
+            var html = [];
+            var i = 0;
+            $.each(data,function(key,val){
+                if (i == 1){
+                    color = '#2870B1';
+                }else if(i == 2){
+                    color = '#FF9900';
+                }else if(i == 3){
+                    color = '#4CB150';
+                }else if(i == 4){
+                    color = '#A14BC9';
+                }else if(i == 5){
+                    color = '#E91767';
+                }else if(i == 6){
+                    color = '#000000';
+                }else if(i == 7){
+                    color = '#A05F18';
+                }else if(i == 8){
+                    color = '#F9F9F9';
+                }else if(i == 9){
+                    color = '#BDE7F7';
+                }else if(i == 10){
+                    color = '#3ABE4D';
+                }else{
+                    color = '#9E1C38';
+                }
+                // html.push(val.name)
+                html.push( {
+                    text : val.name,
+                    values: [val.count],
+                    backgroundColor: color
+                })
+                i++;
+            })
+            console.log(html);
+            ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"];
+            let departchartConfig = {
+                type: 'pie',
+                backgroundColor: '#FBFCFE',
+                title: {
+                text: 'Department',
+                backgroundColor: '#FBFCFE',
+                fontColor: '#1A1B26',
+                fontSize: '12px',
+                height: '20px'
+                },
+                // subtitle: {
+                //   backgroundColor: '#202235',
+                //   height: '35px',
+                //   y: '40px'
+                // },
+                legend: {
+                backgroundColor: 'none',
+                borderWidth: '0px',
+                item: {
+                    fontColor: '#000'
+                },
+                layout: 'h',
+                marker: {
+                    type: 'circle',
+                    borderColor: 'white'
+                },
+                shadow: true,
+                toggleAction: 'remove',
+                y: '40px'
+                },
+                plotarea: {
+                margin: '90px 30px 25px 30px'
+                },
+                tooltip: {
+                borderColor: '#fff',
+                borderRadius: '3px',
+                borderWidth: '1px',
+                fontColor: '#1A1B26',
+                fontSize: '12px',
+                shadow: true
+                },
+                series: html
+                
+            };
+        
+            zingchart.render({
+                id: 'departChart',
+                data: departchartConfig,
+                height: '90%',
+                width: '100%',
+            });
+        }
     </script>
 
 <script>

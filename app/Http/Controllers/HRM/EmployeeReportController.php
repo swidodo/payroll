@@ -42,57 +42,57 @@ class EmployeeReportController extends Controller
         }
         return response()->json($response);
     }
-    public function employee_jobLevel(Request $request){
-        if($request->branch_id == '0'){
-            $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
-            $job = DB::table('v_employee_joblevel')
-                        ->select('position_name',DB::raw("SUM(subtotal)/count(branch_id) as subtotal") )
-                        ->leftJoin('branches','branches.id','=','v_employee_joblevel.branch_id')
-                        ->where('branches.company_id',$branch->company_id)
-                        ->groupBy('position_name')
-                        ->get();
-            $response['data'] = $job;
-        }else{
-            $job = DB::table('v_employee_joblevel')
-                        ->select('position_name',DB::raw("SUM(subtotal)/count(branch_id) as subtotal") )
-                        ->where('branch_id',$request->branch_id)
-                        ->groupBy('position_name')
-                        ->get();
-            $response['data'] = $job;
-        }
-        return response()->json($response);
-    }
-    public function employee_education(Request $request){
-        if($request->branch_id == '0'){
-            $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
-            $education = DB::table('v_employee_education')
-                        ->select('level',DB::raw("SUM(count) as count"))
-                        ->leftJoin('branches','branches.id','v_employee_education.branch_id')
-                        ->where('branches.company_id',$branch->company_id)
-                        ->groupBy('level')
-                        ->get();
-            $total   = DB::table('v_employee_education')
-                        ->select(DB::raw("SUM(count) as count"))
-                        ->leftJoin('branches','branches.id','v_employee_education.branch_id')
-                        ->where('branches.company_id',$branch->company_id)
-                        ->get();
-            $response['data'] = $education;
-            $response['total'] = $total;
+    // public function employee_jobLevel(Request $request){
+    //     if($request->branch_id == '0'){
+    //         $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
+    //         $job = DB::table('v_employee_joblevel')
+    //                     ->select('position_name',DB::raw("SUM(subtotal)/count(branch_id) as subtotal") )
+    //                     ->leftJoin('branches','branches.id','=','v_employee_joblevel.branch_id')
+    //                     ->where('branches.company_id',$branch->company_id)
+    //                     ->groupBy('position_name')
+    //                     ->get();
+    //         $response['data'] = $job;
+    //     }else{
+    //         $job = DB::table('v_employee_joblevel')
+    //                     ->select('position_name',DB::raw("SUM(subtotal)/count(branch_id) as subtotal") )
+    //                     ->where('branch_id',$request->branch_id)
+    //                     ->groupBy('position_name')
+    //                     ->get();
+    //         $response['data'] = $job;
+    //     }
+    //     return response()->json($response);
+    // }
+    // public function employee_education(Request $request){
+    //     if($request->branch_id == '0'){
+    //         $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
+    //         $education = DB::table('v_employee_education')
+    //                     ->select('level',DB::raw("SUM(count) as count"))
+    //                     ->leftJoin('branches','branches.id','v_employee_education.branch_id')
+    //                     ->where('branches.company_id',$branch->company_id)
+    //                     ->groupBy('level')
+    //                     ->get();
+    //         $total   = DB::table('v_employee_education')
+    //                     ->select(DB::raw("SUM(count) as count"))
+    //                     ->leftJoin('branches','branches.id','v_employee_education.branch_id')
+    //                     ->where('branches.company_id',$branch->company_id)
+    //                     ->get();
+    //         $response['data'] = $education;
+    //         $response['total'] = $total;
 
-        }else{
-            $education = DB::table('v_employee_education')
-                        ->select('*')
-                        ->where('branch_id',$request->branch_id)
-                        ->get();
-            $total   = DB::table('v_employee_education')
-                        ->select("count")
-                        ->where('branch_id',$request->branch_id)
-                        ->get();
-            $response['data'] = $education;
-            $response['total'] = $total;
-        }
-        return response()->json($response);
-    }
+    //     }else{
+    //         $education = DB::table('v_employee_education')
+    //                     ->select('*')
+    //                     ->where('branch_id',$request->branch_id)
+    //                     ->get();
+    //         $total   = DB::table('v_employee_education')
+    //                     ->select("count")
+    //                     ->where('branch_id',$request->branch_id)
+    //                     ->get();
+    //         $response['data'] = $education;
+    //         $response['total'] = $total;
+    //     }
+    //     return response()->json($response);
+    // }
     public function employee_gender(Request $request){
         if($request->branch_id == '0'){
             $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
@@ -114,152 +114,152 @@ class EmployeeReportController extends Controller
         }
         return response()->json($response);
     }
-    public function employee_age_average(Request $request){
-        if ($request->branch_id == 0){
-            $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
-            $age = DB::table('v_employee_age_average')
-                    ->select(DB::raw("(SUM(range_18) / count(branch_id)) as range_18,(SUM(range_20_30) / count(branch_id)) as range_20_30,
-                    (SUM(range_31_40) / count(branch_id)) as range_31_40,(SUM(range_41_50) / count(branch_id)) as range_41_50"))
-                    ->leftJoin('branches','branches.id','=','v_employee_age_average.branch_id')
-                    ->where('branches.company_id',$branch->company_id)
-                    ->get();
-            $response['data'] = $age;
-        }else{
-            $age = DB::table('v_employee_age_average')
-                    ->select('*')
-                    ->where('branch_id',$request->branch_id)
-                    ->get();
-            $response['data'] = $age;
-        }
+    // public function employee_age_average(Request $request){
+    //     if ($request->branch_id == 0){
+    //         $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
+    //         $age = DB::table('v_employee_age_average')
+    //                 ->select(DB::raw("(SUM(range_18) / count(branch_id)) as range_18,(SUM(range_20_30) / count(branch_id)) as range_20_30,
+    //                 (SUM(range_31_40) / count(branch_id)) as range_31_40,(SUM(range_41_50) / count(branch_id)) as range_41_50"))
+    //                 ->leftJoin('branches','branches.id','=','v_employee_age_average.branch_id')
+    //                 ->where('branches.company_id',$branch->company_id)
+    //                 ->get();
+    //         $response['data'] = $age;
+    //     }else{
+    //         $age = DB::table('v_employee_age_average')
+    //                 ->select('*')
+    //                 ->where('branch_id',$request->branch_id)
+    //                 ->get();
+    //         $response['data'] = $age;
+    //     }
 
-        return response()->json($response);
-    }
-    public function employee_active_staff(Request $request){
-        if ($request->branch_id == 0){
-            $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
-            $staff = DB::table('v_employee_active_staff')
-                        ->select('bulan_des',DB::raw("count(subtotal) as subtotal"))
-                        ->leftJoin('branches','branches.id','v_employee_active_staff.branch_id')
-                        ->where('branches.company_id',$branch->company_id)
-                        ->groupBy('bulan_des')
-                        ->groupBy('bulan')
-                        ->orderBy('bulan','ASC')
-                        ->get();
-            $response['data'] = $staff;
-        }else{
-            $staff = DB::table('v_employee_active_staff')
-                        ->select('*')
-                        ->where('branch_id',$request->branch_id)
-                        ->orderBy('bulan','ASC')
-                        ->get();
-            $response['data'] = $staff;
-        }
-        return response()->json($response);
-    }
-    public function employee_lenght_of_service(Request $request){
-        if($request->branch_id != '0') :
-            $service3 = DB::table('v_lenght_of_service')
-                        ->select(DB::raw("(v_lenght_of_service.subtotal/count(employees.id))*100  as tot"))
-                        ->leftJoin('employees','employees.branch_id','v_lenght_of_service.branch_id')
-                        ->where('v_lenght_of_service.service' ,'<=',3)
-                        ->where('v_lenght_of_service.branch_id',$request->branch_id)
-                        ->groupBy('v_lenght_of_service.subtotal')
-                        ->get();
-            $service5 = DB::table('v_lenght_of_service')
-                        ->select(DB::raw("(v_lenght_of_service.subtotal/count(employees.id))*100  as tot"))
-                        ->leftJoin('employees','employees.branch_id','v_lenght_of_service.branch_id')
-                        ->where('v_lenght_of_service.service', '>', 3)
-                        ->where('v_lenght_of_service.service', '<=' ,5)
-                        ->where('v_lenght_of_service.branch_id',$request->branch_id)
-                        ->groupBy('v_lenght_of_service.subtotal')
-                        ->get();
-            $service10 = DB::table('v_lenght_of_service')
-                        ->select(DB::raw("(v_lenght_of_service.subtotal/count(employees.id))*100  as tot"))
-                        ->leftJoin('employees','employees.branch_id','v_lenght_of_service.branch_id')
-                        ->where('v_lenght_of_service.service' ,'>', 5)
-                        ->where('v_lenght_of_service.service', '<=', 10)
-                        ->where('v_lenght_of_service.branch_id',$request->branch_id)
-                        ->groupBy('v_lenght_of_service.subtotal')
-                        ->get();
-            $service15 = DB::table('v_lenght_of_service')
-                        ->select(DB::raw("(v_lenght_of_service.subtotal/count(employees.id))*100  as tot"))
-                        ->leftJoin('employees','employees.branch_id','v_lenght_of_service.branch_id')
-                        ->where('v_lenght_of_service.service', '>', 10)
-                        ->where('v_lenght_of_service.service', '<=', 15)
-                        ->where('v_lenght_of_service.branch_id',$request->branch_id)
-                        ->groupBy('v_lenght_of_service.subtotal')
-                        ->get();
-            $service20 = DB::table('v_lenght_of_service')
-                        ->select(DB::raw("(v_lenght_of_service.subtotal/count(employees.id))*100  as tot"))
-                        ->leftJoin('employees','employees.branch_id','v_lenght_of_service.branch_id')
-                        ->where('v_lenght_of_service.service', '>', 15)
-                        ->where('v_lenght_of_service.service','<=', 20)
-                        ->where('v_lenght_of_service.branch_id',$request->branch_id)
-                        ->groupBy('v_lenght_of_service.subtotal')
-                        ->get();
-            $service_30 = DB::table('v_lenght_of_service')
-                        ->select(DB::raw("(v_lenght_of_service.subtotal/count(employees.id))*100  as tot"))
-                        ->leftJoin('employees','employees.branch_id','v_lenght_of_service.branch_id')
-                        ->where('v_lenght_of_service.service', '>', 20)
-                        ->where('v_lenght_of_service.branch_id',$request->branch_id)
-                        ->groupBy('v_lenght_of_service.subtotal')
-                        ->get();
-        endif;
-        if($request->branch_id == '0') :
-            $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
-            $service3 = DB::table('v_lenght_of_service')
-                        ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
-                        ->leftJoin('branches','branches.id','v_lenght_of_service.branch_id')
-                        ->where('branches.company_id',$branch->company_id)
-                        ->where('service' ,'<=',3)
-                        ->get();
-            $service5 = DB::table('v_lenght_of_service')
-                        ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
-                        ->leftJoin('branches','branches.id','v_lenght_of_service.branch_id')
-                        ->where('branches.company_id',$branch->company_id)
-                        ->where('service', '>', 3)
-                        ->where('service', '<=' ,5)
-                        ->get();
-            $service10 = DB::table('v_lenght_of_service')
-                        ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
-                        ->leftJoin('branches','branches.id','v_lenght_of_service.branch_id')
-                        ->where('branches.company_id',$branch->company_id)
-                        ->where('service' ,'>', 5)
-                        ->where('service', '<=', 10)
-                        ->where('branch_id',$request->branch_id)
-                        ->get();
-            $service15 = DB::table('v_lenght_of_service')
-                        ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
-                        ->leftJoin('branches','branches.id','v_lenght_of_service.branch_id')
-                        ->where('branches.company_id',$branch->company_id)
-                        ->where('service', '>', 10)
-                        ->where('service', '<=', 15)
-                        ->where('branch_id',$request->branch_id)
-                        ->get();
-            $service20 = DB::table('v_lenght_of_service')
-                        ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
-                        ->leftJoin('branches','branches.id','v_lenght_of_service.branch_id')
-                        ->where('branches.company_id',$branch->company_id)
-                        ->where('service', '>', 15)
-                        ->where('service','<=', 20)
-                        ->where('branch_id',$request->branch_id)
-                        ->get();
-            $service_30 = DB::table('v_lenght_of_service')
-                        ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
-                        ->leftJoin('branches','branches.id','v_lenght_of_service.branch_id')
-                        ->where('branches.company_id',$branch->company_id)
-                        ->where('service', '>', 20)
-                        ->where('branch_id',$request->branch_id)
-                        ->get();
-        endif;
-        $response['lenght_3']  = (count($service3) > 0 ) ? $service3 :'tot :0';
-        $response['lenght_5']  = (count($service5) > 0 ) ? $service5 : 'tot :0 ';
-        $response['lenght_10'] = (count($service10) > 0 ) ? $service10 : 'tot :0 ';
-        $response['lenght_15'] = (count($service15) > 0 ) ? $service15 : 'tot :0 ';
-        $response['lenght_20'] = (count($service20) > 0 ) ? $service20 : 'tot :0 ';
-        $response['lenght_30'] = (count($service_30) > 0 ) ? $service_30 :'tot :0 ';
-        return response()->json($response);
-    }
+    //     return response()->json($response);
+    // }
+    // public function employee_active_staff(Request $request){
+    //     if ($request->branch_id == 0){
+    //         $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
+    //         $staff = DB::table('v_employee_active_staff')
+    //                     ->select('bulan_des',DB::raw("count(subtotal) as subtotal"))
+    //                     ->leftJoin('branches','branches.id','v_employee_active_staff.branch_id')
+    //                     ->where('branches.company_id',$branch->company_id)
+    //                     ->groupBy('bulan_des')
+    //                     ->groupBy('bulan')
+    //                     ->orderBy('bulan','ASC')
+    //                     ->get();
+    //         $response['data'] = $staff;
+    //     }else{
+    //         $staff = DB::table('v_employee_active_staff')
+    //                     ->select('*')
+    //                     ->where('branch_id',$request->branch_id)
+    //                     ->orderBy('bulan','ASC')
+    //                     ->get();
+    //         $response['data'] = $staff;
+    //     }
+    //     return response()->json($response);
+    // }
+    // public function employee_lenght_of_service(Request $request){
+    //     if($request->branch_id != '0') :
+    //         $service3 = DB::table('v_lenght_of_service')
+    //                     ->select(DB::raw("(v_lenght_of_service.subtotal/count(employees.id))*100  as tot"))
+    //                     ->leftJoin('employees','employees.branch_id','v_lenght_of_service.branch_id')
+    //                     ->where('v_lenght_of_service.service' ,'<=',3)
+    //                     ->where('v_lenght_of_service.branch_id',$request->branch_id)
+    //                     ->groupBy('v_lenght_of_service.subtotal')
+    //                     ->get();
+    //         $service5 = DB::table('v_lenght_of_service')
+    //                     ->select(DB::raw("(v_lenght_of_service.subtotal/count(employees.id))*100  as tot"))
+    //                     ->leftJoin('employees','employees.branch_id','v_lenght_of_service.branch_id')
+    //                     ->where('v_lenght_of_service.service', '>', 3)
+    //                     ->where('v_lenght_of_service.service', '<=' ,5)
+    //                     ->where('v_lenght_of_service.branch_id',$request->branch_id)
+    //                     ->groupBy('v_lenght_of_service.subtotal')
+    //                     ->get();
+    //         $service10 = DB::table('v_lenght_of_service')
+    //                     ->select(DB::raw("(v_lenght_of_service.subtotal/count(employees.id))*100  as tot"))
+    //                     ->leftJoin('employees','employees.branch_id','v_lenght_of_service.branch_id')
+    //                     ->where('v_lenght_of_service.service' ,'>', 5)
+    //                     ->where('v_lenght_of_service.service', '<=', 10)
+    //                     ->where('v_lenght_of_service.branch_id',$request->branch_id)
+    //                     ->groupBy('v_lenght_of_service.subtotal')
+    //                     ->get();
+    //         $service15 = DB::table('v_lenght_of_service')
+    //                     ->select(DB::raw("(v_lenght_of_service.subtotal/count(employees.id))*100  as tot"))
+    //                     ->leftJoin('employees','employees.branch_id','v_lenght_of_service.branch_id')
+    //                     ->where('v_lenght_of_service.service', '>', 10)
+    //                     ->where('v_lenght_of_service.service', '<=', 15)
+    //                     ->where('v_lenght_of_service.branch_id',$request->branch_id)
+    //                     ->groupBy('v_lenght_of_service.subtotal')
+    //                     ->get();
+    //         $service20 = DB::table('v_lenght_of_service')
+    //                     ->select(DB::raw("(v_lenght_of_service.subtotal/count(employees.id))*100  as tot"))
+    //                     ->leftJoin('employees','employees.branch_id','v_lenght_of_service.branch_id')
+    //                     ->where('v_lenght_of_service.service', '>', 15)
+    //                     ->where('v_lenght_of_service.service','<=', 20)
+    //                     ->where('v_lenght_of_service.branch_id',$request->branch_id)
+    //                     ->groupBy('v_lenght_of_service.subtotal')
+    //                     ->get();
+    //         $service_30 = DB::table('v_lenght_of_service')
+    //                     ->select(DB::raw("(v_lenght_of_service.subtotal/count(employees.id))*100  as tot"))
+    //                     ->leftJoin('employees','employees.branch_id','v_lenght_of_service.branch_id')
+    //                     ->where('v_lenght_of_service.service', '>', 20)
+    //                     ->where('v_lenght_of_service.branch_id',$request->branch_id)
+    //                     ->groupBy('v_lenght_of_service.subtotal')
+    //                     ->get();
+    //     endif;
+    //     if($request->branch_id == '0') :
+    //         $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
+    //         $service3 = DB::table('v_lenght_of_service')
+    //                     ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
+    //                     ->leftJoin('branches','branches.id','v_lenght_of_service.branch_id')
+    //                     ->where('branches.company_id',$branch->company_id)
+    //                     ->where('service' ,'<=',3)
+    //                     ->get();
+    //         $service5 = DB::table('v_lenght_of_service')
+    //                     ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
+    //                     ->leftJoin('branches','branches.id','v_lenght_of_service.branch_id')
+    //                     ->where('branches.company_id',$branch->company_id)
+    //                     ->where('service', '>', 3)
+    //                     ->where('service', '<=' ,5)
+    //                     ->get();
+    //         $service10 = DB::table('v_lenght_of_service')
+    //                     ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
+    //                     ->leftJoin('branches','branches.id','v_lenght_of_service.branch_id')
+    //                     ->where('branches.company_id',$branch->company_id)
+    //                     ->where('service' ,'>', 5)
+    //                     ->where('service', '<=', 10)
+    //                     ->where('branch_id',$request->branch_id)
+    //                     ->get();
+    //         $service15 = DB::table('v_lenght_of_service')
+    //                     ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
+    //                     ->leftJoin('branches','branches.id','v_lenght_of_service.branch_id')
+    //                     ->where('branches.company_id',$branch->company_id)
+    //                     ->where('service', '>', 10)
+    //                     ->where('service', '<=', 15)
+    //                     ->where('branch_id',$request->branch_id)
+    //                     ->get();
+    //         $service20 = DB::table('v_lenght_of_service')
+    //                     ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
+    //                     ->leftJoin('branches','branches.id','v_lenght_of_service.branch_id')
+    //                     ->where('branches.company_id',$branch->company_id)
+    //                     ->where('service', '>', 15)
+    //                     ->where('service','<=', 20)
+    //                     ->where('branch_id',$request->branch_id)
+    //                     ->get();
+    //         $service_30 = DB::table('v_lenght_of_service')
+    //                     ->select(DB::raw("SUM(subtotal)/(select count(employee_id) from employees where is_active =true and status ='active' and branch_id = branch_id)::float * 100  as tot"))
+    //                     ->leftJoin('branches','branches.id','v_lenght_of_service.branch_id')
+    //                     ->where('branches.company_id',$branch->company_id)
+    //                     ->where('service', '>', 20)
+    //                     ->where('branch_id',$request->branch_id)
+    //                     ->get();
+    //     endif;
+    //     $response['lenght_3']  = (count($service3) > 0 ) ? $service3 :'tot :0';
+    //     $response['lenght_5']  = (count($service5) > 0 ) ? $service5 : 'tot :0 ';
+    //     $response['lenght_10'] = (count($service10) > 0 ) ? $service10 : 'tot :0 ';
+    //     $response['lenght_15'] = (count($service15) > 0 ) ? $service15 : 'tot :0 ';
+    //     $response['lenght_20'] = (count($service20) > 0 ) ? $service20 : 'tot :0 ';
+    //     $response['lenght_30'] = (count($service_30) > 0 ) ? $service_30 :'tot :0 ';
+    //     return response()->json($response);
+    // }
     public function monthly_turnover(Request $request){
         if ($request->branch_id == 0){
             $turnover = DB::table('v_monthly_trunover')
@@ -277,28 +277,48 @@ class EmployeeReportController extends Controller
         return response()->json($response);
 
     }
-    public function employee_religion(Request $request){
-        if($request->branch_id == 0){
-            $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
-            $religion = DB::table('v_employee_religion')
-                        ->select(DB::raw("(SUM(islam) / count(branch_id)) as islam,
-                        (SUM(kristen) / count(branch_id)) as kristen,
-                        (SUM(katholik) / count(branch_id)) as katholik,
-                        (SUM(hindu) / count(branch_id)) as hindu,
-                        (SUM(budha) / count(branch_id)) as budha,
-                        (SUM(lain) / count(branch_id)) as lain"))
-                        ->leftJoin('branches','branches.id','=','v_employee_religion.branch_id')
-                        ->where('branches.company_id',$branch->company_id)
-                        ->get();
-            $response['data'] = $religion;
-        }else{
-            $religion = DB::table('v_employee_religion')
-                        ->select('*')
-                        ->where('branch_id',$request->branch_id)
-                        ->get();
-            $response['data'] = $religion;
-        }
-        return response()->json($response);
+    // public function employee_religion(Request $request){
+    //     if($request->branch_id == 0){
+    //         $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
+    //         $religion = DB::table('v_employee_religion')
+    //                     ->select(DB::raw("(SUM(islam) / count(branch_id)) as islam,
+    //                     (SUM(kristen) / count(branch_id)) as kristen,
+    //                     (SUM(katholik) / count(branch_id)) as katholik,
+    //                     (SUM(hindu) / count(branch_id)) as hindu,
+    //                     (SUM(budha) / count(branch_id)) as budha,
+    //                     (SUM(lain) / count(branch_id)) as lain"))
+    //                     ->leftJoin('branches','branches.id','=','v_employee_religion.branch_id')
+    //                     ->where('branches.company_id',$branch->company_id)
+    //                     ->get();
+    //         $response['data'] = $religion;
+    //     }else{
+    //         $religion = DB::table('v_employee_religion')
+    //                     ->select('*')
+    //                     ->where('branch_id',$request->branch_id)
+    //                     ->get();
+    //         $response['data'] = $religion;
+    //     }
+    //     return response()->json($response);
 
+    // }
+    public function employee_department(Request $request){
+        $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
+        if($request->branch_id == 0){
+            $dep['data'] = DB::table('departements')
+                    ->select('departements.name',DB::raw('count(employees.id)'))
+                    ->leftJoin('employees','employees.department_id','departements.id')
+                    ->leftJoin('branches','branches.id','=','employees.branch_id')
+                    ->where('branches.id',$branch->company_id)
+                    ->groupBy('departements.departement_code','departements.name')->get();
+        }else{
+            $dep['data'] = DB::table('departements')
+                    ->select('departements.name',DB::raw('count(employees.id)'))
+                    ->leftJoin('employees','employees.department_id','departements.id')
+                    ->where('employees.branch_id',$request->branch)
+                    ->groupBy('departements.departement_code','departements.name')->get();
+        
+        }
+        return response()->json($dep);
     }
+    // select departements.name, count(employees.id) from departements left join employees on employees.department_id = departements.id left join branches on branches.id = employees.branch_id where branches = 1 group by departements.departement_code, departements.name)",
 }
