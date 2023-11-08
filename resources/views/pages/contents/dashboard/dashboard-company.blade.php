@@ -758,9 +758,9 @@
                 })
                 i++;
             })
-            if (count(html) < 0 ){
+            if (html.length > 0 ){
               html =  [{
-                    text : "department",
+                    text : 'Department',
                     values: [0],
                     backgroundColor: '#A05F18'
                 }]
