@@ -762,7 +762,7 @@
               html =  [{
                     text : 'Department',
                     values: [0],
-                    backgroundColor: '#A05F18'
+                    backgroundColor: '#2870B1'
                 }]
             }
             ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"];
