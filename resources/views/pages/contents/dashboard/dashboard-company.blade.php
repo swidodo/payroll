@@ -758,7 +758,7 @@
                 })
                 i++;
             })
-            if (html.length > 0 ){
+            if (html.length < 0 ){
               html =  [{
                     text : 'Department',
                     values: [0],
