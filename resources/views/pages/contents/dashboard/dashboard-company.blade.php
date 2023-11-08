@@ -140,8 +140,8 @@
                         <div class="card spece">
                             <div class="card-body">
                                 <div class="dash-widget-info text-center">
-                                    <h3 id="totalContractEmployee"></h3>
                                     <span>Contract</span>
+                                    <h3 id="totalContractEmployee"></h3>
                                 </div>
                             </div>
                         </div>
@@ -151,7 +151,7 @@
                             <div class="card-body">
                                 <div class="dash-widget-info text-center">
                                     <span>Probation</span>
-                                    <h3 id="totalFreelanceEmployee"></h3>
+                                    <h3 id="totalProbationEmployee"></h3>
                                 </div>
                             </div>
                         </div>
@@ -160,7 +160,7 @@
                         <div class="card spece">
                             <div class="card-body">
                                 <div class="dash-widget-info text-center">
-                                    <h3 id="totalFreelanceEmployee"></h3>
+                                    <h3 id="totalWorkerDayEmployee"></h3>
                                     <span>Worker day</span>
                                 </div>
                             </div>
