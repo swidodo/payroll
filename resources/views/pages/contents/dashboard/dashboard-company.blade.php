@@ -566,7 +566,8 @@
         width: '100%'
         });
     </script>
-       <script>
+    <script>
+        function rep_employee(data){
         ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"];
         let chartData = [
             {
@@ -591,22 +592,32 @@
               width: '200px',
               wrapText: true,
             },
-            valueBox: {
-              text: '%pper%',
-              decimals: 1,
-              fontAngle: 90,
-              fontColor: '#fff',
-              offsetY: '5px',
-              placement: 'top-in',
-            },
+            // valueBox: {
+            //   text: '%pper%',
+            //   decimals: 1,
+            //   fontAngle: 90,
+            //   fontColor: '#fff',
+            //   offsetY: '5px',
+            //   placement: 'top-in',
+            // },
           },
           {
         type: 'bar',
         values: [
-          250000, 150000, 260000, 210000, 240000, 260000, 330000, 150000, 410000,
-          250000, 220000, 240000,
+          data.jan_female[0].count, 
+          data.feb_female[0].count, 
+          data.mart_female[0].count, 
+          data.april_female[0].count,
+          data.mei_female[0].count,
+          data.juni_female[0].count,
+          data.july_female[0].count,
+          data.agust_female[0].count,
+          data.sept_female[0].count,
+          data.okt_female[0].count, 
+          data.nov_female[0].count,
+          data.des_female[0].count,
         ],
-        scales: 'scale-x,scale-y-4',
+        scales: 'scale-x,scale-y-3',
         backgroundColor: '#E65100',
         text: 'Dell',
         tooltip: {
@@ -615,12 +626,12 @@
           wrapText: true,
         },
         valueBox: {
-          bold: true,
-          fontAngle: 90,
-          fontColor: '#fff',
-          offsetY: '5px',
-          placement: 'top-in',
-          short: true,
+        //   bold: true,
+        //   fontAngle: 90,
+        //   fontColor: '#fff',
+        //   offsetY: '5px',
+        //   placement: 'top-in',
+        //   short: true,
         },
       },
         ];
@@ -659,58 +670,58 @@
           },
         
           scaleY3: {
-            values: '0:50:10',
-            decimals: 2,
-            guide: {
-              visible: false,
-            },
-            label: {
-              text: 'Y-3 label',
-            },
-            zooming: true,
+            values: '100',
+            // decimals: 2,
+            // guide: {
+            //   visible: false,
+            // },
+            // label: {
+            //   text: 'Y-3 label',
+            // },
+            // zooming: true,
           },
-          scaleY4: {
-        values: '0:1000000:100000',
-        format: '$%v',
-        guide: {
-          visible: false,
-        },
-        label: {
-          text: 'Y-4 label',
-        },
-        multiplier: true,
-        zooming: true,
-      },
-          zoom: {
-            alpha: 0.2,
-            backgroundColor: '#B71C1C',
-            label: {
-              borderColor: '#B71C1C',
-              visible: true,
-            },
-          },
-          scrollX: {
-            bar: {
-              backgroundColor: '#757575',
-              height: '8px',
-            },
-            handle: {
-              backgroundColor: '#E0E0E0',
-              height: '4px',
-              offsetY: '-1px',
-            },
-          },
-          scrollY: {
-            bar: {
-              width: '8px',
-              backgroundColor: '#757575',
-            },
-            handle: {
-              backgroundColor: '#E0E0E0',
-              offsetX: '-1px',
-              width: '4px',
-            },
-          },
+        //   scaleY4: {
+        // values: '100',
+        // format: '$%v',
+        // guide: {
+        //   visible: false,
+        // },
+        // label: {
+        //   text: 'Y-4 label',
+        // },
+        // multiplier: true,
+        // zooming: true,
+    //   },
+        //   zoom: {
+        //     alpha: 0.2,
+        //     backgroundColor: '#B71C1C',
+        //     label: {
+        //       borderColor: '#B71C1C',
+        //       visible: true,
+        //     },
+        //   },
+        //   scrollX: {
+        //     bar: {
+        //       backgroundColor: '#757575',
+        //       height: '8px',
+        //     },
+        //     handle: {
+        //       backgroundColor: '#E0E0E0',
+        //       height: '4px',
+        //       offsetY: '-1px',
+        //     },
+        //   },
+        //   scrollY: {
+        //     bar: {
+        //       width: '8px',
+        //       backgroundColor: '#757575',
+        //     },
+        //     handle: {
+        //       backgroundColor: '#E0E0E0',
+        //       offsetX: '-1px',
+        //       width: '4px',
+        //     },
+        //   },
        
           series: chartData,
         };
@@ -721,7 +732,8 @@
           height: '97%',
           width: '100%',
         });
-      </script>
+    }
+    </script>
     <script>
         function chartdepartment(data){
             var html = [];

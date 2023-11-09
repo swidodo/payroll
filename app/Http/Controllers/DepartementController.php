@@ -95,7 +95,7 @@ class DepartementController extends Controller
             if ($validator->fails()) {
                 return redirect()->back()->with('errors', $validator->messages());
             }
-            $checkDept = Departement::where('departement_code',$request->departement_code)->count();
+            $checkDept = Departement::where('departement_code',$request->departement_code)->where('branch_id',$request->branch_id)->count();
             if ($checkDept > 0){
                 $res = [
                     'status' => 'error',

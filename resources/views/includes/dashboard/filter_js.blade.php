@@ -4,9 +4,10 @@
     parse_employee_gander(defaultbranch)
     employee_status(defaultbranch)
     department(defaultbranch)
-    monthly_turnover(defaultbranch)
+    // monthly_turnover(defaultbranch)
+    // monthly_turnover()
 
-   
+   employee_report(defaultbranch)
 
     // process get data
     function header(){
@@ -16,7 +17,7 @@
             }
         });
     }
-   function employee_status(branch){
+    function employee_status(branch){
         header();
         $. ajax({
             url :'chart-employee-status',
@@ -102,6 +103,18 @@
             dataType : 'json',
             success :function (respon){
                 chartdepartment(respon.data)
+            }
+        })
+    }
+    function employee_report(branch){
+        header();
+        $.ajax({
+            url :'chart-report-employee',
+            type : 'GET',
+            data :{branch_id :branch},
+            dataType : 'json',
+            success :function (respon){
+                rep_employee(respon)
             }
         })
     }

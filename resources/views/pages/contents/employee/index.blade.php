@@ -25,7 +25,7 @@
                             <button id="import_excel" class="btn btn-warning rounded-pill me-2"><i class="fa fa-download"></i> Import</button>
                         </div>
                         @endcan
-                         @canany(['show employee'])
+                         @canany(['export employee'])
                         <div>
                             <button id="export_excel" class="btn btn-warning rounded-pill"><i class="fa fa-upload"></i> Export</button>
                         </div>
