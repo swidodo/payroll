@@ -42,7 +42,7 @@
             height: 100%;
         }
         .chartleft--container {
-            min-height: 285px;
+            min-height: 220px;
             width: 100%;
             height: 100%;
         }
@@ -168,7 +168,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 spece mb-1">
+                    <div class="col-md-12 spece mb-2">
                         <div id="cilinderChart" class="chartleft--container">
 
                         </div>
@@ -185,7 +185,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row mb-2">
                         <div id="diagramChart" class="chart--container">
                         </div>
                     </div>
@@ -628,7 +628,7 @@
             zingchart.render({
             id: 'diagramChart',
             data: barchartConfig,
-            height: '97%',
+            height: '110%',
             width: '100%',
             });
         }
