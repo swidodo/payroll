@@ -4,11 +4,9 @@
     parse_employee_gander(defaultbranch)
     employee_status(defaultbranch)
     department(defaultbranch)
-    // monthly_turnover(defaultbranch)
-    // monthly_turnover()
-
-   employee_report(defaultbranch)
-   employee_report_year(defaultbranch)
+    monthly_turnover(defaultbranch)
+    employee_report(defaultbranch)
+    employee_report_year(defaultbranch)
     // process get data
     function header(){
         $.ajaxSetup({
@@ -80,17 +78,8 @@
             data :{branch_id :branch},
             dataType : 'json',
             success :function (response){
-                console.log(response);
-                var data = response.data;
-                var label = [0,];
-                var value = [0,];
-                if (data.length > 0 ){
-                    $.each(data,function(key,val){
-                        label.push(val.bulan);
-                        value.push(val.turnover);
-                    })
-                }
-                turnover_chart(label,value);
+                var data = (response.data[0].turnover == null) ? 0 : response.data[0].turnover;
+                turnover(data);
             },
         });
     }

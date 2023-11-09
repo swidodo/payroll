@@ -500,73 +500,75 @@
         }
     </script>
     <script>
-        ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"];
-        window.feed = function(callback) {
-        var tick = {};
-        // tick.plot0 = Math.ceil(350 + (Math.random() * 500));
-        callback(JSON.stringify(tick));
-        };
- 
-        var myConfig = {
-            type: "gauge",
-            title: {
-            text: 'Turnover',
-            bold: true,
-            fontColor: '#515151',
-            backgroundColor : '#FBFCFE',
-        },
-        globals: {
-            fontSize: 12
-        },
-        plotarea: {
-            // csize: '4px',
-            backgroundColor: 'none',
-            borderWidth: '0px',
-            margin: '50px 5px 0px 5px',
-        },
-        backgroundColor: '#FBFCFE',
-        scaleR: {
-            aperture: 180,
-            minValue: 0,
-            maxValue: 100,
-            center: {
-                backgroundColor: '#CDCDCD',
-                size : '8px',
+        function turnover(data){
+            ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"];
+            window.feed = function(callback) {
+            var tick = {};
+            // tick.plot0 = Math.ceil(350 + (Math.random() * 500));
+            callback(JSON.stringify(tick));
+            };
+    
+            var myConfig = {
+                type: "gauge",
+                title: {
+                text: 'Turnover',
+                bold: true,
+                fontColor: '#515151',
+                backgroundColor : '#FBFCFE',
+            },
+            globals: {
+                fontSize: 12
+            },
+            plotarea: {
+                // csize: '4px',
+                backgroundColor: 'none',
                 borderWidth: '0px',
+                margin: '50px 5px 0px 5px',
             },
-            borderWidth: '0px',
-            tick: {
-                visible: false
-            },
-            item: {
-                fontColor: '#1E5D9E',
-                fontFamily: 'Montserrat',
-                offsetR: 0,
-                padding: '5px',
-            },
-            step: 50,
-            ring: {
-                size: '40px',
+            backgroundColor: '#FBFCFE',
+            scaleR: {
+                aperture: 180,
+                minValue: 0,
+                maxValue: 100,
+                center: {
+                    backgroundColor: '#CDCDCD',
+                    size : '8px',
+                    borderWidth: '0px',
                 },
-        },
-        series: [{
-            values: [50], // starting value
-            backgroundColor: 'black',
-            animation: {
-            effect: 2,
-            method: 1,
-            sequence: 4,
-            speed: 900
+                borderWidth: '0px',
+                tick: {
+                    visible: false
+                },
+                item: {
+                    fontColor: '#1E5D9E',
+                    fontFamily: 'Montserrat',
+                    offsetR: 0,
+                    padding: '5px',
+                },
+                step: 50,
+                ring: {
+                    size: '40px',
+                    },
             },
-        }]
-        };
- 
-        zingchart.render({
-        id: 'gaugeChart',
-        data: myConfig,
-        height: '90%',
-        width: '100%'
-        });
+            series: [{
+                values: [data], // starting value
+                backgroundColor: 'black',
+                animation: {
+                effect: 2,
+                method: 1,
+                sequence: 4,
+                speed: 900
+                },
+            }]
+            };
+    
+            zingchart.render({
+            id: 'gaugeChart',
+            data: myConfig,
+            height: '90%',
+            width: '100%'
+            });
+        }
     </script>
     <script>
         function rep_employee(data){
