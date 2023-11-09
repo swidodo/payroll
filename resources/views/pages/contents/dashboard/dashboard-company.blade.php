@@ -267,17 +267,34 @@
                 <!-- /Statistics Widget -->      
                <div class="row">
                 <div class="card shadow-sm">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr colspan="6" class="text-center">UNISMENT</tr>
+                    <h4>Timesheet</h4>
+                    <div class="table-responsive border border-1 mt-2">
+                        <table class="table table-sm table-striped table-bordered table-sm">
+                            <thead class="bg-primary">
                                 <tr>
                                     <th>No</th>
-                                    <th>employee Id</th>
-                                    <th>employee</th>
-                                    <th>Department</th>
-                                    <th>position</th>
+                                    <th>Employee Id</th>
+                                    <th>Employee</th>
+                                    <th>Project Stage</th>
+                                    <th>Start date</th>
+                                    <th>End date</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                <div class="card shadow-sm">
+                    <h4>Birthday</h4>
+                    <div class="table-responsive border border-1 mt-2">
+                        <table class="table table-sm table-striped table-bordered table-sm">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th>No</th>
                                     <th>Branch</th>
+                                    <th>Employee Id</th>
+                                    <th>Employee</th>
+                                    <th>Department</th>
+                                    <th>Position</th>
                                 </tr>
                             </thead>
                         </table>
