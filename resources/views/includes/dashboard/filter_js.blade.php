@@ -8,7 +8,7 @@
     // monthly_turnover()
 
    employee_report(defaultbranch)
-
+   employee_report_year(defaultbranch)
     // process get data
     function header(){
         $.ajaxSetup({
@@ -115,6 +115,18 @@
             dataType : 'json',
             success :function (respon){
                 rep_employee(respon)
+            }
+        })
+    }
+    function employee_report_year(branch){
+        header();
+        $.ajax({
+            url :'chart-report-employee-year',
+            type : 'GET',
+            data :{branch_id :branch},
+            dataType : 'json',
+            success :function (respon){
+                reportEmployeeYear(respon)
             }
         })
     }

@@ -450,4 +450,84 @@ class EmployeeReportController extends Controller
         }
         return response()->json($data);
     }
+    public function report_employee_in_year(Request $request){
+        $year1 = date('Y') - 4;
+        $year2 = date('Y') - 3;
+        $year3 = date('Y') - 2;
+        $year4 = date('Y') - 1;
+        $year5 = date('Y');
+        $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
+        if($request->branch_id == 0){
+            $data['year1'] = DB::SELECT("SELECT count(a.id)
+                                            FROM employees a 
+                                            LEFT JOIN branches b 
+                                            ON b.id =a.branch_id
+                                            WHERE to_char(date(a.created_at),'YYYY') <= '$year1'
+                                            AND a.status ='active' 
+                                            AND b.company_id = $branch->company_id");
+            $data['year2'] = DB::SELECT("SELECT count(a.id)
+                                            FROM employees a 
+                                            LEFT JOIN branches b 
+                                            ON b.id =a.branch_id
+                                            WHERE to_char(date(a.created_at),'YYYY') <= '$year2'
+                                            AND to_char(date(a.created_at),'YYYY') > '$year1'
+                                            AND a.status ='active' 
+                                            AND b.company_id = $branch->company_id");
+            $data['year3'] = DB::SELECT("SELECT count(a.id)
+                                            FROM employees a 
+                                            LEFT JOIN branches b 
+                                            ON b.id =a.branch_id
+                                            WHERE to_char(date(a.created_at),'YYYY') <= '$year3'
+                                            AND to_char(date(a.created_at),'YYYY') > '$year2'
+                                            AND a.status ='active' 
+                                            AND b.company_id = $branch->company_id");
+            $data['year4'] = DB::SELECT("SELECT count(a.id)
+                                            FROM employees a 
+                                            LEFT JOIN branches b 
+                                            ON b.id =a.branch_id
+                                            WHERE to_char(date(a.created_at),'YYYY') <= '$year4'
+                                            AND to_char(date(a.created_at),'YYYY') > '$year3'
+                                            AND a.status ='active' 
+                                            AND b.company_id = $branch->company_id");
+            $data['year5'] = DB::SELECT("SELECT count(a.id)
+                                            FROM employees a 
+                                            LEFT JOIN branches b 
+                                            ON b.id =a.branch_id
+                                            WHERE to_char(date(a.created_at),'YYYY') <= '$year5'
+                                            AND to_char(date(a.created_at),'YYYY') > '$year4'
+                                            AND a.status ='active' 
+                                            AND b.company_id = $branch->company_id");
+        }else{
+            $data['year1'] = DB::SELECT("SELECT count(id)
+                                FROM employees
+                                WHERE to_char(date(created_at),'YYYY') <= '$year1'
+                                AND status ='active' 
+                                AND branch_id = $request->branch_id");
+            $data['year2'] = DB::SELECT("SELECT count(id)
+                                FROM employees
+                                WHERE to_char(date(created_at),'YYYY') <= '$year2'
+                                AND to_char(date(created_at),'YYYY') > '$year1'
+                                AND status ='active' 
+                                AND branch_id = $request->branch_id");
+            $data['year3'] = DB::SELECT("SELECT count(id)
+                                FROM employees
+                                WHERE to_char(date(created_at),'YYYY') <= '$year3'
+                                AND to_char(date(created_at),'YYYY') > '$year2'
+                                AND status ='active' 
+                                AND branch_id = $request->branch_id");
+            $data['year4'] = DB::SELECT("SELECT count(id)
+                                FROM employees
+                                WHERE to_char(date(created_at),'YYYY') <= '$year4'
+                                AND to_char(date(created_at),'YYYY') > '$year3'
+                                AND status ='active' 
+                                AND branch_id = $request->branch_id");
+            $data['year5'] = DB::SELECT("SELECT count(id)
+                                FROM employees
+                                WHERE to_char(date(created_at),'YYYY') <= '$year5'
+                                AND to_char(date(created_at),'YYYY') > '$year4'
+                                AND status ='active' 
+                                AND branch_id = $request->branch_id");
+        }
+         return response()->json($data);
+    }
 }

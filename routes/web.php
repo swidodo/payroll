@@ -324,6 +324,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('chart-employee_religion', [EmployeeReportController::class, 'employee_religion']);
         Route::get('chart-employee_department', [EmployeeReportController::class, 'employee_department']);
         Route::get('chart-report-employee', [EmployeeReportController::class, 'report_totalemployee']);
+        Route::get('chart-report-employee-year', [EmployeeReportController::class, 'report_employee_in_year']);
 
 
         // HR Management

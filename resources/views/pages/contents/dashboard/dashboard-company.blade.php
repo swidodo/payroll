@@ -104,7 +104,7 @@
                         style="border-left-style: solid; border-radius: 4px; border-width: 5px;border-color: #295967; background-color: #8eccdb57">
                         <div class="row">
                             <div class="col-8 fs-6">
-                                Halo semua, Saya senang mengumumkan bahwa kami memiliki karyawan baru! bernama
+                                Halo semua, senang mengumumkan bahwa kami memiliki karyawan baru! bernama
                                 {{ $data->nama }}.
                             </div>
                             <div class="col-4">
@@ -119,7 +119,7 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="col-md-12">
-                        <div class="card" style="margin-top:-30px;background-color:#FBFCFE;">
+                        <div class="card" style="background-color:#FBFCFE;">
                             <div class="card-body">
                                 <div class="dash-widget-info text-center">
                                     <span>Employees</span>
@@ -811,139 +811,95 @@
     </script>
 
     <script>
-        ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"];
-        let cilinderchartConfig = {
-        backgroundColor: '#ecf2f6',
-        graphset: [
-       
-        {
-          type: 'line',
-          backgroundColor: '#fff',
-          borderColor: '#dae5ec',
-          borderWidth: '1px',
-          width: '100%',
-          height: '100%',
-       
-          title: {
-            text: "TODAY'S SALES",
-            marginTop: '7px',
-            marginLeft: '12px',
-            backgroundColor: 'none',
-            fontColor: '#707d94',
-            fontFamily: 'Arial',
-            fontSize: '11px',
-            shadow: false,
-            textAlign: 'left',
-          },
-          legend: {
-            margin: 'auto auto 15 auto',
-            backgroundColor: 'none',
-            borderWidth: '0px',
-            item: {
-              margin: '0px',
-              padding: '0px',
-              fontColor: '#707d94',
-              fontFamily: 'Arial',
-              fontSize: '9px',
-            },
-            layout: 'x4',
-            marker: {
-              type: 'match',
-              padding: '3px',
-              fontFamily: 'Arial',
-              fontSize: '10px',
-              lineWidth: '2px',
-              showLine: 'true',
-              size: 4,
-            },
-            shadow: false,
-          },
-          plot: {
-            tooltip: {
-              visible: false,
-            },
-            animation: {
-              delay: 500,
-              effect: 'ANIMATION_SLIDE_LEFT',
-            },
-          },
-          plotarea: {
-            margin: '50px 25px 70px 46px',
-          },
-       
-          series: [{
-              text: 'Kenmore',
-              values: [69, 68, 54, 48, 70],
-              lineColor: '#4dbac0',
-              lineWidth: '2px',
-              marker: {
-                backgroundColor: '#fff',
-                borderColor: '#36a2a8',
-                borderWidth: '1px',
-                shadow: false,
-                size: 3,
-              },
-              palette: 0,
-              shadow: false,
-            },
+        function reportEmployeeYear(data){
+            ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"];
+            let cilinderchartConfig = {
+            backgroundColor: '#ecf2f6',
+            graphset: [
+        
             {
-              text: 'Craftsman',
-              values: [51, 53, 47, 60, 48],
-              lineColor: '#25a6f7',
-              lineWidth: '2px',
-              marker: {
-                backgroundColor: '#fff',
-                borderColor: '#1993e0',
-                borderWidth: '1px',
+            type: 'line',
+            backgroundColor: '#fff',
+            borderColor: '#dae5ec',
+            borderWidth: '1px',
+            width: '100%',
+            height: '100%',
+        
+            title: {
+                text: "Report Employee 5 years",
+                marginTop: '7px',
+                marginLeft: '12px',
+                backgroundColor: 'none',
+                fontColor: '#707d94',
+                fontFamily: 'Arial',
+                fontSize: '11px',
                 shadow: false,
-                size: 3,
-              },
-              palette: 1,
-              shadow: false,
-              visible: true,
+                textAlign: 'left',
             },
-            {
-              text: 'DieHard',
-              values: [42, 43, 30, 50, 31],
-              lineColor: '#ad6bae',
-              lineWidth: '2px',
-              marker: {
-                backgroundColor: '#fff',
-                borderColor: '#975098',
-                borderWidth: '1px',
+            legend: {
+                margin: 'auto auto 15 auto',
+                backgroundColor: 'none',
+                borderWidth: '0px',
+                item: {
+                margin: '0px',
+                padding: '0px',
+                fontColor: '#707d94',
+                fontFamily: 'Arial',
+                fontSize: '9px',
+                },
+                layout: 'x4',
+                marker: {
+                type: 'match',
+                padding: '3px',
+                fontFamily: 'Arial',
+                fontSize: '10px',
+                lineWidth: '2px',
+                showLine: 'true',
+                size: 4,
+                },
                 shadow: false,
-                size: 3,
-              },
-              palette: 2,
-              shadow: false,
-              visible: true,
             },
-            {
-              text: "Land's End",
-              values: [25, 15, 26, 21, 24],
-              lineColor: '#f3950d',
-              lineWidth: '2px',
-              marker: {
-                backgroundColor: '#fff',
-                borderColor: '#d37e04',
-                borderWidth: '1px',
+            plot: {
+                tooltip: {
+                visible: false,
+                },
+                animation: {
+                delay: 500,
+                effect: 'ANIMATION_SLIDE_LEFT',
+                },
+            },
+            plotarea: {
+                margin: '50px 25px 70px 46px',
+            },
+        
+            series: [
+                {
+                text: "report",
+                values: [0,data.year1[0].count, data.year2[0].count,data.year3[0].count, data.year4[0].count, data.year5[0].count],
+                lineColor: '#f3950d',
+                lineWidth: '2px',
+                marker: {
+                    backgroundColor: '#fff',
+                    borderColor: '#d37e04',
+                    borderWidth: '1px',
+                    shadow: false,
+                    size: 3,
+                },
+                palette: 3,
                 shadow: false,
-                size: 3,
-              },
-              palette: 3,
-              shadow: false,
+                },
+            ],
             },
-          ],
-        },
-      ],
-        };
+        ],
+            };
 
-        zingchart.render({
-        id: 'cilinderChart',
-        data: cilinderchartConfig,
-        height: '100%',
-        width: '100%',
-        });
+            zingchart.render({
+            id: 'cilinderChart',
+            data: cilinderchartConfig,
+            height: '100%',
+            width: '100%',
+            });
+        }
     </script>
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
