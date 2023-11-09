@@ -74,7 +74,7 @@ class PositionController extends Controller
         {
             
             try {
-                $checkPosition = Position::where('position_code',$request->position_code)->count();
+                $checkPosition = Position::where('position_code',$request->position_code)->where('branch_id',$request->branch_id)->count();
                 if($checkPosition > 0 ){
                     $res = [
                         'status' => 'error',
