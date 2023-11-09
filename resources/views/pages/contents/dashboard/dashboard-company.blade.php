@@ -270,7 +270,7 @@
                     <h4>Timesheet</h4>
                     <div class="table-responsive border border-1 mt-2">
                         <table class="table table-sm table-striped table-bordered table-sm">
-                            <thead class="bg-warning">
+                            <thead class="bg-primary">
                                 <tr>
                                     <th>No</th>
                                     <th>Employee Id</th>
@@ -287,7 +287,7 @@
                     <h4>Birthday</h4>
                     <div class="table-responsive border border-1 mt-2">
                         <table class="table table-sm table-striped table-bordered table-sm">
-                            <thead class="bg-warning">
+                            <thead class="bg-primary">
                                 <tr>
                                     <th>No</th>
                                     <th>Branch</th>
