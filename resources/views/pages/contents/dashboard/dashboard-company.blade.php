@@ -168,7 +168,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 spece mb-2">
+                    <div class="col-md-12 spece mb-4">
                         <div id="cilinderChart" class="chartleft--container">
 
                         </div>
@@ -185,7 +185,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row mb-2">
+                    <div class="row mb-4">
                         <div id="diagramChart" class="chart--container">
                         </div>
                     </div>
