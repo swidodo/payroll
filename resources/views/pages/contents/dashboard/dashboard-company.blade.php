@@ -54,7 +54,7 @@
             margin-top:-20px;
             background-color: #FBFCFE;
         }
-        #diagramChart-license-text a{
+        #diagramChart a{
             display :none;
         }
     </style>
