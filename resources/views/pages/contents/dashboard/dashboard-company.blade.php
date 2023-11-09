@@ -54,7 +54,7 @@
             margin-top:-20px;
             background-color: #FBFCFE;
         }
-        #diagramChart a{
+        #cilinderChart  a{
             display :none;
         }
     </style>
@@ -1481,5 +1481,8 @@
                 //     defaultDate: dateNow,
                 // });
             });
+        </script>
+        <script>
+            $("#cilinderChart-license-text a").css({"display" : "none"});
         </script>
     @endpush
