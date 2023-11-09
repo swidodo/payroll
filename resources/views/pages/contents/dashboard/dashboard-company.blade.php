@@ -162,8 +162,8 @@
                         <div class="card spece">
                             <div class="card-body">
                                 <div class="dash-widget-info text-center">
-                                    <h3 id="totalWorkerDayEmployee"></h3>
                                     <span>Worker day</span>
+                                    <h3 id="totalWorkerDayEmployee"></h3>
                                 </div>
                             </div>
                         </div>
@@ -270,7 +270,7 @@
                     <h4>Timesheet</h4>
                     <div class="table-responsive border border-1 mt-2">
                         <table class="table table-sm table-striped table-bordered table-sm">
-                            <thead class="bg-primary">
+                            <thead class="bg-warning">
                                 <tr>
                                     <th>No</th>
                                     <th>Employee Id</th>
@@ -287,7 +287,7 @@
                     <h4>Birthday</h4>
                     <div class="table-responsive border border-1 mt-2">
                         <table class="table table-sm table-striped table-bordered table-sm">
-                            <thead class="bg-primary">
+                            <thead class="bg-warning">
                                 <tr>
                                     <th>No</th>
                                     <th>Branch</th>
