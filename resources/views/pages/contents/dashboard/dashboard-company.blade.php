@@ -568,11 +568,25 @@
     </script>
     <script>
         function rep_employee(data){
+            var jan = parseInt(data.jan_male[0].count) + parseInt(data.jan_female[0].count)
+            var feb = parseInt(data.feb_male[0].count) + parseInt(data.feb_female[0].count)
+            var mart = parseInt(data.mart_male[0].count) + parseInt(data.mart_female[0].count)
+            var april = parseInt(data.april_male[0].count) + parseInt(data.april_female[0].count)
+            var mei = parseInt(data.mei_male[0].count) + parseInt(data.mei_female[0].count)
+            var juni = parseInt(data.juni_male[0].count) + parseInt(data.juni_female[0].count)
+            var july = parseInt(data.july_male[0].count) + parseInt(data.july_female[0].count)
+            var agust = parseInt(data.agust_male[0].count) + parseInt(data.agust_female[0].count)
+            var sept = parseInt(data.sept_male[0].count) + parseInt(data.sept_female[0].count)
+            var okt = parseInt(data.okt_male[0].count) + parseInt(data.okt_female[0].count)
+            var nov = parseInt(data.nov_male[0].count) + parseInt(data.nov_female[0].count)
+            var des = parseInt(data.des_male[0].count) + parseInt(data.des_female[0].count)
         ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"];
         let chartData = [
             {
             type: 'line',
-            values: [69, 68, 54, 80, 70, 74, 90, 70, 72, 68, 49, 69],
+            values: [
+                jan, feb, mart,april, mei, juni, july, agust, sept, okt, nov, des,
+            ],
             scales: 'scale-x,scale-y',
             lineColor: '#0D47A1',
             legendMarker: {
@@ -584,22 +598,33 @@
           },
           {
             type: 'bar',
-            values: [22, 25, 14, 22, 26, 29, 34, 22, 26, 18, 22, 21],
-            scales: 'scale-x,scale-y-3',
+            values: [
+                data.jan_male[0].count, 
+                data.feb_male[0].count, 
+                data.mart_male[0].count, 
+                data.april_male[0].count,
+                data.mei_male[0].count,
+                data.juni_male[0].count,
+                data.july_male[0].count,
+                data.agust_male[0].count,
+                data.sept_male[0].count,
+                data.okt_male[0].count, 
+                data.nov_male[0].count,
+                data.des_male[0].count,
+            ],
+            scales: 'scale-x,scale-y',
             backgroundColor: '#1B5E20',
             tooltip: {
-              text: 'The number being shown is the percentage of the node when compared to its plot',
-              width: '200px',
+              text: 'Male',
+              width: '50px',
               wrapText: true,
             },
-            // valueBox: {
-            //   text: '%pper%',
-            //   decimals: 1,
-            //   fontAngle: 90,
-            //   fontColor: '#fff',
-            //   offsetY: '5px',
-            //   placement: 'top-in',
-            // },
+            valueBox: {
+            fontAngle: 90,
+              fontColor: '#fff',
+              offsetY: '5px',
+              placement: 'top-in',
+            },
           },
           {
         type: 'bar',
@@ -617,21 +642,21 @@
           data.nov_female[0].count,
           data.des_female[0].count,
         ],
-        scales: 'scale-x,scale-y-3',
+        scales: 'scale-x,scale-y',
         backgroundColor: '#E65100',
         text: 'Dell',
         tooltip: {
-          text: 'The number being shown above the bar is the value of the node',
-          width: '200px',
+          text: 'Female',
+          width: '50px',
           wrapText: true,
         },
         valueBox: {
-        //   bold: true,
-        //   fontAngle: 90,
-        //   fontColor: '#fff',
-        //   offsetY: '5px',
-        //   placement: 'top-in',
-        //   short: true,
+          bold: true,
+          fontAngle: 90,
+          fontColor: '#fff',
+          offsetY: '5px',
+          placement: 'top-in',
+          short: true,
         },
       },
         ];
@@ -664,64 +689,20 @@
             ],
            
             label: {
-              text: 'X label',
+              text: 'Employee/month',
             },
             
           },
         
-          scaleY3: {
-            values: '100',
-            // decimals: 2,
-            // guide: {
-            //   visible: false,
-            // },
-            // label: {
-            //   text: 'Y-3 label',
-            // },
-            // zooming: true,
+       
+          zoom: {
+            alpha: 0.2,
+            backgroundColor: '#B71C1C',
+            label: {
+              borderColor: '#B71C1C',
+              visible: true,
+            },
           },
-        //   scaleY4: {
-        // values: '100',
-        // format: '$%v',
-        // guide: {
-        //   visible: false,
-        // },
-        // label: {
-        //   text: 'Y-4 label',
-        // },
-        // multiplier: true,
-        // zooming: true,
-    //   },
-        //   zoom: {
-        //     alpha: 0.2,
-        //     backgroundColor: '#B71C1C',
-        //     label: {
-        //       borderColor: '#B71C1C',
-        //       visible: true,
-        //     },
-        //   },
-        //   scrollX: {
-        //     bar: {
-        //       backgroundColor: '#757575',
-        //       height: '8px',
-        //     },
-        //     handle: {
-        //       backgroundColor: '#E0E0E0',
-        //       height: '4px',
-        //       offsetY: '-1px',
-        //     },
-        //   },
-        //   scrollY: {
-        //     bar: {
-        //       width: '8px',
-        //       backgroundColor: '#757575',
-        //     },
-        //     handle: {
-        //       backgroundColor: '#E0E0E0',
-        //       offsetX: '-1px',
-        //       width: '4px',
-        //     },
-        //   },
        
           series: chartData,
         };
