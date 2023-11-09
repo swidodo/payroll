@@ -580,85 +580,85 @@
             var okt = parseInt(data.okt_male[0].count) + parseInt(data.okt_female[0].count)
             var nov = parseInt(data.nov_male[0].count) + parseInt(data.nov_female[0].count)
             var des = parseInt(data.des_male[0].count) + parseInt(data.des_female[0].count)
-        ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"];
-        let chartData = [
+            ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"];
+            let chartData = [
+                {
+                type: 'line',
+                values: [
+                    jan, feb, mart,april, mei, juni, july, agust, sept, okt, nov, des,
+                ],
+                scales: 'scale-x,scale-y',
+                lineColor: '#0D47A1',
+                legendMarker: {
+                type: 'circle',
+                },
+                marker: {
+                backgroundColor: '#0D47A1',
+                },
+            },
             {
-            type: 'line',
-            values: [
-                jan, feb, mart,april, mei, juni, july, agust, sept, okt, nov, des,
-            ],
-            scales: 'scale-x,scale-y',
-            lineColor: '#0D47A1',
-            legendMarker: {
-              type: 'circle',
+                type: 'bar',
+                values: [
+                    data.jan_male[0].count, 
+                    data.feb_male[0].count, 
+                    data.mart_male[0].count, 
+                    data.april_male[0].count,
+                    data.mei_male[0].count,
+                    data.juni_male[0].count,
+                    data.july_male[0].count,
+                    data.agust_male[0].count,
+                    data.sept_male[0].count,
+                    data.okt_male[0].count, 
+                    data.nov_male[0].count,
+                    data.des_male[0].count,
+                ],
+                scales: 'scale-x,scale-y',
+                backgroundColor: '#1B5E20',
+                tooltip: {
+                text: 'Male',
+                width: '50px',
+                wrapText: true,
+                },
+                valueBox: {
+                fontAngle: 90,
+                fontColor: '#fff',
+                offsetY: '5px',
+                placement: 'top-in',
+                },
             },
-            marker: {
-              backgroundColor: '#0D47A1',
-            },
-          },
-          {
+            {
             type: 'bar',
             values: [
-                data.jan_male[0].count, 
-                data.feb_male[0].count, 
-                data.mart_male[0].count, 
-                data.april_male[0].count,
-                data.mei_male[0].count,
-                data.juni_male[0].count,
-                data.july_male[0].count,
-                data.agust_male[0].count,
-                data.sept_male[0].count,
-                data.okt_male[0].count, 
-                data.nov_male[0].count,
-                data.des_male[0].count,
+            data.jan_female[0].count, 
+            data.feb_female[0].count, 
+            data.mart_female[0].count, 
+            data.april_female[0].count,
+            data.mei_female[0].count,
+            data.juni_female[0].count,
+            data.july_female[0].count,
+            data.agust_female[0].count,
+            data.sept_female[0].count,
+            data.okt_female[0].count, 
+            data.nov_female[0].count,
+            data.des_female[0].count,
             ],
             scales: 'scale-x,scale-y',
-            backgroundColor: '#1B5E20',
+            backgroundColor: '#E65100',
+            text: 'Dell',
             tooltip: {
-              text: 'Male',
-              width: '50px',
-              wrapText: true,
+            text: 'Female',
+            width: '50px',
+            wrapText: true,
             },
             valueBox: {
+            bold: true,
             fontAngle: 90,
-              fontColor: '#fff',
-              offsetY: '5px',
-              placement: 'top-in',
+            fontColor: '#fff',
+            offsetY: '5px',
+            placement: 'top-in',
+            short: true,
             },
-          },
-          {
-        type: 'bar',
-        values: [
-          data.jan_female[0].count, 
-          data.feb_female[0].count, 
-          data.mart_female[0].count, 
-          data.april_female[0].count,
-          data.mei_female[0].count,
-          data.juni_female[0].count,
-          data.july_female[0].count,
-          data.agust_female[0].count,
-          data.sept_female[0].count,
-          data.okt_female[0].count, 
-          data.nov_female[0].count,
-          data.des_female[0].count,
-        ],
-        scales: 'scale-x,scale-y',
-        backgroundColor: '#E65100',
-        text: 'Dell',
-        tooltip: {
-          text: 'Female',
-          width: '50px',
-          wrapText: true,
-        },
-        valueBox: {
-          bold: true,
-          fontAngle: 90,
-          fontColor: '#fff',
-          offsetY: '5px',
-          placement: 'top-in',
-          short: true,
-        },
-      },
+            },
         ];
     
         let barchartConfig = {
@@ -695,25 +695,25 @@
           },
         
        
-          zoom: {
-            alpha: 0.2,
-            backgroundColor: '#B71C1C',
-            label: {
-              borderColor: '#B71C1C',
-              visible: true,
+            zoom: {
+                alpha: 0.2,
+                backgroundColor: '#B71C1C',
+                label: {
+                borderColor: '#B71C1C',
+                visible: true,
+                },
             },
-          },
-       
-          series: chartData,
-        };
+        
+            series: chartData,
+            };
     
-        zingchart.render({
-          id: 'diagramChart',
-          data: barchartConfig,
-          height: '97%',
-          width: '100%',
-        });
-    }
+            zingchart.render({
+            id: 'diagramChart',
+            data: barchartConfig,
+            height: '97%',
+            width: '100%',
+            });
+        }
     </script>
     <script>
         function chartdepartment(data){
@@ -808,11 +808,12 @@
         }
     </script>
 
-<script>
-    ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"];
-    let cilinderchartConfig = {
-      backgroundColor: '#ecf2f6',
-      graphset: [
+    <script>
+        $('#cilinderChart-license-text a').attr('hidden',true)
+        ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"];
+        let cilinderchartConfig = {
+        backgroundColor: '#ecf2f6',
+        graphset: [
        
         {
           type: 'line',
@@ -934,15 +935,15 @@
           ],
         },
       ],
-    };
+        };
 
-    zingchart.render({
-      id: 'cilinderChart',
-      data: cilinderchartConfig,
-      height: '100%',
-      width: '100%',
-    });
-  </script>
+        zingchart.render({
+        id: 'cilinderChart',
+        data: cilinderchartConfig,
+        height: '100%',
+        width: '100%',
+        });
+    </script>
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
         <!-- Datatable JS -->
