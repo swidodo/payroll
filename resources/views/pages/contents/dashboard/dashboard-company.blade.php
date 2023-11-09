@@ -168,116 +168,30 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12">
-                        {{-- <div class="card spece">
-                            <div class="card-body"> --}}
-                                <div id="cilinderChart" class="chartleft--container">
-                                </div>
-                            {{-- </div>
-                        </div> --}}
+                    <div class="col-md-12 spece mb-1">
+                        <div id="cilinderChart" class="chartleft--container">
+
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-9">
                     <div class="row">
-                        <div class="col-md-6" style="margin-left:-10px;">
+                        <div class="col-md-6">
                             <div id="gaugeChart" class="chartgauge--container">
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div id="myChart" class="chartdonat--container" style="margin-left:-10px;">
+                            <div id="myChart" class="chartdonat--container">
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div id="diagramChart" class="chart--container" style="margin-left:-10px;">
+                        <div id="diagramChart" class="chart--container">
                         </div>
                     </div>
                 </div>
                 
             </div>
-
-            {{-- <div class="row">
-                <div class="col-md-3 d-flex">
-                    <div class="card flex-fill">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-10 col-10">
-                                    <h4 id="header_1"></h4>
-                                </div>
-                                <div class="col-md-2 col-2">
-                                    <div class="dropdown dropstart dropdown-action">
-                                        <a href="#" class="action-icon dropdown-toggle filter_1"
-                                            aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                        <ul class="dropdown-menu dropdown-menu-chart shadow-lg" id="result_filter_1">
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="filter_area_1" class="mt-4"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 d-flex">
-                    <div class="card flex-fill">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-10 col-10">
-                                    <h4 id="header_2"></h4>
-                                </div>
-                                <div class="col-md-2 col-2">
-                                    <div class="dropdown dropstart dropdown-action">
-                                        <a href="#" class="action-icon dropdown-toggle filter_2"
-                                            aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                        <ul class="dropdown-menu dropdown-menu-chart shadow-lg" id="result_filter_2">
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="filter_area_2" class="mt-4"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 d-flex">
-                    <div class="card flex-fill">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-10 col-10">
-                                    <h4 id="header_3"></h4>
-                                </div>
-                                <div class="col-md-2 col-2">
-                                    <div class="dropdown dropstart dropdown-action">
-                                        <a href="#" class="action-icon dropdown-toggle filter_3"
-                                            aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                        <ul class="dropdown-menu dropdown-menu-chart shadow-lg" id="result_filter_3">
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="filter_area_3" class="mt-4"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 d-flex">
-                    <div class="card flex-fill">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-10 col-10">
-                                    <h4 id="header_4"></h4>
-                                </div>
-                                <div class="col-md-2 col-2">
-                                    <div class="dropdown dropstart dropdown-action">
-                                        <a href="#" class="action-icon dropdown-toggle filter_4"
-                                            aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                        <ul class="dropdown-menu dropdown-menu-chart shadow-lg" id="result_filter_4">
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="filter_area_4" class="mt-4"></div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
 
             <div class="row">
                 
