@@ -59,11 +59,15 @@ class BranchController extends Controller
             if ($validator->fails()) {
                 return redirect()->back()->with('errors', $validator->messages());
             }
-            $branchId = Auth::user()->branch_id;
-            $comId = Branch::where('id',$branchId)->first();
+            $branchId           = Auth::user()->branch_id;
+            $comId              = Branch::where('id',$branchId)->first();
+            $code               = $comId->company_id.$request->alias;
+            if($comId->alias == $code){
+                return redirect()->route('branches.index')->with('info', 'Branch  already !.');
+            }
             $branch             = new Branch();
             $branch->name       = $request->name;
-            $branch->alias      = $request->alias;
+            $branch->alias      = $comId->company_id.$request->alias;
             $branch->company_id = $comId->company_id;
             $branch->created_by = Auth::user()->creatorId();
             $branch->save();
@@ -95,7 +99,7 @@ class BranchController extends Controller
     public function edit(Branch $branch)
     {
         if (Auth::user()->can('edit branch')) {
-            if ($branch->created_by == Auth::user()->creatorId()) {
+            if (Auth::user()->initial == "HO") {
 
                 // return view('branches.edit', compact('branch'));
                 return response()->json($branch);
@@ -117,6 +121,7 @@ class BranchController extends Controller
     public function update(Request $request, Branch $branch)
     {
         if (Auth::user()->can('edit branch')) {
+            dd( $request->id);
             if ($branch->created_by == Auth::user()->creatorId()) {
                 $validator = Validator::make(
                     $request->all(),
@@ -131,9 +136,15 @@ class BranchController extends Controller
                         'edit-show' => true,
                     ]);
                 }
+                
+                $code   = $request->company_id.$request->alias;
+                $check  = Branch::where('alias',$code)->where('id','<>',$request->id)->count();
+                if($check > 0){
+                    return redirect()->route('branches.index')->with('info', 'Branch  already !.');
+                }
 
-                $branch->name = $request->name;
-                $branch->alias = $request->alias;
+                $branch->name       = $request->name;
+                $branch->alias      = $request->company_id.$request->alias;
                 $branch->save();
 
                 return redirect()->route('branches.index')->with('success', 'Branch successfully updated.');

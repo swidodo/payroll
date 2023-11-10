@@ -69,6 +69,8 @@
                                 <div class="form-group">
                                     <label>Name <span class="text-danger">*</span></label>
                                     <input class="form-control" id="edit-name-branch" type="text" name="name">
+                                    <input class="form-control" id="id" type="text" name="id">
+                                    <input class="form-control" id="company_id" type="text" name="company_id">
 
                                     @if ($errors->has('name'))
                                     <div class="text-danger" role="alert">

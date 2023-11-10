@@ -141,6 +141,8 @@
 
                         $.get(editUrl, (data) => {
                             $('#edit-name-branch').val(data.name)
+                            $('#id').val(data.id)
+                            $('#company_id').val(data.company_id)
 
                             const urlNow = '{{ Request::url() }}'
                             $('#edit-form-branch').attr('action', urlNow + '/' + data.id);
