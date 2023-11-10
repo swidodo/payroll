@@ -103,6 +103,11 @@
                                     <td class="borderless">{{ucwords($employee->status)  ?? ''}}</td>
                                 </tr>
                                 <tr>
+                                    <td width="40" class="borderless">Email</td>
+                                    <td width="1" class="borderless">:</td>
+                                    <td class="borderless">{{ $employee->email ?? ''}}</td>
+                                </tr>
+                                <tr>
                                     <td width="40" class="borderless">Religion</td>
                                     <td width="1" class="borderless">:</td>
                                     <td class="borderless">{{ucwords($employee->religion)  ?? ''}}</td>

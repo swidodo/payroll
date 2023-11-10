@@ -115,6 +115,10 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                    <div class="form-group col-md-12">
+                                        <label for="bank_name" class="form-label">Email</label>
+                                        <input class="form-control"  name="email" type="text" value="{{$employee->email ?? ''}}" id="email">
+                                    </div> 
                                     <div class="form-group">
                                         <label for="address" class="form-label">Address</label><span class="text-danger pl-1">*</span>
                                         <textarea class="form-control" rows="2" name="address" cols="50" id="address">{{$employee->address ?? ''}}</textarea>
