@@ -121,7 +121,7 @@ class BranchController extends Controller
     public function update(Request $request, Branch $branch)
     {
         if (Auth::user()->can('edit branch')) {
-            dd( $request->id);
+            // dd( $request->id);
             if ($branch->created_by == Auth::user()->creatorId()) {
                 $validator = Validator::make(
                     $request->all(),

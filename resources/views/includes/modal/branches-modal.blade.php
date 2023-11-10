@@ -69,8 +69,8 @@
                                 <div class="form-group">
                                     <label>Name <span class="text-danger">*</span></label>
                                     <input class="form-control" id="edit-name-branch" type="text" name="name">
-                                    <input class="form-control" id="id" type="text" name="id">
-                                    <input class="form-control" id="company_id" type="text" name="company_id">
+                                    <input  id="id" type="hidden" name="id">
+                                    <input id="company_id" type="hidden" name="company_id">
 
                                     @if ($errors->has('name'))
                                     <div class="text-danger" role="alert">
@@ -81,7 +81,7 @@
                             </div>
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label>Alias <span class="text-danger">*</span></label>
+                                    <label>Branch Code <span class="text-danger">*</span></label>
                                     <input class="form-control" type="text" name="alias" placeholder="Enter Alias Name, ex. PDR, KIM, ARP">
 
                                     @if ($errors->has('alias'))

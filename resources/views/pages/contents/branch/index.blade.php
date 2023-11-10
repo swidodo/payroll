@@ -44,7 +44,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Branch</th>
-                                <th>Alias</th>
+                                <th>Branch Code</th>
                                 @if(Auth::user()->can('edit branch') || Auth::user()->can('delete branch'))
                                     <th class="text-end">Action</th>
                                 @endif
