@@ -739,28 +739,28 @@ class PayrollController extends Controller
         DB::beginTransaction();
         foreach ($sheetData as $key => $value) {
             if ($key > 0) :
-                $branch = Branch::where('alias',$value[16])->first();
+                $branch = Branch::where('alias',$value[17])->first();
                 if ($branch != null) :
                     $employeeId = employee::where('no_employee',$value[1])->where('branch_id',$branch->id)->first();
                     $takeHP = DB::table('take_home_pay')
                                 ->where('employee_id',$employeeId->id)
-                                ->where('startdate',$value[14])
-                                ->where('enddate',$value[15])
+                                ->where('startdate',$value[15])
+                                ->where('enddate',$value[16])
                                 ->count();
                     if ($takeHP > 0){
                         DB::table('take_home_pay')
                             ->where('employee_id',$employeeId->id)
-                            ->where('startdate',$value[14])
-                            ->where('enddate',$value[15])
+                            ->where('startdate',$value[15])
+                            ->where('enddate',$value[16])
                             ->delete();
                     }
-                    $ded_other = Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[14],'enddate'=>$value[15]])->count();
+                    $ded_other = Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[15],'enddate'=>$value[16]])->count();
                     if($ded_other > 0 ){
-                        Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[14],'enddate'=>$value[15]])->delete();
+                        Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[15],'enddate'=>$value[16]])->delete();
                     }
-                    $ded_loan = Loan::where('employee_id',$employeeId->id)->whereBetween("created_at",[$value[14],$value[15]])->count();
+                    $ded_loan = Loan::where('employee_id',$employeeId->id)->whereBetween("created_at",[$value[15],$value[16]])->count();
                     if ($ded_loan > 0 ){
-                        Loan::where('employee_id',$employeeId->id)->whereBetween("created_at",[$value[14],$value[15]])->delete();
+                        Loan::where('employee_id',$employeeId->id)->whereBetween("created_at",[$value[15],$value[16]])->delete();
                     }
                     if ($employeeId != null ):
                     if($employeeId->id =='' | $employeeId->id ==null){
@@ -768,8 +768,9 @@ class PayrollController extends Controller
                     }
                     $val_salarymonth = (($value[3] !=null) ? $value[3] : 0 ) + (($value[4] !=null) ? $value[4] : 0 ) + (($value[5] !=null) ? $value[5] : 0 );
                     $total_loan      = (($value[7] !=null) ? $value[7] : 0 );
-                    $deduction_other = (($value[8] !=null) ? $value[8] : 0 ) + (($value[10] !=null) ? $value[10] : 0 ) + (($value[11] !=null) ? $value[11] : 0 ) + (($value[12] !=null) ? $value[12] : 0 );
-                    $total_deduction = $total_loan + $deduction_other + (($value[9] !=null) ? $value[9] : 0 );
+                    $deduction_other = (($value[8] !=null) ? $value[8] : 0 ) + (($value[11] !=null) ? $value[11] : 0 ) + (($value[12] !=null) ? $value[12] : 0 ) + (($value[13] !=null) ? $value[13] : 0 );
+                    $bpjs = (($value[9] !=null) ? $value[9] : 0 ) + (($value[10] !=null) ? $value[10] : 0 )
+                    $total_deduction = $total_loan + $deduction_other + $bpjs;
                     $datas = [
                         'date'                              => date('Y-m-d'),
                         'employee_id'                       => $employeeId->id,
@@ -790,10 +791,10 @@ class PayrollController extends Controller
                         'total_salary'                      => $val_salarymonth,
                         'company_pay_bpjs_kesehatan'        => 0,
                         'company_pay_bpjs_ketenagakerjaan'  => 0,
-                        'employee_pay_bpjs_kesehatan'       => 0,
-                        'employee_pay_bpjs_ketenagakerjaan' =>  (($value[9] !=null) ? $value[9] : 0 ),
+                        'employee_pay_bpjs_kesehatan'       => (($value[10] !=null) ? $value[10] : 0 ),
+                        'employee_pay_bpjs_ketenagakerjaan' => (($value[9] !=null) ? $value[9] : 0 ),
                         'company_total_pay_bpjs'            => 0,
-                        'employee_total_pay_bpjs'           => (($value[9] !=null) ? $value[9] : 0 ),
+                        'employee_total_pay_bpjs'           => $bpjs,
                         'installment'                       => 0,
                         'loans'                             => (($value[7] !=null) ? $value[7] : 0 ),
                         'total_pay_loans'                   => $total_loan,
@@ -801,9 +802,9 @@ class PayrollController extends Controller
                         'total_deduction_other'             => $deduction_other,
                         'pph21'                             => 0,
                         'total_deduction'                   => $total_deduction,
-                        'startdate'                         => $value[14],
-                        'enddate'                           => $value[15],
-                        'take_home_pay'                     => (($value[13] !=null) ? $value[13] : 0 ),
+                        'startdate'                         => $value[15],
+                        'enddate'                           => $value[16],
+                        'take_home_pay'                     => (($value[14] !=null) ? $value[14] : 0 ),
                         'branch_id'                         => $employeeId->branch_id,
                         'created_at'                        => date('Y-m-d h:m:s'),
                     ];
@@ -823,8 +824,8 @@ class PayrollController extends Controller
                             'amount'                => $value[7],
                             'created_by'            => Auth::user()->id,
                             'branch_id'             => $employeeId->branch_id,
-                            'created_at'            => $value[15].' '.date('h:m:s'),
-                            'updated_at'            => $value[15].' '.date('h:m:s')
+                            'created_at'            => $value[16].' '.date('h:m:s'),
+                            'updated_at'            => $value[16].' '.date('h:m:s')
                         ];
                         Loan::insert($data);
                     }
@@ -835,42 +836,42 @@ class PayrollController extends Controller
                     //         Deduction_admin::where('')->update();
                     //     }
                     // }
-                    if ($value[10] != null){
+                    if ($value[11] != null){
                         $deduc2 = [
                             'employee_id'           => $employeeId->id,
                             'branch_id'             => $employeeId->branch_id,
-                            'date'                  => $value[15],
+                            'date'                  => $value[16],
                             'name'                  => 'Koperasi',
-                            'amount'                => $value[10],
-                            'created_by'            => Auth::user()->id,
-                            'created_at'            => $value[15].' '.date('h:m:s'),
-                            'updated_at'            => $value[15].' '.date('h:m:s')
-                        ];
-                        Deduction_other::create($deduc2);
-                    }
-                    if ($value[11] != null){
-                        $deduc3 = [
-                            'employee_id'           => $employeeId->id,
-                            'branch_id'             => $employeeId->branch_id,
-                            'date'                  => $value[15],
-                            'name'                  => 'Seragam',
                             'amount'                => $value[11],
                             'created_by'            => Auth::user()->id,
-                            'created_at'            => $value[15].' '.date('h:m:s'),
-                            'updated_at'            => $value[15].' '.date('h:m:s')
+                            'created_at'            => $value[16].' '.date('h:m:s'),
+                            'updated_at'            => $value[16].' '.date('h:m:s')
                         ];
-                        Deduction_other::create($deduc3);
+                        Deduction_other::create($deduc2);
                     }
                     if ($value[12] != null){
                         $deduc3 = [
                             'employee_id'           => $employeeId->id,
                             'branch_id'             => $employeeId->branch_id,
-                            'date'                  => $value[15],
-                            'name'                  => 'Potongan Absensi',
+                            'date'                  => $value[16],
+                            'name'                  => 'Seragam',
                             'amount'                => $value[12],
                             'created_by'            => Auth::user()->id,
-                            'created_at'            => $value[15].' '.date('h:m:s'),
-                            'updated_at'            => $value[15].' '.date('h:m:s')
+                            'created_at'            => $value[16].' '.date('h:m:s'),
+                            'updated_at'            => $value[16].' '.date('h:m:s')
+                        ];
+                        Deduction_other::create($deduc3);
+                    }
+                    if ($value[13] != null){
+                        $deduc3 = [
+                            'employee_id'           => $employeeId->id,
+                            'branch_id'             => $employeeId->branch_id,
+                            'date'                  => $value[16],
+                            'name'                  => 'Potongan Absensi',
+                            'amount'                => $value[13],
+                            'created_by'            => Auth::user()->id,
+                            'created_at'            => $value[16].' '.date('h:m:s'),
+                            'updated_at'            => $value[16].' '.date('h:m:s')
                         ];
                         Deduction_other::create($deduc3);
                     }
