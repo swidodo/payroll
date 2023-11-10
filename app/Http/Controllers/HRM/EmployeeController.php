@@ -787,11 +787,13 @@ class EmployeeController extends Controller
                         }
                         $check = DB::select("select no_employee
                                             from employees
-                                            where no_employee ='$row[11]'");
+                                            where no_employee ='$row[11]'
+                                            AND branch_id ='$branchId->id'");
                         $checkUser = DB::select("select id,email,name
                                             from users
                                             where LOWER(name) = '$name'
-                                            and email='$row[10]'");
+                                            and email='$row[10]'
+                                            AND branch_id = '$branchId->id'");
 
                         if(count($check) > 0){
                             $doj            = ($row[22] != "" ) ? $row[22] : null;
