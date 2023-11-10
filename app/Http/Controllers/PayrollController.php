@@ -769,7 +769,7 @@ class PayrollController extends Controller
                     $val_salarymonth = (($value[3] !=null) ? $value[3] : 0 ) + (($value[4] !=null) ? $value[4] : 0 ) + (($value[5] !=null) ? $value[5] : 0 );
                     $total_loan      = (($value[7] !=null) ? $value[7] : 0 );
                     $deduction_other = (($value[8] !=null) ? $value[8] : 0 ) + (($value[11] !=null) ? $value[11] : 0 ) + (($value[12] !=null) ? $value[12] : 0 ) + (($value[13] !=null) ? $value[13] : 0 );
-                    $bpjs = (($value[9] !=null) ? $value[9] : 0 ) + (($value[10] !=null) ? $value[10] : 0 )
+                    $bpjs = (($value[9] !=null) ? $value[9] : 0 ) + (($value[10] !=null) ? $value[10] : 0 );
                     $total_deduction = $total_loan + $deduction_other + $bpjs;
                     $datas = [
                         'date'                              => date('Y-m-d'),
