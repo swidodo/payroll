@@ -36,14 +36,14 @@
                                 <input type="hidden" name="company_id" id="editCompanyId">
                                 <input type="hidden" name="company_name" id="editCompanyName">
                                 <label>Branch Name</label>
-                                <input type="text" id="editBranch" class="form-control mb-3" disable>
+                                <input type="text" id="editBranch" class="form-control mb-3" disable >
                                 <input type="hidden" name="branch_id" id="editBranchId">
                                 <input type="hidden" name="branch_name" id="editBranchName">
                                 <label>From Department</label>
                                 <select name="from_department" class="form-control form-select mb-3" id="editFromDepartment" readonly>
                                 </select>
                                 <label>To Department</label>
-                                <select name="to_department" class="form-control form-select mb-3" id="editToDepartment">
+                                <select name="to_department" class="form-control form-select mb-3" id="editToDepartment" required>
                                     <option></option>
                                 </select> 
 

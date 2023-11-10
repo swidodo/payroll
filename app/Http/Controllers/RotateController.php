@@ -197,7 +197,7 @@ class RotateController extends Controller
                          ->where('branch_id',$request->branch_id)
                          ->get();
         $employee = DB::table('employees')
-                        ->select('id','name')
+                        ->select('id','no_employee','name')
                         ->where('branch_id',$request->branch_id)
                         ->get();
         $data = [
@@ -211,7 +211,7 @@ class RotateController extends Controller
     }
     public function get_employee(Request $request){
         $branchId = $request->branch_id;
-        $employee = Employee::select('id','name')
+        $employee = Employee::select('id','no_employee','name')
                             ->where('branch_id',$branchId)
                             ->get();
         return response()->json($employee);

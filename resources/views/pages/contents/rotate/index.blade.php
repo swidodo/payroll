@@ -171,7 +171,8 @@
                    }) 
                     var emp = `<option value=""></option>`;
                     $.each(respon.employee,function(key,val){
-                        emp += `<option value="`+val.id+`">`+val.name+`</option>`;
+                        var empNo = (val.no_employee !=null ) ? val.no_employee:'';
+                        emp += `<option value="`+val.id+`">`+ empNo +` - `+val.name+`</option>`;
                    })
                      var position =`<option value=""></option>`;
                    $.each(respon.position,function(key,val){

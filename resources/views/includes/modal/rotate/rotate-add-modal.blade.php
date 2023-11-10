@@ -16,16 +16,16 @@
                                 <input type="date" name="rotate_date" class="form-control mb-3" required>
                                 <label>Rotation Type</label>
                                 <select name="rotate_name" class="form-control form-select mb-3">
-                                    <option>Promotion</option>
-                                    <option>Rotation</option>
-                                    <option>Mutation</option>
-                                    <option>Demotion</option>
+                                    <option value="Promotion">Promotion</option>
+                                    <option value="Rotation">Rotation</option>
+                                    <option value="Mutation">Mutation</option>
+                                    <option value="Demotion">Demotion</option>
                                 </select>
                                 <label>Employee Name</label>
                                 <select name="employee_id" class="form-control form-select mb-3" id="employeeId" required>
                                 </select>
                                 <label>Position</label>
-                                <select name="position_id" class="form-control form-select mb-3" id="position_id" required>
+                                <select name="position_id" class="form-control form-select mb-3" id="position_id" >
                                     <option></option>
                                 </select>
                             </div>
