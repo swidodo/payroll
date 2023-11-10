@@ -219,7 +219,6 @@ class EmployeeController extends Controller
     }
     public function update(Request $request, $id)
     {
-        // dd($request->all());
         if (Auth::user()->can('edit employee')) {
             $validator = Validator::make(
                 $request->all(),
@@ -240,6 +239,11 @@ class EmployeeController extends Controller
             }
 
             $employee = Employee::findOrFail($id);
+            $checktkp = DB::table('take_home_pay')->where('no_employee',$employee->no_employee)->count();
+            if ($checktkp > 0 ){
+                toast('Employee ID have use take home pay!.', 'error');
+                return redirect()->route('employees.index');
+            }
             //document
             if ($request->document) {
                 foreach ($request->document as $key => $document) {

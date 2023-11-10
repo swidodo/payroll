@@ -126,11 +126,11 @@
                         <div class="table-responsive">
                             <table class="table table-borderless">
                                 <tbody>
-                                <tr>
+                                {{-- <tr>
                                     <td width="40" class="borderless">Employee Code</td>
                                     <td width="1" class="borderless">:</td>
                                     <td  class="borderless">{{$employeesId ?? 'Detail Employee'}}</td>
-                                </tr>
+                                </tr> --}}
                                 <tr>
                                     <td width="40" class="borderless">Employee ID</td>
                                     <td width="1" class="borderless">:</td>
