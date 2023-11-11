@@ -350,7 +350,7 @@
                                         @endif
                                     @endforeach
                                     @foreach($allowance_other as $other)
-                                        @if ($other->employee_id == $salary->employee_id && $other->allowance_date >= $salary->startdate && $other->allowance_date <= $salary->enddate)
+                                        @if ($other->employeeid == $salary->employee_id && $other->allowance_date >= date('Y-m-d',strtotime($salary->startdate)) && $other->allowance_date <=  date('Y-m-d',strtotime($salary->enddate)))
                                         <tr class="fs-14 " style="font-weight: 400">
                                             <td style="width: 45%">{{ strtolower($other->allowance_name) }}</td>
                                             <td>:</td>
