@@ -47,7 +47,7 @@
                                     <div class="row">
                                         <div class="form-group col-md-6">
                                             <label for="name" class="form-label">Name</label><span class="text-danger pl-1">*</span>
-                                            <input class="form-control"  name="name" type="text" id="name">
+                                            <input class="form-control"  name="name" type="text" id="name" required>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="phone" class="form-label">Phone</label><span class="text-danger pl-1">*</span>
@@ -62,7 +62,8 @@
                                         <div class="form-group col-md-6">
                                             <label for="gender" class="form-label">Gender</label><span class="text-danger pl-1">*</span>
                                             <div class="d-flex radio-check mt-2">
-                                                <select class="form-control form-select" name="gender">
+                                                <select class="form-control form-select" name="gender" required>
+                                                    <option value="">-- Pilih --</option>
                                                     <option value="MALE">MALE</option>
                                                     <option value="FEMALE">FEMALE</option>
                                                 </select>
@@ -91,7 +92,7 @@
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="marital_status" class="form-label">Marital Status</label>
-                                            <select class="form-control select"  id="marital_status" name="marital_status">
+                                            <select class="form-control select"  id="marital_status" name="marital_status" required>
                                                 @foreach ($paramPph21 as $param)
                                                 <option value="{{$param->code }}" >{{ $param->name }}</option>
                                                 @endforeach
@@ -99,7 +100,7 @@
                                         </div>
                                         <div class="form-group col-md-12">
                                             <label for="bank_name" class="form-label">Email</label>
-                                            <input class="form-control"  name="email" type="text" id="email">
+                                            <input class="form-control"  name="email" type="text" id="email" required>
                                         </div> 
                                         <div class="form-group">
                                             <label for="address" class="form-label">Address</label><span class="text-danger pl-1">*</span>
@@ -154,7 +155,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="leave_type" class="form-label">Work Type</label>
-                                        <select class="form-control select"  id="work_type" name="work_type">
+                                        <select class="form-control select"  id="work_type" name="work_type" required>
                                             <option value="">Select Type</option>
                                             <option value="61">6-1 (6 Days Work) </option>
                                             <option value="52">5-2 (5 Days Work) </option>
@@ -189,7 +190,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label class="form-label">Department </label>
-                                        <select class="form-control select" name="department" required>
+                                        <select class="form-control select" name="department">
                                             <option value="" selected>Select Department</option>
                                             @foreach ($department as $depart)
                                                 <option value="{{$depart->id }}">{{$depart->name}}</option>
@@ -198,7 +199,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label class="form-label">Position </label>
-                                        <select class="form-control select" name="position" required>
+                                        <select class="form-control select" name="position">
                                             <option value="" selected>Select Position</option>
                                             @foreach ($position as $post)
                                                 <option value="{{$post->id }}">{{$post->position_name}}</option>

@@ -7,6 +7,16 @@
     monthly_turnover(defaultbranch)
     employee_report(defaultbranch)
     employee_report_year(defaultbranch)
+    var arr = [];
+    $('#branch_id').on('change',function(){
+        var branch = $('#branch_id').val();
+        parse_employee_gander(defaultbranch)
+        employee_status(defaultbranch)
+        department(defaultbranch)
+        monthly_turnover(defaultbranch)
+        employee_report(defaultbranch)
+        employee_report_year(defaultbranch)
+    })
     // process get data
     function header(){
         $.ajaxSetup({
