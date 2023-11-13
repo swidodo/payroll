@@ -10,12 +10,12 @@
     var arr = [];
     $('#branch_id').on('change',function(){
         var branch = $('#branch_id').val();
-        parse_employee_gander(defaultbranch)
-        employee_status(defaultbranch)
-        department(defaultbranch)
-        monthly_turnover(defaultbranch)
-        employee_report(defaultbranch)
-        employee_report_year(defaultbranch)
+        parse_employee_gander(branch)
+        employee_status(branch)
+        department(branch)
+        monthly_turnover(branch)
+        employee_report(branch)
+        employee_report_year(branch)
     })
     // process get data
     function header(){
