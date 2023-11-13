@@ -101,7 +101,7 @@
             data :{branch_id :branch},
             dataType : 'json',
             success :function (respon){
-                // console.log(respon.data);
+                console.log(respon.data);
                 chartdepartment(respon.data)
             }
         })
