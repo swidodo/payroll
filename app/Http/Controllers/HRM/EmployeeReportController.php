@@ -97,7 +97,7 @@ class EmployeeReportController extends Controller
             $dep['data'] = DB::table('departements')
                     ->select('departements.name',DB::raw('count(employees.id)'))
                     ->leftJoin('employees','employees.department_id','departements.id')
-                    ->where('employees.branch_id',$request->branch)
+                    ->where('employees.branch_id',$request->branch_id)
                     ->groupBy('departements.departement_code','departements.name')->get();
         
         }
