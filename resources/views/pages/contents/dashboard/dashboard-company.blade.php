@@ -682,7 +682,8 @@
                 html.push( {
                     text : val.name,
                     values: [val.count],
-                    backgroundColor: color
+                    backgroundColor: color,
+                    fontSize : '10px',
                 })
                 i++;
             })
@@ -691,14 +692,15 @@
                     text : 'No department',
                     values: [0],
                     backgroundColor: '#2870B1',
-                    fontSize : '10px'
+                    fontSize : '10px',
                 }]
             }
             ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"];
             let departchartConfig = {
-                    type: 'pie',
-                    backgroundColor: '#FBFCFE',
-                    title: {
+                type: 'pie',
+                backgroundColor: '#FBFCFE',
+                fontSize : '10px',
+                title: {
                     text: 'Department',
                     backgroundColor: '#FBFCFE',
                     fontColor: '#1A1B26',
@@ -706,54 +708,35 @@
                     height: '20px'
                 },
                 legend: {
-                    backgroundColor: 'none',
-                    borderWidth: '0px',
-                    item: {
-                        fontColor: '#000'
-                    },
-                    layout: 'h',
-                    marker: {
-                        type: 'circle',
-                        borderColor: 'white'
-                    },
-                    shadow: true,
-                    toggleAction: 'remove',
-                    y: '40px'
+                backgroundColor: 'none',
+                borderWidth: '0px',
+                item: {
+                    fontColor: '#000'
+                },
+                layout: 'h',
+                marker: {
+                    wrap :true,
+                    text : '9px',
+                    type: 'circle',
+                    borderColor: 'white'
+                },
+                shadow: true,
+                toggleAction: 'remove',
+                y: '40px'
                 },
                 plotarea: {
                     margin: '90px 30px 25px 30px'
                 },
-                plot: {
-        tooltip: {
-          text: '%npv%',
-          padding: '5px 10px',
-          fontFamily: 'Open Sans',
-          fontSize: '18px'
-        },
-        valueBox: {
-          text: '%t\n%npv%',
-          fontFamily: 'Open Sans',
-          placement: 'out'
-        },
-        animation: {
-          effect: 'ANIMATION_EXPAND_VERTICAL',
-          method: 'ANIMATION_REGULAR_EASE_OUT',
-          sequence: 'ANIMATION_BY_PLOT',
-          speed: 500
-        },
-        borderColor: '#2B313B',
-        borderWidth: '5px'
-      },
-      plotarea: {
-        margin: '20px 0 0 0'
-      },
-      source: {
-        text: 'Source: gs.statcounter.com',
-        fontColor: '#8e99a9',
-        fontFamily: 'Open Sans',
-        textAlign: 'left'
-      },
-      series: html
+                tooltip: {
+                    text: '%npv%',
+                    borderColor: '#fff',
+                    borderRadius: '3px',
+                    borderWidth: '1px',
+                    fontColor: '#1A1B26',
+                    fontSize: '12px',
+                    shadow: true
+                },
+                series: html
                 
             };
         
