@@ -22,6 +22,9 @@
                     <div class="d-flex justify-content-center">
                          @canany(['create employee'])
                         <div>
+                            <a href="{{route('add-employee')}}" id="addEmployee" class="btn btn-warning rounded-pill me-2"><i class="fa fa-plus"></i>Tambah</a>
+                        </div>
+                        <div>
                             <button id="import_excel" class="btn btn-warning rounded-pill me-2"><i class="fa fa-download"></i> Import</button>
                         </div>
                         @endcan

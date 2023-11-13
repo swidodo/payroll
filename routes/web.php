@@ -123,6 +123,8 @@ Route::group(['middleware' => 'auth'], function () {
         
         /** route employees */
         Route::resource('employees', EmployeeController::class);
+        Route::get('create_employee',[EmployeeController::class,'create_employee'])->name('add-employee');
+        Route::post('save-create-employee',[EmployeeController::class,'save_create_employee'])->name('save-create-employee');
         Route::post('get-data-employees',[EmployeeController::class,'GetDataEmployees'])->name('employees.get-data-employees');
         /** end route employees */
 

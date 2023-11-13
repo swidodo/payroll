@@ -23,6 +23,7 @@ use App\Models\User;
 use App\Models\Utility;
 use App\Models\Parameter_pph21;
 use App\Models\Departement;
+use App\Models\Position;
 use Carbon\Carbon;
 use DataTables;
 use Exception;
@@ -946,6 +947,86 @@ class EmployeeController extends Controller
             'msg' => 'Update Profile successfuly',
         ];
         return response()->json($res);
+    }
+    public function create_employee(){
+        $branch = Branch::where('id',Auth::user()->branch_id)->first();
+        $data['paramPph21']  = Parameter_pph21::get();
+        if (Auth::user()->initial == "HO"){
+            $data['branches']      = Branch::where('company_id',$branch->company_id)->get();
+            $data['position']      = Position::leftJoin('branches','branches.id','=','position.branch_id')->where('company_id',$branch->company_id)->get();
+            $data['department']    = Departement::select('departements.*')->leftJoin('branches','branches.id','=','departements.branch_id')->where('company_id',$branch->company_id)->get();
+        // dd($data['department']->id);
+        }else{
+            $data['branches']      = Branch::where('branch_id',$branch->id)->first();
+            $data['department']    = Departement::where('branch_id',$branch->id)->first();
+            $data['position']      = Position::where('branch_id',$branch->id)->first();
+        }
+        return view('pages.contents.employee.add_employee',$data);
+    }
+    public function save_create_employee(Request $request){
+        $check = DB::select("select no_employee
+                            from employees
+                            where no_employee ='$request->no_employee'
+                            AND branch_id ='$request->branch_id'");
+        $checkUser = DB::select("select id,email,name
+                                from users
+                                where LOWER(name) = '$request->name'
+                                and email='$request->email'");
+
+        $user = new User();
+        $user->name     = $request->name;
+        $user->email    = $request->email;
+        $user->branch_id = $request->branch_id;
+        $user->password = Hash::make('12345678');
+        $user->type     = 'user'; //default
+        $dob            = ($request->dob !="" && $request->dob !='0000-00-00') ? $request->dob : null;
+        if (count($checkUser) <= 0 ){
+            $data = $user->save();
+            $userId = $user->id;
+        }else{
+            $userId = $checkUser[0]->id;
+        }
+
+
+        $employee = [
+            "name"                  => $request->name,
+            "identity_card"         => $request->identity_card,
+            "family_card"           => $request->family_card,
+            "npwp_number"           => $request->npwp_number,
+            "dob"                   => $dob,
+            "gender"                => strtoupper( $request->gender),
+            "religion"              => strtoupper( $request->religion),
+            "marital_status"        => strtoupper( $request->marital_status),
+            "phone"                 => $request->phone,
+            "address"               => $request->address,
+            "email"                 => $request->email,
+            "no_employee"           => $request->no_employee,
+            "employee_type"         => strtoupper( $request->employee_type),
+            "work_type"             => $request->work_type,
+            "department_id"         => $request->department,
+            "position_id"           => $request->position,
+            "account_holder_name"   => $request->account_holder_name,
+            "bank_name"             => $request->account_nubank_namember,
+            "account_number"        => $request->account_number,
+            "bank_identifier_code"  => $request->bank_identifier_code,
+            "branch_location"       => $request->branch_location,
+            "status"                => strtolower( $request->status),
+            "company_doj"           => $request->company_doj,
+            "company_doe"           => $request->company_doe,
+            "branch_id"             =>$request->branch_id,
+            "employee_id"           =>User::employeeIdFormat($request->branch_id, self::employeeNumber(Auth::user()->creatorId())),
+            "user_id"               =>$userId,
+            "is_active"             => 1,
+            "created_by"            => Auth::user()->creatorId(),
+            "created_at"            => date('Y-m-d h:m:s'),
+            "updated_at"            => date('Y-m-d h:m:s'),
+        ];
+        $save = Employee::insert($employee);
+        if ($save){
+            return redirect()->back()->with('success','Created employee successfuly !.');
+        }else{
+           return redirect()->back()->with('success','someting wnt wrong !.');
+        }
     }
     
 }
