@@ -99,7 +99,7 @@
 
             {{-- Karyawan Baru --}}
             @foreach ($newEmployee as $data)
-                <div class="card">
+                {{-- <div class="card">
                     <div class="card-body"
                         style="border-left-style: solid; border-radius: 4px; border-width: 5px;border-color: #295967; background-color: #8eccdb57">
                         <div class="row">
@@ -113,7 +113,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             @endforeach
 
             <div class="row">
