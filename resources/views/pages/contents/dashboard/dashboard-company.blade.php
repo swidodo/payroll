@@ -97,25 +97,6 @@
             </div>
             <!-- /Page Header -->
 
-            {{-- Karyawan Baru --}}
-            @foreach ($newEmployee as $data)
-                {{-- <div class="card">
-                    <div class="card-body"
-                        style="border-left-style: solid; border-radius: 4px; border-width: 5px;border-color: #295967; background-color: #8eccdb57">
-                        <div class="row">
-                            <div class="col-8 fs-6">
-                                Halo semua, senang mengumumkan bahwa kami memiliki karyawan baru! bernama
-                                {{ $data->nama }}.
-                            </div>
-                            <div class="col-4">
-                                <button type="button" class="btn-close btn-sm float-end .bg-info-subtle"
-                                    aria-label="Close"></button>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
-            @endforeach
-
             <div class="row">
                 <div class="col-md-3">
                     <div class="col-md-12">
