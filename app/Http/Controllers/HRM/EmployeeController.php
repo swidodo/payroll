@@ -50,7 +50,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        Employee::where('user_id','=','17905')->delete();
+        // Employee::where('user_id','=','17905')->delete();
        
         
         if (Auth::user()->can('manage employee')) {
