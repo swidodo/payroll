@@ -247,11 +247,11 @@ class EmployeeController extends Controller
                     return redirect()->route('employees.index');
                 }
             }
-            
+
             if ($request->company_doe != null || $request->company_doe != ''){
                 $request['status'] = 'non active';
             }
-    
+            
             //document
             if ($request->document) {
                 foreach ($request->document as $key => $document) {
