@@ -49,17 +49,7 @@ class EmployeeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        Employee::where('branch_id','10')->delete();
-        Employee::where('branch_id','11')->delete();
-        Employee::where('branch_id','12')->delete();
-        Employee::where('branch_id','13')->delete();
-        Branch::where('id','10')->delete();
-        Branch::where('id','11')->delete();
-        Branch::where('id','12')->delete();
-        Branch::where('id','13')->delete();
-       
-        
+    {       
         if (Auth::user()->can('manage employee')) {
             $user = Auth::user();
             $data = Branch::where('id',$user->branch_id)->first();
@@ -250,8 +240,8 @@ class EmployeeController extends Controller
             }
 
             $employee = Employee::findOrFail($id);
-            $checktkp = DB::table('take_home_pay')->where('no_employee',$employee->no_employee)->count();
-            if ($checktkp > 0 ){
+            $checktkp = DB::table('take_home_pay')->where('no_employee',$employee->no_employee)->first();
+            if ($checktkp->no_employee != $request->no_employee ){
                 toast('Employee ID have use take home pay!.', 'error');
                 return redirect()->route('employees.index');
             }
