@@ -241,10 +241,17 @@ class EmployeeController extends Controller
 
             $employee = Employee::findOrFail($id);
             $checktkp = DB::table('take_home_pay')->where('no_employee',$employee->no_employee)->first();
-            if ($checktkp->no_employee != $request->no_employee ){
-                toast('Employee ID have use take home pay!.', 'error');
-                return redirect()->route('employees.index');
+            if($checktkp != null){
+                if ($checktkp->no_employee != $request->no_employee ){
+                    toast('Employee ID have use take home pay!.', 'error');
+                    return redirect()->route('employees.index');
+                }
             }
+            
+            if ($request->company_doe != null || $request->company_doe != ''){
+                $request['status'] = 'non active';
+            }
+    
             //document
             if ($request->document) {
                 foreach ($request->document as $key => $document) {
