@@ -248,9 +248,6 @@ class EmployeeController extends Controller
                 }
             }
 
-            if ($request->company_doe != null || $request->company_doe != ''){
-                $request['status'] = 'nonactive';
-            }
             //document
             if ($request->document) {
                 foreach ($request->document as $key => $document) {
