@@ -19,8 +19,8 @@
                                 <div class="form-group">
                                     <label>Employee <span class="text-danger">*</span></label>
                                     <select class="form-control select" id="employee_id" name="employee_id">
-                                       
                                     </select>
+                                    <input type="hidden" name="branch_id" id="brchInput">
                                 </div>
                                 <div class="form-group">
                                     <label>Type Allowance <span class="text-danger">*</span></label>

@@ -172,6 +172,7 @@
                 },
                 success : function(respon){
                     $('.containerLoader').attr('hidden',true)
+                    $('#brchInput').val($('#branch_id').val())
                     var emp = `<option value="">-- Select Employee --</option>`
                     $.each(respon.employee,function(key,val){
                         emp += `<option value="`+val.id+`">`+val.no_employee+` - `+val.name+`</option>`
