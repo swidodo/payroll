@@ -342,7 +342,7 @@
                         <div class="col-md-6">
                             <div class="info text-sm">
                                 <strong class="font-bold">{{$document->name }} : </strong>
-                                <span><a href="{{ (!empty($employeedoc[$document->id])?asset('/uploads/document').'/'.$employeedoc[$document->id]:'') }}" target="_blank">{{ (!empty($employeedoc[$document->id])?$employeedoc[$document->id]:'') }}</a></span>
+                                <span><a href="{{ (!empty($employeedoc[$document->id])?asset('storage/uploads/document').'/'.$employeedoc[$document->id]:'') }}" target="_blank">{{ (!empty($employeedoc[$document->id])?$employeedoc[$document->id]:'') }}</a></span>
                             </div>
                         </div>
                         @endforeach
