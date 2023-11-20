@@ -257,7 +257,7 @@ class EmployeeController extends Controller
                         $extension       = $request->file('document')[$key]->getClientOriginalExtension();
                         $fileNameToStore = $filename . '_' . time() . '.' . $extension;
                         //$dir        = storage_path('uploads/document/');
-                        $dir             = 'uploads/document/';
+                        $dir             = 'uploads/document/' ;
 
                         $image_path = $dir . $filenameWithExt;
 
