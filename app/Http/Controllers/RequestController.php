@@ -133,9 +133,8 @@ class RequestController extends Controller
         $data = '';
         if ($userInitial != null){
             if ($userInitial == 'HO'){
-                $branch = Branch::select('id_company')->where('id', Auth::user()->branch_id)->first(); 
-                $branchCompany = Branch::select('id','name')->where('company_id',$branch->company_id)->get();
-                $data['branch'] = $branchCompany;
+                $branch = Branch::select('company_id')->where('id', Auth::user()->branch_id)->first(); 
+                $data = Branch::select('id','name')->where('company_id',$branch->company_id)->get();
             }else{
                  $data['branch'] = Branch::select('id','name')->where('id',Auth::user()->branch_id)->fist();
             }

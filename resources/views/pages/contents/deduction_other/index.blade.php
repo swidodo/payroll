@@ -1,6 +1,6 @@
 @extends('pages.dashboard')
 
-@section('title', 'deduction Other')
+@section('title', 'Other')
 
 @section('dashboard-content')
 @php

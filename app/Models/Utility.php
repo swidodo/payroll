@@ -404,7 +404,7 @@ class Utility extends Model
                         ]
                     );
 
-                    $max_size = !empty($settings['wasabi_max_upload_size']) ? $settings['wasabi_max_upload_size'] : '2048';
+                    $max_size = !empty($settings['wasabi_max_upload_size']) ? $settings['wasabi_max_upload_size'] : '5048';
                     $mimes =  !empty($settings['wasabi_storage_validation']) ? $settings['wasabi_storage_validation'] : '';
                 } else if ($settings['storage_setting'] == 's3') {
                     config(
@@ -416,10 +416,10 @@ class Utility extends Model
                             'filesystems.disks.s3.use_path_style_endpoint' => false,
                         ]
                     );
-                    $max_size = !empty($settings['s3_max_upload_size']) ? $settings['s3_max_upload_size'] : '2048';
+                    $max_size = !empty($settings['s3_max_upload_size']) ? $settings['s3_max_upload_size'] : '5048';
                     $mimes =  !empty($settings['s3_storage_validation']) ? $settings['s3_storage_validation'] : '';
                 } else {
-                    $max_size = !empty($settings['local_storage_max_upload_size']) ? $settings['local_storage_max_upload_size'] : '2048';
+                    $max_size = !empty($settings['local_storage_max_upload_size']) ? $settings['local_storage_max_upload_size'] : '5048';
 
                     $mimes =  !empty($settings['local_storage_validation']) ? $settings['local_storage_validation'] : '';
                 }

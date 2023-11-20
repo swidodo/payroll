@@ -273,14 +273,14 @@ class EmployeeController extends Controller
                             return redirect()->back()->with('error', __($path['msg']));
                         }
 
-                        $employee_document = EmployeeDocument::where('employee_id', $employee->employee_id)->where('document_id', $key)->first();
+                        $employee_document = EmployeeDocument::where('employee_id', $employee->id)->where('document_id', $key)->first();
 
                         if (!empty($employee_document)) {
                             $employee_document->document_value = $fileNameToStore;
                             $employee_document->save();
                         } else {
                             $employee_document                 = new EmployeeDocument();
-                            $employee_document->employee_id    = $employee->employee_id;
+                            $employee_document->employee_id    = $employee->id;
                             $employee_document->document_id    = $key;
                             $employee_document->document_value = $fileNameToStore;
                             $employee_document->created_by     = Auth::user()->creatorId();

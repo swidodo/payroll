@@ -82,6 +82,7 @@ class Allowance_otherController extends Controller
                 'amount'                => $request->amount,
                 'created_by'            => Auth::user()->id,
                 'branch_id'             => Auth::user()->branch_id,
+                // 'branch_id'             => $request->branch_id,
             ]);
        if ($save){
             $res = [
