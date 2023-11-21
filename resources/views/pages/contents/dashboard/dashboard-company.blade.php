@@ -250,7 +250,7 @@
                 <div class="card shadow-sm">
                     <h4>Timesheet</h4>
                     <div class="table-responsive border border-1 mt-2">
-                        <table class="table table-sm table-striped table-bordered table-sm">
+                        <table class="table table-sm table-striped table-bordered table-sm w-100" id="tblTimesheetReport">
                             <thead class="bg-primary">
                                 <tr>
                                     <th>No</th>
@@ -259,6 +259,7 @@
                                     <th>Project Stage</th>
                                     <th>Start date</th>
                                     <th>End date</th>
+                                    <th>Branch</th>
                                 </tr>
                             </thead>
                         </table>
@@ -843,9 +844,11 @@
         <script src="{{ asset('assets/js/moment.min.js') }}"></script>
         <script src="{{ asset('assets/js/bootstrap-datetimepicker.min.js') }}"></script>
         <!-- jquery -->
-        <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
+        {{-- <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script> --}}
         {{-- <script src="{{ asset('assets/plugins/modules/zingchart-pie.min.js') }} defer></script> --}}
-
+        <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
+        <script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
+    
         @include('includes.dashboard.filter_js');
         <script>
             //info

@@ -7,6 +7,7 @@
     monthly_turnover(defaultbranch)
     employee_report(defaultbranch)
     employee_report_year(defaultbranch)
+    timesheet(defaultbranch)
     var arr = [];
     $('#branch_id').on('change',function(){
         var branch = $('#branch_id').val();
@@ -16,6 +17,7 @@
         monthly_turnover(branch)
         employee_report(branch)
         employee_report_year(branch)
+        timesheet(branch)
     })
     // process get data
     function header(){
@@ -127,6 +129,63 @@
             dataType : 'json',
             success :function (respon){
                 reportEmployeeYear(respon)
+            }
+        })
+    }
+    function timesheet(branchId){
+        header();
+        $('#tblTimesheetReport').DataTable({
+                processing: true,
+                serverSide: true,
+                destroy: true,
+                ajax : {
+                        "url" : 'get_report_timesheet',
+                        "type" : 'post',
+                        "data" :{ branch_id : branchId },
+                    },
+                columns: [
+                        { data: 'no', name:'id', render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }},
+                        {
+                            data: 'no_employee',
+                            name: 'no_employee'
+                        }, 
+                        {
+                            data: 'employee_name',
+                            name: 'employee_name'
+                        },
+                        {
+                            data: 'project_stage',
+                            name : 'project_stage'
+                        },
+                        {
+                            data: 'start_date',
+                            name : 'start_date'
+                        },
+                        {
+                            data: 'end_date',
+                            name : 'end_date'
+                        },
+                        {
+                            data: 'branch_name',
+                            name : 'branch_name'
+                        },
+                ],
+                searchPanes: {
+            controls: false
+        }
+            })
+    }
+    function birtday(){
+        header();
+        $.ajax({
+            url :'get-report-birtday',
+            type : 'GET',
+            data :{branch_id :branch},
+            dataType : 'json',
+            success :function (respon){
+                console.log(respon)
             }
         })
     }

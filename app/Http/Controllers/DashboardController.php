@@ -24,18 +24,7 @@ class DashboardController extends Controller
             $branch = Branch::find(Auth::user()->branch_id);
             $data['branches'] = Branch::where('company_id', '=', $branch->company_id)
                 ->get();
-
-            //Info Ulang Tahun
-            $today = Carbon::now()->format('m-d');
-            $birthDay = Employee::whereRaw("to_char(dob, 'MM-DD') = '$today'")
-                ->get();
-
-            //Info Karyawan Baru
-            $newEmployee = Employee::where('company_doj', now()->format('Y-m-d'))->get();
-            // $newEmployee = null;
-
-
-            return view('pages.contents.dashboard.dashboard-company', $data)->with('birthDay', $birthDay)->with('newEmployee', $newEmployee);
+            return view('pages.contents.dashboard.dashboard-company', $data);
         } else {
             $employee = Employee::where('user_id', Auth::user()->id)->first();
             $attendanceStatus = $employee->present_status($employee->id, date('Y-m-d'));
@@ -402,5 +391,21 @@ class DashboardController extends Controller
                 })
                 ->make(true);
         }
+    }
+    public function get_report_timesheet(Request $request){
+        $branch = Branch::where('id',Auth::user()->branch_id)->first();
+        $data = Timesheet::select('timesheets.*',
+                                    'employees.no_employee',
+                                    'employees.name as employee_name',
+                                    'branches.name as branch_name')
+                        ->leftJoin('employees','employees.id','=','timesheets.employee_id')
+                        ->leftJoin('branches','branches.id','=','timesheets.branch_id');
+                    if($request->branch_id ==0){
+                        $data->where('branches.company_id',$branch->company_id);
+                    }else{
+                        $data->where('branches.id',$request->branch_id);
+                    }
+                        $data->get();
+        return DataTables::of($data)->make(true);
     }
 }

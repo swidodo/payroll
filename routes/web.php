@@ -96,6 +96,7 @@ Route::group(['middleware' => 'auth'], function () {
                 ->name('dashboard.filter-timesheet-schedules');
         Route::get('/chart/filter-employee-resume', [DashboardController::class, 'employeeResumeFilterByBranch'])
                 ->name('dashboard.filter-employee-resume');
+        Route::post('get_report_timesheet',[DashboardController::class,'get_report_timesheet'])->name('get_report_timesheet');
 
         // user
         Route::resource('users', UsersController::class);
