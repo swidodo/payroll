@@ -137,10 +137,10 @@ class BranchController extends Controller
                         'edit-show' => true,
                     ]);
                 }
-                $checkEmp = Employee::where('branch_id',$request->id)->count();
-                if ($checkEmp > 0){
-                    return redirect()->route('branches.index')->with('error', 'Sorry !,Branch have use in employee.');
-                }
+                // $checkEmp = Employee::where('branch_id',$request->id)->count();
+                // if ($checkEmp > 0){
+                //     return redirect()->route('branches.index')->with('error', 'Sorry !,Branch have use in employee.');
+                // }
                 $code   = $request->company_id.$request->alias;
                 $check  = Branch::where('alias',$code)->where('id','<>',$request->id)->count();
                 if($check > 0){

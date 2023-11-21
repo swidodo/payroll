@@ -7,6 +7,7 @@ use App\Models\LevelApproval;
 use App\Models\Timesheet;
 use App\Models\TimesheetApproval;
 use App\Models\Utility;
+use App\Models\Branch;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -20,10 +21,11 @@ class TimesheetController extends Controller
     public function index()
     {
         if (Auth::user()->can('manage timesheet')) {
+            $branches = Branch::where('id',Auth::user()->branch_id)->first();
             if (Auth::user()->initial != 'HO') {
                 $employee     = Employee::where('id', '=', Auth::user()->employee->id)->get();
                 $timesheets = Timesheet::where('employee_id', '=', Auth::user()->employee->id)->get();
-
+                $branch = Branch::where('id',$branches->id)->get();
                 //3 tier approval
                 if (!is_null($employee[0]->level_approval)) {
                     $levelApprove = $employee[0]->approval;
@@ -40,11 +42,11 @@ class TimesheetController extends Controller
                 //3 tier approval
             } else {
                 $timesheets = Timesheet::where('created_by', '=', Auth::user()->creatorId())->get();
-
                 $employee     = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
+                $branch = Branch::where('company_id',$branches->company_id)->get();
             }
 
-            return view('pages.contents.timesheet.index', compact('employee', 'timesheets'));
+            return view('pages.contents.timesheet.index', compact('branch','employee', 'timesheets'));
         } else {
             toast('Permission denied.', 'error');
             return redirect()->route('dashboard');
