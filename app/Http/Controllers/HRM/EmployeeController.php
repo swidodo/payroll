@@ -781,7 +781,7 @@ class EmployeeController extends Controller
                 // $active = (strtolower($row[24]) === "true") ? true : false;
                     if ($branchId != null){
                         $name = strtolower($row[0]);
-                        $departementId = DB::table('departements')->select("id")->where('departement_code',$row[14])->first();
+                        $departementId = DB::table('departements')->select("id")->where('departement_code',$row[14])->where('is_active','1')->first();
                         if($departementId != null){
                             $departId = $departementId->id;
                         }else{
