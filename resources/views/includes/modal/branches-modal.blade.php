@@ -29,12 +29,36 @@
                             </div>
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label>Alias <span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text" name="alias" placeholder="Enter Alias Name, ex. PDR, KIM, ARP">
+                                    <label>Branch Code <span class="text-danger">*</span></label>
+                                    <input class="form-control" type="text" name="alias" placeholder="Enter Alias Name, ex. PDR, KIM, ARP" required>
 
                                     @if ($errors->has('alias'))
                                     <div class="text-danger" role="alert">
                                         <small><strong>{{ $errors->get('alias')[0] }}</strong></small>
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Latitude</label>
+                                    <input class="form-control" type="text" name="latitude" placeholder="latitude location">
+
+                                    @if ($errors->has('latitude'))
+                                    <div class="text-danger" role="alert">
+                                        <small><strong>{{ $errors->get('latitude')[0] }}</strong></small>
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Longitude</label>
+                                    <input class="form-control" type="text" name="longitude" placeholder="longitude location">
+
+                                    @if ($errors->has('longitude'))
+                                    <div class="text-danger" role="alert">
+                                        <small><strong>{{ $errors->get('longitude')[0] }}</strong></small>
                                     </div>
                                     @endif
                                 </div>
@@ -82,11 +106,35 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>Branch Code <span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text" name="alias" placeholder="Enter Alias Name, ex. PDR, KIM, ARP">
+                                    <input class="form-control" type="text" name="alias" id="alias" placeholder="Enter Alias Name, ex. PDR, KIM, ARP" required>
 
                                     @if ($errors->has('alias'))
                                     <div class="text-danger" role="alert">
                                         <small><strong>{{ $errors->get('alias')[0] }}</strong></small>
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Latitude</label>
+                                    <input class="form-control" type="text" name="latitude" id="latitude" placeholder="latitude location">
+
+                                    @if ($errors->has('latitude'))
+                                    <div class="text-danger" role="alert">
+                                        <small><strong>{{ $errors->get('latitude')[0] }}</strong></small>
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Longitude</label>
+                                    <input class="form-control" type="text" name="longitude" id="longitude" placeholder="longitude location">
+
+                                    @if ($errors->has('longitude'))
+                                    <div class="text-danger" role="alert">
+                                        <small><strong>{{ $errors->get('longitude')[0] }}</strong></small>
                                     </div>
                                     @endif
                                 </div>

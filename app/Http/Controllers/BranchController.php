@@ -30,22 +30,10 @@ class BranchController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         if (Auth::user()->can('create branch')) {
@@ -70,6 +58,8 @@ class BranchController extends Controller
             $branch->name       = $request->name;
             $branch->alias      = $comId->company_id.$request->alias;
             $branch->company_id = $comId->company_id;
+            $branch->latitude   = $request->latitude;
+            $branch->longitude   = $request->longitude;
             $branch->created_by = Auth::user()->creatorId();
             $branch->save();
 
@@ -112,13 +102,6 @@ class BranchController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Branch $branch)
     {
         if (Auth::user()->can('edit branch')) {
@@ -137,10 +120,7 @@ class BranchController extends Controller
                         'edit-show' => true,
                     ]);
                 }
-                $checkEmp = Employee::where('branch_id',$request->id)->count();
-                if ($checkEmp > 0){
-                    return redirect()->route('branches.index')->with('error', 'Sorry !,Branch have use in employee.');
-                }
+               
                 $code   = $request->company_id.$request->alias;
                 $check  = Branch::where('alias',$code)->where('id','<>',$request->id)->count();
                 if($check > 0){

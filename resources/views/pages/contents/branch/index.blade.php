@@ -45,13 +45,15 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="table-responsive" style="overflow-x: visible">
+                <div class="table-responsive">
                     <table class="table table-striped custom-table datatable">
                         <thead>
                             <tr>
                                 <th>No</th>
                                 <th>Branch</th>
                                 <th>Branch Code</th>
+                                <th>Latitude</th>
+                                <th>Longitude</th>
                                 @if(Auth::user()->can('edit branch') || Auth::user()->can('delete branch'))
                                     <th class="text-end">Action</th>
                                 @endif
@@ -69,6 +71,12 @@
                                     </td> 
                                     <td>
                                         {{$branch->alias}}
+                                    </td>
+                                    <td>
+                                        {{$branch->latitude}}
+                                    </td>
+                                    <td>
+                                        {{$branch->longitude}}
                                     </td>
                                     @canany(['edit branch', 'delete branch'])
                                         <td class="text-end">
@@ -149,6 +157,9 @@
                         $.get(editUrl, (data) => {
                             $('#edit-name-branch').val(data.name)
                             $('#id').val(data.id)
+                            $('#latitude').val(data.latitude)
+                            $('#longitude').val(data.longitude)
+                            $('#alias').val(data.alias)
                             $('#company_id').val(data.company_id)
 
                             const urlNow = '{{ Request::url() }}'
