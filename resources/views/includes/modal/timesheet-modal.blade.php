@@ -213,15 +213,7 @@
                             <div class="form-group">
                                 <label for="religion" class="control-label" required>Employee ID </label>
                                 <select  class="form-control select-employee-edit" name="employee_id" id="employee_id_edit" required>
-                                    @if ( !is_null(Auth::user()->employee) )
-                                        @foreach ($employee as $e)
-                                                <option value="{{$e->id}}">{{$e->name}}</option>
-                                        @endforeach
-                                    @else
-                                        @foreach ($employee as $e)
-                                            <option value="{{$e->id}}">{{$e->name}}</option>
-                                        @endforeach
-                                    @endif
+                                   
                                 </select>
 
                                 @if ($errors->has('employee_id'))

@@ -71,7 +71,7 @@ class TimesheetController extends Controller
                                     $btn .= '<a data-id="'.$row->id.'" id="edit-timesheet" class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_timesheet"><i class="fa fa-pencil m-r-5"></i> Edit</a>';
                                 }
                                if(Auth()->user()->can('delete timesheet')){
-                                    $btn .= '<a id="delete-timesheet" data-id="'.$row->id.'" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_timesheet"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
+                                    $btn .= '<a data-id="'.$row->id.'" class="dropdown-item delete-timesheets"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
                                }
                                 
                                 $btn .= '</div></div>';
@@ -340,10 +340,11 @@ class TimesheetController extends Controller
         }
     }
 
-    public function destroy(Timesheet $timesheet)
+    public function destroy(Request $request)
     {
         if (Auth::user()->can('delete timesheet')) {
-            if ($timesheet->created_by == Auth::user()->creatorId()) {
+            $timesheet = Timesheet::where('id',$request->id)->first();
+            // dd($request->id);
                 if ($timesheet->attachment_reject != null) {
                     $fileNameAttReject = explode('/', $timesheet->attachment_reject);
                     if (Storage::exists('public/' . $fileNameAttReject[1])) {
@@ -358,14 +359,20 @@ class TimesheetController extends Controller
                     }
                 }
 
-                $timesheet->delete();
-
-                toast('Timesheet successfully deleted.', 'success');
-                return redirect()->route('timesheets.index');
-            } else {
-                toast('Permission denied.', 'error');
-                return redirect()->route('timesheets.index');
-            }
+                $del = Timesheet::destroy($request->id);
+                if($del){
+                    $res = [
+                        'status' => 'success',
+                        'msg'    => 'Data Berhasil Dihapus!'
+                    ];
+                    return response()->json($res);
+                }else{
+                    $res = [
+                        'status' => 'error',
+                        'msg'    => 'Data gagal Dihapus!'
+                    ];
+                    return response()->json($res);
+                }
         } else {
             toast('Permission denied.', 'error');
             return redirect()->route('timesheets.index');

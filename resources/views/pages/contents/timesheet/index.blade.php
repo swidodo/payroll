@@ -97,6 +97,7 @@
 
     <!-- Datetimepicker CSS -->
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap-datetimepicker.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/plugins/sweetalert2/sweetalert2.min.css')}}">
 @endpush
 
 @push('addon-script')
@@ -113,6 +114,7 @@
     <!-- Datatable JS -->
     <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
 
     @if (Session::has('edit-show'))
     <script>
@@ -130,57 +132,57 @@
         });
             $(document).ready(function () {
                 /* When click show user */
-            var branchId = $('#branch_id').val()
-            loadData(branchId);
-            function loadData(branchId){
-            $('#tblTimesheets').DataTable({
-                processing: true,
-                serverSide: true,
-                destroy: true,
-                ajax : {
-                        "url" : 'filter-branch-timesheets',
-                        "type" : 'post',
-                        "data" :{ branch_id : branchId },
-                    },
-                columns: [
-                        { data: 'no', name:'id', render: function (data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        }},
-                        {
-                            data: 'name',
-                            name: 'name'
-                        }, 
-                        {
-                            data: 'start_date',
-                            name: 'start_date'
+                var branchId = $('#branch_id').val()
+                loadData(branchId);
+                function loadData(branchId){
+                $('#tblTimesheets').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    destroy: true,
+                    ajax : {
+                            "url" : 'filter-branch-timesheets',
+                            "type" : 'post',
+                            "data" :{ branch_id : branchId },
                         },
-                        {
-                            data: 'end_date',
-                            name : 'end_date'
-                        },
-                        {
-                            data: 'duration',
-                            name : 'duration'
-                        },
-                        {
-                            data: 'task_or_project',
-                            name : 'task_or_project'
-                        },
-                        {
-                            data: 'client_company',
-                            name : 'client_company'
-                        },
-                        {
-                            data: 'status',
-                            name : 'status'
-                        },
-                        {
-                            data: 'action',
-                            name: 'action'
-                        },
-                    ],
-                })
-            }
+                    columns: [
+                            { data: 'no', name:'id', render: function (data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }},
+                            {
+                                data: 'name',
+                                name: 'name'
+                            }, 
+                            {
+                                data: 'start_date',
+                                name: 'start_date'
+                            },
+                            {
+                                data: 'end_date',
+                                name : 'end_date'
+                            },
+                            {
+                                data: 'duration',
+                                name : 'duration'
+                            },
+                            {
+                                data: 'task_or_project',
+                                name : 'task_or_project'
+                            },
+                            {
+                                data: 'client_company',
+                                name : 'client_company'
+                            },
+                            {
+                                data: 'status',
+                                name : 'status'
+                            },
+                            {
+                                data: 'action',
+                                name: 'action'
+                            },
+                        ],
+                    })
+                }
                 $('#searchBranch').on('click',function(){
                     var branchId = $('#branch_id').val()
                     loadData(branchId);
@@ -212,7 +214,6 @@
                         $('#rejected-reason').hide()
                     }
                 })
-
                 if($('.select-employee').length > 0) {
                     $('.select-employee').select2({
                         width: '100%',
@@ -220,7 +221,6 @@
                         dropdownParent: $('#add_timesheet')
                     });
                 }
-
                 if($('.select-employee-edit').length > 0) {
                     $('.select-employee-edit').select2({
                         width: '100%',
@@ -228,7 +228,6 @@
                         dropdownParent: $('#edit_timesheet')
                     });
                 }
-
                 if($('.select-project-stage-add').length > 0) {
                     $('.select-project-stage-add').select2({
                         width: '100%',
@@ -236,7 +235,6 @@
                         dropdownParent: $('#add_timesheet')
                     });
                 }
-
                 if($('.select-project-stage-edit').length > 0) {
                     $('.select-project-stage-edit').select2({
                         width: '100%',
@@ -244,7 +242,6 @@
                         dropdownParent: $('#edit_timesheet')
                     });
                 }
-
                 $('body').on('click', '#edit-timesheet', function () {
                     var id = $(this).attr('data-id');
                     const editUrl = `timesheets/`+id+`/edit`;
@@ -253,7 +250,6 @@
 
 
                     $.get(editUrl, (data) => {
-                        console.log(data);
                         let hostNameFileAttachment = `{{ asset('${data.file_attachment}') }}`
                         let hostNameAttachmentRejected = `{{ asset('${data.attachment_reject}') }}`
 
@@ -273,7 +269,7 @@
                                 });
                             }
                             // 3 tier approval
-
+                        $('#employee_id_edit').html(`<option value="`+data[0].employee_id+`">`+data[0].name+`</option>`)
                         $('#start_date_edit').val(data[0].start_date)
                         $('#end_date_edit').val(data[0].end_date)
                         $('#task_or_project_edit').val(data[0].task_or_project)
@@ -301,10 +297,22 @@
                         $('#edit-form-timesheet').attr('action', urlNow + '/' + data[0].id);
                     })
                 });
-
-                $('body').on('click', '#delete-timesheet', function(){
-                    const deleteURL = $(this).data('url');
-                    $('#form-delete-timesheet').attr('action', deleteURL);
+                $(document).on('click','.delete-timesheets',function(){
+                    var id = $(this).attr('data-id');
+                    $.ajax({
+                        url : 'delete-timesheet',
+                        type : 'post',
+                        data : {id : id },
+                        dataType : 'json',
+                        success : function(respon){
+                            swal.fire({
+                                icon : respon.status,
+                                text : respon.msg
+                            })
+                            var branchId = $('#branch_id').val()
+                            loadData(branchId);
+                        }
+                    })
                 })
             });
     </script>
