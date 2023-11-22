@@ -10,6 +10,7 @@ use App\Models\Utility;
 use App\Models\Branch;
 use Carbon\Carbon;
 use Exception;
+use DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -41,9 +42,9 @@ class TimesheetController extends Controller
                 }
                 //3 tier approval
             } else {
-                $timesheets = Timesheet::where('created_by', '=', Auth::user()->creatorId())->get();
-                $employee     = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
-                $branch = Branch::where('company_id',$branches->company_id)->get();
+                $timesheets     = Timesheet::where('branch_id', '=', Auth::user()->branch_id)->get();
+                $employee       = Employee::where('branch_id', '=', Auth::user()->branch_id)->get();
+                $branch         = Branch::where('company_id',$branches->company_id)->get();
             }
 
             return view('pages.contents.timesheet.index', compact('branch','employee', 'timesheets'));
@@ -52,7 +53,39 @@ class TimesheetController extends Controller
             return redirect()->route('dashboard');
         }
     }
-
+    public function filter_branch(Request $request){
+        $data = Timesheet::select('timesheets.*','employees.name')
+                        ->leftJoin('branches','branches.id','=','timesheets.branch_id')
+                        ->leftJoin('employees','employees.id','=','timesheets.employee_id')
+                        ->where('timesheets.branch_id', '=', $request->branch_id)
+                        ->get();
+        return DataTables::of($data)
+                        ->addIndexColumn()
+                        ->addColumn('action', function($row){
+                            $btn ='';
+                            if(Auth()->user()->can(['edit timesheet', 'delete timesheet'])){
+                                $btn .= '<div class="dropdown dropdown-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                <div class="dropdown-menu dropdown-menu-right">';
+                                if(Auth()->user()->can('edit timesheet')){
+                                    $btn .= '<a data-id="'.$row->id.'" id="edit-timesheet" class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_timesheet"><i class="fa fa-pencil m-r-5"></i> Edit</a>';
+                                }
+                               if(Auth()->user()->can('delete timesheet')){
+                                    $btn .= '<a id="delete-timesheet" data-id="'.$row->id.'" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_timesheet"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
+                               }
+                                
+                                $btn .= '</div></div>';
+                                }
+                                return $btn;
+                            })
+                        ->rawColumns(['action'])
+        ->make(true);
+        return view('pages.contents.timesheet.index', compact('branch','employee', 'timesheets'));
+    }
+    public function get_employee_byBranch(Request $request){
+        $employee       = Employee::where('branch_id', '=', $request->branch_id)->get();
+        return response()->json($employee);
+    }
     public function store(Request $request)
     {
         if (Auth::user()->can('create timesheet')) {
@@ -76,7 +109,7 @@ class TimesheetController extends Controller
                 return redirect()->back()->with('errors', $validator->messages());
             }
 
-            if (Auth::user()->type == 'company') {
+            if (Auth::user()->initial == 'HO') {
                 if ($request->file()) {
                     $fileName = time() . '_' . $request->file('attachment')->getClientOriginalName();
                     $filePath = $request->file('attachment')->storeAs('public', $fileName);
@@ -110,7 +143,7 @@ class TimesheetController extends Controller
 
                 try {
                     DB::beginTransaction();
-                    $model = Timesheet::create($request->except('attachment'));
+                    $model = Timesheet::insert($request->except('attachment'));
 
                     // 3 Tier Approval
                     $levels = LevelApproval::where('created_by', Auth::user()->creatorId())->get();
@@ -146,6 +179,11 @@ class TimesheetController extends Controller
 
     public function edit(Timesheet $timesheet)
     {
+        $timesheets = Timesheet::select('timesheets.*','employees.name','employees.id as empid')
+        ->leftJoin('employees','employees.id','=','timesheets.employee_id')
+        ->where('timesheets.id',$timesheet->id)
+        ->first();
+        // dd($timesheet->employee_id);
         if (Auth::user()->can('edit timesheet')) {
             // $employees = Employee::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
@@ -167,7 +205,7 @@ class TimesheetController extends Controller
                 // 3 Tier Approval
 
                 return response()->json([
-                    $timesheet,
+                    $timesheets,
                     'leaveApprovals' => $levelAndApprovals['approver'],
                     'level_approve' => $levelAndApprovals['level']
                 ]);

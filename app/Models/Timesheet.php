@@ -11,6 +11,7 @@ class Timesheet extends Model
 
     protected $fillable = [
         'employee_id',
+        'branch_id',
         'project_stage',
         'start_date',
         'end_date',

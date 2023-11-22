@@ -23,7 +23,7 @@
                 </div>
                 @can('create timesheet')
                     <div class="col-auto float-end ms-auto">
-                        <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_timesheet"><i class="fa fa-plus"></i> New Request</a>
+                        <a href="#" id="addTimesheet" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_timesheet"><i class="fa fa-plus"></i> New Request</a>
                     </div>
                 @endcan
             </div>
@@ -58,10 +58,11 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <div class="table-responsive" style="overflow-x: visible">
-                    <table class="table table-striped custom-table datatable">
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table" id="tblTimesheets">
                         <thead>
                             <tr>
+                                <th>No</th>
                                 <th>Employee</th>
                                 <th>Start Date</th>
                                 <th>End Date</th>
@@ -69,65 +70,11 @@
                                 <th>Task / Project</th>
                                 <th>Client</th>
                                 <th>Status</th>
-                                @if(Auth::user()->can('edit timesheet') || Auth::user()->can('delete timesheet'))
-                                    <th class="text-end">Action</th>
-                                @endif
+                                <th class="text-end">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($timesheets as $timesheet)
-                                <tr>
-                                    <td>
-                                        {{$timesheet->employee->name ?? '-'}}
-                                    </td>
-                                    <td>
-                                        {{$timesheet->start_date ?? '-'}}
-                                    </td>
-                                    <td>
-                                        {{$timesheet->end_date ?? '-'}}
-                                    </td>
-                                    <td>
-                                        {{$timesheet->duration ?? '-'}}
-                                    </td>
-                                    <td>
-                                        {{$timesheet->task_or_project ?? '-'}}
-                                    </td>
-                                    <td>
-                                        {{$timesheet->client_company ?? '-'}}
-                                    </td>
-                                   
-                                    <td>
-                                        @if($timesheet->status=="Pending")
-                                            <div class="status_badge badge bg-warning p-2 px-3 rounded">{{ $timesheet->status ?? '-'}}</div>
-                                        @elseif($timesheet->status=="Approved")
-                                            <div class="status_badge badge bg-success p-2 px-3 rounded">{{ $timesheet->status ?? '-'}}</div>
-                                        @elseif($timesheet->status=="Rejected")
-                                            <a href="{{route('timesheets.show', $timesheet->id)}}" class="text-white">
-                                                <div class="status_badge badge bg-danger p-2 px-3 rounded">
-                                                    {{ $timesheet->status ?? '-'}}
-                                                </div>
-                                            </a>
-                                        @endif
-                                    </td>
-                                    @canany(['edit timesheet', 'delete timesheet'])
-                                        <td class="text-end">
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    @can('edit timesheet')
-                                                        <a  data-url="{{route('timesheets.edit', $timesheet->id)}}" id="edit-timesheet" class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_timesheet"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                    @endcan
-                                                    @can('delete timesheet')
-                                                        <a id="delete-timesheet" data-url="{{route('timesheets.destroy', $timesheet->id)}}" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_timesheet"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                    @endcan
-
-                                                </div>
-                                            </div>
-                                        </td>
-                                    @endcanany
-                                </tr>
-                            @endforeach 
+                           
                         </tbody>
                     </table>
                 </div>
@@ -176,9 +123,86 @@
     @endif
 
     <script>
+         $.ajaxSetup({
+            headers: {
+            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
             $(document).ready(function () {
                 /* When click show user */
-
+            var branchId = $('#branch_id').val()
+            loadData(branchId);
+            function loadData(branchId){
+            $('#tblTimesheets').DataTable({
+                processing: true,
+                serverSide: true,
+                destroy: true,
+                ajax : {
+                        "url" : 'filter-branch-timesheets',
+                        "type" : 'post',
+                        "data" :{ branch_id : branchId },
+                    },
+                columns: [
+                        { data: 'no', name:'id', render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }},
+                        {
+                            data: 'name',
+                            name: 'name'
+                        }, 
+                        {
+                            data: 'start_date',
+                            name: 'start_date'
+                        },
+                        {
+                            data: 'end_date',
+                            name : 'end_date'
+                        },
+                        {
+                            data: 'duration',
+                            name : 'duration'
+                        },
+                        {
+                            data: 'task_or_project',
+                            name : 'task_or_project'
+                        },
+                        {
+                            data: 'client_company',
+                            name : 'client_company'
+                        },
+                        {
+                            data: 'status',
+                            name : 'status'
+                        },
+                        {
+                            data: 'action',
+                            name: 'action'
+                        },
+                    ],
+                })
+            }
+                $('#searchBranch').on('click',function(){
+                    var branchId = $('#branch_id').val()
+                    loadData(branchId);
+                })
+                $('#addTimesheet').on('click',function(){
+                    var val = $('#branch_id').val();
+                    var text = $('#branch_id option:selected').text();
+                    $('#branchInput').html(`<option value="`+val+`">`+text+`</option>`)
+                    $.ajax({
+                        url : 'get-emp-timesheet',
+                        type : 'post',
+                        data : {branch_id : val},
+                        dataType : 'json',
+                        success : function(respon){
+                            var emp = '';
+                            $.each(respon, function(key,val){
+                                emp += `<option value="`+val.id+`">`+val.name+`</option>`;
+                            })
+                            $('#employee_id_add').html(emp);
+                        }
+                    })
+                })
                 $('select#status_edit').change(function(){
                     let selectedItem = $(this).children('option:selected').val()
 
@@ -222,7 +246,8 @@
                 }
 
                 $('body').on('click', '#edit-timesheet', function () {
-                    const editUrl = $(this).data('url');
+                    var id = $(this).attr('data-id');
+                    const editUrl = `timesheets/`+id+`/edit`;
                     // $('#edit-name-branch').val('')
                     $('.wrapper-approver').empty()
 

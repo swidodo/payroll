@@ -335,6 +335,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('travels', TravelController::class);
         Route::resource('timesheets', TimesheetController::class);
         Route::post('timesheets-start-time', [TimesheetController::class, 'recordTime'])->name('timesheets.record-time');
+        Route::post('filter-branch-timesheets', [TimesheetController::class, 'filter_branch'])->name('filter-branch-timesheets');
+        Route::post('get-emp-timesheet', [TimesheetController::class, 'get_employee_byBranch'])->name('get-emp-timesheet');
 
         // Time management
         Route::resource('leaves', LeaveController::class);

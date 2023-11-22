@@ -16,6 +16,12 @@
                     @csrf
                     <div class="row">
                         <div class="col-md-12">
+                            <div class="form-group mb-3">
+                                <label>Branch</label>
+                                <select class="form-control" name="branch_id" id="branchInput">
+
+                                </select>
+                            </div>
                             <div class="form-group">
                                 <label for="religion" class="control-label" required>Employee ID </label>
                                 <select  class="form-control select-employee" name="employee_id" id="employee_id_add" required>
