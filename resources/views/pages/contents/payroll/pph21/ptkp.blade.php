@@ -24,7 +24,9 @@
 
         <div class="row justify-content-center">
             <div class="mb-4">
+                @can('create ptkp')
                 <a href="javascript:void(0);" class="btn btn-primary float-end" id="btnCreatePtkp"> Create PTKP</a>
+                @endcan
             </div>
             <div class="table-responsive">
                 <table class="table table-striped table-bordered table-hover" id="tblPtkp">
