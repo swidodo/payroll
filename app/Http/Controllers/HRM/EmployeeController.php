@@ -975,6 +975,11 @@ class EmployeeController extends Controller
         }
         return view('pages.contents.employee.add_employee',$data);
     }
+    public function get_department_position_ByBranch(Request $request){
+        $data['dept'] = Departement::where('branch_id',$request->branch_id)->get();
+        $data['dept'] = Position::where('branch_id',$request->branch_id)->get();
+        return response()->json($data);
+    }
     public function save_create_employee(Request $request){
         $check = DB::select("select no_employee
                             from employees

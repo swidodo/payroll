@@ -314,6 +314,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::post('/employee/medical/delete/{medical}', [EmployeeController::class, 'deleteMedical'])
                 ->name('employee.family.delete');
+        Route::post('get-dept-posit',[EmployeeController::class,'get_department_position_ByBranch'])->name('get-dept-posit');
 
         // report Employee
         Route::post('import-employee-excel', [EmployeeController::class, 'import_data'])->name('import-employee-excel');

@@ -170,7 +170,7 @@
                                     <hr >
                                     <div class="form-group col-md-6">
                                         <label for="branch_id" class="form-label">Branch</label>
-                                        <select class="form-control select" name="branch_id" required>
+                                        <select class="form-control select" name="branch_id" id="branchInput" required>
                                             <option value="" selected>Select Branch</option>
                                             @foreach ($branches as $branch)
                                                 <option value="{{$branch->id }}">{{$branch->name}}</option>
@@ -187,7 +187,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label class="form-label">Department </label>
-                                        <select class="form-control select" name="department">
+                                        <select class="form-control select" name="department" id="departs">
                                             <option value="" selected>Select Department</option>
                                             @foreach ($department as $depart)
                                                 <option value="{{$depart->id }}">{{$depart->name}}</option>
@@ -196,7 +196,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label class="form-label">Position </label>
-                                        <select class="form-control select" name="position">
+                                        <select class="form-control select" name="position" id="positId">
                                             <option value="" selected>Select Position</option>
                                             @foreach ($position as $post)
                                                 <option value="{{$post->id }}">{{$post->position_name}}</option>
@@ -258,5 +258,27 @@
                 $('#branch_id option[value='+ branchId +']').attr('selected','selected');
                 $('#branch_id').val(branchId ? branchId : 0).trigger('change');
             });
+            $('#branchInput').on('change',function(){
+                var branch_id = $(this).val();
+                $.ajax({
+                    url : 'get-dept-posit',
+                    type : 'post',
+                    data : {branch_id : branch_id},
+                    dataType : 'json',
+                    success : function(respon){
+                        var depart ='<option value="">-- select -- </option>';
+                        $.each(respon.dept, function(key,val){
+                            dept += `<option value="`+val.id+`">`+val.name+`</option>`;
+                        })
+                        $('#departs').html(depart);
+
+                        var position ='<option value="">-- select -- </option>';
+                        $.each(respon.posit, function(key,val){
+                            position += `<option value="`+val.id+`">`+val.position_name+`</option>`;
+                        })
+                        $('#positId').html(position);
+                    }
+                })
+            })
     </script>
 @endpush
