@@ -26,7 +26,13 @@ class TimesheetController extends Controller
             if (Auth::user()->initial != 'HO') {
                 $employee     = Employee::where('id', '=', Auth::user()->employee->id)->get();
                 $timesheets = Timesheet::where('employee_id', '=', Auth::user()->employee->id)->get();
-                $branch = Branch::where('id',$branches->id)->get();
+                if (Auth::user()->type == "company"){
+                    $branch = Branch::where('id',$branches->id)->get();
+                }else{
+                    $data['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                                ->where('access_branches.employee_id',$employee->id)
+                                                ->where('access_branches.company_id',$branch->company_id)->get();
+                }
                 //3 tier approval
                 if (!is_null($employee[0]->level_approval)) {
                     $levelApprove = $employee[0]->approval;
