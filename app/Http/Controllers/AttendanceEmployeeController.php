@@ -7,6 +7,7 @@ use App\Models\AttendanceEmployee;
 use App\Models\Branch;
 use App\Models\Denda;
 use App\Models\Employee;
+use App\Models\AccessBranch;
 use App\Models\LogAttendance;
 use App\Models\Overtime;
 use App\Models\OvertimeType;

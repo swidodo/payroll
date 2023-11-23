@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\models\Rotate;
 use App\models\Employee;
 use App\models\Branch;
+use App\models\AccessBranch;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
