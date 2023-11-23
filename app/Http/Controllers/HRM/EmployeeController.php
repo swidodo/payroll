@@ -56,8 +56,7 @@ class EmployeeController extends Controller
             $data = Branch::where('id',$user->branch_id)->first();
             if ($user->initial =="HO"){
                 // $branch['branch'] = Branch::where('company_id',$data->company_id)->get();
-                $branch['branch'] = AccessBranch::where('employee_id',$data->employee_id)
-                                                ->where('company_id',$data->company_id)->get();
+                $branch['branch'] = AccessBranch::get();
                                                 dd($branch['branch']);
             }else{
                 $branch['branch'] = Branch::where('id',$user->branch_id)->get();
