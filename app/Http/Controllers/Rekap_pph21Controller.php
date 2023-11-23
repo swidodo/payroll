@@ -16,7 +16,14 @@ class Rekap_pph21Controller extends Controller
         $user = Auth::user();
         if ($user->initial == "HO"){
             $branchId           = Branch::where('id',$user->branch_id)->first();
-            $branch['branch']   = Branch::where('company_id',$branchId->company_id)->get();
+            $emp = Employee::where('user_id',Auth::user()->id)->first();
+            if (Auth::user()->type == "company"){
+                $branch['branch']   = Branch::where('company_id',$branchId->company_id)->get();
+            }else{
+                $branch['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                                ->where('access_branches.employee_id',$emp->id)
+                                                ->where('access_branches.company_id',$branch->company_id)->get();
+            }
         }else{
             $branch['branch']   = Branch::where('id',$user->branch_id)->get();
         }
