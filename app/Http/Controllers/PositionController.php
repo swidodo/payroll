@@ -14,8 +14,16 @@ class PositionController extends Controller
 {
     public function index(){
         $branch = Branch::where('id',Auth::user()->branch_id)->first();
+        $emp = Employee::where('user_id',Auth::user()->id)->first();
+        
         if (Auth::user()->initial == "HO"){
-            $data['branch'] = Branch::where('company_id',$branch->company_id)->get();
+            if (Auth::user()->type == "company"){
+                $data['branch'] = Branch::where('company_id',$branch->company_id)->get();
+            }else{
+                $data['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                                ->where('access_branches.employee_id',$emp->id)
+                                                ->where('access_branches.company_id',$branch->company_id)->get();
+            }
         }else{
             $data['branch'] = Branch::where('id',$branch->id)->get();
         }
@@ -64,7 +72,14 @@ class PositionController extends Controller
          $initial = Auth::user()->initial;
         if ($initial == "HO"){
             $companyId = Branch::select('company_id')->where('id',Auth::user()->branch_id)->first();
-            $data['branch'] = Branch::where('company_id',$companyId->company_id)->get();
+            $emp = Employee::where('user_id',Auth::user()->id)->first();
+            if (Auth::user()->type == "company"){
+                $data['branch'] = Branch::where('company_id',$companyId->company_id)->get();
+            }else{
+                $data['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                                ->where('access_branches.employee_id',$emp->id)
+                                                ->where('access_branches.company_id',$companyId->company_id)->get();
+            }
         }else{
             $data['branch'] = Branch::where('id',Auth::user()->branch_id)->get();
         }
