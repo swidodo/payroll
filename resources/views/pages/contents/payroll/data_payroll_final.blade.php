@@ -497,7 +497,7 @@
                     $('.itemsCheck').prop('checked',false);
                     checkedData=[];
                 }
-                console.log(checkedData)
+                // console.log(checkedData)
             })
             $(document).on('change','.itemsCheck',function(){
                 if($(this).prop('checked')){

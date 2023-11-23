@@ -9,14 +9,22 @@
           <form action = "{{route('excel-employee.export')}}" method="POST">
             @csrf
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12 mb-4">
+                    <label>Branch</label>
+                    <select class="form-select form-control" name="branch_id">
+                        @foreach($branch as $br)
+                        <option value="{{ $br->id }} ">{{ $br->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                {{-- <div class="col-md-6">
                     <label>Tanggal Awal :</label>
                     <input type="date" name="start_date" class="form-control">
                 </div>
                 <div class="col-md-6">
                     <label>Tanggal Akhir :</label>
                     <input type="date" name="end_date" class="form-control">
-                </div>
+                </div> --}}
             </div>
         </div>
         <div class="modal-footer">

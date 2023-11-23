@@ -27,13 +27,18 @@ class EmployeesExport implements FromView
                                             'departements.name as departement_name',
                                             'branches.name as branch_name',
                                             'position_name',
-                                            'parameter_pph21s.name as marital_name')
+                                            'parameter_pph21s.name as marital_name'
+                                            )
                                     ->leftJoin('branches','branches.id','=','employees.branch_id')
                                     ->leftJoin('departements','departements.id','=','employees.department_id')
                                     ->leftJoin('position','position.id','=','employees.position_id')
                                     ->leftJoin('parameter_pph21s','parameter_pph21s.code','=','employees.marital_status')
-                                    ->where(DB::raw('date(employees.created_at)'),'>=',$this->request->start_date)
-                                    ->where(DB::raw('date(employees.created_at)'),'<=', $this->request->end_date)->get()
+                                    // ->where(DB::raw('date(employees.created_at)'),'>=',$this->request->start_date)
+                                    // ->where(DB::raw('date(employees.created_at)'),'<=', $this->request->end_date)
+                                    ->where('status','active')
+                                    ->where('employees.branch_id',$this->request->branch_id)
+                                    ->distinct()
+                                    ->get()
         ]);
     }
 }
