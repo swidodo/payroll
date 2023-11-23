@@ -246,17 +246,17 @@
 
     <script>
             $(document).ready(function () {
-                $('#leave_type').val(employee.leave_type != null ? employee.leave_type : 0).trigger('change');
-                $('#marital_status').val(employee.marital_status != null ? employee.marital_status : 0).trigger('change');
+            //     $('#leave_type').val(employee.leave_type != null ? employee.leave_type : 0).trigger('change');
+            //     $('#marital_status').val(employee.marital_status != null ? employee.marital_status : 0).trigger('change');
 
-                $('#status-employee-edit option[value='+ employee.status +']').attr('selected','selected');
-                $('#status-employee-edit').val(employee.status ? employee.status : 0).trigger('change');
+            //     $('#status-employee-edit option[value='+ employee.status +']').attr('selected','selected');
+            //     $('#status-employee-edit').val(employee.status ? employee.status : 0).trigger('change');
 
-               $('.cancel-btn').click(function(e){
-                    e.preventDefault()
-                })
-                $('#branch_id option[value='+ branchId +']').attr('selected','selected');
-                $('#branch_id').val(branchId ? branchId : 0).trigger('change');
+            //    $('.cancel-btn').click(function(e){
+            //         e.preventDefault()
+            //     })
+            //     $('#branch_id option[value='+ branchId +']').attr('selected','selected');
+            //     $('#branch_id').val(branchId ? branchId : 0).trigger('change');
             });
             $('#branchInput').on('change',function(){
                 var branch_id = $(this).val();
