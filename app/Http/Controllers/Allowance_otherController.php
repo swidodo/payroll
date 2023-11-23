@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Branch;
+use App\Models\AccessBranch;
 use App\Models\Employee;
 use App\Models\Allowance_other;
 use App\Models\AllowanceOption;
@@ -15,12 +16,20 @@ class Allowance_otherController extends Controller
 {
      public function index(){
         $user = Auth::user();
-         $branch = Branch::where('id',Auth::user()->branch_id)->first();
-            if (Auth::user()->initial == "HO"){
+        $branch = Branch::where('id',Auth::user()->branch_id)->first();
+        $emp = Employee::where('user_id',Auth::user()->id)->first();
+            
+        if (Auth::user()->initial == "HO"){
+            if (Auth::user()->type == "company"){
                 $branch['branch'] = Branch::where('company_id',$branch->company_id)->get();
             }else{
-                $branch['branch'] = Branch::where('id',$branch->id)->get();
+                $branch['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                                ->where('access_branches.employee_id',$emp->id)
+                                                ->where('access_branches.company_id',$branch->company_id)->get();
             }
+        }else{
+            $branch['branch'] = Branch::where('id',$branch->id)->get();
+        }
         $branch['employee'] = Employee::where('branch_id','=',$user->branch_id)->get();
         $branch['allowanceTypes'] = AllowanceOption::where('branch_id','=',$user->branch_id)->get();
         return view('pages.contents.allowance.allowance_other', $branch);
