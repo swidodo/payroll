@@ -87,9 +87,7 @@
                                 <th>Pph21</th>
                                 <th>Total Deduction</th>
                                 <th>Take Home Pay</th>
-                                @if(Auth::user()->can('edit payroll') || Auth::user()->can('delete payroll'))
-                                    <th class="text-end">Action</th>
-                                @endif
+                                <th class="text-end">Action</th>
                             </tr>
                         </thead>
                         <tbody>
