@@ -25,7 +25,7 @@
         <div class="row justify-content-center">
             <div class="mb-4">
                 @can('create ptkp')
-                <a href="javascript:void(0);" class="btn btn-primary float-end" id="btnCreatePtkp"> Create PTKP</a>
+                    <a href="javascript:void(0);" class="btn btn-primary float-end" id="btnCreatePtkp"> Create PTKP</a>
                 @endcan
             </div>
             <div class="table-responsive">
