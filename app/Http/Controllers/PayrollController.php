@@ -38,8 +38,15 @@ class PayrollController extends Controller
         // DB::table('deduction_others')->where('branch_id',12)->delete();
        if (Auth::user()->can('manage payroll')) {
             $branch = Branch::where('id',Auth::user()->branch_id)->first();
+            $emp = Employee::where('user_id',Auth::user()->id)->first();
             if (Auth::user()->initial == "HO"){
-                $branches = Branch::where('company_id',$branch->company_id)->get();
+                if (Auth::user()->type == "company"){
+                    $branches = Branch::where('company_id',$branch->company_id)->get();
+                }else{
+                    $branches = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                                    ->where('access_branches.employee_id',$emp->id)
+                                                    ->where('access_branches.company_id',$branch->company_id)->get();
+                }
             }else{
                 $branches = Branch::where('id',$branch->id)->get();
             }
