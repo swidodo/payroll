@@ -20,7 +20,7 @@ class RotateController extends Controller
                     ->select('*')
                     ->where('id',Auth::user()->branch_id)
                     ->first();
-        $emp = Employee::where('user_id',Auth::user()->id)->first();
+        $emp = DB::table('employees')->where('user_id',Auth::user()->id)->first();
         if(Auth::user()->initial == "HO"){
             if (Auth::user()->type == "company"){
                 $data['branch'] = DB::table('branches')
