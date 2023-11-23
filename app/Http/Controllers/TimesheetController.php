@@ -24,9 +24,9 @@ class TimesheetController extends Controller
     {
         if (Auth::user()->can('manage timesheet')) {
             $branches = Branch::where('id',Auth::user()->branch_id)->first();
-            $employee     = Employee::where('id', '=', Auth::user()->employee->id)->get();
-            $branch = Branch::where('id',$branches->id)->get();
             if (Auth::user()->initial != 'HO') {
+                $employee     = Employee::where('id', '=', Auth::user()->employee->id)->get();
+                $branch = Branch::where('id',$branches->id)->get();
                 $timesheets = Timesheet::where('employee_id', '=', Auth::user()->employee->id)->get();
                 //3 tier approval
                 if (!is_null($employee[0]->level_approval)) {
@@ -52,7 +52,7 @@ class TimesheetController extends Controller
                                                 ->where('access_branches.employee_id',$employee->id)
                                                 ->where('access_branches.company_id',$branch->company_id)->get();
                 }
-                }
+            }
 
             return view('pages.contents.timesheet.index', compact('branch','employee', 'timesheets'));
         } else {
