@@ -488,7 +488,7 @@
                     $('.itemsCheck').prop('checked',true);
                     $('.itemsCheck').each(function(){
                         if($('.itemsCheck').prop('checked')){
-                            if(!(checkedData.includes($(this).val())))
+                            if(!(checkedData.includes($('.itemsCheck').val())))
                             checkedData.push($('.itemsCheck').val());
                         }
                     });
