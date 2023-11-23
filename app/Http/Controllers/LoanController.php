@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Loan;
 use App\Models\LoanOption;
 use App\Models\Branch;
+use App\Models\AccessBranch;
 use Exception;
 use DataTables;
 use Illuminate\Http\Request;
@@ -20,8 +21,16 @@ class LoanController extends Controller
         if (Auth::user()->can('manage loan')) {
             $user = Auth::user();
             $getBranch = Branch::select('name','id','company_id')->where('id',$user->branch_id)->first();
+            $emp = Employee::where('user_id',Auth::user()->id)->first();
+         
             if ($user->initial == "HO"){
-                $branch = Branch::select('name','id')->where('company_id',$getBranch->company_id)->get();
+                if (Auth::user()->type == "company"){
+                    $branch = Branch::select('name','id')->where('company_id',$getBranch->company_id)->get();
+                }else{
+                    $branch = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                                    ->where('access_branches.employee_id',$emp->id)
+                                                    ->where('access_branches.company_id',$branch->company_id)->get();
+                }
             }else{
                 $branch = Branch::select('name','id')->where('id',$user->branch_id)->get();
             }
