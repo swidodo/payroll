@@ -958,9 +958,13 @@ class EmployeeController extends Controller
     }
     public function create_employee(){
         $branch = Branch::where('id',Auth::user()->branch_id)->first();
+        $emp = Employee::where('user_id',Auth::user()->id)->first();
         $data['paramPph21']  = Parameter_pph21::get();
         if (Auth::user()->initial == "HO"){
-            $data['branches']      = Branch::where('company_id',$branch->company_id)->get();
+            // $data['branches']      = Branch::where('company_id',$branch->company_id)->get();
+            $branch['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                                ->where('access_branches.employee_id',$emp->id)
+                                                ->where('access_branches.company_id',$branch->company_id)->get();
             $data['position']      = Position::leftJoin('branches','branches.id','=','position.branch_id')->where('company_id',$branch->company_id)->get();
             $data['department']    = Departement::select('departements.*')->leftJoin('branches','branches.id','=','departements.branch_id')->where('company_id',$branch->company_id)->get();
         // dd($data['department']->id);
