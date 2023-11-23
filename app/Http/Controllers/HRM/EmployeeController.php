@@ -52,7 +52,7 @@ class EmployeeController extends Controller
     public function index()
     {       
         if (Auth::user()->can('manage employee')) {
-            // $user = Auth::user();
+            $user = Auth::user();
             $emp = Employee::where('user_id',Auth::user()->id)->first();
             $data = Branch::where('id',$user->branch_id)->first();
             if ($user->initial =="HO"){
