@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Report;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Branch;
+use App\Models\AccessBranch;
 use App\Exports\RekapAttendanceExport;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -18,8 +19,16 @@ class ReportRecapAttendanceController extends Controller
     public function index(){
         $initial = Auth::user()->initial;
         $branch = Branch::where('id',Auth::user()->branch_id)->first();
+        $emp = Employee::where('user_id',Auth::user()->id)->first();
+        
         if ($initial == "HO"){
-            $data['branch'] = Branch::where('company_id',$branch->company_id)->get();
+            if (Auth::user()->type == "company"){
+                $data['branch'] = Branch::where('company_id',$branch->company_id)->get();
+            }else{
+                $data['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                                ->where('access_branches.employee_id',$emp->id)
+                                                ->where('access_branches.company_id',$branch->company_id)->get();
+            }
         }else{
             $data['branch'] = $branch = Branch::where('id',Auth::user()->branch_id)->get();
         }
