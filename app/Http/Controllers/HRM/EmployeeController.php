@@ -52,11 +52,13 @@ class EmployeeController extends Controller
     public function index()
     {       
         if (Auth::user()->can('manage employee')) {
-            $user = Auth::user();
+            // $user = Auth::user();
+            $emp = Employee::where('user_id',Auth::user()->id)->first();
             $data = Branch::where('id',$user->branch_id)->first();
             if ($user->initial =="HO"){
                 // $branch['branch'] = Branch::where('company_id',$data->company_id)->get();
-                $branch['branch'] = AccessBranch::get();
+                $branch['branch'] = AccessBranch::where('employee_id',$emp->id)
+                                                ->where('company_id',$data->company_id)->get();
                                                 dd($branch['branch']);
             }else{
                 $branch['branch'] = Branch::where('id',$user->branch_id)->get();
