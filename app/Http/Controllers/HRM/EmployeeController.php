@@ -977,7 +977,7 @@ class EmployeeController extends Controller
     }
     public function get_department_position_ByBranch(Request $request){
         $data['dept'] = Departement::where('branch_id',$request->branch_id)->get();
-        $data['dept'] = Position::where('branch_id',$request->branch_id)->get();
+        $data['posit'] = Position::where('branch_id',$request->branch_id)->get();
         return response()->json($data);
     }
     public function save_create_employee(Request $request){
