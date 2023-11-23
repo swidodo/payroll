@@ -29,7 +29,7 @@ class TimesheetController extends Controller
                 if (Auth::user()->type == "company"){
                     $branch = Branch::where('id',$branches->id)->get();
                 }else{
-                    $data['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                    $branch = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
                                                 ->where('access_branches.employee_id',$employee->id)
                                                 ->where('access_branches.company_id',$branch->company_id)->get();
                 }
