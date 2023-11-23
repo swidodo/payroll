@@ -993,7 +993,7 @@ class PayrollController extends Controller
             ];
             return response()->json($res);
     }
-    public function import_run_payroll_V2(Request $request){
+    public function import_run_payroll_v2(Request $request){
         $file_extension = request()->file('import-payroll')->extension();
         if ('csv' == $file_extension) {
             $res = [
@@ -1015,7 +1015,8 @@ class PayrollController extends Controller
         DB::beginTransaction();
         foreach ($sheetData as $key => $value) {
             if ($key > 0) :
-                $branch = Branch::where('alias',$value[17])->first();
+                // dd($value);
+                $branch = Branch::where('alias',$value[18])->first();
                 if ($branch != null) :
                     $employeeId = employee::where('no_employee',$value[1])->where('branch_id',$branch->id)->first();
                     $takeHP = DB::table('take_home_pay')

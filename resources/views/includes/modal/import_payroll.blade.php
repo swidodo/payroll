@@ -29,7 +29,7 @@
     </div>
     <!-- /import Modal -->
      <!-- Import Auto payroll Modal -->
-     <div class="modal custom-modal fade" id="modalImportPayrollAuto" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+     <div class="modal custom-modal fade" id="modalImportPayroll_v2" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -40,10 +40,10 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <form id="UploadDataPayroll">
+                        <form id="UploadDataPayroll_v2">
                             <div class="mb-3">
                                 <label>File Import</label>
-                                <input type="file" name="import_payroll" id="import-payroll" class="form-control" required>
+                                <input type="file" name="import_payroll" id="import-payroll-v2" class="form-control" required>
                                 <a download href="{{asset('file/template-excel-payroll/template-import-payroll_V2.xlsx')}}" class="text-small">Download template import payroll</a>
                                 
                             </div>
