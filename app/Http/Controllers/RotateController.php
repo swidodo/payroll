@@ -29,7 +29,7 @@ class RotateController extends Controller
                         ->where('company_id',$branch->company_id)
                         ->get();
             }else{
-                $data['branch'] = DB::table('access_branch')->leftJoin('branches','branches.id','=','access_branches.branch_id')
+                $data['branch'] = DB::table('access_branches')->leftJoin('branches','branches.id','=','access_branches.branch_id')
                                                 ->where('access_branches.employee_id',$emp->id)
                                                 ->where('access_branches.company_id', $branch->company_id)->get();
             }
