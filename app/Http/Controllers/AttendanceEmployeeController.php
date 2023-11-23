@@ -72,7 +72,7 @@ class AttendanceEmployeeController extends Controller
                 $attendanceEmployee = $attendanceEmployee->get();
             } else {
                 $branch = Branch::find(Auth::user()->branch_id);
-                $emp = Employees::where('user_id',Auth::user()->id)->first();
+                $emp = Employee::where('user_id',Auth::user()->id)->first();
                 if (Auth::user()->type == "company"){
                     $data['branch'] = Branch::where('company_id',$branch->company_id)->get();
                 }else{
