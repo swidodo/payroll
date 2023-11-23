@@ -1345,6 +1345,9 @@ class PayrollController extends Controller
         return $pdf->stream('payslip-'.$data['salary']->employee_name.'-'.substr($data['salary']->enddate,0,7));
     }
     public function ExportPayrollPdf(Request $request){
+        if ($request->employee_id == ''){
+            return redirect()->back();
+        }
         $emp = explode(',',$request->employee_id);
         $employee =[];
         foreach($emp as $arr){

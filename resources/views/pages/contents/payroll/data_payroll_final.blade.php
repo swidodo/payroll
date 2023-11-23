@@ -509,14 +509,21 @@
                         checkedData.splice(index, 1); 
                     }
                 }
-                console.log(checkedData)
+                // console.log(checkedData)
             })
             $('#ExportdataSlip').on('click',function(){
                var employee_id=  checkedData;
                 var startdate = $('#startdate').val()
                 var enddate = $('#enddate').val()
                 var branch_id = $('#branch_id').val()
-               
+                
+                if (checkedData == ''){
+                    swal.fire({
+                        icon : 'info',
+                        text : 'please checked list employee !'
+                    })
+                    return false;
+                }
                 $('.containerLoader').attr('hidden',false)
                 window.location.href = 'export-payroll-pdf?branch_id='+branch_id+'&startdate='+startdate+'&enddate='+enddate+'&employee_id='+employee_id;
                 setTimeout(function(){ $('.containerLoader').attr('hidden',true);}, 7000);
