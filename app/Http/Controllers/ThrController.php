@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Branch;
 use App\Models\Employee;
 use App\Models\Thr;
+use App\Models\AccessBranch;
 use Exception;
 use DataTables;
 use Carbon\Carbon;
@@ -17,9 +18,17 @@ class ThrController extends Controller
 {
     public function index(){
         $userInitial = Auth::user()->initial;
+        $branch = Branch::select('company_id')->where('id', Auth::user()->branch_id)->first(); 
+        $emp = Employee::where('user_id',Auth::user()->id)->first();
+         
         if ($userInitial == 'HO'){
-            $branch = Branch::select('company_id')->where('id', Auth::user()->branch_id)->first(); 
-            $data['branch'] = Branch::select('id','name')->where('company_id',$branch->company_id)->get();
+            if (Auth::user()->type == "company"){
+                $data['branch'] = Branch::select('id','name')->where('company_id',$branch->company_id)->get();
+            }else{
+                $branch['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                                ->where('access_branches.employee_id',$emp->id)
+                                                ->where('access_branches.company_id',$branch->company_id)->get();
+            }
         }else{
              $data['branch'] = Branch::select('id','name')->where('id',Auth::user()->branch_id)->fist();
         }
