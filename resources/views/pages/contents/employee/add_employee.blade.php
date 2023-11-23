@@ -259,7 +259,7 @@
                     success : function(respon){
                         var depart ='<option value="">-- select -- </option>';
                         $.each(respon.dept, function(key,val){
-                            dept += `<option value="`+val.id+`">`+val.name+`</option>`;
+                            depart += `<option value="`+val.id+`">`+val.name+`</option>`;
                         })
                         $('#departs').html(depart);
 
