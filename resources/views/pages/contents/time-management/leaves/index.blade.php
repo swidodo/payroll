@@ -384,7 +384,7 @@
                     beforeSend : function(){
 
                     },
-                    success ; function(respon){
+                    success : function(respon){
                         $('#edit_leave').modal('show')
                         var emp = '<option value="" selected>-- Select Employee --</option>';
                         $.each(respon.employee,function(key,val){
