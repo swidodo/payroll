@@ -1310,7 +1310,7 @@ class PayrollController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action',function($row){
                     $btn ='';
-                    if(Auth()->user()->canany('manage payroll','show payroll', 'edit payroll')){
+                    if(Auth()->user()->canany('show payroll')){
                         $btn .= '<div class="dropdown dropdown-action">
                                 <a href="#"  class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                 <div class="dropdown-menu dropdown-menu-right">';
