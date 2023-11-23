@@ -49,9 +49,17 @@ class LoanController extends Controller
         if (Auth::user()->can('manage loan')) {
             $user = Auth::user();
             $getBranch = Branch::select('name','id','company_id')->where('id',$user->branch_id)->first();
+            $emp = Employee::where('user_id',Auth::user()->id)->first();
+         
             $branch ='';
             if ($user->initial == "HO"){
-                $branch = Branch::select('name','id')->where('company_id',$getBranch->company_id)->get();
+                if (Auth::user()->type == "company"){
+                    $branch = Branch::select('name','id')->where('company_id',$getBranch->company_id)->get();
+                }else{
+                    $branch = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                                    ->where('access_branches.employee_id',$emp->id)
+                                                    ->where('access_branches.company_id',$getBranch->company_id)->get();
+                }
             }else{
                 $branch = Branch::select('name','id')->where('id',$user->branch_id)->get();;
             }
