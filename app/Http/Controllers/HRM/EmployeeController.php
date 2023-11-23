@@ -24,6 +24,7 @@ use App\Models\Utility;
 use App\Models\Parameter_pph21;
 use App\Models\Departement;
 use App\Models\Position;
+use App\Models\AccessBranch;
 use Carbon\Carbon;
 use DataTables;
 use Exception;
@@ -55,6 +56,8 @@ class EmployeeController extends Controller
             $data = Branch::where('id',$user->branch_id)->first();
             if ($user->initial =="HO"){
                 $branch['branch'] = Branch::where('company_id',$data->company_id)->get();
+                // $branch['branch'] = AccessBranch::where('employee_id',$data->employee_id)
+                //                                 ->where('company_id',$data->company_id)->get();
             }else{
                 $branch['branch'] = Branch::where('id',$user->branch_id)->get();
             }

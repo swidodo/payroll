@@ -62,6 +62,8 @@ use App\Http\Controllers\DeductionadminController;
 use App\Http\Controllers\HRM\EmployeeReportController;
 use App\Http\Controllers\Report\ReportRecapAttendanceController;
 use App\Http\Controllers\Report\RekapPayrollController;
+// access branch
+use App\Http\Controllers\AccessBranchController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -471,6 +473,16 @@ Route::group(['middleware' => 'auth'], function () {
         // my profile
         Route::get('get-my-profile',[EmployeeController::class,'my_profile'])->name('get-my-profile');
         Route::post('change-profile',[EmployeeController::class,'change_profile'])->name('change-profile');
+        // access branch
+        Route::get('access-branch',[AccessBranchController::class,'index'])->name('access-branch');
+        Route::get('create-access-branch',[AccessBranchController::class,'create'])->name('create-access-branch');
+        Route::post('get-access-branch',[AccessBranchController::class,'get_data'])->name('get-access-branch');
+        Route::post('setup-access-branch',[AccessBranchController::class,'get_employee'])->name('setup-access-branch');
+        Route::post('store-access-branch',[AccessBranchController::class,'store'])->name('store-access-branch');
+        Route::get('edit-access-branch/{id}',[AccessBranchController::class,'edit'])->name('edit-access-branch');
+        Route::post('edit-access-branch/update-access-branch',[AccessBranchController::class,'update'])->name('update-access-branch');
+        Route::post('delete-access-branch',[AccessBranchController::class,'destroy'])->name('delete-access-branch');
+
         });
 
 

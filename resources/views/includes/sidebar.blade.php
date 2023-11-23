@@ -231,6 +231,9 @@
                             @canany(['manage user', 'create user'])
                                 <li class="{{(request()->routeIs('users*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('users*')) ? 'active' : ''}}" href="{{ route('users.index') }}">Users</a></li>
                             @endcanany
+                            @canany(['manage user', 'create user'])
+                                <li class="{{(request()->routeIs('access-branch')) ? 'active' : ''}}"><a class="{{(request()->routeIs('access-branch')) ? 'active' : ''}}" href="{{ route('access-branch') }}">Access Branch</a></li>
+                            @endcanany
 
                             @canany(['manage role', 'create role'])
                                 <li class="{{(request()->routeIs('roles*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('roles*')) ? 'active' : ''}}" href="{{route('roles.index')}}">Roles</a></li>

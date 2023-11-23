@@ -20,7 +20,9 @@
                 </div>
                 @can('create allowance option')
                     <div class="col-auto float-end ms-auto">
-                        <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_allowance"><i class="fa fa-plus"></i>Create</a>
+                        @can('create access branch')
+                            <a href="{{ route('create-access-branch')}}" class="btn add-btn"><i class="fa fa-plus"></i>Create</a>
+                        @endcan
                     </div>
                 @endcan
             </div>
@@ -37,68 +39,19 @@
         @endif
 
         <div class="row">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row d-flex align-items-center">
-                        <div class="col-md-3">
-                            <label>Branch</label>
-                            <select class="form-select form-control" id="branch_id">
-                                @foreach($branches as $br)
-                                <option value="{{ $br->id }} ">{{ $br->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-3 d-flex align-items-center mt-4"> 
-                            <button type="button" class="btn btn-primary" id="searchBranch">Search</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="col-md-12">
                 <div class="table-responsive">
-                    <table class="table table-striped custom-table datatable">
+                    <table class="table table-striped custom-table w-100" id="table-access">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Allowance Option</th>
-                                <th>Pay Type</th>
-                                @if(Auth::user()->can('edit allowance option') || Auth::user()->can('delete allowance option'))
-                                    <th class="text-end">Action</th>
-                                @endif
+                                <th>Employee</th>
+                                <th>Branch</th>
+                                <th>Total Access</th>
+                                <th class="text-end">Action</th>
                             </tr>
                         </thead>
-                        @php
-                            $no=1;
-                        @endphp
                         <tbody>
-                            @foreach ($allowanceOptions as $option)
-                                <tr>
-                                    <td>{{$no++}}</td>
-                                    <td>
-                                        {{$option->name}}
-                                    </td>
-                                    <td>
-                                        {{$option->pay_type}}
-                                    </td>
-                                    @canany(['edit allowance option', 'delete allowance option'])
-                                        <td class="text-end">
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    @can('edit allowance option')
-                                                        <a  data-url="{{route('allowance-option.edit', $option->id)}}" id="edit-allowance-option" class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_allowance"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                    @endcan
-                                                    @can('delete allowance option')
-                                                        <a id="delete-allowance-option" data-url="{{route('allowance-option.destroy', $option->id)}}" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_allowance"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                    @endcan
-
-                                                </div>
-                                            </div>
-                                        </td>
-                                    @endcanany
-                                </tr>
-                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -106,8 +59,6 @@
         </div>
     </div>
     <!-- /Page Content -->
-
-    @include('includes.modal.allowance-option-modal')
 
 </div>
 @endsection
@@ -121,6 +72,8 @@
 
     <!-- Datetimepicker CSS -->
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap-datetimepicker.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/plugins/sweetalert2/sweetalert2.min.css')}}">
+
 @endpush
 
 @push('addon-script')
@@ -133,74 +86,93 @@
     <!-- Datetimepicker JS -->
     <script src="{{asset('assets/js/moment.min.js')}}"></script>
     <script src="{{asset('assets/js/bootstrap-datetimepicker.min.js')}}"></script>
+    <script src="{{asset('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
+
 
     <!-- Datatable JS -->
     <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
 
-    @if (Session::has('edit-show'))
     <script>
-        $(window).on('load', function(){
-            $('#edit_user').modal('show')
-        });
-    </script>
-    @endif
-
-    <script>
-            $(document).ready(function () {
-                /* When click show user */
-
-
-                    $('body').on('click', '#edit-allowance-option', function () {
-                        const editUrl = $(this).data('url');
-                        $('#edit-name-allowance-option').val('')
-
-
-                        $.get(editUrl, (data) => {
-                            $('#edit-name-allowance-option').val(data.name)
-                            $('#edit_pay_type').val(data.pay_type)
-                            $('#includeAttendance').val(data.include_attendance)
-
-                            const urlNow = '{{ Request::url() }}'
-                            $('#edit-form-allowance-option').attr('action', urlNow + '/' + data.id);
-                        })
-                    });
-
-                $('body').on('click', '#delete-allowance-option', function(){
-                    const deleteURL = $(this).data('url');
-                    $('#form-delete-allowance-option').attr('action', deleteURL);
-                })
+        $(document).ready(function () {
+            $.ajaxSetup({
+                headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
             });
-            $('#pay_type').on('change',function(){
-                var val = $(this).val();
-                if(val == "unfixed"){
-                    $('#include').html(`
-                        <div class="form-group">
-                            <label>Include Attendance</label>
-                            <select class="form-control form-select" name="include_attendance" id="includeAttendance">
-                                <option value="N" selected>No</option>
-                                <option value="Y">Yes</option>
-                            </select>
-                        </div>`);
-                }else{
-                    $('#include').html('');
-                }
+            var table = $('#table-access').DataTable({
+                processing: true,
+                serverSide: true,
+                destroy: true,
+                ajax : {
+                    url : "get-access-branch",
+                    type : 'post',
+                },
+                columns: [
+                    { data: 'no', name:'id', render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }},
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'branch_name',
+                        name: 'branch_name'
+                    },
+                    {
+                        data: 'jml',
+                        render : function(data, row,type){
+                            return data + ' Branch';
+                        }
+                    },
+                   {
+                        data: 'action',
+                        name : 'action'
+                    },
+                ],
+
+            });
+            $(document).on('click','.edit-access-branch',function(e){
+                e.preventDefault()
+                var emp = $(this).attr('data-id')
+                window.location.href = 'edit-access-branch/'+emp;
+                
             })
-            $('#edit_pay_type').on('change',function(){
-                var val = $(this).val();
-                if(val == "unfixed"){
-                    $('#includes').html(`
-                        <div class="form-group">
-                            <label>Include Attendance</label>
-                            <select class="form-control form-select" name="include_attendance" id="includeAttendance">
-                                <option value="N" selected>No</option>
-                                <option value="Y">Yes</option>
-                            </select>
-                        </div>`);
-                }else{
-                    $('#includes').html('');
-                }
+            $(document).on('click','.delete-access-branch', function(e){
+                e.preventDefault()
+                var id = $(this).attr('data-id');
+                Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then(function(confirm){
+                        if (confirm.value == true){
+                            $.ajax({
+                                url : 'delete-access-branch',
+                                type : 'post',
+                                data : {id : id},
+                                dataType : 'json',
+                                beforeSend : function(){
+
+                                },
+                                success : function(respon){
+                                    table.ajax.reload();
+                                    swal.fire({
+                                        icon : respon.status,
+                                        text : respon.msg,
+                                    })
+                                },
+                                error : function (){
+                                    alert('There is an error !, please try again')
+                                }
+                            })
+                        }
+                    })
             })
-            
+        })
+      
     </script>
 @endpush
