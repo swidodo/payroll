@@ -113,7 +113,10 @@
                             },
                             {
                                 data: 'action',
-                                name: 'action'
+                                render : function(data, row,type){
+                                    return '';
+                                }
+                                // name: 'action' //hidden sementara
                             },
                         ],
                     })
