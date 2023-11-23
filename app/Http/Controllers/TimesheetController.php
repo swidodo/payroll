@@ -23,16 +23,10 @@ class TimesheetController extends Controller
     {
         if (Auth::user()->can('manage timesheet')) {
             $branches = Branch::where('id',Auth::user()->branch_id)->first();
+            $employee     = Employee::where('id', '=', Auth::user()->employee->id)->get();
+            $branch = Branch::where('id',$branches->id)->get();
             if (Auth::user()->initial != 'HO') {
-                $employee     = Employee::where('id', '=', Auth::user()->employee->id)->get();
                 $timesheets = Timesheet::where('employee_id', '=', Auth::user()->employee->id)->get();
-                if (Auth::user()->type == "company"){
-                    $branch = Branch::where('id',$branches->id)->get();
-                }else{
-                    $branch = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
-                                                ->where('access_branches.employee_id',$employee->id)
-                                                ->where('access_branches.company_id',$branch->company_id)->get();
-                }
                 //3 tier approval
                 if (!is_null($employee[0]->level_approval)) {
                     $levelApprove = $employee[0]->approval;
@@ -50,8 +44,14 @@ class TimesheetController extends Controller
             } else {
                 $timesheets     = Timesheet::where('branch_id', '=', Auth::user()->branch_id)->get();
                 $employee       = Employee::where('branch_id', '=', Auth::user()->branch_id)->get();
-                $branch         = Branch::where('company_id',$branches->company_id)->get();
-            }
+                if (Auth::user()->type == "company"){
+                    $branch         = Branch::where('company_id',$branches->company_id)->get();
+                }else{
+                    $branch = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                                ->where('access_branches.employee_id',$employee->id)
+                                                ->where('access_branches.company_id',$branch->company_id)->get();
+                }
+                }
 
             return view('pages.contents.timesheet.index', compact('branch','employee', 'timesheets'));
         } else {
