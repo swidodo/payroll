@@ -556,8 +556,16 @@ class PayrollController extends Controller
     }
     public function run_payroll(){
         if(Auth::user()->can('manage payroll')){
-            $companyId          = Branch::where('id',Auth::user()->branch_id)->first();
-            $branch['branch']   = Branch::where('company_id',$companyId->company_id)->get();
+            $companyId  = Branch::where('id',Auth::user()->branch_id)->first();
+            $emp = Employee::where('user_id',Auth::user()->id)->first();
+        
+            if (Auth::user()->type == "company"){
+                $branch['branch']   = Branch::where('company_id',$companyId->company_id)->get();
+            }else{
+                $data['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                                ->where('access_branches.employee_id',$emp->id)
+                                                ->where('access_branches.company_id',$companyId->company_id)->get();
+            }
             return  view('pages.contents.payroll.run_payroll',$branch);
         }else{
             toast('Permission denied.', 'error');
