@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Report;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Branch;
+use App\Models\Employee;
 use App\Models\AccessBranch;
 use App\Exports\RekapAttendanceExport;
 use Illuminate\Support\Facades\DB;
