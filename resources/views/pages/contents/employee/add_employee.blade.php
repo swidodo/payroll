@@ -121,10 +121,7 @@
                                         <div class="form-group col-md-6">
                                             <label for="marital_status" class="form-label">Status</label>
                                             <select class="form-control select"  id="status-employee-edit" name="status">
-                                                <option value="0">Select Status</option>
-                                                <option value="active">Active</option>
-                                                <option value="fired">Fired</option>
-                                                <option value="pension">Pension</option>
+                                                <option value="active" selected>Active</option>
                                             </select>
                                         </div>
                                     </div>
