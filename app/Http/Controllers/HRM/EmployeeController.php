@@ -58,6 +58,7 @@ class EmployeeController extends Controller
                 // $branch['branch'] = Branch::where('company_id',$data->company_id)->get();
                 $branch['branch'] = AccessBranch::where('employee_id',$data->employee_id)
                                                 ->where('company_id',$data->company_id)->get();
+                                                dd($branch['branch']);
             }else{
                 $branch['branch'] = Branch::where('id',$user->branch_id)->get();
             }
