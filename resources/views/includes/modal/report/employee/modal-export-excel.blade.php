@@ -13,7 +13,7 @@
                     <label>Branch</label>
                     <select class="form-select form-control" name="branch_id">
                         @foreach($branch as $br)
-                        <option value="{{ $br->id }} ">{{ $br->name }}</option>
+                          <option value="{{ $br->id }} ">{{ $br->name }}</option>
                         @endforeach
                     </select>
                 </div>
