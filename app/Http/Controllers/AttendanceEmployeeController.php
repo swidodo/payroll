@@ -79,7 +79,7 @@ class AttendanceEmployeeController extends Controller
                 }else{
                     $data['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
                                                     ->where('access_branches.employee_id',$emp->id)
-                                                    ->where('access_branches.company_id',$data->company_id)->get();
+                                                    ->where('access_branches.company_id',$branch->company_id)->get();
                 }
                 $data['employees'] = Employee::where('branch_id',$branch ->id);
                 $data['date'] = date('Y-m-d');

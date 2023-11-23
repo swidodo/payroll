@@ -31,7 +31,7 @@ class RotateController extends Controller
             }else{
                 $data['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
                                                 ->where('access_branches.employee_id',$emp->id)
-                                                ->where('access_branches.company_id',$data->company_id)->get();
+                                                ->where('access_branches.company_id', $branch->company_id)->get();
             }
         }else{
             $data['branch'] =  DB::table('branches')
