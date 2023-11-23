@@ -137,7 +137,13 @@ class OvertimeController extends Controller
             $branch = Branch::where('id',Auth::user()->branch_id)->first();
             $emp = Employee::where('user_id',Auth::user()->id)->first();
             if (Auth::user()->initial == 'HO'){
-                $data['branch']     = Branch::Where('company_id','=',$branch->company_id)->get();
+                if (Auth::user()->type == "company"){
+                    $data['branch']     = Branch::Where('company_id','=',$branch->company_id)->get();
+                }else{
+                    $data['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                                    ->where('access_branches.employee_id',$emp->id)
+                                                    ->where('access_branches.company_id',$branch->company_id)->get();
+                }
                 $data['dayTypes']   = DayType::select('day_types.id','day_types.name')
                                                 ->get();
                 $data['date']       = date('Y-m-d');
