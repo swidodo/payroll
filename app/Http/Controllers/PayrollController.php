@@ -1304,7 +1304,14 @@ class PayrollController extends Controller
     }
     public function data_payroll_final(){
         $companyId          = Branch::where('id',Auth::user()->branch_id)->first();
-        $branch['branch']   = Branch::where('company_id',$companyId->company_id)->get();
+        $emp = Employee::where('user_id',Auth::user()->id)->first();
+        if (Auth::user()->type == "company"){
+            $branch['branch']   = Branch::where('company_id',$companyId->company_id)->get();
+        }else{
+            $branch['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                            ->where('access_branches.employee_id',$emp->id)
+                                            ->where('access_branches.company_id',$companyId->company_id)->get();
+        }
         return  view('pages.contents.payroll.data_payroll_final',$branch);
     } 
     public function get_payroll_final(Request $request){
