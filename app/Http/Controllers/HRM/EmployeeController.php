@@ -54,6 +54,9 @@ class EmployeeController extends Controller
         if (Auth::user()->can('manage employee')) {
             $user = Auth::user();
             $emp = Employee::where('user_id',Auth::user()->id)->first();
+            if (!$emp){
+                return redirect()->back();
+            }
             $data = Branch::where('id',$user->branch_id)->first();
             if ($user->initial =="HO"){
                 // $branch['branch'] = Branch::where('company_id',$data->company_id)->get();
@@ -959,6 +962,9 @@ class EmployeeController extends Controller
     public function create_employee(){
         $branch = Branch::where('id',Auth::user()->branch_id)->first();
         $emp = Employee::where('user_id',Auth::user()->id)->first();
+        if (!$emp){
+            return redirect()->back();
+        }
         $data['paramPph21']  = Parameter_pph21::get();
         if (Auth::user()->initial == "HO"){
             // $data['branches']      = Branch::where('company_id',$branch->company_id)->get();
