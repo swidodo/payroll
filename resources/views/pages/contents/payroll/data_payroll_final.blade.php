@@ -488,8 +488,8 @@
                     $('.itemsCheck').prop('checked',true);
                     $('.itemsCheck').each(function(){
                         if($('.itemsCheck').prop('checked')){
-                            if(!(checkedData.includes($('.itemsCheck').val())))
                             var val = $(this).val();
+                            if(!(checkedData.includes(val)))
                             checkedData.push(val);
                         }
                     });
