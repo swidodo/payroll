@@ -10,6 +10,7 @@ use App\Models\OvertimeApproval;
 use App\Models\OvertimeType;
 use App\Models\Utility;
 use App\Models\Branch;
+use App\Models\AccessBranch;
 use App\Models\AllowanceFinance;
 use Carbon\Carbon;
 use Exception;
@@ -134,6 +135,7 @@ class OvertimeController extends Controller
     {
         if (Auth::user()->can('manage overtime')) {
             $branch = Branch::where('id',Auth::user()->branch_id)->first();
+            $emp = Employee::where('user_id',Auth::user()->id)->first();
             if (Auth::user()->initial == 'HO'){
                 $data['branch']     = Branch::Where('company_id','=',$branch->company_id)->get();
                 $data['dayTypes']   = DayType::select('day_types.id','day_types.name')
@@ -141,7 +143,13 @@ class OvertimeController extends Controller
                 $data['date']       = date('Y-m-d');
                 return view('pages.contents.time-management.overtime.index',$data );
             }else{
-                $data['branch']     = Branch::Where('id','=',$branch->id)->get();
+                if (Auth::user()->type == "company"){
+                    $data['branch']     = Branch::Where('id','=',$branch->id)->get();
+                }else{
+                    $data['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                                    ->where('access_branches.employee_id',$emp->id)
+                                                    ->where('access_branches.company_id',$branch->company_id)->get();
+                }
                 $data['dayTypes']   = DayType::select('day_types.id','day_types.name')
                                                 ->leftJoin('branches','branches.id','=','day_types.branch_id')
                                                 ->where('branches.company_id',$branch->company_id)->get();
