@@ -57,7 +57,10 @@
                             @can('run import manual payroll')
                                 <button type="button" class="btn btn-primary" id="import_run_payroll"><i class="fa fa-download"></i> IMPORT AND RUN</button>
                             @endcan
-                            
+                            @can('run import Auto payroll')
+                                <button type="button" class="btn btn-primary" id="import_run_auto"><i class="fa fa-download"></i> IMPORT AND RUN</button>
+                            @endcan
+
                             </div>
                         </div>
                     </div>
@@ -527,6 +530,10 @@
         $('#import_run_payroll').on('click',function(e){
             e.preventDefault();
             $('#modalImportPayroll').modal('show')
+        })
+        $('#import_run_auto').on('click',function(e){
+            e.preventDefault();
+            $('#modalImportPayrollAuto').modal('show')
         })
         $('#UploadDataPayroll').on('submit',function(e){
             e.preventDefault();
