@@ -197,7 +197,7 @@
                                 <div class="form-group col-md-6">
                                     <label for="branch_id" class="form-label">Branch</label>
                                     <select class="form-control select" name="branch_id" required>
-                                        <option value="" selected>Select Branch</option>
+                                        {{-- <option value="" selected>Select Branch</option> --}}
                                         @foreach ($branches as $branch)
                                             @if ($employee->branch_id == $branch->id)
                                                 <option value="{{$branch->id }}" {{($branch->id == $employee->branch_id) ? 'selected' : ''}}>{{$branch->name}}</option>
