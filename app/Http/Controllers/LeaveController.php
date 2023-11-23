@@ -12,6 +12,7 @@ use App\Models\LevelApproval;
 use App\Models\Overtime;
 use App\Models\Utility;
 use App\Models\Branch;
+use App\Models\AccessBranch;
 use Carbon\Carbon;
 use DataTables;
 use DateTime;
@@ -34,8 +35,15 @@ class LeaveController extends Controller
         if (Auth::user()->can('manage leave')) {
             $user     = Auth::user();
             $branchId = Branch::where('id',Auth::user()->branch_id)->first();
+            $emp = Employee::where('user_id',Auth::user()->id)->first();
             if (Auth::user()->type != 'HO') {
-                $data['branch'] = Branch::where('company_id',$branchId->company_id)->get();
+                if (Auth::user()->type == "company"){
+                    $data['branch'] = Branch::where('company_id',$branchId->company_id)->get();
+                }else{
+                    $data['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                                    ->where('access_branches.employee_id',$emp->id)
+                                                    ->where('access_branches.company_id',$branchId->company_id)->get();
+                }
                 return view('pages.contents.time-management.leaves.index', $data);
             } else {
                 $data['branch'] = Branch::where('id',$branchId->id)->get();
