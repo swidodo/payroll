@@ -562,7 +562,7 @@ class PayrollController extends Controller
             if (Auth::user()->type == "company"){
                 $branch['branch']   = Branch::where('company_id',$companyId->company_id)->get();
             }else{
-                $data['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                $branch['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
                                                 ->where('access_branches.employee_id',$emp->id)
                                                 ->where('access_branches.company_id',$companyId->company_id)->get();
             }
