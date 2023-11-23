@@ -487,10 +487,10 @@
                 if($(this).prop('checked')){
                     $('.itemsCheck').prop('checked',true);
                     $('.itemsCheck').each(function(){
-                        if($('.itemsCheck').prop('checked')){
+                        // if($('.itemsCheck').prop('checked')){
                             // if(!(checkedData.includes($('.itemsCheck').val())))
                             checkedData.push($('.itemsCheck').val());
-                        }
+                        // }
                     });
                 }else{
                     $('.itemsCheck').prop('checked',false);
