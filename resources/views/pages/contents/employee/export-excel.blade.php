@@ -17,8 +17,8 @@
             <th>EMPLOYEE ID</th>
             <th>EMPLOYEE TYPE</th>
             <th>WORK TYPE</th>
-            <th>DEPARTMENT CODE</th>
-            <th>POSITION CODE</th>
+            <th>DEPARTMENT NAME</th>
+            <th>POSITION NAME</th>
             <th>ACCOUNT HOLDER NAME</th>
             <th>BANK NAME</th>
             <th>ACCOUNT NUMBER</th>
