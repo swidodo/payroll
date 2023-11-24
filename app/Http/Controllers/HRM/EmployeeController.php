@@ -809,7 +809,7 @@ class EmployeeController extends Controller
                                             from users
                                             where LOWER(name) = '$name'
                                             and email='$row[10]'");
-
+                        dd($check);
                         if(count($check) > 0){
                             $doj            = ($row[22] != "" ) ? $row[22] : null;
                             $doe            = ($row[23] != "" ) ? $row[23] : null;
