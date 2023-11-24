@@ -44,7 +44,7 @@
             <td>{{$employ->phone}}</td>
             <td>{{$employ->address}}</td>
             <td>{{$employ->email}}</td>
-            <td>{{$employ->employee_id}}</td>
+            <td>{{$employ->no_employee}}</td>
             <td>{{$employ->employee_type}}</td>
             <td>{{$employ->work_type}}</td>
             <td>{{$employ->departement_code}}</td>

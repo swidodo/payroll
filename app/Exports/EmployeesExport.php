@@ -38,6 +38,7 @@ class EmployeesExport implements FromView
                                     ->where('status','active')
                                     ->where('employees.branch_id',$this->request->branch_id)
                                     ->distinct()
+                                    ->orderBy('employees.name','ASC')
                                     ->get()
         ]);
     }
