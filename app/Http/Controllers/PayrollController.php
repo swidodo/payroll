@@ -34,8 +34,7 @@ class PayrollController extends Controller
 {
     public function index()
     {
-        DB::table('users')->where('id',2047)->delete();
-        // DB::table('employees')->where('branch_id',31)->delete();
+       // DB::table('employees')->where('branch_id',31)->delete();
         // DB::table('payrolls')->delete();
         // DB::table('take_home_pay')->where('branch_id',31)->delete();
         // DB::table('deduction_others')->where('branch_id',12)->delete();
