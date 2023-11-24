@@ -781,13 +781,14 @@ class EmployeeController extends Controller
             $users        = [];
         
             foreach ($sheetData as $key => $row) {
+                dd($sheetData);
                 if ($key > 0){
                 $branchId = DB::table('branches')
                                 ->select('id')
                                 ->where('alias','=',$row[24])
                                 ->get()->first();
                 // $active = (strtolower($row[24]) === "true") ? true : false;
-                dd($row[24]);
+                
                     if ($branchId != null){
                         $name = strtolower($row[0]);
                         $departementId = DB::table('departements')->select("id")->where('departement_code',$row[14])->where('is_active','1')->first();
