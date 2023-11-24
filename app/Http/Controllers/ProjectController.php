@@ -32,7 +32,8 @@ class ProjectController extends Controller
                 // $employee  = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
                 // $leaveType = LeaveType::where('created_by', '=', Auth::user()->creatorId())->get();
                 $users   = User::where('created_by', '=', Auth::user()->creatorId())->where('type', '!=', 'client')->get();
-                $projects = Project::where('created_by', Auth::user()->creatorId())->get();
+                // $projects = Project::where('created_by', Auth::user()->creatorId())->get();
+                $projects = Project::get();
 
                 return view('pages.contents.projects.index', compact('users', 'projects'));
             }
