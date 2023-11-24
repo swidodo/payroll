@@ -1,6 +1,6 @@
 @extends('pages.dashboard')
 
-@section('title', 'project')
+@section('title', 'Talent')
 
 @section('dashboard-content')
 @php
@@ -18,15 +18,15 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Projects</h3>
+                    <h3 class="page-title">Talent</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Projects</li>
+                        <li class="breadcrumb-item active">Talent</li>
                     </ul>
                 </div>
                 @can('create project')
                     <div class="col-auto float-end ms-auto">
-                        <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_project"><i class="fa fa-plus"></i> Create Project</a>
+                        <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_project"><i class="fa fa-plus"></i> Create Talent</a>
                     </div>
                 @endcan
             </div>
@@ -39,7 +39,7 @@
                     <table class="table table-striped custom-table datatable">
                         <thead>
                             <tr>
-                                <th>Project</th>
+                                <th>Talent</th>
                                 <th>Team</th>
                                 <th>Deadline</th>
                                 <th>Status</th>
