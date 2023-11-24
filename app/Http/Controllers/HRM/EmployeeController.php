@@ -788,6 +788,7 @@ class EmployeeController extends Controller
                                 ->get()->first();
                 // $active = (strtolower($row[24]) === "true") ? true : false;
                     if ($branchId != null){
+                        dd($branchId);
                         $name = strtolower($row[0]);
                         $departementId = DB::table('departements')->select("id")->where('departement_code',$row[14])->where('is_active','1')->first();
                         if($departementId != null){
@@ -809,7 +810,7 @@ class EmployeeController extends Controller
                                             from users
                                             where LOWER(name) = '$name'
                                             and email='$row[10]'");
-                        dd($check);
+                        
                         if(count($check) > 0){
                             $doj            = ($row[22] != "" ) ? $row[22] : null;
                             $doe            = ($row[23] != "" ) ? $row[23] : null;
