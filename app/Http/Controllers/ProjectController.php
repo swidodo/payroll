@@ -18,25 +18,24 @@ class ProjectController extends Controller
     public function index()
     {
         if (Auth::user()->can('manage project')) {
-            if (Auth::user()->type != 'company') {
-                // $user     = Auth::user();
-                // $employee = Employee::where('user_id', '=', $user->id)->get();
-                // $leaves  = Leave::where('employee_id', '=', $user->employee->id)->get();
-                // $leaveType = LeaveType::where('created_by', '=', Auth::user()->creatorId())->get();
-                $users   = User::where('created_by', '=', Auth::user()->creatorId())->where('type', '!=', 'client')->get();
+            // if (Auth::user()->type != 'company') {
+            //     // $user     = Auth::user();
+            //     // $employee = Employee::where('user_id', '=', $user->id)->get();
+            //     // $leaves  = Leave::where('employee_id', '=', $user->employee->id)->get();
+            //     // $leaveType = LeaveType::where('created_by', '=', Auth::user()->creatorId())->get();
+            //     $users   = User::where('created_by', '=', Auth::user()->creatorId())->where('type', '!=', 'client')->get();
 
 
-                return view('pages.contents.projects.index', compact('users'));
-            } else {
+            //     return view('pages.contents.projects.index', compact('users'));
+            // } else {
                 // $leaves = Leave::where('created_by', '=', Auth::user()->creatorId())->get();
                 // $employee  = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
                 // $leaveType = LeaveType::where('created_by', '=', Auth::user()->creatorId())->get();
                 $users   = User::where('created_by', '=', Auth::user()->creatorId())->where('type', '!=', 'client')->get();
-                // $projects = Project::where('created_by', Auth::user()->creatorId())->get();
-                $projects = Project::get();
+                $projects = Project::where('created_by', Auth::user()->creatorId())->get();
 
                 return view('pages.contents.projects.index', compact('users', 'projects'));
-            }
+            // }
         } else {
             toast('Permission denied.', 'error');
             return redirect()->back();
