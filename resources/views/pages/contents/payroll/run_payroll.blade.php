@@ -54,7 +54,7 @@
                             @can('run normatif payroll')
                                 <button type="button" class="btn btn-primary  me-2" id="generate_run_payroll">RUN PAYROLL</button>
                             @endcan
-                            @if (Auth::user()->branch_id == 30)
+                            @if (Auth::user()->branch_id == '30')
                                 @can('run import Auto payroll')
                                 <button type="button" class="btn btn-primary" id="import_run_auto"><i class="fa fa-download"></i> IMPORT AND RUN</button>
                                 @endcan
