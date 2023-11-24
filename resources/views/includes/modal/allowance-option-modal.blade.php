@@ -17,6 +17,12 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
+                                    <label>Branch  <span class="text-danger">*</span></label>
+                                    <select class="form-control form-select" name="branch_id" id="branchInputData">
+
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <label>Name  <span class="text-danger">*</span></label>
                                     <input class="form-control" type="text" name="name" placeholder="Enter Allowance Option Name">
 

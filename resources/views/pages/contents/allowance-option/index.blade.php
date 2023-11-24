@@ -20,7 +20,7 @@
                 </div>
                 @can('create allowance option')
                     <div class="col-auto float-end ms-auto">
-                        <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_allowance"><i class="fa fa-plus"></i> New allowance</a>
+                        <a href="#" id="NewOptionAllowance" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_allowance"><i class="fa fa-plus"></i> New allowance</a>
                     </div>
                 @endcan
             </div>
@@ -56,21 +56,21 @@
             </div>
             <div class="col-md-12">
                 <div class="table-responsive">
-                    <table class="table table-striped custom-table datatable">
+                    <table class="table table-striped custom-table" id="tblAllowanceOption">
                         <thead>
                             <tr>
                                 <th>No</th>
                                 <th>Allowance Option</th>
                                 <th>Pay Type</th>
-                                @if(Auth::user()->can('edit allowance option') || Auth::user()->can('delete allowance option'))
-                                    <th class="text-end">Action</th>
-                                @endif
+                                <th class="text-center">Include Attendance</th>
+                                <th class="text-end">Action</th>
                             </tr>
                         </thead>
                         @php
                             $no=1;
                         @endphp
-                        <tbody>
+                        <tbody></tbody>
+                        {{-- <tbody>
                             @foreach ($allowanceOptions as $option)
                                 <tr>
                                     <td>{{$no++}}</td>
@@ -99,7 +99,7 @@
                                     @endcanany
                                 </tr>
                             @endforeach
-                        </tbody>
+                        </tbody> --}}
                     </table>
                 </div>
             </div>
@@ -121,6 +121,8 @@
 
     <!-- Datetimepicker CSS -->
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap-datetimepicker.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/plugins/sweetalert2/sweetalert2.min.css')}}">
+    
 @endpush
 
 @push('addon-script')
@@ -137,6 +139,8 @@
     <!-- Datatable JS -->
     <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
+
 
     @if (Session::has('edit-show'))
     <script>
@@ -149,8 +153,98 @@
     <script>
             $(document).ready(function () {
                 /* When click show user */
+                $.ajaxSetup({
+                headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
+            });
+            $('#searchBranch').on('click',function(){
+                var branch_id = $('#branch_id').val()
+                    loadData(branch_id)
+            })
+            var branchId = $('#branch_id').val();
+            loadData(branchId);
+            function loadData(branchId){
+                $('#tblAllowanceOption').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    destroy: true,
+                    ajax : {
+                            "url" : 'get-data-allowance-option',
+                            "type" : 'POST',
+                            "data" : {branch_id : branchId,},
+                        },
+                    columns: [
+                        { data: 'no', name:'id', render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                            },
+                            className: "dt-center"
+                        },
+                        {
+                            data: 'name',
+                            name: 'name'
+                        },
+                        {
+                            data: 'pay_type',
+                            name: 'pay_type'
+                        },
+                        {
+                            data: 'include_attendance',
+                            render : function(data,row,type){
+                                var inc ='';
+                                if(data=="Y"){
+                                    inc = 'Yes';
+                                }else{
+                                    inc = 'No'
+                                }
+                                return inc;
+                            },
+                            className : 'dt-center'
+                        },
+                        {
+                            data: 'action',
+                            name: 'action',
+                            className: "dt-center"
+                        },
+                    ],
+                })
+            }
+            $('#NewOptionAllowance').on('click', function(){
+                var val = $('#branch_id').val()
+                var text = $('#branch_id option:selected').text();
+                $('#branchInputData').html(`<option value="`+val+`">`+text+`</option>`)
+            })
+            $(document).on('click','.delete-allowance', function(e){
+                e.preventDefault();
+                var branchId = $('#branch_id').val();
+                var id = $(this).attr('data-id');
+                Swal.fire({
+                    title: 'Are you sure ?',
+                    text: "You want remove record this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes'
+                }).then(function(confirm){
+                    if (confirm.value == true){
+                        $.ajax({
+                            url : 'delete-allowance-option',
+                            type : 'post',
+                            data : {id : id},
+                            dataType : 'json',
+                            beforeSend : function(){
 
-
+                            },
+                            success : function(respon){
+                                swal.fire({
+                                    icon : respon.status,
+                                    text : respon.msg,
+                                })
+                                loadData(branchId)
+                            }
+                        })
+                    }
+                })
+                })
                     $('body').on('click', '#edit-allowance-option', function () {
                         const editUrl = $(this).data('url');
                         $('#edit-name-allowance-option').val('')

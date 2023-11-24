@@ -7,6 +7,7 @@ use App\Models\Branch;
 use App\Models\AccessBranch;
 use App\Models\Employee;
 use Exception;
+use DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -40,7 +41,31 @@ class AllowanceOptionController extends Controller
             return redirect()->back();
         }
     }
+    public function get_data(Request $request){
+        $data =  AllowanceOption::where('branch_id', '=', $request->branch_id)->get();
 
+        return DataTables::of($data)
+                        ->addIndexColumn()
+                        ->addColumn('action', function($row){
+                        $btn ='';
+                        if(Auth()->user()->canany(['edit allowance option', 'delete allowance option'])){
+                            $btn .= '<div class="dropdown">
+                                    <a href="#" class="action-icon" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+
+                                    <div class="dropdown-menu dropdown-menu-right">';
+                                        if(Auth()->user()->can('edit allowance option')){
+                                            $btn .=' <a  data-url="'.route('allowance-option.edit', $row->id).'" id="edit-allowance-option" class="dropdown-item fw-bold" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_allowance"><i class="fa fa-pencil"></i> Edit</a>';
+                                         }
+                                        if(Auth()->user()->can('delete allowance option')){
+                                            $btn .= '<a data-id="'.$row->id.'" class="dropdown-item fw-bold delete-allowance" href="#" ><i class="fa fa-trash-o"></i> Delete</a>';
+                                        }
+                                        $btn .= '</div></div>';
+                        }
+                            return $btn;
+                        })
+                        ->rawColumns(['action'])
+                        ->make(true);return response()->json($data);
+    }
     public function store(Request $request)
     {
         if (Auth::user()->can('create allowance option')) {
@@ -68,7 +93,7 @@ class AllowanceOptionController extends Controller
                 $allowanceOption->name                 = $request->name;
                 $allowanceOption->pay_type             = $request->pay_type;
                 $allowanceOption->include_attendance   = $include_attendance;
-                $allowanceOption->branch_id            = Auth::user()->branch_id;
+                $allowanceOption->branch_id            = $request->branch_id;
                 $allowanceOption->created_by           = Auth::user()->creatorId();
                 $allowanceOption->save();
 
@@ -129,7 +154,6 @@ class AllowanceOptionController extends Controller
                     }
                     $allowanceOption->name       = $request->name;
                     $allowanceOption->pay_type   = $request->pay_type;
-                    $allowanceOption->branch_id  = Auth::user()->branch_id;
                     $allowanceOption->include_attendance   = $include_attendance;
                     $allowanceOption->save();
 
@@ -151,20 +175,24 @@ class AllowanceOptionController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $allowanceOption = AllowanceOption::find($id);
+        $allowanceOption = AllowanceOption::find($request->id);
 
         if (Auth::user()->can('delete allowance option')) {
-            if ($allowanceOption->created_by == Auth::user()->creatorId()) {
-                $allowanceOption->delete();
-
-                toast('Allowance Option successfully deleted.', 'success');
-                return redirect()->route('allowance-option.index');
-            } else {
-                toast('Permission denied.', 'error');
-                return redirect()->back();
-            }
+                $del =  AllowanceOption::destroy($request->id);
+                if ($del){
+                    $res = [
+                        'status' => 'success',
+                        'msg'    => 'Data successfully Deleted !'
+                    ];
+               }else{
+                $res = [
+                        'status' =>'error',
+                        'msg'    =>'Data Fail Deleted !',
+                    ];
+               }
+               return response()->json($res);
         } else {
             toast('Permission denied.', 'error');
             return redirect()->back();
