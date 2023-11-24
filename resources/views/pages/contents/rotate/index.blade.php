@@ -21,7 +21,7 @@
                     </ul>
                 </div>
                     <div class="col-auto float-end ms-auto">
-                        <a href="#" class="btn add-btn" id="addDataRotate"><i class="fa fa-plus"></i>Add Rotation</a>
+                        <a href="#" class="btn add-btn" id="addDataRotate"><i class="fa fa-plus"></i>Rotation</a>
                     </div>
                 @can('create rotation')
                 @endcan
