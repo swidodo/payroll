@@ -1,6 +1,6 @@
 @extends('pages.dashboard')
 
-@section('title', 'Performance Review')
+@section('title', 'Performance')
 
 @section('dashboard-content')
 <div class="page-wrapper">
@@ -12,10 +12,10 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Manage Performance Review</h3>
+                    <h3 class="page-title"> Performance</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Performance Review</li>
+                        <li class="breadcrumb-item active">Performance</li>
                     </ul>
                 </div>
                 @can('create performance review')
