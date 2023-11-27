@@ -14,23 +14,23 @@
                                 <div class="col-sm-12">
                                      <div class="form-group">
                                         <label>Company Name  <span class="text-danger">*</span></label>
-                                        <input type="hidden" name="id" id="id" required>
-                                        <input class="form-control" name="company_name" id="companyName" required>
+                                        <input type="hidden" name="id" id="id_edit" required>
+                                        <input class="form-control" name="company_name" id="companyName_edit" required>
                                         
                                     </div>
                                     <div class="form-group">
                                         <label>Address<span class="text-danger">*</span></label>
-                                       <textarea class="form-control" cols="3" name="address" id="companyAddress" required></textarea>
+                                       <textarea class="form-control" cols="3" name="address" id="companyAddress_edit" required></textarea>
                                        
                                     </div>
                                     <div class="form-group">
                                         <label>Code<span class="text-danger">*</span></label>
-                                        <input class="form-control" name="code" id="companycode" required>
+                                        <input class="form-control" name="code" id="companycode_edit" required>
                                     </div>
-                                   <!--  <div class="form-group">
+                                    <div class="form-group">
                                         <label>Logo<span class="text-danger">*</span></label>
-                                        <input class="form-control" name="code" required>
-                                    </div> -->
+                                        <input type="file" class="form-control" name="logo" id="logo">
+                                    </div>
                                 </div>
                             </div>
                             <div class="submit-section">

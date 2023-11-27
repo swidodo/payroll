@@ -250,9 +250,10 @@ class DepartementController extends Controller
             if ($key > 0) :
                 $comp = Branch::where('id',Auth::user()->branch_id)->first();
                 $branchId = Branch::where('alias',$value['1'])->where('company_id',$comp->company_id)->first();
-                $checkDept = Departement::where('departement_code',$value['2'])->where('branch_id',$branchId->id)->count();
+                if ($branchId != null) :
+                    $checkDept = Departement::where('departement_code',$value['2'])->where('branch_id','=',$branchId->id)->count();
                 if ($checkDept <= 0):
-                    if ($branchId != null) :
+                    
                         $data = [
                                 'branch_id'         => $branchId->id,
                                 'departement_code'  => $value['2'],
@@ -265,7 +266,6 @@ class DepartementController extends Controller
                         ];
                         
                         array_push($dataDepartment,$data);
-                    
                     endif;
                 endif;
             endif;
@@ -275,7 +275,7 @@ class DepartementController extends Controller
         }else{
             $res = [
                 'status' => 'error',
-                'msg'    => 'Data faild! please check your file.'
+                'msg'    => 'Someting went wrong !, Please check your file.'
             ];
             return response()->json($res);
         }

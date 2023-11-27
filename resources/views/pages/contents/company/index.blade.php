@@ -111,7 +111,10 @@
                     },
                     {
                         data: 'logo',
-                        name: 'logo'
+                        // render : function (data,row,type){
+                        //     var logo ="<img src="{{ asset('../storage/app/public/') }}" id='logo'>";
+                        //     return logo;
+                        // }
                     },
                    {
                         data: 'action',
@@ -165,21 +168,34 @@
                     },
                     success : function(respon){
                        
-                        $('#id').val(respon.id);
-                        $('#companyName').val(respon.name);
-                        $('#companyAddress').val(respon.address);
-                        $('#companycode').val(respon.code);
+                        $('#id_edit').val(respon.id);
+                        $('#companyName_edit').val(respon.name);
+                        $('#companyAddress_edit').val(respon.address);
+                        $('#companycode_edit').val(respon.code);
                         $('#edit_company').modal('show');
                     }
                 })
             })
             $('#updateFormCompany').on('submit', function(e){
                 e.preventDefault()
-                var data = $('#updateFormCompany').serialize();
+                var id = $('#id_edit').val();
+                var company_name = $('#companyName_edit').val();
+                var address = $('#companyAddress_edit').val();
+                var code = $('#companycode_edit').val();
+                var logo = $('#logo')[0].files[0];
+                var formData = new FormData();
+                formData.append('id',id)
+                formData.append('company_name',company_name)
+                formData.append('address',address)
+                formData.append('code',code)
+                formData.append('logo',logo)
                 $.ajax({
                     url : 'update-company',
                     type : 'post',
-                    data : data,
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    data : formData,
                     dataType : 'json',
                     beforeSend : function(){
 

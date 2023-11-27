@@ -86,10 +86,18 @@ class CompanyController extends Controller
         return response()->json($data);
     }
     public function update(Request $request){
+        if ($request->file('logo')) {
+            $fileName = time() . '_' . $request->file('logo')->getClientOriginalName();
+            $store = $request->file('logo')->storeAs('public/logo/', $fileName);
+            $pathFile = 'storage/logo/' . $fileName ?? null;
+        }else{
+            $pathFile ='';
+        }
         $data =[
-            'name' => $request->company_name,
-            'address' => $request->address,
-            'code'   => $request->code,
+            'name'      => $request->company_name,
+            'address'   => $request->address,
+            'logo'      => $pathFile,
+            'code'      => $request->code,
         ];
         $save = Company::where('id',$request->id)->update($data);
          if ($save){

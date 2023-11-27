@@ -26,10 +26,6 @@
                                         <label>Code<span class="text-danger">*</span></label>
                                         <input class="form-control" name="code" required>
                                     </div>
-                                   <!--  <div class="form-group">
-                                        <label>Logo<span class="text-danger">*</span></label>
-                                        <input class="form-control" name="code" required>
-                                    </div> -->
                                 </div>
                             </div>
                             <div class="submit-section">
