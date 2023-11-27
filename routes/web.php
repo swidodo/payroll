@@ -410,6 +410,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('edit-departement',[DepartementController::class,'edit'])->name('edit-departement');
         Route::post('update-departement',[DepartementController::class,'update'])->name('update-departement');
         Route::post('destroy-departement',[DepartementController::class,'destroy'])->name('destroy-departement');
+        Route::post('import-department',[DepartementController::class,'importExcelDepartment'])->name('import-department');
+        
         /** departement */
         // group position
         Route::get('group-position', [GroupPositionController::class,'index'])->name('group-position');
@@ -428,6 +430,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('edit-position',[PositionController::class,'edit'])->name('edit-position');
         Route::post('update-position',[PositionController::class,'update'])->name('update-position');
         Route::post('destroy-position',[PositionController::class,'destroy'])->name('destroy-position');
+        Route::post('import-position',[PositionController::class,'importExcelPosition'])->name('import-position');
+        
         // Reporting
         Route::get('reporting-attandance-view',[ReportRecapAttendanceController::class,'index'])->name('reporting-attandance');
         Route::get('get-reporting-attandance',[ReportRecapAttendanceController::class,'get_report_attadance'])->name('get-reporting-attandance');

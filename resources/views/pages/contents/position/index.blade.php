@@ -50,6 +50,7 @@
                         </div>
                         <div class="col-md-3 d-flex align-items-center mt-4"> 
                             <button type="button" class="btn btn-primary" id="searchBranch">Search</button>
+                            <a href="#" id="importPosition" class="btn btn-primary ms-1">Import</a>
                         </div>
                     </div>
                 </div>
@@ -108,6 +109,7 @@
 </div>
  @include('includes.modal.position.add_position')
  @include('includes.modal.position.edit_position')
+ @include('includes.modal.position.import-position')
 @endsection
 
 @push('addon-style')
@@ -318,6 +320,46 @@
              $('#searchBranch').on('click',function(e){
                 var branchId = $('#branch_id').val();
                 loadData(branchId)
+            })
+            $('#importPosition').on('click',function(e){
+                e.preventDefault();
+                $('#add_import_position').modal('show')
+            })
+            $('#formImportPosition').on('submit',function(e){
+                e.preventDefault();
+                var branchId = $('#branch_id').val();
+                var position  = $('#position-file-excel')[0].files[0];
+                var formData = new FormData();
+                formData.append('file-excel',position)
+                $.ajax({
+                    url : 'import-position',
+                    type : 'post',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    data : formData,
+                    dataType : 'json',
+                    beforeSend : function(){
+                        $('.containerLoader').attr('hidden',false)
+                    },
+                    success : function(respon){
+                        $('.containerLoader').attr('hidden',true)
+                        if (respon.status == 'success'){
+                            $('#formImportPosition')[0].reset();
+                            $('#add_import_position').modal('hide')
+                            loadData(branchId)
+                        }
+                        swal.fire({
+                            icon : respon.status,
+                            text : respon.msg,
+                        })
+                    },
+                    error : function(){
+                        alert('Someting went wrong !');
+                        $('.containerLoader').attr('hidden',true)
+                    }
+
+                })
             })
         });
     </script>

@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Branch;
+use App\Models\Employee;
 use App\Models\Rekap_pph21;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;

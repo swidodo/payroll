@@ -228,5 +228,69 @@ class DepartementController extends Controller
                 return response()->json($res);
         }
     }
+    public function importExcelDepartment()
+    {
+        $file_extension = request()->file('file-excel')->extension();
+        if ('csv' == $file_extension) {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+        } elseif ('xls' == $file_extension) {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        } elseif ('xlsx' == $file_extension) {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        }
+
+        // $reader = new Xls();
+        $spreadsheet = $reader->load(request()->file('file-excel'));
+        $sheetData = $spreadsheet->getActiveSheet()->toArray();
+
+        $dataDepartment = [];
+        $status = null;
+
+        foreach ($sheetData as $key => $value) {
+            if ($key > 0) :
+                $branchId = Branch::where('alias',$value['1'])->first();
+                $checkDept = Departement::where('departement_code',$value['2'])->count();
+                if ($checkDept <= 0):
+                    if ($branchId != null) :
+                        $data = [
+                                'branch_id'         => $branchId->id,
+                                'departement_code'  => $value['2'],
+                                'name'              => $value['3'],
+                                'description'       => $value['4'],
+                                'is_active'         => (STRTOUPPER($value['5']) == 'ACTIVE') ? '1' : '0',
+                                'create_by'         => Auth::user()->id,
+                                'created_at'        => date('Y-m-d H:m:s'),
+                                'updated_at'        => date('Y-m-d H:m:s')
+                        ];
+                        
+                        array_push($dataDepartment,$data);
+                    
+                    endif;
+                endif;
+            endif;
+        }
+        if (count($dataDepartment) > 0){
+            $status = Departement::insert($dataDepartment);
+        }else{
+            $res = [
+                'status' => 'error',
+                'msg'    => 'Data faild! please check your file.'
+            ];
+            return response()->json($res);
+        }
+        if ($status) {
+            $res = [
+                'status' => 'success',
+                'msg'    => 'Successfully Import Department !'
+            ];
+        }else{
+            $res = [
+                'status' => 'success',
+                'msg'    => 'Someting went wrong !'
+            ];
+        }
+        return response()->json($res);
+        
+    }
 
 }

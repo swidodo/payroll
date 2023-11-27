@@ -108,8 +108,8 @@
                                 <li class="{{(request()->routeIs('company-holiday*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('company-holiday*')) ? 'active' : ''}}" href="{{ route('company-holiday.index') }}">Calender</a></li>
                             @endcanany
 
-                             @canany(['manage request', 'create request', 'edit request'])
-                                <li class="{{(request()->routeIs('request-employee*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('request-employee*')) ? 'active' : ''}}" href="{{ route('request-employee') }}">Request</a></li>
+                            <li class="{{(request()->routeIs('request-employee*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('request-employee*')) ? 'active' : ''}}" href="{{ route('request-employee') }}">Request</a></li>
+                            @canany(['manage request', 'create request', 'edit request'])
                             @endcanany 
 
                         </ul>

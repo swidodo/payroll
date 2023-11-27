@@ -171,5 +171,67 @@ class PositionController extends Controller
                 return response()->json($res);
         }
     }
+    public function importExcelPosition(){
+        $file_extension = request()->file('file-excel')->extension();
+        if ('csv' == $file_extension) {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+        } elseif ('xls' == $file_extension) {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        } elseif ('xlsx' == $file_extension) {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        }
+
+        // $reader = new Xls();
+        $spreadsheet = $reader->load(request()->file('file-excel'));
+        $sheetData = $spreadsheet->getActiveSheet()->toArray();
+
+        $dataPosition = [];
+        $status = null;
+
+        foreach ($sheetData as $key => $value) {
+            if ($key > 0) :
+                $branchId = Branch::where('alias',$value['1'])->first();
+                $checkDept = Position::where('position_code',$value['2'])->count();
+                if ($checkDept <= 0):
+                    if ($branchId != null) :
+                        $data = [
+                                'branch_id'         => $branchId->id,
+                                'position_code'     => $value['2'],
+                                'position_name'     => $value['3'],
+                                'description'       => $value['4'],
+                                'create_by'         => Auth::user()->id,
+                                'created_at'        => date('Y-m-d H:m:s'),
+                                'updated_at'        => date('Y-m-d H:m:s')
+                        ];
+                        
+                        array_push($dataPosition,$data);
+                    
+                    endif;
+                endif;
+            endif;
+        }
+        if (count($dataPosition) > 0){
+            $status = Position::insert($dataPosition);
+        }else{
+            $res = [
+                'status' => 'error',
+                'msg'    => 'Someting went wrong !, Please check your file.'
+            ];
+            return response()->json($res);
+        }
+        if ($status) {
+            $res = [
+                'status' => 'success',
+                'msg'    => 'Successfully Import Position !'
+            ];
+        }else{
+            $res = [
+                'status' => 'success',
+                'msg'    => 'Someting went wrong !'
+            ];
+        }
+        return response()->json($res);
+        
+    }
 }
 

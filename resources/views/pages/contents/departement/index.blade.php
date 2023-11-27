@@ -48,6 +48,8 @@
                         </div>
                         <div class="col-md-3 d-flex align-items-center mt-4"> 
                             <button type="button" class="btn btn-primary" id="searchBranch">Search</button>
+                            <a href="#" id="import-department" class="btn btn-primary ms-1">Import</a>
+            
                         </div>
                     </div>
                 </div>
@@ -107,6 +109,8 @@
 </div>
  @include('includes.modal.departments.add_department')
  @include('includes.modal.departments.edit_department')
+ @include('includes.modal.departments.import-department')
+
 @endsection
 
 @push('addon-style')
@@ -339,6 +343,45 @@
             $('#searchBranch').on('click',function(e){
                 var branchId = $('#branch_id').val();
                 loadData(branchId);
+            }) 
+            $('#import-department').on('click', function(e){
+                $('#add_import_department').modal('show');
+            })
+            $('#formImportDepartment').on('submit',function(e){
+                e.preventDefault();
+                var branchId = $('#branch_id').val();
+                var department  = $('#department-file-excel')[0].files[0];
+                var formData = new FormData();
+                formData.append('file-excel',department)
+                $.ajax({
+                    url : 'import-department',
+                    type : 'post',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    data : formData,
+                    dataType : 'json',
+                    beforeSend : function(){
+                        $('.containerLoader').attr('hidden',false)
+                    },
+                    success : function(respon){
+                        $('.containerLoader').attr('hidden',true)
+                        if (respon.status == 'success'){
+                            $('#formImportDepartment')[0].reset();
+                            $('#add_import_department').modal('hide')
+                            loadData(branchId)
+                        }
+                        swal.fire({
+                            icon : respon.status,
+                            text : respon.msg,
+                        })
+                    },
+                    error : function(){
+                        alert('Someting went wrong !');
+                        $('.containerLoader').attr('hidden',true)
+                    }
+
+                })
             })
         });
     </script>
