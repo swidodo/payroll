@@ -248,8 +248,9 @@ class DepartementController extends Controller
 
         foreach ($sheetData as $key => $value) {
             if ($key > 0) :
-                $branchId = Branch::where('alias',$value['1'])->first();
-                $checkDept = Departement::where('departement_code',$value['2'])->count();
+                $comp = Branch::where('id',Auth::user()->branch_id)->first();
+                $branchId = Branch::where('alias',$value['1'])->where('company_id',$comp->company_id)->first();
+                $checkDept = Departement::where('departement_code',$value['2'])->where('branch_id',$branchId->id)->count();
                 if ($checkDept <= 0):
                     if ($branchId != null) :
                         $data = [
