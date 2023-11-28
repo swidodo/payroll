@@ -34,10 +34,7 @@ class PayrollController extends Controller
 {
     public function index()
     {
-       // DB::table('employees')->where('branch_id',31)->delete();
-        // DB::table('payrolls')->delete();
-        // DB::table('take_home_pay')->where('branch_id',31)->delete();
-        // DB::table('deduction_others')->where('branch_id',12)->delete();
+       
        if (Auth::user()->can('manage payroll')) {
             $branch = Branch::where('id',Auth::user()->branch_id)->first();
             $emp = Employee::where('user_id',Auth::user()->id)->first();
@@ -1350,7 +1347,12 @@ class PayrollController extends Controller
     public function generate_slip_payroll($id){
         $branch         = Auth::user()->branch_id;
         $data['salary'] = DB::table('take_home_pay')
-                            ->select('take_home_pay.*','employees.name as employee_name','branches.name as branch_name','position.position_name','companies.name as company_name')
+                            ->select('take_home_pay.*',
+                                    'employees.name as employee_name',
+                                    'branches.name as branch_name',
+                                    'position.position_name',
+                                    'companies.name as company_name',
+                                    'companies.logo')
                             ->leftJoin('employees','employees.id','=','take_home_pay.employee_id')
                             ->leftJoin('branches','branches.id','=','take_home_pay.branch_id')
                             ->leftJoin('position','position.id','=','employees.position_id')

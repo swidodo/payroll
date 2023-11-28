@@ -244,7 +244,7 @@
     <div class="container p-2">
 
         <div class="center" style="padding: 8px">
-            <table style="width: 90%">
+            <table @php if ($salary->logo != '' ) { echo 'style="width: 100%"'; }else{  'style="width: 60%"';} @endphp>
                 <tbody>
                     <tr style="font-weight: 900" >
                         <td class="fs-14" rowspan="2" >
@@ -254,6 +254,15 @@
                         </td>
                         <td class="fs-5">
                             <h2 class="text-center">{{ $salary->company_name }}</h2>
+                        </td>
+                        <td class="fs-14" rowspan="2" >
+                            <div class="text-center">
+                                @if ($salary->logo != '' )
+                                <img src="{{ url('/storage/app/public/'.$salary->logo) }}" id="" width="70px">
+                                @else
+                                '.'
+                                @endif
+                            </div>
                         </td>
                     </tr>
                     <tr>
