@@ -244,7 +244,7 @@
     <div class="container p-2">
 
         <div class="center" style="padding: 8px">
-            <table @php if ($salary->logo != '' ) { echo 'style="width: 100%"'; }else{  'style="width: 90%"';} @endphp>
+            <table @if ($salary->logo != '' ) {{ 'style="width: 100%"'}} @else {{  'style="width: 90%"'}} @endif>
                 <tbody>
                     <tr style="font-weight: 900" >
                         <td class="fs-14" rowspan="2" >
