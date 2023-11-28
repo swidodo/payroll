@@ -255,13 +255,13 @@
                         <td class="fs-5">
                             <h2 class="text-center">{{ $salary->company_name }}</h2>
                         </td>
+                        @if ($salary->logo != '' )
                         <td class="fs-14" rowspan="2" >
                             <div class="text-center">
-                                @if ($salary->logo != '' )
                                 <img src="{{ url('/storage/app/public/'.$salary->logo) }}" id="" width="70px">
-                               @endif
                             </div>
                         </td>
+                        @endif
                     </tr>
                     <tr>
                         <td class="">
