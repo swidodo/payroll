@@ -259,9 +259,7 @@
                             <div class="text-center">
                                 @if ($salary->logo != '' )
                                 <img src="{{ url('/storage/app/public/'.$salary->logo) }}" id="" width="70px">
-                                @else
-                                '.'
-                                @endif
+                               @endif
                             </div>
                         </td>
                     </tr>
