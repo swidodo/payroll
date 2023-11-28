@@ -88,8 +88,8 @@ class CompanyController extends Controller
     public function update(Request $request){
         if ($request->file('logo')) {
             $fileName = time() . '_' . $request->file('logo')->getClientOriginalName();
-            $store = $request->file('logo')->storeAs('public/logo/', $fileName);
-            $pathFile = 'storage/logo/' . $fileName ?? null;
+            $store = $request->file('logo')->storeAs('logo/', $fileName);
+            $pathFile = 'logo/' . $fileName ?? null;
         }else{
             $pathFile ='';
         }

@@ -7,7 +7,6 @@
 
     <!-- Page Content -->
     <div class="content container-fluid">
-
         <!-- Page Header -->
         <div class="page-header">
             <div class="row align-items-center">
@@ -111,10 +110,9 @@
                     },
                     {
                         data: 'logo',
-                        // render : function (data,row,type){
-                        //     var logo ="<img src="{{ asset('../storage/app/public/') }}" id='logo'>";
-                        //     return logo;
-                        // }
+                        render : function (data,row,type){
+                            return `<img src="{{ asset('/storage/app/public') }}/`+data+`" id="">`;
+                        }
                     },
                    {
                         data: 'action',
