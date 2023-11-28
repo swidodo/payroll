@@ -244,7 +244,7 @@
     @foreach($salarys as $salary)
         <div class="container p-2" style="page-break-after: always">
             <div class="center" style="padding: 8px">
-                <table style="width: 90%">
+                <table <?php if ($salary->logo != '' ) { echo 'style="width: 100%"'; }else{  echo 'style="width: 90%"';} ?>>
                     <tbody>
                         <tr style="font-weight: 900" >
                             <td class="fs-14" rowspan="2" >
@@ -255,6 +255,13 @@
                             <td class="fs-5">
                                 <h2 class="text-center">{{ $salary->company_name }}</h2>
                             </td>
+                            <?php if ($salary->logo != '' ){?>
+                                <td class="fs-14" rowspan="2" >
+                                    <div class="text-center">
+                                        <img src="{{ url('/storage/app/public/'.$salary->logo) }}" id="" width="70px">
+                                    </div>
+                                </td>
+                            <?php } ;?>
                         </tr>
                         <tr>
                             <td class="">
