@@ -111,7 +111,7 @@
                     {
                         data: 'logo',
                         render : function (data,row,type){
-                            return `<img src="{{ asset('/storage/app/public') }}/`+data+`" id="">`;
+                            return `<img src="{{ url('/storage/app/public') }}/`+data+`" id="">`;
                         }
                     },
                    {
