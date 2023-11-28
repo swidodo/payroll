@@ -1139,7 +1139,7 @@ class PayrollController extends Controller
                                     'employee_id'       => $employeeId->id,
                                     'allowance_type_id' => DB::getPdo()->lastInsertId(),
                                     'amount'            => (($value[5] !=null) ? $value[5] : 0 ),
-                                    'created_by'        => Auth::user()->creatorId(),
+                                    'created_by'        => Auth::user()->id,
                                     'created_at'        => $value[17].' '.date('h:m:s'),
                                     'updated_at'        => $value[17].' '.date('h:m:s')
                                 ];
@@ -1155,7 +1155,7 @@ class PayrollController extends Controller
                                     'employee_id'       => $employeeId->id,
                                     'allowance_option_id' => $opt->id,
                                     'amount'            => (($value[6] !=null) ? $value[6] : 0 ),
-                                    'created_by'        => Auth::user()->id,
+                                    'create_by'        => Auth::user()->id,
                                     'date'              => date('Y-m-d', strtotime($value[17])),
                                     'branch_id'          => $employeeId->branch_id,
                                     'created_at'        => $value[17].' '.date('h:m:s'),
@@ -1179,7 +1179,7 @@ class PayrollController extends Controller
                                     'employee_id'       => $employeeId->id,
                                     'allowance_option_id' => DB::getPdo()->lastInsertId(),
                                     'amount'            => (($value[6] !=null) ? $value[6] : 0 ),
-                                    'created_by'        => Auth::user()->creatorId(),
+                                    'create_by'        => Auth::user()->id,
                                     'date'              => date('Y-m-d', strtotime($value[17])),
                                     'branch_id'          => $employeeId->branch_id,
                                     'created_at'        => $value[17].' '.date('h:m:s'),
