@@ -80,7 +80,7 @@ class EmployeeController extends Controller
             if (Auth::user()->type == 'employee') {
                 $employees = Employee::query()->where('user_id', '=', Auth::user()->id)->with('branch');
             } else {
-                $employees = Employee::query()->where('branch_id', $request->branch_id)->with('branch');
+                $employees = Employee::query()->where('branch_id', $request->branch_id)->where('status',$request->status)->with('branch');
             }
             $response = datatables()->eloquent($employees)
                 ->addColumn('view_profile', function ($d) {

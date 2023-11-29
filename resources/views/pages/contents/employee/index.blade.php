@@ -51,6 +51,14 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="col-md-3">
+                                <label>Status</label>
+                                <select class="form-select form-control" id="status-filter">
+                                   <option value="active">Active</option>
+                                   <option value="fired">Fire</option>
+                                   <option value="pension">Pension</option>
+                                </select>
+                            </div>
                             <div class="col-md-3 d-flex align-items-center mt-4"> 
                                 <button type="button" class="btn btn-primary" id="searchBranch">Search</button>
                             </div>
@@ -135,8 +143,9 @@
             /* When click show user */
             /* datatable employees */
             var branch_id = $('#branch_id').val();
-            tableEmp(branch_id);
-            function tableEmp(branch_id){
+            var status = $('#status-filter').val();
+            tableEmp(branch_id,status);
+            function tableEmp(branch_id,status){
                 $('#table-empolyees').DataTable({
                     processing: true,
                     serverSide: true,
@@ -144,7 +153,7 @@
                     ajax : {
                         url : "{{route('employees.get-data-employees')}}",
                         type : 'post',
-                        data : {branch_id :branch_id}
+                        data : {branch_id :branch_id,status : status}
                     },
                     columns: [
                         { data: 'no', name:'id', render: function (data, type, row, meta) {
@@ -191,7 +200,8 @@
             }
             $('#searchBranch').on('click',function(e){
                 var branch_id = $('#branch_id').val();
-                    tableEmp(branch_id);
+                var status = $('#status-filter').val();
+                tableEmp(branch_id,status);
             })
 
             $('body').on('click', '#delete-employee', function(){

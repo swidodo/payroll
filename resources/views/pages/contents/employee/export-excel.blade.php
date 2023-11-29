@@ -3,6 +3,7 @@
 <table>
     <thead>
         <tr>
+            <th>EMPLOYEE ID</th>
             <th>NAME EMPLOYEE</th>
             <th>IDENTITY CARD</th>
             <th>FAMILY CARD</th>
@@ -14,7 +15,6 @@
             <th>PHONE</th>
             <th>ADDRESS</th>
             <th>EMAIL</th>
-            <th>EMPLOYEE ID</th>
             <th>EMPLOYEE TYPE</th>
             <th>WORK TYPE</th>
             <th>DEPARTMENT NAME</th>
@@ -31,8 +31,9 @@
         </tr>
     </thead>
     <tbody>
-    @foreach ($employee as $employ)
+        @foreach ($employee as $employ)
         <tr>
+            <td>{{$employ->no_employee}}</td>
             <td>{{$employ->name}}</td>
             <td>{{"'".$employ->identity_card}}</td>
             <td>{{ "'".$employ->family_card}}</td>
@@ -44,7 +45,6 @@
             <td>{{$employ->phone}}</td>
             <td>{{$employ->address}}</td>
             <td>{{$employ->email}}</td>
-            <td>{{$employ->no_employee}}</td>
             <td>{{$employ->employee_type}}</td>
             <td>{{$employ->work_type}}</td>
             <td>{{$employ->departement_code}}</td>

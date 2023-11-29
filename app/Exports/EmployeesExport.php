@@ -35,7 +35,7 @@ class EmployeesExport implements FromView
                                     ->leftJoin('parameter_pph21s','parameter_pph21s.code','=','employees.marital_status')
                                     // ->where(DB::raw('date(employees.created_at)'),'>=',$this->request->start_date)
                                     // ->where(DB::raw('date(employees.created_at)'),'<=', $this->request->end_date)
-                                    ->where('status','active')
+                                    ->where('status',$this->request->status)
                                     ->where('employees.branch_id',$this->request->branch_id)
                                     ->distinct()
                                     ->orderBy('employees.name','ASC')

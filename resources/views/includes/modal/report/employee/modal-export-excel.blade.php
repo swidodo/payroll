@@ -17,14 +17,14 @@
                         @endforeach
                     </select>
                 </div>
-                {{-- <div class="col-md-6">
-                    <label>Tanggal Awal :</label>
-                    <input type="date" name="start_date" class="form-control">
+                <div class="col-md-12 mb-4">
+                  <label>Status</label>
+                  <select class="form-select form-control" name="status">
+                     <option value="active">Active</option>
+                     <option value="fired">Fire</option>
+                     <option value="pension">Pension</option>
+                  </select>
                 </div>
-                <div class="col-md-6">
-                    <label>Tanggal Akhir :</label>
-                    <input type="date" name="end_date" class="form-control">
-                </div> --}}
             </div>
         </div>
         <div class="modal-footer">
