@@ -55,7 +55,7 @@
                                 <label>Status</label>
                                 <select class="form-select form-control" id="status-filter">
                                    <option value="active">Active</option>
-                                   <option value="fired">Fire</option>
+                                   <option value="fired">Fired</option>
                                    <option value="pension">Pension</option>
                                 </select>
                             </div>
