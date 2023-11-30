@@ -340,11 +340,19 @@
                                 
                                     @foreach($allowance_fixed as $fixed)
                                         @if ($fixed->employeeid == $salary->employee_id)
-                                            <tr class="fs-14 " style="font-weight: 400">
-                                                <td style="width: 45%">{{ Ucwords(strtolower($fixed->allowance_name)) }}</td>
-                                                <td>:</td>
-                                                <td class="text-right">{{ ($fixed->allowance_amount =='' ) ? 0 : formatRupiah($fixed->allowance_amount) }}</td>
-                                            </tr>
+                                            @if($fixed->allowance_name == "Uang Makan")
+                                                <tr class="fs-14 " style="font-weight: 400">
+                                                    <td style="width: 45%">{{ Ucwords(strtolower($fixed->allowance_name)) }}</td>
+                                                    <td>:</td>
+                                                    <td class="text-right">{{ (($fixed->allowance_amount * $salary->total_attendance) =='' ) ? 0 : formatRupiah($fixed->allowance_amount*$salary->total_attendance) }}</td>
+                                                </tr>
+                                            @else
+                                                <tr class="fs-14 " style="font-weight: 400">
+                                                    <td style="width: 45%">{{ Ucwords(strtolower($fixed->allowance_name)) }}</td>
+                                                    <td>:</td>
+                                                    <td class="text-right">{{ ($fixed->allowance_amount =='' ) ? 0 : formatRupiah($fixed->allowance_amount) }}</td>
+                                                </tr>
+                                            @endif
                                         @endif
                                     @endforeach
                                     @foreach($allowance_unfixed as $unfixed)
@@ -359,7 +367,7 @@
                                     @foreach($allowance_other as $other)
                                         @if ($other->employeeid == $salary->employee_id && $other->allowance_date >= date('Y-m-d',strtotime($salary->startdate)) && $other->allowance_date <=  date('Y-m-d',strtotime($salary->enddate)))
                                         <tr class="fs-14 " style="font-weight: 400">
-                                            <td style="width: 45%">{{ strtolower($other->allowance_name) }}</td>
+                                            <td style="width: 45%">{{ Ucwords(strtolower($other->allowance_name)) }}</td>
                                             <td>:</td>
                                             <td class="text-right">{{ ($other->allowance_amount =='' ) ? 0 : formatRupiah($other->allowance_amount)}}</td>
                                         </tr>
@@ -508,6 +516,28 @@
                                     </tr>
                                 @endif
                             @endforeach
+                            @if($salary->total_attendance > 0 )
+                            <tr>
+                                <td class="p-0 m-0" style="width: 58%;"></td>
+                                <td class="clearfix m-0 p-0" style="">
+                                    <p class=" text-left m-0 p-0" style="font-size: 11px;float: left; margin-bottom: -8px;">Actual Working Day</p>
+                                    <p class=" text-right m-0 p-0" style="font-size: 11px;  margin-bottom: -8px;">
+                                        {{ $salary->total_attendance }}
+                                    </p>
+                                </td>
+                            </tr>
+                        @endif
+                        @if($salary->total_overtime_hour > 0 )
+                            <tr>
+                                <td class="p-0 m-0" style="width: 58%;"></td>
+                                <td class="clearfix m-0 p-0" style="">
+                                    <p class=" text-left m-0 p-0" style="font-size: 11px;float: left; margin-bottom: -8px;">Total Overtime Hours</p>
+                                    <p class=" text-right m-0 p-0" style="font-size: 11px;  margin-bottom: -8px;">
+                                        {{ $salary->total_overtime_hour }}
+                                    </p>
+                                </td>
+                            </tr>
+                        @endif
                         </tbody>
                     </table>
                 </div> 
@@ -522,7 +552,7 @@
                                         </div>
                                     </td>
                                     <td class="fs-14 text-right"  >
-                                        <div class="payroll text-center" style="display: inline-block;width: 90px;">
+                                        <div class="payroll text-center" style="display: inline-block;width: 200px;">
                                             <p style="margin-bottom: 55px">Diterima Oleh,</p>
                                             <p class="text-bold fs-14">{{ ucwords(strtolower($salary->employee_name)) }}</p>
                                         </div>

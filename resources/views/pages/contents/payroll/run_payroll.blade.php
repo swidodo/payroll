@@ -54,10 +54,10 @@
                             @can('run normatif payroll')
                                 <button type="button" class="btn btn-primary  me-2" id="generate_run_payroll">RUN PAYROLL</button>
                             @endcan
+                            <button type="button" class="btn btn-primary" id="import_run_auto"><i class="fa fa-download"></i> IMPORT AND RUN V2</button>
+                            @can('run import Auto payroll')
+                            @endcan
                             @if (Auth::user()->branch_id == 30)
-                                <button type="button" class="btn btn-primary" id="import_run_auto"><i class="fa fa-download"></i> IMPORT AND RUN</button>
-                                @can('run import Auto payroll')
-                                @endcan
                             @else
                                 @can('run import manual payroll')
                                     <button type="button" class="btn btn-primary" id="import_run_payroll"><i class="fa fa-download"></i> IMPORT AND RUN</button>
@@ -96,7 +96,7 @@
                                 <th>Loan Installment</th>
                                 <th>Loan Kasbon</th>
                                 <th>Total Loan</th>
-                                <th>Total Deduction Onter</th>
+                                <th>Total Deduction Other</th>
                                 <th>Pph21</th>
                                 <th>Total Deduction</th>
                                 <th>Take Home Pay</th>
