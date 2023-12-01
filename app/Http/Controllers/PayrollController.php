@@ -1657,7 +1657,7 @@ class PayrollController extends Controller
                         if($employeeId->id =='' | $employeeId->id ==null){
                             return true;
                         }
-                        $basic_salary     =  (($value[3] !=null) ? $value[3] : 0) * (($value[4] !=null) ? $value[4] : 0);
+                        $basic_salary     =  (($value[3] !=null) ? $value[3] : 0);
                         $meal_allowance   =  (($value[6] !=null) ? $value[6] : 0) * (($value[4] !=null) ? $value[4] : 0);
                         $allowanceUnfixed = (($value[7] !=null) ? $value[7] : 0 ) + (($value[8] !=null) ? $value[8] : 0 ) + (($value[9] !=null) ? $value[9] : 0 ) +(($value[10] !=null) ? $value[10] : 0 )+(($value[11] !=null) ? $value[11] : 0 )+(($value[12] !=null) ? $value[12] : 0 );
                         $allowancefixed = $meal_allowance + (($value[5] !=null) ? $value[5] : 0 );

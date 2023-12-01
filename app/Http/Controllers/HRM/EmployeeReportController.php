@@ -12,6 +12,7 @@ use App\Models\Branch;
 
 class EmployeeReportController extends Controller
 {
+
     //
     public function exportExcel(Request $request){
         return Excel::download(new EmployeesExport($request), 'Employee Report.xlsx');
@@ -532,4 +533,15 @@ class EmployeeReportController extends Controller
         }
          return response()->json($data);
     }
+    public function get_kontrak(){
+        return view('pagas.contents.report.log_contract.index');
+    }
+    // public function data_log_kontrak(Request $request){
+    //     $data = Employee::where('branch_id',$request->branch_id)
+    //                     ->where('enddate','>=',$request->startdate)
+    //                     ->where('enddate','<=',$request->enddate)
+    //                     ->where('status',$request->status)
+    //                     ->get();
+    //     return response()->json($data);
+    // }
 }
