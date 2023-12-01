@@ -55,8 +55,8 @@
                                 <button type="button" class="btn btn-primary  me-2" id="generate_run_payroll">RUN PAYROLL</button>
                                 @endcan
                             @if (Auth::user()->branch_id == 30)
-                                <button type="button" class="btn btn-primary me-1" id="import_run_auto"><i class="fa fa-download"></i> IMPORT AND RUN V1</button>
-                                {{-- <button type="button" class="btn btn-primary mt-1 me-1" id="import_run_auto"><i class="fa fa-download"></i> IMPORT AND RUN V2</button> --}}
+                                <button type="button" class="btn btn-primary me-1" id="import_run_auto"><i class="fa fa-download"></i> IMPORT AND RUN V2</button>
+                                <button type="button" class="btn btn-danger mt-1 me-1" id="import_run_v3" hidden><i class="fa fa-download"></i> IMPORT AND RUN V3</button>
                                 @can('run import Auto payroll')
                                 @endcan
                             @else
@@ -540,6 +540,10 @@
             e.preventDefault();
             $('#modalImportPayroll_v2').modal('show')
         })
+        $('#import_run_v3').on('click',function(e){
+            e.preventDefault();
+            $('#modalImportPayroll_v3').modal('show')
+        })
         $('#UploadDataPayroll').on('submit',function(e){
             e.preventDefault();
             var startdate       = $('#startdate').val();
@@ -617,6 +621,53 @@
                     }
 
                 })
+        })
+        $('#UploadDataPayroll_v3').on('submit',function(e){
+            e.preventDefault();
+            var startdate   = $('#startdate').val();
+            var enddate     = $('#enddate').val();
+            var branch_id   = $('#branch_id').val();
+            
+            var payroll  = $('#import-payroll-v3')[0].files[0];
+            var formData = new FormData();
+            formData.append('import-payroll',payroll)
+                $.ajax({
+                    url : 'import-payroll-v3',
+                    type : 'post',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    data : formData,
+                    dataType : 'json',
+                    beforeSend : function(){
+                        $('.containerLoader').attr('hidden',false)
+                    },
+                    success : function(respon){
+                        $('.containerLoader').attr('hidden',true)
+                        if (respon.status == 'success'){
+                            $('#UploadDataPayroll_v2')[0].reset();
+                            $('#modalImportPayroll_v2').modal('hide')
+                            loadData(startdate,enddate,branch_id)
+                        }
+                        swal.fire({
+                            icon : respon.status,
+                            text : respon.msg,
+                        })
+                    },
+                    error : function(){
+                        alert('Someting went wrong !');
+                        $('.containerLoader').attr('hidden',true)
+                    }
+
+                })
+        })
+        $('#branch_id').on('change',function(){
+            var branch_id = $(this).val();
+            if (branch_id == 34){
+                $('#import_run_v3').attr('hidden',false);
+            }else{
+                $('#import_run_v3').attr('hidden',true);
+            }
         })
 
     </script>

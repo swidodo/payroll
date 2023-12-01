@@ -239,6 +239,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('run-payroll',[PayrollController::class,'run_payroll'])->name('run-payroll');
         Route::post('import-payroll',[PayrollController::class,'import_run_payroll'])->name('import-payroll');
         Route::post('import-payroll-v2',[PayrollController::class,'import_run_payroll_v2'])->name('import-payroll-v2');
+        Route::post('import-payroll-v3',[PayrollController::class,'import_run_payroll_v3'])->name('import-payroll-v3');
         Route::post('get_run_payroll',[PayrollController::class,'get_run_payroll'])->name('get_run_payroll'); 
         Route::post('generate_run_payroll',[PayrollController::class,'generate_run_payroll'])->name('generate_run_payroll'); 
         Route::post('payroll-final',[PayrollController::class,'get_payroll_final'])->name('payroll-final');
