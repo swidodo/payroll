@@ -1661,7 +1661,7 @@ class PayrollController extends Controller
                         $meal_allowance   =  (($value[6] !=null) ? $value[6] : 0) * (($value[4] !=null) ? $value[4] : 0);
                         $allowanceUnfixed = (($value[7] !=null) ? $value[7] : 0 ) + (($value[8] !=null) ? $value[8] : 0 ) + (($value[9] !=null) ? $value[9] : 0 ) +(($value[10] !=null) ? $value[10] : 0 )+(($value[11] !=null) ? $value[11] : 0 )+(($value[12] !=null) ? $value[12] : 0 );
                         $allowancefixed = $meal_allowance + (($value[5] !=null) ? $value[5] : 0 );
-                        $overtime   =  (($value[13] !=null) ? $value[13] : 0)*(($value[14] !=null) ? $value[14] : 0);
+                        $overtime   =  (($value[13] !=null) ? $value[13] : 0);
                         $val_salarymonth  =  $basic_salary + $allowancefixed + $allowanceUnfixed +  $overtime;
                         $total_loan      = (($value[15] !=null) ? $value[15] : 0 );
                         $deduction_other = (($value[16] !=null) ? $value[16] : 0 ) + (($value[19] !=null) ? $value[19] : 0 ) + (($value[20] !=null) ? $value[20] : 0 ) + (($value[21] !=null) ? $value[21] : 0 ) + (($value[22] !=null) ? $value[22] : 0 );
