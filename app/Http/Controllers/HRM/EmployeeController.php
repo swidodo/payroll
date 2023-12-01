@@ -791,13 +791,22 @@ class EmployeeController extends Controller
                 
                     if ($branchId != null){
                         $name = strtolower($row[0]);
-                        $departementId = DB::table('departements')->select("id")->where('departement_code',$row[14])->where('is_active','1')->first();
+                        $departementId = DB::table('departements')
+                                            ->select("id")
+                                            ->where('departement_code',$row[14])
+                                            ->where('branch_id',$branchId->id)
+                                            ->where('is_active','1')
+                                            ->first();
                         if($departementId != null){
                             $departId = $departementId->id;
                         }else{
                             $departId = 0;
                         }
-                        $positionId = DB::table('position')->select("id")->where('position_code',$row[15])->first();
+                        $positionId = DB::table('position')
+                                        ->select("id")
+                                        ->where('position_code',$row[15])
+                                        ->where('branch_id',$branchId->id)
+                                        ->first();
                         if($positionId != null){
                             $positId = $positionId->id;
                         }else{
