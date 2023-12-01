@@ -1624,7 +1624,7 @@ class PayrollController extends Controller
             if ($key > 0) :
                 $branch = Branch::where('alias',$value[25])->first();
                 if ($branch != null) :
-                    $employeeId = employee::where('no_employee',$value[1])->where('branch_id',$branch->id)->first();
+                    $employeeId = Employee::where('no_employee',$value[1])->where('branch_id',$branch->id)->first();
                     dd($employeeId);
                     $takeHP = DB::table('take_home_pay')
                                 ->where('employee_id',$employeeId->id)
