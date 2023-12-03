@@ -34,8 +34,12 @@ class PayrollController extends Controller
 {
     public function index()
     {
-        DB::table('take_home_pay')->where('branch_id',14)->where('startdate','2023-09-21')->where('enddate','2023-10-20')->delete();
-        DB::table('deduction_others')->where('date','2023-10-20')->where('branch_id',14)->delete();
+        // DB::table('take_home_pay')->where('branch_id',14)->where('startdate','2023-09-21')->where('enddate','2023-10-20')->delete();
+        // DB::table('deduction_others')->where('date','2023-10-20')->where('branch_id',14)->delete();
+        $data = [
+            'position_id' => 43
+        ];
+        DB::table('employees')->where('branch_id',32)->update($data);
 
        if (Auth::user()->can('manage payroll')) {
             $branch = Branch::where('id',Auth::user()->branch_id)->first();
