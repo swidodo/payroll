@@ -806,7 +806,7 @@ class PayrollController extends Controller
                             'allowance_fixed'                   =>  (($value[4] !=null) ? $value[4] : 0 ),
                             'allowance_unfixed'                 => (($value[5] !=null) ? $value[5] : 0 ),
                             'allowance_other'                   => 0,
-                            'overtime'                          =>  (($value[5] !=null) ? $value[5] : 0 ),
+                            'overtime'                          =>  (($value[6] !=null) ? $value[6] : 0 ),
                             'salary_this_month'                 => $val_salarymonth,
                             'company_pay_bpjs'                  => 0,
                             'total_salary'                      => $val_salarymonth,
