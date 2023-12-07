@@ -136,7 +136,7 @@
                             data: 'versi',
                             render : function(data, row,type){
                                 var versi = '';
-                                for(var i = 1; i < 20; i++){
+                                for(var i = 1; i < 10; i++){
                                     var useVersi = 'V'+i;
                                     if (data == useVersi){
                                         versi = 'Versi '+i;
