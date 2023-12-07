@@ -326,7 +326,6 @@
                     <div style="display: inline-block; width: 50%;">
                         <table style="width: 90%">
                             <tbody>
-                            
                                     <tr class="fs-14 " style="font-weight: 400">
                                         <td style="width: 45%">Gaji Pokok</td>
                                         <td>:</td>
@@ -337,7 +336,20 @@
                                         <td>:</td>
                                         <td class="text-right">{{ ($salary->overtime == '') ? 0 : formatRupiah($salary->overtime) }}</td>
                                     </tr>
-                                
+                                    @if($salary->rapel != 0 && $salary->rapel !='')
+                                        <tr class="fs-14 " style="font-weight: 400">
+                                            <td style="width: 45%">Rapel</td>
+                                            <td>:</td>
+                                            <td class="text-right">{{ ($salary->rapel == '') ? 0 : formatRupiah($salary->rapel) }}</td>
+                                        </tr>
+                                    @endif
+                                    @if($salary->kompensasi != 0 && $salary->kompensasi !='')
+                                        <tr class="fs-14 " style="font-weight: 400">
+                                            <td style="width: 45%">Kompensasi</td>
+                                            <td>:</td>
+                                            <td class="text-right">{{ ($salary->kompensasi == '') ? 0 : formatRupiah($salary->kompensasi) }}</td>
+                                        </tr>
+                                    @endif
                                     @foreach($allowance_fixed as $fixed)
                                         @if ($fixed->employeeid == $salary->employee_id)
                                             @if($fixed->allowance_name == "Uang Makan")
@@ -452,7 +464,7 @@
                     <tbody>
                         <tr style="font-weight: 900">
                             <td class="fs-14" style="width: 36%">Sub Total</td>
-                            <td class=" fs-14 text-right pr-3" style="padding-right: 20px">{{ formatRupiah($salary->basic_salary + $salary->overtime + $salary->allowance_fixed + $salary->allowance_unfixed + $salary->allowance_other)}}</td>
+                            <td class=" fs-14 text-right pr-3" style="padding-right: 20px">{{ formatRupiah($salary->basic_salary + $salary->overtime + $salary->allowance_fixed + $salary->allowance_unfixed + $salary->allowance_other + $salary->rapel + $salary->kompensasi)}}</td>
                             <td class=" fs-14" style="width: 39%; padding-left: 35px">Sub Total</td>
                             <td class=" fs-14 text-center" style="padding-right: 20px">{{ formatRupiah($salary->total_deduction) }}</td>
                         </tr>

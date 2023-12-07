@@ -57,13 +57,19 @@ use App\Http\Controllers\ThrController;
 // deduction other
 use App\Http\Controllers\DeductionOtherController;
 use App\Http\Controllers\DeductionadminController;
-
+//template payroll
+use App\Http\Controllers\template\Template_v1Controller;
+use App\Http\Controllers\template\Template_v2Controller;
+use App\Http\Controllers\template\Template_v3Controller;
+use App\Http\Controllers\template\Template_v4Controller;
+use App\Http\Controllers\template\Template_v5Controller;
 // report
 use App\Http\Controllers\HRM\EmployeeReportController;
 use App\Http\Controllers\Report\ReportRecapAttendanceController;
 use App\Http\Controllers\Report\RekapPayrollController;
 // access branch
 use App\Http\Controllers\AccessBranchController;
+use App\Http\Controllers\AccessTemplateController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -237,15 +243,22 @@ Route::group(['middleware' => 'auth'], function () {
         // payslip new
         Route::get('salary-payroll',[PayrollController::class,'data_payroll_final'])->name('salary-payroll');
         Route::get('run-payroll',[PayrollController::class,'run_payroll'])->name('run-payroll');
-        Route::post('import-payroll',[PayrollController::class,'import_run_payroll'])->name('import-payroll');
-        Route::post('import-payroll-v2',[PayrollController::class,'import_run_payroll_v2'])->name('import-payroll-v2');
-        Route::post('import-payroll-v3',[PayrollController::class,'import_run_payroll_v3'])->name('import-payroll-v3');
         Route::post('get_run_payroll',[PayrollController::class,'get_run_payroll'])->name('get_run_payroll'); 
         Route::post('generate_run_payroll',[PayrollController::class,'generate_run_payroll'])->name('generate_run_payroll'); 
         Route::post('payroll-final',[PayrollController::class,'get_payroll_final'])->name('payroll-final');
         Route::get('generate_slip_payroll/{id}',[PayrollController::class,'generate_slip_payroll'])->name('generate_slip_payroll');
         Route::post('get-slip',[PayrollController::class,'get_slip'])->name('get-slip');
         Route::get('get-list-bpjs',[PayrollController::class,'list_bpjs'])->name('get-list-bpjs');
+
+        // template import payroll
+        Route::post('import-payroll',[PayrollController::class,'import_run_payroll'])->name('import-payroll');
+        Route::post('import-payroll-v1',[Template_v1Controller::class,'index'])->name('import-payroll-v1');
+        Route::post('import-payroll-v2',[Template_v2Controller::class,'index'])->name('import-payroll-v2');
+        Route::post('import-payroll-v3',[Template_v3Controller::class,'index'])->name('import-payroll-v3');
+        Route::post('import-payroll-v4',[Template_v4Controller::class,'index'])->name('import-payroll-v4');
+        Route::post('import-payroll-v5',[Template_v5Controller::class,'index'])->name('import-payroll-v5');
+        // Route::post('import-payroll-v2',[PayrollController::class,'import_run_payroll_v2'])->name('import-payroll-v2');
+        // Route::post('import-payroll-v3',[PayrollController::class,'import_run_payroll_v3'])->name('import-payroll-v3');
         
         // Payroll Setting
         Route::get('/setting/bpjs-tk', [PayrollController::class, 'indexBpjsTk'])
@@ -492,6 +505,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('edit-access-branch/{id}',[AccessBranchController::class,'edit'])->name('edit-access-branch');
         Route::post('edit-access-branch/update-access-branch',[AccessBranchController::class,'update'])->name('update-access-branch');
         Route::post('delete-access-branch',[AccessBranchController::class,'destroy'])->name('delete-access-branch');
+        // access template
+        Route::get('access-template',[AccessTemplateController::class,'index'])->name('access-template');
+        Route::post('get-access-template',[AccessTemplateController::class,'get_data'])->name('get-access-template');
+        Route::post('get-branch-company',[AccessTemplateController::class,'get_branch'])->name('get-branch-company');
+        Route::get('create-access-template',[AccessTemplateController::class,'create'])->name('create-access-template');
+        Route::post('store-template',[AccessTemplateController::class,'store'])->name('store-template');
+        Route::get('edit-access-template/{id}',[AccessTemplateController::class,'edit'])->name('edit-access-template');
+        Route::post('edit-access-template/update-template',[AccessTemplateController::class,'update'])->name('update-template');
+        Route::post('get-template-branch',[AccessTemplateController::class,'get_template_branch'])->name('get-template-branch');
 
         });
 
