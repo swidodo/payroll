@@ -1,5 +1,5 @@
 
-     <div class="modal custom-modal fade" id="modalImportPayroll" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+     {{-- <div class="modal custom-modal fade" id="modalImportPayroll" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -25,7 +25,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
      {{-- v1 --}}
      <div class="modal custom-modal fade" id="modalImportPayroll_v1" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -42,7 +42,7 @@
                             <div class="mb-3">
                                 <label>File Import</label>
                                 <input type="file" name="import_payroll" id="import-payroll-v1" class="form-control" required>
-                                <a download href="{{asset('file/template-excel-payroll/template-import-payroll_V1.xlsx')}}" class="text-small">Download template import payroll</a>
+                                <a download href="{{asset('file/template-excel-payroll/template-import-payroll.xlsx')}}" class="text-small">Download template import payroll</a>
                                 
                             </div>
                             <div class="mb-3">
