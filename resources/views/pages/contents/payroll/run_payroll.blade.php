@@ -651,7 +651,7 @@
                 dataType : 'json',
                 success : function(respon){
                     if(respon.versi !=null ) {
-                        $('.import-template').html(`<button type="button" class="btn btn-danger mt-1 me-1 import_run_`+respon.versi+`"><i class="fa fa-download"></i> IMPORT AND RUN `+respon.versi+`</button>`);
+                        $('.import-template').html(`<button type="button" class="btn btn-primary mt-1 me-1 import_run_`+respon.versi+`"><i class="fa fa-download"></i> IMPORT AND RUN `+respon.versi+`</button>`);
                     }else{
                         $('.import-template').html('')
                     }
