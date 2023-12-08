@@ -174,7 +174,7 @@
                     data : {company_id : company_id },
                     dataType : 'json',
                     success : function(respon){
-                        var branch = '<option value="">-- Pili --</option>';
+                        var branch = '<option value="">-- Pilih --</option>';
                         $.each(respon, function(key,val){
                             branch += `<option value="`+val.id+`">`+val.name+`</option>`;
                         })
