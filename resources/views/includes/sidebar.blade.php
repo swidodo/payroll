@@ -234,8 +234,8 @@
                             @canany(['manage access branch', 'create access branch'])
                                 <li class="{{(request()->routeIs('access-branch')) ? 'active' : ''}}"><a class="{{(request()->routeIs('access-branch')) ? 'active' : ''}}" href="{{ route('access-branch') }}">Access Branch</a></li>
                             @endcanany
-                            <li class="{{(request()->routeIs('access-template')) ? 'active' : ''}}"><a class="{{(request()->routeIs('access-template')) ? 'active' : ''}}" href="{{ route('access-template') }}">Access Template</a></li>
                             @canany(['manage access template', 'create access template'])
+                            <li class="{{(request()->routeIs('access-template')) ? 'active' : ''}}"><a class="{{(request()->routeIs('access-template')) ? 'active' : ''}}" href="{{ route('access-template') }}">Access Template</a></li>
                             @endcanany
 
                             @canany(['manage role', 'create role'])
