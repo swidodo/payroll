@@ -237,6 +237,9 @@
                             @canany(['manage access template', 'create access template'])
                             <li class="{{(request()->routeIs('access-template')) ? 'active' : ''}}"><a class="{{(request()->routeIs('access-template')) ? 'active' : ''}}" href="{{ route('access-template') }}">Access Template</a></li>
                             @endcanany
+                            @canany(['manage access mobile', 'create access mobile'])
+                            <li class="{{(request()->routeIs('access-mobile')) ? 'active' : ''}}"><a class="{{(request()->routeIs('access-mobile')) ? 'active' : ''}}" href="{{ route('access-mobile') }}">Access Mobile</a></li>
+                            @endcanany
 
                             @canany(['manage role', 'create role'])
                                 <li class="{{(request()->routeIs('roles*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('roles*')) ? 'active' : ''}}" href="{{route('roles.index')}}">Roles</a></li>

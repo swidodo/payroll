@@ -70,6 +70,8 @@ use App\Http\Controllers\Report\RekapPayrollController;
 // access branch
 use App\Http\Controllers\AccessBranchController;
 use App\Http\Controllers\AccessTemplateController;
+// access mobile
+use App\Http\Controllers\AccessMobileController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -514,8 +516,18 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('edit-access-template/{id}',[AccessTemplateController::class,'edit'])->name('edit-access-template');
         Route::post('edit-access-template/update-template',[AccessTemplateController::class,'update'])->name('update-template');
         Route::post('get-template-branch',[AccessTemplateController::class,'get_template_branch'])->name('get-template-branch');
-
-        });
+        // access mobile
+        Route::get('access-mobile',[AccessMobileController::class,'index'])->name('access-mobile');
+        Route::post('get-access-mobile',[AccessMobileController::class,'get_data'])->name('get-access-mobile');
+        Route::post('store-menu',[AccessMobileController::class,'store_menu'])->name('store-menu');
+        Route::post('get-company-branch',[AccessMobileController::class,'get_branch'])->name('get-company-branch');
+        Route::post('get-company-filter',[AccessMobileController::class,'get_branch_filter'])->name('get-company-filter');
+        Route::post('store-access-menu',[AccessMobileController::class,'store_accessMenu'])->name('store-access-menu');
+        Route::get('create-access-mobile',[AccessMobileController::class,'create'])->name('create-access-mobile');
+        Route::get('edit-access-mobile/{id}',[AccessMobileController::class,'edit'])->name('edit-access-mobile');
+        Route::post('edit-access-mobile/update-access-menu',[AccessMobileController::class,'update'])->name('update-access-menu');
+        Route::post('delete-access-mobile',[AccessMobileController::class,'destroy'])->name('delete-access-mobile');
+});
 
 
 
