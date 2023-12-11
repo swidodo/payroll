@@ -78,6 +78,7 @@ class InformationController extends Controller
                     'content'       => $request->content,
                     'branch_id'     => $request->branch_id,
                     'created_by'    => Auth::user()->id,
+                    'status'        =>0
                 ]);
 
         return redirect()->route('get-announcement',$branch)->with('success', 'Branch  successfully created.');
