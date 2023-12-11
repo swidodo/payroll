@@ -103,6 +103,41 @@
             $(document).ready(function () {
                 $('.containerLoader').attr('hidden',true)
             })
+            $('#lonceng').on('click',function(){
+                $.ajax({
+                    url : 'get-notif',
+                    type : 'post',
+                    dataType : 'json',
+                    success : function(respon){
+                        var html ='';
+                        $.each(respon,function(key,val){
+                            html += `<li class="notification-message">
+                                        <a href="view-inbox/`+val.id+`">
+                                            <div class="media d-flex">
+                                                <span class="avatar flex-shrink-0">
+                                                    <img alt="" src="assets/img/profiles/avatar-02.jpg">
+                                                </span>
+                                                <div class="media-body flex-grow-1">
+                                                    <p class="noti-details"><span class="noti-title">`+val.title+`</span></p>
+                                                    <p class="noti-time"><span class="notification-time">`+val.date+`</span></p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>`;
+                        })
+                        $('.noti-content').html(`<ul class="notification-list">`+ html + `</ul>`)
+                    }
+                })
+            })
+            $('#clear').on('click',function(){
+                $.ajax({
+                    url : 'clear-notif',
+                    type : 'post',
+                    dataType : 'json',
+                    success : function(respon){
+                    }
+                })
+            })
         </script>
     </body>
 </html>

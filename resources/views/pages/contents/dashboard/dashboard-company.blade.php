@@ -96,7 +96,20 @@
                 </div>
             </div>
             <!-- /Page Header -->
-
+            @if($inbox !=null)
+                    @foreach($inbox as $pesan)
+                        @if($pesan->date > date('Y-m-d'))
+                        <a href="view-inbox/{{$pesan->id}}" class="text-black">
+                            <div class="card shadow-sm bg-success">
+                                <div class="card-body"> 
+                                    <span class="fa fa-envelope text-light fa-lg me-1"></span> {{ Ucwords($pesan->title) }}
+                                </div>
+                                <div class="card-footer">{{ date('d-m-Y', strtotime($pesan->date))}}</div>
+                            </div>
+                        </a>
+                        @endif
+                    @endforeach
+                @endif
             <div class="row">
                 <div class="col-md-3">
                     <div class="col-md-12">

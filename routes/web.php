@@ -67,6 +67,9 @@ use App\Http\Controllers\template\Template_v5Controller;
 use App\Http\Controllers\HRM\EmployeeReportController;
 use App\Http\Controllers\Report\ReportRecapAttendanceController;
 use App\Http\Controllers\Report\RekapPayrollController;
+// unisment
+use App\Http\Controllers\InformationController;
+
 // access branch
 use App\Http\Controllers\AccessBranchController;
 use App\Http\Controllers\AccessTemplateController;
@@ -527,6 +530,19 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('edit-access-mobile/{id}',[AccessMobileController::class,'edit'])->name('edit-access-mobile');
         Route::post('edit-access-mobile/update-access-menu',[AccessMobileController::class,'update'])->name('update-access-menu');
         Route::post('delete-access-mobile',[AccessMobileController::class,'destroy'])->name('delete-access-mobile');
+        // announcement
+        Route::get('get-announcement',[InformationController::class,'index'])->name('get-announcement');
+        Route::post('get-data',[InformationController::class,'get_data'])->name('get-data');
+        Route::get('create-announcement',[InformationController::class,'create'])->name('create-announcement');
+        Route::post('save-announcement',[InformationController::class,'store'])->name('save-announcement');
+        Route::get('edit-announcement/{id}',[InformationController::class,'edit']);
+        Route::post('update-announcement',[InformationController::class,'update'])->name('update-announcement');
+        Route::post('destroy-announcement',[InformationController::class,'destroy'])->name('destroy-announcement');
+        Route::post('publish-announcement',[InformationController::class,'publish'])->name('publish-announcement');
+        Route::post('get-notif',[InformationController::class,'get_notif'])->name('get-notif');
+        Route::post('clear-notif',[InformationController::class,'clear_notif'])->name('clear-notif');
+        Route::get('list-inbox',[InformationController::class,'list_notif'])->name('list-inbox');
+        Route::get('/view-inbox/{id}',[InformationController::class,'view_notif'])->name('view-inbox');
 });
 
 

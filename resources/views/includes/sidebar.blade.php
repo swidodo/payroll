@@ -29,7 +29,7 @@
                 </li>
                 @canany(['manage employee', 'view employee', 'edit employee', 'delete employee', 'manage employee profile', 'show employee profile'])
                 <li class="submenu">
-                    <a href="#"><i class="la la-clock"></i> <span>Employee</span> <span class="menu-arrow"></span></a>
+                    <a href="#"><i class="la la-users"></i> <span>Employee</span> <span class="menu-arrow"></span></a>
                     <ul style="display: none;">
                         <li class=" {{(request()->routeIs('employees*')) ? 'active' : ''}}">
                             <a class=" {{(request()->routeIs('employees*')) ? 'active' : ''}}" href="{{route('employees.index')}}"><i class="la la-users"></i> <span>Employees</span>
@@ -70,8 +70,7 @@
                             @canany(['manage leave', 'create leave', 'edit leave', 'delete leave'])
                                 <li class="{{(request()->routeIs('leaves*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('leaves*')) ? 'active' : ''}}" href="{{ route('leaves.index') }}">Leave</a></li>
                             @endcanany
-<!-- 
-                            @canany(['view history leave'])
+                        <!-- @canany(['view history leave'])
                                 <li class="{{(request()->routeIs('history-leave*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('history-leave*')) ? 'active' : ''}}" href="{{ route('history-leave.index') }}">Histroy Leave</a></li>
                             @endcanany -->
 
@@ -190,8 +189,6 @@
                         @canany(['manage payslip'])
                             <li class="{{(request()->routeIs('salary-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('salary-payroll')) ? 'active' : ''}}" href="{{ route('salary-payroll') }}">Pay Slip</a></li>
                         @endcanany
-
-
                     </ul>
                 </li>
             @endcanany
@@ -216,7 +213,13 @@
                         </ul>
                     </li>
                 @endcanany
-
+                @canany(['manage announcement'])
+                <li class=" {{(request()->routeIs('get-announcement')) ? 'active' : ''}}">
+                    <a href="{{route('get-announcement')}}"><i class="la la-info"></i> <span> Announcement</span>
+                        {{-- <span class="menu-arrow"></span> --}}
+                    </a>
+                </li>
+                @endcanany
                 @canany(['manage user', 'create user', 'manage role', 'create role', 'manage level approval', 'edit level approval', 'manage denda', 'create denda', 'edit denda', 'delete denda', 'manage bpjs kesehatan', 'create bpjs kesehatan', 'edit bpjs kesehatan', 'delete bpjs kesehatan', 'manage pph21', 'edit pph21', 'manage jht', 'create jht', 'manage jkk', 'create jkk', 'manage jkm', 'create jkm', 'manage jp', 'create jp', 'manage payslip code pin', 'manage payslip checklist attendance summary', 'manage allowance option', 'create allowance option', 'manage leave type', 'manage reimbursement option', 'manage branch', 'manage loan option', 'manage payslip type'])
                     <li class="submenu">
                         <a href="#"><i class="la la-cog"></i> <span> Setting</span> <span class="menu-arrow"></span></a>

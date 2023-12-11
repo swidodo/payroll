@@ -10,6 +10,8 @@ use App\Models\LogEmployeeResume;
 use App\Models\ShiftSchedule;
 use App\Models\Timesheet;
 use App\Models\Utility;
+use App\Models\Information;
+use App\Models\Sys;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -18,12 +20,35 @@ use Yajra\DataTables\Facades\DataTables;
 
 class DashboardController extends Controller
 {
-    public  function index()
+    public  function index(Request $request)
     {
+        $read = Sys::where('user_id',Auth::user()->id)->get();
+        $pesan=[];
+        foreach($read as $psn){
+            array_push($pesan,$psn->information_id);
+        }
+        
+        $notif = Information::leftJoin('sys','sys.information_id','=','information.id')
+                        ->where('information.branch_id',Auth::user()->branch_id)
+                        ->where('information.status',1)
+                        ->whereNotIn('information.id', $pesan)
+                        ->count();
+        $request->session()->put('notif', $notif);
         if (Auth::user()->initial == 'HO') {
             $branch = Branch::find(Auth::user()->branch_id);
-            $data['branches'] = Branch::where('company_id', '=', $branch->company_id)
-                ->get();
+            $data['branches'] = Branch::where('company_id', '=', $branch->company_id)->get();
+            // get notif
+            $read = Sys::where('user_id',Auth::user()->id)->get();
+            $pesan=[];
+            foreach($read as $psn){
+                array_push($pesan,$psn->information_id);
+            }
+            
+            $data['inbox'] = Information::select('information.*')->leftJoin('sys','sys.information_id','=','information.id')
+                            ->where('information.branch_id',Auth::user()->branch_id)
+                            ->where('information.status',1)
+                            ->whereNotIn('information.id', $pesan)
+                            ->get();
             return view('pages.contents.dashboard.dashboard-company', $data);
         } else {
             $employee = Employee::where('user_id', Auth::user()->id)->first();
@@ -31,7 +56,16 @@ class DashboardController extends Controller
             $attendanceEmployee = AttendanceEmployee::where('employee_id', $employee->id)->where('date', date('Y-m-d'))->orderBy('id', 'desc')->first();
             $shiftSchedule = ShiftSchedule::where('employee_id', Auth::user()->employee->id)->where('created_by', '=', Auth::user()->creatorId())->where('schedule_date', date('Y-m-d'))->first();
             $timesheet = Timesheet::where('employee_id', Auth::user()->employee->id)->where('created_by', '=', Auth::user()->creatorId())->where('start_date', '<=', date('Y-m-d'))->where('end_date', '>=', date('Y-m-d'))->first();
-
+            $read = Sys::where('user_id',Auth::user()->id)->get();
+            $pesan=[];
+            foreach($read as $psn){
+                array_push($pesan,$psn->information_id);
+            }
+            $notif = Information::select('information.*')->leftJoin('sys','sys.information_id','=','information.id')
+                                ->where('information.branch_id',Auth::user()->branch_id)
+                                ->where('information.status',1)
+                                ->whereNotIn('information.id', $pesan)
+                                ->get();
             return view('pages.contents.dashboard.dashboard', compact('employee', 'attendanceStatus', 'attendanceEmployee', 'shiftSchedule', 'timesheet'));
         }
     }
