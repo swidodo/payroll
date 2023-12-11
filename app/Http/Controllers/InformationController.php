@@ -27,11 +27,11 @@ class InformationController extends Controller
     public function get_data(Request $request){
         $data   = Information::where('branch_id','=',$request->branch_id)->get();
         return DataTables::of($data)
-                        ->addIndexColumn()
-                        ->addColumn('content', function($row){
-                            $content = htmlspecialchars_decode(htmlspecialchars_decode($row->content));
-                            return  $content;
-                        })
+                        // ->addIndexColumn()
+                        // ->addColumn('content', function($row){
+                        //     $content = htmlspecialchars_decode(htmlspecialchars_decode($row->content));
+                        //     return  $content;
+                        // })
                         ->addColumn('action', function($row){
                             $btn ='';
                             if(Auth()->user()->canany('edit announcement')){
