@@ -28,7 +28,7 @@
                                 <div class="card-body"> 
                                     <span class="fa fa-envelope text-light fa-lg me-1"></span> {{ Ucwords($pesan->title) }}
                                 </div>
-                                <div class="card-footer">{{ date('d-m-Y',$pesan->date)}}</div>
+                                <div class="card-footer">{{ date('d-m-Y', strtotime($pesan->date))}}</div>
                             </div>
                         </a>
                     @endforeach
@@ -39,7 +39,7 @@
                             <div class="card-body"> 
                                 <span class="fa fa-envelope-open-o text-light fa-lg me-1"></span> {{ Ucwords($read->title) }}
                             </div>
-                            <div class="card-footer">{{$read->date}}</div>
+                            <div class="card-footer">{{date('d-m-Y', strtotime($read->date))}}</div>
                         </div>
                     </a>
                 @endforeach
