@@ -98,7 +98,7 @@
             <!-- /Page Header -->
             @if($inbox !=null)
                     @foreach($inbox as $pesan)
-                        @if($pesan->date > date('Y-m-d'))
+                        @if($pesan->date >= date('Y-m-d'))
                         <a href="view-inbox/{{$pesan->id}}" class="text-black">
                             <div class="card shadow-sm bg-success">
                                 <div class="card-body"> 
