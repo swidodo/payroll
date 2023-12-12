@@ -262,6 +262,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('import-payroll-v3',[Template_v3Controller::class,'index'])->name('import-payroll-v3');
         Route::post('import-payroll-v4',[Template_v4Controller::class,'index'])->name('import-payroll-v4');
         Route::post('import-payroll-v5',[Template_v5Controller::class,'index'])->name('import-payroll-v5');
+        Route::post('import-payroll-v7',[Template_v7Controller::class,'index'])->name('import-payroll-v7');
         // Route::post('import-payroll-v2',[PayrollController::class,'import_run_payroll_v2'])->name('import-payroll-v2');
         // Route::post('import-payroll-v3',[PayrollController::class,'import_run_payroll_v3'])->name('import-payroll-v3');
         
