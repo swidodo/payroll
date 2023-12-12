@@ -63,6 +63,7 @@ use App\Http\Controllers\template\Template_v2Controller;
 use App\Http\Controllers\template\Template_v3Controller;
 use App\Http\Controllers\template\Template_v4Controller;
 use App\Http\Controllers\template\Template_v5Controller;
+use App\Http\Controllers\template\Template_v7Controller;
 // report
 use App\Http\Controllers\HRM\EmployeeReportController;
 use App\Http\Controllers\Report\ReportRecapAttendanceController;
