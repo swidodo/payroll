@@ -138,7 +138,7 @@ class Template_v7Controller extends Controller
                             'total_deduction'                   => $total_deduction,
                             'branch_id'                         => $employeeId->branch_id,
                             'total_attendance'                  => $value[4],
-                            'total_overtime_hour'               => (($value[13] !=null) ? $value[13] : 0),
+                            'total_overtime_hour'               => (($value[12] !=null) ? $value[12] : 0),
                             'rapel'                             => $rapel,
                             // 'kompensasi'                        => $kompensasi,
                             'startdate'                         => $value[24],
