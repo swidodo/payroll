@@ -941,46 +941,46 @@
 
                 })
         })
-        // // v7
-        // $('#UploadDataPayroll_v7').on('submit',function(e){
-        //     e.preventDefault();
-        //     var startdate   = $('#startdate').val();
-        //     var enddate     = $('#enddate').val();
-        //     var branch_id   = $('#branch_id').val();
+        // v7
+        $('#UploadDataPayroll_v7').on('submit',function(e){
+            e.preventDefault();
+            var startdate   = $('#startdate').val();
+            var enddate     = $('#enddate').val();
+            var branch_id   = $('#branch_id').val();
             
-        //     var payroll  = $('#import-payroll-v7')[0].files[0];
-        //     var formData = new FormData();
-        //     formData.append('import-payroll',payroll)
-        //         $.ajax({
-        //             url : 'import-payroll-v7',
-        //             type : 'post',
-        //             contentType: false,
-        //             processData: false,
-        //             cache: false,
-        //             data : formData,
-        //             dataType : 'json',
-        //             beforeSend : function(){
-        //                 $('.containerLoader').attr('hidden',false)
-        //             },
-        //             success : function(respon){
-        //                 $('.containerLoader').attr('hidden',true)
-        //                 if (respon.status == 'success'){
-        //                     $('#UploadDataPayroll_v7')[0].reset();
-        //                     $('#modalImportPayroll_v7').modal('hide')
-        //                     loadData(startdate,enddate,branch_id)
-        //                 }
-        //                 swal.fire({
-        //                     icon : respon.status,
-        //                     text : respon.msg,
-        //                 })
-        //             },
-        //             error : function(){
-        //                 alert('Someting went wrong !');
-        //                 $('.containerLoader').attr('hidden',true)
-        //             }
+            var payroll  = $('#import-payroll-v7')[0].files[0];
+            var formData = new FormData();
+            formData.append('import-payroll',payroll)
+                $.ajax({
+                    url : 'import-payroll-v7',
+                    type : 'post',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    data : formData,
+                    dataType : 'json',
+                    beforeSend : function(){
+                        $('.containerLoader').attr('hidden',false)
+                    },
+                    success : function(respon){
+                        $('.containerLoader').attr('hidden',true)
+                        if (respon.status == 'success'){
+                            $('#UploadDataPayroll_v7')[0].reset();
+                            $('#modalImportPayroll_v7').modal('hide')
+                            loadData(startdate,enddate,branch_id)
+                        }
+                        swal.fire({
+                            icon : respon.status,
+                            text : respon.msg,
+                        })
+                    },
+                    error : function(){
+                        alert('Someting went wrong !');
+                        $('.containerLoader').attr('hidden',true)
+                    }
 
-        //         })
-        // })
+                })
+        })
         // // v8
         // $('#UploadDataPayroll_v8').on('submit',function(e){
         //     e.preventDefault();
