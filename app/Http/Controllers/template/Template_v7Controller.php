@@ -480,7 +480,7 @@ class Template_v7Controller extends Controller
                                 'employee_id'           => $employeeId->id,
                                 'branch_id'             => $employeeId->branch_id,
                                 'date'                  => $value[25],
-                                'name'                  => 'BPJS JPK',
+                                'name'                  => 'BPJS JP',
                                 'amount'                => $value[18],
                                 'created_by'            => Auth::user()->id,
                                 'created_at'            => $value[25].' '.date('h:m:s'),
