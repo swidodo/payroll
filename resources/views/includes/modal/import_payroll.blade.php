@@ -209,7 +209,7 @@
                         <form id="UploadDataPayroll_v7">
                             <div class="mb-3">
                                 <label>File Import</label>
-                                <input type="file" name="import_payroll" id="import-payroll-v3" class="form-control" required>
+                                <input type="file" name="import_payroll" id="import-payroll-v7" class="form-control" required>
                                 <a download href="{{asset('file/template-excel-payroll/template-import-payroll_V7.xlsx')}}" class="text-small">Download template import payroll</a>
                                 
                             </div>
