@@ -105,6 +105,8 @@ class EmployeeController extends Controller
                         $view .= '<span class="badge bg-inverse-success">'.ucwords($d->status).'</span>';
                     }else if(strtolower($d->status) == 'fired') {
                         $view .= '<span class="badge bg-inverse-danger">'.ucwords($d->status).'</span>';
+                    }else if(strtolower($d->status) == 'contract termination') {
+                        $view .= '<span class="badge bg-inverse-info">'.ucwords($d->status).'</span>';
                     }else if(strtolower($d->status) == 'resign') {
                         $view .= '<span class="badge bg-inverse-danger">'.ucwords($d->status).'</span>';
                     }else if(strtolower($d->status) == 'pension') {
