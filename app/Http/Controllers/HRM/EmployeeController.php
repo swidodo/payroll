@@ -80,7 +80,11 @@ class EmployeeController extends Controller
             if (Auth::user()->type == 'employee') {
                 $employees = Employee::query()->where('user_id', '=', Auth::user()->id)->with('branch');
             } else {
-                $employees = Employee::query()->where('branch_id', $request->branch_id)->where('status',$request->status)->with('branch');
+                if ($request->status == 'active'){
+                    $employees = Employee::query()->where('branch_id', $request->branch_id)->where('status',$request->status)->with('branch');
+                }else{
+                    $employees = Employee::query()->where('branch_id', $request->branch_id)->where('status','<>','active')->with('branch');
+                }
             }
             $response = datatables()->eloquent($employees)
                 ->addColumn('view_profile', function ($d) {
@@ -100,6 +104,8 @@ class EmployeeController extends Controller
                     if (strtolower($d->status) == 'active'){
                         $view .= '<span class="badge bg-inverse-success">'.ucwords($d->status).'</span>';
                     }else if(strtolower($d->status) == 'fired') {
+                        $view .= '<span class="badge bg-inverse-danger">'.ucwords($d->status).'</span>';
+                    }else if(strtolower($d->status) == 'resign') {
                         $view .= '<span class="badge bg-inverse-danger">'.ucwords($d->status).'</span>';
                     }else if(strtolower($d->status) == 'pension') {
                         $view .= '<span class="badge bg-inverse-info">'.ucwords($d->status).'</span>';
@@ -186,24 +192,17 @@ class EmployeeController extends Controller
             return redirect()->back();
         }
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         if (Auth::user()->can('edit employee')) {
             $empId        = $id;
-            $documents    = Document::where('created_by', Auth::user()->creatorId())->get();
-            $branches     = Branch::where('created_by', Auth::user()->creatorId())->get();
-            $paramPph21   = Parameter_pph21::get();
             $employee     = Employee::select('employees.*','departements.name as departement_name','position.position_name')
                                         ->where('employees.id', $empId)
                                         ->leftJoin('departements','departements.id','=','employees.department_id')
                                         ->leftJoin('position','position.id','=','employees.position_id')->first();
+            $documents    = Document::where('created_by', Auth::user()->creatorId())->get();
+            $branches     = Branch::where('id', $employee->branch_id)->get();
+            $paramPph21   = Parameter_pph21::get();
 
             if (is_null($employee)) {
                 return view('pages.contents.employee.edit');
@@ -315,6 +314,7 @@ class EmployeeController extends Controller
             $request['work_type'] = $request->work_type == 0 ? null : $request->work_type;
             $request['status'] = $request->employee_status == 0 ? null : $request->employee_status;
             $request['no_employee'] = $request->no_employee == 0 ? null : $request->no_employee;
+            $request['out_date']    = $request->out_date == 0 ? null : $request->out_date;
             
             if ($request['status'] == 'fired' || $request['status'] == 'pension' || $request['status'] == 'resign') {
                 $request['is_active'] = 0;

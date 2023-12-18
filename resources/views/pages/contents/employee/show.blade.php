@@ -157,15 +157,10 @@
                                     <td  class="borderless">{{ucwords($employee->total_leave) ?? ''}}</td>
                                 </tr>
                                 <tr>
-                                    <td  class="borderless">Join Start</td>
+                                    <td  class="borderless">Branch</td>
                                     <td  class="borderless">:</td>
-                                    <td  class="borderless">{{ $employee->company_doj }}</td>
-                                </tr>
-                                <tr>
-                                    <td  class="borderless">End Date</td>
-                                    <td  class="borderless">:</td>
-                                    <td  class="borderless">{{ $employee->company_doe }}</td>
-                                </tr>
+                                    <td  class="borderless">{{ $employee->branch_name }}</td>
+                                </tr> 
                                 <tr>
                                     <td  class="borderless">Departement</td>
                                     <td  class="borderless">:</td>
@@ -176,21 +171,22 @@
                                     <td  class="borderless">:</td>
                                     <td  class="borderless">{{ $employee->position_name }}</td>
                                 </tr>
-                               <!--  <tr>
-                                    <td  class="borderless">Movement Type </td>
+                                <tr>
+                                    <td  class="borderless">Join Date</td>
                                     <td  class="borderless">:</td>
-                                    <td  class="borderless">{{ $employement->movement_type ?? ''}}</td>
+                                    <td  class="borderless">{{ $employee->company_doj }}</td>
                                 </tr>
                                 <tr>
-                                    <td  class="borderless">Employee Area </td>
+                                    <td  class="borderless">End Date</td>
                                     <td  class="borderless">:</td>
-                                    <td  class="borderless">{{$employement->area ?? ''}}</td>
-                                </tr> -->
-                               <!--  <tr>
-                                    <td  class="borderless">Note </td>
+                                    <td  class="borderless">{{ $employee->company_doe }}</td>
+                                </tr>
+                                <tr>
+                                    <td  class="borderless">Out Date</td>
                                     <td  class="borderless">:</td>
-                                    <td  class="borderless">{{$employement->note ?? ''}}</td>
-                                </tr> -->
+                                    <td  class="borderless">{{ $employee->out_date }}</td>
+                                </tr>
+                                
                                 </tbody>
                             </table>
                         </div>

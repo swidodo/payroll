@@ -138,9 +138,9 @@
                                     <div class="form-group col-md-6">
                                         <label for="marital_status" class="form-label">Status</label>
                                         <select class="form-control select"  id="status-employee-edit" name="employee_status">
-                                            <option value="0">Select Status</option>
-                                            <option value="active" {{ ($employee->status == "active") ? 'selected' : ''}}>Active</option>
                                             @if ($currentDate != $employee->company_doj )
+                                                <option value="active" {{ ($employee->status == "active") ? 'selected' : ''}}>Active</option>
+                                                <option value="resign" {{ ($employee->status == "resign") ? 'selected' : ''}}>Resign</option>
                                                 <option value="fired" {{ ($employee->status == "fired") ? 'selected' : ''}}>Fired</option>
                                                 <option value="pension" {{ ($employee->status == "pension") ? 'selected' : ''}}>Pension</option>
                                            @endif
@@ -206,14 +206,6 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="company_doj" class="form-label">Join Date</label>
-                                    <input class="form-control" value="{{$employee->company_doj  ?? ''}}"   name="company_doj" type="date" id="company_doj" required>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="company_doe" class="form-label">End Date</label>
-                                    <input class="form-control" value="{{$employee->company_doe  ?? ''}}"   name="company_doe" type="date">
-                                </div>
-                                <div class="form-group col-md-6">
                                     <label for="branch_id" class="form-label">Department </label>
                                      <input class="form-control" value="{{$employee->departement_name  ?? ''}}"   type="text" id="departementId" readonly>
                                      <input type="hidden" value="{{$employee->department_id  ?? ''}}"   name="department_id">
@@ -223,6 +215,19 @@
                                      <input class="form-control" value="{{$employee->position_name  ?? ''}}" type="text" id="positionId" readonly>
                                      <input type="hidden" value="{{$employee->position_id  ?? ''}}" name="position_id">
                                 </div>
+                                <div class="form-group col-md-6">
+                                    <label for="company_doj" class="form-label">Join Date</label>
+                                    <input class="form-control" value="{{$employee->company_doj  ?? ''}}" name="company_doj" type="date" id="company_doj" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="company_doe" class="form-label">End Date</label>
+                                    <input class="form-control" value="{{$employee->company_doe  ?? ''}}" name="company_doe" type="date">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="company_doe" class="form-label">Out Date</label>
+                                    <input class="form-control" value="{{$employee->out_date  ?? ''}}" name="out_date" type="date">
+                                </div>
+                                
                             </div>
                         </div>
                     </div>
