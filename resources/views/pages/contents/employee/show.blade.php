@@ -174,17 +174,17 @@
                                 <tr>
                                     <td  class="borderless">Join Date</td>
                                     <td  class="borderless">:</td>
-                                    <td  class="borderless">{{ $employee->company_doj }}</td>
+                                    <td  class="borderless">{{ ($employee->company_doj !=null && $employee->company_doj !='0000-00-00') ? date('d-m-Y',strtotime($employee->company_doj)) : '' }}</td>
                                 </tr>
                                 <tr>
                                     <td  class="borderless">End Date</td>
                                     <td  class="borderless">:</td>
-                                    <td  class="borderless">{{ $employee->company_doe }}</td>
+                                    <td  class="borderless">{{ ($employee->company_doe !='0000-00-00' && $employee->company_doe !=null) ? date('d-m-Y',strtotime($employee->company_doe)) : '' }}</td>
                                 </tr>
                                 <tr>
                                     <td  class="borderless">Out Date</td>
                                     <td  class="borderless">:</td>
-                                    <td  class="borderless">{{ $employee->out_date }}</td>
+                                    <td  class="borderless">{{ ($employee->out_date !='0000-00-00' && $employee->out_date !=null) ? date('d-m-Y', strtotime($employee->out_date)) :'' }}</td>
                                 </tr>
                                 
                                 </tbody>
