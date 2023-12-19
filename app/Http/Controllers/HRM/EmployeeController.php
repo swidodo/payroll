@@ -790,7 +790,7 @@ class EmployeeController extends Controller
                                 ->where('alias','=',$row[24])
                                 ->get()->first();
                 // $active = (strtolower($row[24]) === "true") ? true : false;
-                    dd($branchId);
+                    dd($row[24]);
                     if ($branchId != null){
                         $name = strtolower($row[0]);
                         $departementId = DB::table('departements')
