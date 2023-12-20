@@ -358,12 +358,12 @@
                                         </li>
                                     @endcanany
 
-                                    @canany(['manage loan option', 'create loan option', 'edit loan option', 'delete loan option'])
+                                    {{-- @canany(['manage loan option', 'create loan option', 'edit loan option', 'delete loan option'])
                                         <li class=" {{(request()->routeIs('loan-option*')) ? 'active' : ''}}">
                                             <a  class="{{(request()->routeIs('loan-option*')) ? 'active' : ''}}" href="{{route('loan-option.index')}}"></i> <span> Cash in Advance</span>
                                             </a>
                                         </li>
-                                    @endcanany
+                                    @endcanany --}}
 
                                     @canany(['manage payslip type', 'create payslip type', 'edit payslip type', 'delete payslip type'])
                                         <li class=" {{(request()->routeIs('payslip-type*')) ? 'active' : ''}}">
