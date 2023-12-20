@@ -158,10 +158,10 @@
                                 <a style="padding: 9px 10px 9px 44px" href="#"> <span> Deduction</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
                                     @canany(['manage loan', 'create loan'])
-                                        <li class="{{(request()->routeIs('loans*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('loans*')) ? 'active' : ''}}" href="{{route('loans.index')}}">Loan</a></li>
+                                        <li class="{{(request()->routeIs('loans*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('loans*')) ? 'active' : ''}}" href="{{route('loans.index')}}">Cash In Advance</a></li>
                                     @endcanany
                                     @canany(['manage loan', 'create loan'])
-                                        <li class="{{(request()->routeIs('loan_cash_receipt')) ? 'active' : ''}}"><a class="{{(request()->routeIs('loan_cash_receipt')) ? 'active' : ''}}" href="{{route('loan_cash_receipt')}}">Installment</a></li>
+                                        <li class="{{(request()->routeIs('loan_cash_receipt')) ? 'active' : ''}}"><a class="{{(request()->routeIs('loan_cash_receipt')) ? 'active' : ''}}" href="{{route('loan_cash_receipt')}}">Loan</a></li>
                                     @endcanany 
                                     @canany(['manage deduction other'])
                                         <li class="{{(request()->routeIs('deduction-other')) ? 'active' : ''}}"><a class="{{(request()->routeIs('deduction-other')) ? 'active' : ''}}" href="{{route('deduction-other')}}">Deduction Other</a></li>

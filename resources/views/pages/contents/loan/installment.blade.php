@@ -18,15 +18,15 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Installment</h3>
+                    <h3 class="page-title">Loan</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">installment</li>
+                        <li class="breadcrumb-item active">Loan</li>
                     </ul>
                 </div>
                 @can('create loan')
                     <div class="col-auto float-end ms-auto">
-                        <a href="#" class="btn add-btn" id="NewInstallment" data-bs-toggle="modal" data-bs-target="#add_loan"><i class="fa fa-plus"></i>Installment</a>
+                        <a href="#" class="btn add-btn" id="NewInstallment" data-bs-toggle="modal" data-bs-target="#add_loan"><i class="fa fa-plus"></i>Loan</a>
                     </div>
                 @endcan
             </div>
