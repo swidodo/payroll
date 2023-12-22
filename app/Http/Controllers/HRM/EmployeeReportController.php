@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Branch;
+use App\Models\AccessBranch;
 use App\Models\Employee;
 use DataTables;
 
