@@ -201,7 +201,7 @@
                             <li class="{{(request()->routeIs('rekap-attandance')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap-attandance')) ? 'active' : ''}}" href="{{ route('rekap-attandance') }}">Rekap Attandance</a></li>
                         @endcanany
                         @can(['remainder contract'])
-                            <li class="{{(request()->routeIs('remainder-contract')) ? 'active' : ''}}"><a class="{{(request()->routeIs('remainder-contract')) ? 'active' : ''}}" href="{{ route('remainder-contract') }}">Remainder Contract</a></li>
+                            <li class="{{(request()->routeIs('remainder-contract')) ? 'active' : ''}}"><a class="{{(request()->routeIs('remainder-contract')) ? 'active' : ''}}" href="{{ route('remainder-contract') }}">Reminder Contract</a></li>
                         @endcan
                         @can(['report turnover'])
                             <li class="{{(request()->routeIs('report-turnover')) ? 'active' : ''}}"><a class="{{(request()->routeIs('report-turnover')) ? 'active' : ''}}" href="{{ route('report-turnover') }}">Report Turnover</a></li>
