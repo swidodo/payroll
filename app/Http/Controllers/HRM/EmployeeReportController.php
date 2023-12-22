@@ -557,6 +557,7 @@ class EmployeeReportController extends Controller
         $data = DB::table('v_turnover')
                     ->where('branch_id',$request->branch_id)
                     ->where('remainder','<=',60)
+                    ->where('status','active')
                     ->whereIn('status_contract',['EXPIRED CONTRACT','AVAILABLE'])
                     ->orderBy('employee_name','ASC');
             if ($request->branch_id !=''){
