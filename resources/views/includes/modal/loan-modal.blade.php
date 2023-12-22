@@ -3,7 +3,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Create Cash In Advance</h5>
+                    <h5 class="modal-title">Create Cash Advance</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -31,7 +31,7 @@
                                 {{-- @endif --}}
 
                                 <div class="form-group">
-                                    <label for="loan_type_id" class="form-label">Cash In Advance Name</label>
+                                    <label for="loan_type_id" class="form-label">Cash Advance Name</label>
                                     <select name="loan_type_id" id="loan_type_id" class="form-control select-cash-type">
                                         @foreach ($loanType as $type)
                                             @if($type->name =="KASBON"){
@@ -74,7 +74,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Cash In Advance</h5>
+                    <h5 class="modal-title">Edit Cash Advance</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -101,7 +101,7 @@
                                 {{-- @endif --}}
 
                                 <div class="form-group">
-                                    <label for="loan_type_id" class="form-label">Cash In Advance Name</label>
+                                    <label for="loan_type_id" class="form-label">Cash Advance Name</label>
                                     <select name="loan_type_id" id="loan_type_id_edit" class="form-control select-cash-type-edit">
                                         @foreach ($loanType as $type)
                                             @if($type->name =="KASBON"){

@@ -158,7 +158,7 @@
                                 <a style="padding: 9px 10px 9px 44px" href="#"> <span> Deduction</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
                                     @canany(['manage loan', 'create loan'])
-                                        <li class="{{(request()->routeIs('loans*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('loans*')) ? 'active' : ''}}" href="{{route('loans.index')}}">Cash In Advance</a></li>
+                                        <li class="{{(request()->routeIs('loans*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('loans*')) ? 'active' : ''}}" href="{{route('loans.index')}}">Cash Advance</a></li>
                                     @endcanany
                                     @canany(['manage loan', 'create loan'])
                                         <li class="{{(request()->routeIs('loan_cash_receipt')) ? 'active' : ''}}"><a class="{{(request()->routeIs('loan_cash_receipt')) ? 'active' : ''}}" href="{{route('loan_cash_receipt')}}">Loan</a></li>
@@ -200,6 +200,12 @@
                             <li class="{{(request()->routeIs('reporting-attandance')) ? 'active' : ''}}"><a class="{{(request()->routeIs('reporting-attandance')) ? 'active' : ''}}" href="{{ route('reporting-attandance') }}">Report Attandance</a></li>
                             <li class="{{(request()->routeIs('rekap-attandance')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap-attandance')) ? 'active' : ''}}" href="{{ route('rekap-attandance') }}">Rekap Attandance</a></li>
                         @endcanany
+                        @can(['remainder contract'])
+                            <li class="{{(request()->routeIs('remainder-contract')) ? 'active' : ''}}"><a class="{{(request()->routeIs('remainder-contract')) ? 'active' : ''}}" href="{{ route('remainder-contract') }}">Remainder Contract</a></li>
+                        @endcan
+                        @can(['report turnover'])
+                            <li class="{{(request()->routeIs('report-turnover')) ? 'active' : ''}}"><a class="{{(request()->routeIs('report-turnover')) ? 'active' : ''}}" href="{{ route('report-turnover') }}">Report Turnover</a></li>
+                        @endcan
                         @canany(['rekap payroll'])
                             <li class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}" href="{{ route('rekap-payroll') }}">Rekap Payroll</a></li>
                         @endcanany

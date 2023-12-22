@@ -356,6 +356,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('chart-employee_department', [EmployeeReportController::class, 'employee_department']);
         Route::get('chart-report-employee', [EmployeeReportController::class, 'report_totalemployee']);
         Route::get('chart-report-employee-year', [EmployeeReportController::class, 'report_employee_in_year']);
+        // report
+        Route::get('remainder-contract',[EmployeeReportController::class,'report_contract'])->name('remainder-contract');
+        Route::post('get-report-contract',[EmployeeReportController::class,'get_turnover_report'])->name('get-report-contract');
+        Route::get('report-turnover',[EmployeeReportController::class,'rekap_turnover'])->name('report-turnover');
+        Route::post('get-rekap-turnover',[EmployeeReportController::class,'get_data_rekap'])->name('get-rekap-turnover');
 
 
         // HR Management

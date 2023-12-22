@@ -9,6 +9,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Branch;
+use App\Models\Employee;
+use DataTables;
 
 class EmployeeReportController extends Controller
 {
@@ -533,15 +535,101 @@ class EmployeeReportController extends Controller
         }
          return response()->json($data);
     }
-    public function get_kontrak(){
-        return view('pagas.contents.report.log_contract.index');
+    public function report_contract(){
+        $branch = Branch::where('id',Auth::user()->branch_id)->first();
+        $emp = Employee::where('user_id',Auth::user()->id)->first();
+        
+        if(Auth::user()->initial =="HO"){
+            if (Auth::user()->type == "company"){
+                $data['branch'] = Branch::where('company_id',$branch->company_id)->get();
+            }else{
+                $data['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                                ->where('access_branches.employee_id',$emp->id)
+                                                ->where('access_branches.company_id',$branch->company_id)->get();
+            }
+        }else{
+            $data['branch'] = Branch::where('id',$branch->id)->get();
+        }
+        return view('pages.contents.report.turnover.report',$data);
     }
-    // public function data_log_kontrak(Request $request){
-    //     $data = Employee::where('branch_id',$request->branch_id)
-    //                     ->where('enddate','>=',$request->startdate)
-    //                     ->where('enddate','<=',$request->enddate)
-    //                     ->where('status',$request->status)
-    //                     ->get();
-    //     return response()->json($data);
-    // }
+    public function get_turnover_report(Request $request){
+        $data = DB::table('v_turnover')
+                    ->where('branch_id',$request->branch_id)
+                    ->where('remainder','<=',60)
+                    ->whereIn('status_contract',['EXPIRED CONTRACT','AVAILABLE'])
+                    ->orderBy('employee_name','ASC');
+            if ($request->branch_id !=''){
+                $data->where('branch_id',$request->branch_id);
+            }
+            if($request->startdate !='' && $request->enddate !=''){
+                $data->whereBetween(DB::raw('date(update_at)',[$request->startdate,$request->enddate]));
+            }
+            $data->get();
+            return DataTables::of($data)->make(true);
+        
+    }
+    public function rekap_turnover(){
+        $branch = Branch::where('id',Auth::user()->branch_id)->first();
+        $emp = Employee::where('user_id',Auth::user()->id)->first();
+        
+        if(Auth::user()->initial =="HO"){
+            if (Auth::user()->type == "company"){
+                $data['branch'] = Branch::where('company_id',$branch->company_id)->get();
+            }else{
+                $data['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                                ->where('access_branches.employee_id',$emp->id)
+                                                ->where('access_branches.company_id',$branch->company_id)->get();
+            }
+        }else{
+            $data['branch'] = Branch::where('id',$branch->id)->get();
+        }
+        $data['brch'] = $branch;
+       
+        return view('pages.contents.report.turnover.rekap',$data);
+    }
+    public function get_data_rekap(Request $request){
+        $branch = Branch::where('id',Auth::user()->branch_id)->first();
+        $emp = Employee::where('user_id',Auth::user()->id)->first();
+        if(Auth::user()->initial =="HO"){
+            if (Auth::user()->type == "company"){
+                $data['branch'] = Branch::where('company_id',$branch->company_id)->get();
+            }else{
+                $data['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                                ->where('access_branches.employee_id',$emp->id)
+                                                ->where('access_branches.company_id',$branch->company_id)->get();
+            }
+        }else{
+            $data['branch'] = Branch::where('id',$branch->id)->get();
+        }
+        $data['brch'] = Branch::where('id',$request->branch_id)->first();
+        $data['out'] = DB::SELECT("SELECT branch_id,
+                                        branch_name,
+                                        status, 
+                                        count(status) as total
+                                    FROM v_turnover WHERE branch_id = '$request->branch_id' and status <> 'active'
+                                    AND date(updated_at) BETWEEN '$request->from_date' AND '$request->to_date'
+                                    GROUP BY status, branch_id,branch_name");
+         $data['active'] = DB::SELECT("SELECT branch_id,
+                                        'EMPLOYEE ACTIVE' as active, 
+                                        count(status) as total
+                                    FROM employees 
+                                    WHERE branch_id = '$request->branch_id' and status ='active'
+                                    GROUP BY status, branch_id");
+        $data['permanent'] = DB::SELECT("SELECT branch_id,
+                                        'EMPLOYEE PERMANENT' as permanent, 
+                                        count(status) as total
+                                    FROM employees 
+                                    WHERE branch_id = '$request->branch_id' and status ='active' and UPPER(employee_type) ='PERMANENT'
+                                    GROUP BY status, branch_id");
+        $data['in'] = DB::SELECT("SELECT branch_id,branch_name,
+                                    'EMPLOYEE JOIN' as join, 
+                                    count(status) as total
+                                    FROM v_turnover 
+                                    WHERE status = 'active' 
+                                    and branch_id = '$request->branch_id'
+                                    AND date(created_at) BETWEEN '$request->from_date' AND '$request->to_date'
+                                    GROUP BY status, branch_id,branch_name");
+        return view('pages.contents.report.turnover.rekap',$data);
+    }
+
 }
