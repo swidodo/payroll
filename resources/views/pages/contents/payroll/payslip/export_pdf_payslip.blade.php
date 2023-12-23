@@ -338,7 +338,7 @@
                                     </tr>
                                     @if($salary->rapel != 0 && $salary->rapel !='')
                                         <tr class="fs-14 " style="font-weight: 400">
-                                            <td style="width: 45%">Rapel</td>
+                                            <td style="width: 45%">Rapel/koreksi +</td>
                                             <td>:</td>
                                             <td class="text-right">{{ ($salary->rapel == '') ? 0 : formatRupiah($salary->rapel) }}</td>
                                         </tr>

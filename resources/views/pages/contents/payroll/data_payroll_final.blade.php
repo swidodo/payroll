@@ -71,6 +71,7 @@
                                 <th>Allowance Unfixed</th>
                                 <th>Allowance Other</th>
                                 <th>Overtime</th>
+                                <th>RApel/koreksi +</th>
                                 <th>Salary in Month</th>
                                 <th>Company Pay Bpjs</th>
                                 <th>Total salary</th>
@@ -244,6 +245,19 @@
                         },
                         {
                             data: 'overtime',
+                           render : function(data, type, row){
+                                if (data !=null) {
+                                    var base = new String(data).substring(data.lastIndexOf('/') + 1);
+                                        if(base.lastIndexOf(".") != -1)
+                                            base = base.substring(0, base.lastIndexOf("."));
+                                        return base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                    }else{
+                                        return 0;
+                                    }
+                            }
+                        },
+                        {
+                            data: 'rapel',
                            render : function(data, type, row){
                                 if (data !=null) {
                                     var base = new String(data).substring(data.lastIndexOf('/') + 1);
