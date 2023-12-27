@@ -28,10 +28,10 @@ class BpjsController extends Controller
                                 $btn .= '<div class="dropdown dropdown-action">
                                 <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                 <div class="dropdown-menu dropdown-menu-right">';
-                                // if(Auth()->user()->can('edit attendance')){
+                                // if(Auth()->user()->can('edit bpjs')){
                                     $btn .= '<a  data-id='.$row->id.' class="dropdown-item edit-master-bpjs" href="javascript:void(0)" ><i class="fa fa-pencil m-r-5"></i> Edit</a>';
                                 // }
-                                // if(Auth()->user()->can('delete attendance')){
+                                // if(Auth()->user()->can('delete bpjs')){
                                     $btn .= '<a data-id='.$row->id.' class="dropdown-item delete-master-bpjs" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
                                 // }
                                     $btn .= '</div></div>';
@@ -43,7 +43,7 @@ class BpjsController extends Controller
     }
     public function store(Request $request){
 
-        $check = Master_bpjs::where('bpjs_code','=',$request->bpjs_code)->first();
+        $check = Master_bpjs::where('bpjs_code','=',$request->bpjs_code)->where('branch_id',Auth::user()->branch_id)->first();
         if($check != null){
             if ($check->bpjs_code != "" ){
                 $data = [
