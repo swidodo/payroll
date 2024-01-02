@@ -168,13 +168,13 @@
                                     <label class="form-label">Employee Type</label>
                                     <select class="form-control select"  name="employee_type" id="employee_type">
                                         <option value="" disabled>Select Type</option>
-                                        <option value="permanent" {{($employee->employee_type =="permanent") ? 'selected' : ''}}>Permanent</option>
-                                        <option value="probation" {{($employee->employee_type =="probation") ? 'selected' : ''}}>Probation</option>
-                                        <option value="contract" {{($employee->employee_type =="contract") ? 'selected' : ''}}>Contract</option>
-                                        <option value="outsourcing" {{($employee->employee_type =="outsourcing") ? 'selected' : ''}}>Outsourcing</option>
-                                        <option value="hl" {{($employee->employee_type =="hl") ? 'selected' : ''}}>Past Daily</option>
-                                        <option value="magang" {{($employee->employee_type =="magang") ? 'selected' : ''}}>Magang</option>
-                                        <option value="freelancers" {{($employee->employee_type =="freelancers") ? 'selected' : ''}}>Freelancers</option>
+                                        <option value="permanent" {{(strtolower($employee->employee_type) =="permanent") ? 'selected' : ''}}>Permanent</option>
+                                        <option value="probation" {{(strtolower($employee->employee_type) =="probation") ? 'selected' : ''}}>Probation</option>
+                                        <option value="contract" {{(strtolower($employee->employee_type) =="contract") ? 'selected' : ''}}>Contract</option>
+                                        <option value="outsourcing" {{(strtolower($employee->employee_type) =="outsourcing") ? 'selected' : ''}}>Outsourcing</option>
+                                        <option value="hl" {{(strtolower($employee->employee_type) =="hl") ? 'selected' : ''}}>Worker Daily</option>
+                                        <option value="magang" {{(strtolower($employee->employee_type) =="magang") ? 'selected' : ''}}>Magang</option>
+                                        <option value="freelancers" {{(strtolower($employee->employee_type) =="freelancers") ? 'selected' : ''}}>Freelancers</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">

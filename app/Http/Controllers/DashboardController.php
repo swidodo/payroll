@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -49,6 +50,7 @@ class DashboardController extends Controller
                             ->where('information.status',1)
                             ->whereNotIn('information.id', $pesan)
                             ->get();
+            // $data['birtday'] = Employee::whereRaw(DB::raw("to_char(dob,'MM') = to_char(now(),'MM')"))->where('branch_id',Auth::user()->branch_id)->get();
             return view('pages.contents.dashboard.dashboard-company', $data);
         } else {
             $employee = Employee::where('user_id', Auth::user()->id)->first();
