@@ -281,7 +281,7 @@
                 <div class="card shadow-sm">
                     <h4>Birthday</h4>
                     <div class="table-responsive border border-1 mt-2">
-                        <table class="table table-sm table-striped table-bordered table-sm" id="tblBirt">
+                        <table class="table table-sm table-striped table-bordered table-sm" id="tblBirtDay">
                             <thead style="background-color: #FE805B">
                                 <tr>
                                     <th>No</th>

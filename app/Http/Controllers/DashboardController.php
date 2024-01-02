@@ -50,7 +50,6 @@ class DashboardController extends Controller
                             ->where('information.status',1)
                             ->whereNotIn('information.id', $pesan)
                             ->get();
-            // $data['birtday'] = Employee::whereRaw(DB::raw("to_char(dob,'MM') = to_char(now(),'MM')"))->where('branch_id',Auth::user()->branch_id)->get();
             return view('pages.contents.dashboard.dashboard-company', $data);
         } else {
             $employee = Employee::where('user_id', Auth::user()->id)->first();
@@ -436,6 +435,27 @@ class DashboardController extends Controller
                                     'branches.name as branch_name')
                         ->leftJoin('employees','employees.id','=','timesheets.employee_id')
                         ->leftJoin('branches','branches.id','=','timesheets.branch_id');
+                    if($request->branch_id ==0){
+                        $data->where('branches.company_id',$branch->company_id);
+                    }else{
+                        $data->where('branches.id',$request->branch_id);
+                    }
+                        $data->get();
+        return DataTables::of($data)->make(true);
+    }
+    public function get_birtday(Request $request){
+        $branch = Branch::where('id',Auth::user()->branch_id)->first();
+        $data = Employee::select('employees.id',
+                                'employees.no_employee',
+                                'employees.name as employee_name',
+                                'departements.name as departement_name',
+                                'position.position_name',
+                                'branches.name as branch_name')
+                        ->leftJoin('departements','departements.id','=','employees.department_id')
+                        ->leftJoin('position','position.id','=','employees.position_id')
+                        ->leftJoin('branches','branches.id','=','employees.branch_id')
+                        ->whereRaw(DB::raw("to_char(employees.dob,'MM') = to_char(now(),'MM')"))
+                        ->whereRaw(DB::raw("to_char(employees.dob,'DD') = to_char(now(),'DD')"));
                     if($request->branch_id ==0){
                         $data->where('branches.company_id',$branch->company_id);
                     }else{

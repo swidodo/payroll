@@ -112,6 +112,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/chart/filter-employee-resume', [DashboardController::class, 'employeeResumeFilterByBranch'])
                 ->name('dashboard.filter-employee-resume');
         Route::post('get_report_timesheet',[DashboardController::class,'get_report_timesheet'])->name('get_report_timesheet');
+        Route::post('get_report_birtday',[DashboardController::class,'get_birtday'])->name('get_report_birtday');
 
         // user
         Route::resource('users', UsersController::class);

@@ -156,10 +156,6 @@
                         <div class="card-header p-3"><h4 class="mb-0">Employee Data</h4></div>
                         <div class="card-body employee-detail-edit-body fulls-card">
                             <div class="row">
-                                {{-- <div class="form-group col-md-12">
-                                    <label for="employee_id" class="form-label">Employee Code</label>
-                                    <input class="form-control" disabled="disabled" name="employee_id" type="text" value="{{$employeesId ?? ''}}" id="employee_id">
-                                </div> --}}
                                 <div class="form-group col-md-6">
                                     <label for="employee_id" class="form-label">Employee ID</label>
                                     <input class="form-control" name="no_employee" type="text" value="{{$employee->no_employee ?? ''}}" id="employee_id" required>

@@ -8,6 +8,7 @@
     employee_report(defaultbranch)
     employee_report_year(defaultbranch)
     timesheet(defaultbranch)
+    birtday(defaultbranch)
     var arr = [];
     $('#branch_id').on('change',function(){
         var branch = $('#branch_id').val();
@@ -18,6 +19,7 @@
         employee_report(branch)
         employee_report_year(branch)
         timesheet(branch)
+        birtday(branch)
     })
     // process get data
     function header(){
@@ -177,16 +179,45 @@
         }
             })
     }
-    function birtday(){
+    function birtday(branchId){
         header();
-        $.ajax({
-            url :'get-report-birtday',
-            type : 'GET',
-            data :{branch_id :branch},
-            dataType : 'json',
-            success :function (respon){
-                console.log(respon)
-            }
-        })
+        $('#tblBirtDay').DataTable({
+                processing: true,
+                serverSide: true,
+                destroy: true,
+                ajax : {
+                        "url" : 'get_report_birtday',
+                        "type" : 'post',
+                        "data" :{ branch_id : branchId },
+                    },
+                columns: [
+                        { data: 'no', name:'id', render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }},
+                        {
+                            data: 'branch_name',
+                            name : 'branch_name'
+                        },
+                        {
+                            data: 'no_employee',
+                            name: 'no_employee'
+                        }, 
+                        {
+                            data: 'employee_name',
+                            name: 'employee_name'
+                        },
+                        {
+                            data: 'departement_name',
+                            name : 'departement_name'
+                        },
+                        {
+                            data: 'position_name',
+                            name : 'position_name'
+                        }
+                ],
+                searchPanes: {
+            controls: false
+        }
+            })
     }
     </script>
