@@ -730,282 +730,282 @@ class PayrollController extends Controller
             return response()->json($res);
         }
     }
-    public function import_run_payroll(Request $request){
-        $file_extension = request()->file('import-payroll')->extension();
-        if ('csv' == $file_extension) {
-            $res = [
-                'status' => 'success',
-                'msg'    => 'Import Data Successfuly !',
-            ];
-            return response()->json($res);
-            return true;
-        } elseif ('xls' == $file_extension) {
-            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
-        } elseif ('xlsx' == $file_extension) {
-            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-        }
+    // public function import_run_payroll(Request $request){
+    //     $file_extension = request()->file('import-payroll')->extension();
+    //     if ('csv' == $file_extension) {
+    //         $res = [
+    //             'status' => 'success',
+    //             'msg'    => 'Import Data Successfuly !',
+    //         ];
+    //         return response()->json($res);
+    //         return true;
+    //     } elseif ('xls' == $file_extension) {
+    //         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+    //     } elseif ('xlsx' == $file_extension) {
+    //         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+    //     }
 
-        // $reader = new Xls();
-        $spreadsheet = $reader->load(request()->file('import-payroll'));
-        $sheetData = $spreadsheet->getActiveSheet()->toArray();
-        $import =[];
-        DB::beginTransaction();
-        foreach ($sheetData as $key => $value) {
-            if ($key > 0) :
-                $branch = Branch::where('alias',$value[19])->first();
-                if ($branch != null) :
-                    $employeeId = employee::where('no_employee',$value[1])->where('branch_id',$branch->id)->first();
-                    $takeHP = DB::table('take_home_pay')
-                                ->where('employee_id',$employeeId->id)
-                                ->where('startdate',$value[17])
-                                ->where('enddate',$value[18])
-                                ->count();
-                    if ($takeHP > 0){
-                        DB::table('take_home_pay')
-                            ->where('employee_id',$employeeId->id)
-                            ->where('startdate',$value[17])
-                            ->where('enddate',$value[18])
-                            ->delete();
-                    }
-                    $ded_other = Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[17],'enddate'=>$value[18]])->count();
-                    if($ded_other > 0 ){
-                        Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[17],'enddate'=>$value[18]])->delete();
-                    }
-                    $ded_loan = Loan::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[17],$value[18]])->count();
-                    if ($ded_loan > 0 ){
-                        Loan::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[17],$value[18]])->delete();
-                    }
-                    $allFinance = AllowanceFinance::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[17],$value[18]])->count();
-                    if ($allFinance > 0){
-                        AllowanceFinance::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[17],$value[18]])->delete();
-                    }
-                    $allother = DB::table('allowances')->where('employee_id',$employeeId->id)->whereBetween('date',[$value[17],$value[18]])->count();
-                    if ($allother > 0){
-                        DB::table('allowances')->where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[17],$value[18]])->delete();
-                    }
-                    if ($employeeId != null ):
-                        if($employeeId->id =='' | $employeeId->id ==null){
-                            return true;
-                        }
-                        $val_salarymonth = (($value[3] !=null) ? $value[3] : 0 ) + (($value[4] !=null) ? $value[4] : 0 ) + (($value[5] !=null) ? $value[5] : 0 ) + (($value[6] !=null) ? $value[6] : 0 );
-                        $total_loan      = (($value[8] !=null) ? $value[8] : 0 );
-                        $deduction_other = (($value[9] !=null) ? $value[9] : 0 ) + (($value[12] !=null) ? $value[12] : 0 ) + (($value[13] !=null) ? $value[13] : 0 ) + (($value[14] !=null) ? $value[14] : 0 ) + (($value[15] !=null) ? $value[15] : 0 );
-                        $bpjs = (($value[10] !=null) ? $value[10] : 0 ) + (($value[11] !=null) ? $value[11] : 0 );
-                        $total_deduction = $total_loan + $deduction_other + $bpjs;
-                        $datas = [
-                            'date'                              => date('Y-m-d'),
-                            'employee_id'                       => $employeeId->id,
-                            'employee_code'                     => $employeeId->employee_id,
-                            'no_employee'                       => $employeeId->no_employee,
-                            'name'                              => $employeeId->name,
-                            'position_id'                       => $employeeId->position_id,
-                            // 'level'                          => $employeeId->position_id,
-                            'bank_name'                         => $employeeId->bank_name,
-                            'account_number'                    => $employeeId->account_number,
-                            'basic_salary'                      => (($value[3] !=null) ? $value[3] : 0 ),
-                            'allowance_fixed'                   => (($value[4] !=null) ? $value[4] : 0 ),
-                            'allowance_unfixed'                 => (($value[5] !=null) ? $value[5] : 0 ),
-                            'allowance_other'                   => 0,
-                            'overtime'                          => (($value[6] !=null) ? $value[6] : 0 ),
-                            'salary_this_month'                 => $val_salarymonth,
-                            'company_pay_bpjs'                  => 0,
-                            'total_salary'                      => $val_salarymonth,
-                            'company_pay_bpjs_kesehatan'        => 0,
-                            'company_pay_bpjs_ketenagakerjaan'  => 0,
-                            'employee_pay_bpjs_kesehatan'       => (($value[11] !=null) ? $value[11] : 0 ),
-                            'employee_pay_bpjs_ketenagakerjaan' => (($value[10] !=null) ? $value[10] : 0 ),
-                            'company_total_pay_bpjs'            => 0,
-                            'employee_total_pay_bpjs'           => $bpjs,
-                            'installment'                       => 0,
-                            'loans'                             => (($value[8] !=null) ? $value[8] : 0 ),
-                            'total_pay_loans'                   => $total_loan,
-                            'sanksi_adm'                        => (($value[9] !=null) ? $value[9] : 0 ),
-                            'total_deduction_other'             => $deduction_other,
-                            'pph21'                             => 0,
-                            'total_deduction'                   => $total_deduction,
-                            'startdate'                         => $value[17],
-                            'enddate'                           => $value[18],
-                            'take_home_pay'                     => (($value[16] !=null) ? $value[16] : 0 ),
-                            'branch_id'                         => $employeeId->branch_id,
-                            'created_at'                        => date('Y-m-d h:m:s'),
-                        ];
-                        if (!in_array($datas,$import)){
-                            array_push($import,$datas);
-                        }
-                        if ($value[4] !=null){
-                            $opt = AllowanceOption::where('name','Tunjangan Jabatan')->where('pay_type','fixed')->where('include_attendance','N')->first();
-                            if ($opt !=null){
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_type_id' => $opt->id,
-                                    'amount'            => (($value[4] !=null) ? $value[4] : 0 ),
-                                    'created_by'        => Auth::user()->id,
-                                    'created_at'        => $value[18].' '.date('h:m:s'),
-                                    'updated_at'        => $value[18].' '.date('h:m:s')
-                                ];
-                                AllowanceFinance::insert($data);
-                            }else{
-                                $opts = [
-                                    'name'               => 'Tunjangan Jabatan',
-                                    'pay_type'           => 'fixed',
-                                    'include_attendance' => 'N',
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_by'         => Auth::user()->id,
-                                    'created_at'        => $value[18].' '.date('h:m:s'),
-                                    'updated_at'        => $value[18].' '.date('h:m:s')
-                                ];
+    //     // $reader = new Xls();
+    //     $spreadsheet = $reader->load(request()->file('import-payroll'));
+    //     $sheetData = $spreadsheet->getActiveSheet()->toArray();
+    //     $import =[];
+    //     DB::beginTransaction();
+    //     foreach ($sheetData as $key => $value) {
+    //         if ($key > 0) :
+    //             $branch = Branch::where('alias',$value[19])->first();
+    //             if ($branch != null) :
+    //                 $employeeId = employee::where('no_employee',$value[1])->where('branch_id',$branch->id)->first();
+    //                 $takeHP = DB::table('take_home_pay')
+    //                             ->where('employee_id',$employeeId->id)
+    //                             ->where('startdate',$value[17])
+    //                             ->where('enddate',$value[18])
+    //                             ->count();
+    //                 if ($takeHP > 0){
+    //                     DB::table('take_home_pay')
+    //                         ->where('employee_id',$employeeId->id)
+    //                         ->where('startdate',$value[17])
+    //                         ->where('enddate',$value[18])
+    //                         ->delete();
+    //                 }
+    //                 $ded_other = Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[17],'enddate'=>$value[18]])->count();
+    //                 if($ded_other > 0 ){
+    //                     Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[17],'enddate'=>$value[18]])->delete();
+    //                 }
+    //                 $ded_loan = Loan::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[17],$value[18]])->count();
+    //                 if ($ded_loan > 0 ){
+    //                     Loan::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[17],$value[18]])->delete();
+    //                 }
+    //                 $allFinance = AllowanceFinance::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[17],$value[18]])->count();
+    //                 if ($allFinance > 0){
+    //                     AllowanceFinance::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[17],$value[18]])->delete();
+    //                 }
+    //                 $allother = DB::table('allowances')->where('employee_id',$employeeId->id)->whereBetween('date',[$value[17],$value[18]])->count();
+    //                 if ($allother > 0){
+    //                     DB::table('allowances')->where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[17],$value[18]])->delete();
+    //                 }
+    //                 if ($employeeId != null ):
+    //                     if($employeeId->id =='' | $employeeId->id ==null){
+    //                         return true;
+    //                     }
+    //                     $val_salarymonth = (($value[3] !=null) ? $value[3] : 0 ) + (($value[4] !=null) ? $value[4] : 0 ) + (($value[5] !=null) ? $value[5] : 0 ) + (($value[6] !=null) ? $value[6] : 0 );
+    //                     $total_loan      = (($value[8] !=null) ? $value[8] : 0 );
+    //                     $deduction_other = (($value[9] !=null) ? $value[9] : 0 ) + (($value[12] !=null) ? $value[12] : 0 ) + (($value[13] !=null) ? $value[13] : 0 ) + (($value[14] !=null) ? $value[14] : 0 ) + (($value[15] !=null) ? $value[15] : 0 );
+    //                     $bpjs = (($value[10] !=null) ? $value[10] : 0 ) + (($value[11] !=null) ? $value[11] : 0 );
+    //                     $total_deduction = $total_loan + $deduction_other + $bpjs;
+    //                     $datas = [
+    //                         'date'                              => date('Y-m-d'),
+    //                         'employee_id'                       => $employeeId->id,
+    //                         'employee_code'                     => $employeeId->employee_id,
+    //                         'no_employee'                       => $employeeId->no_employee,
+    //                         'name'                              => $employeeId->name,
+    //                         'position_id'                       => $employeeId->position_id,
+    //                         // 'level'                          => $employeeId->position_id,
+    //                         'bank_name'                         => $employeeId->bank_name,
+    //                         'account_number'                    => $employeeId->account_number,
+    //                         'basic_salary'                      => (($value[3] !=null) ? $value[3] : 0 ),
+    //                         'allowance_fixed'                   => (($value[4] !=null) ? $value[4] : 0 ),
+    //                         'allowance_unfixed'                 => (($value[5] !=null) ? $value[5] : 0 ),
+    //                         'allowance_other'                   => 0,
+    //                         'overtime'                          => (($value[6] !=null) ? $value[6] : 0 ),
+    //                         'salary_this_month'                 => $val_salarymonth,
+    //                         'company_pay_bpjs'                  => 0,
+    //                         'total_salary'                      => $val_salarymonth,
+    //                         'company_pay_bpjs_kesehatan'        => 0,
+    //                         'company_pay_bpjs_ketenagakerjaan'  => 0,
+    //                         'employee_pay_bpjs_kesehatan'       => (($value[11] !=null) ? $value[11] : 0 ),
+    //                         'employee_pay_bpjs_ketenagakerjaan' => (($value[10] !=null) ? $value[10] : 0 ),
+    //                         'company_total_pay_bpjs'            => 0,
+    //                         'employee_total_pay_bpjs'           => $bpjs,
+    //                         'installment'                       => 0,
+    //                         'loans'                             => (($value[8] !=null) ? $value[8] : 0 ),
+    //                         'total_pay_loans'                   => $total_loan,
+    //                         'sanksi_adm'                        => (($value[9] !=null) ? $value[9] : 0 ),
+    //                         'total_deduction_other'             => $deduction_other,
+    //                         'pph21'                             => 0,
+    //                         'total_deduction'                   => $total_deduction,
+    //                         'startdate'                         => $value[17],
+    //                         'enddate'                           => $value[18],
+    //                         'take_home_pay'                     => (($value[16] !=null) ? $value[16] : 0 ),
+    //                         'branch_id'                         => $employeeId->branch_id,
+    //                         'created_at'                        => date('Y-m-d h:m:s'),
+    //                     ];
+    //                     if (!in_array($datas,$import)){
+    //                         array_push($import,$datas);
+    //                     }
+    //                     if ($value[4] !=null){
+    //                         $opt = AllowanceOption::where('name','Tunjangan Jabatan')->where('pay_type','fixed')->where('include_attendance','N')->first();
+    //                         if ($opt !=null){
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_type_id' => $opt->id,
+    //                                 'amount'            => (($value[4] !=null) ? $value[4] : 0 ),
+    //                                 'created_by'        => Auth::user()->id,
+    //                                 'created_at'        => $value[18].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[18].' '.date('h:m:s')
+    //                             ];
+    //                             AllowanceFinance::insert($data);
+    //                         }else{
+    //                             $opts = [
+    //                                 'name'               => 'Tunjangan Jabatan',
+    //                                 'pay_type'           => 'fixed',
+    //                                 'include_attendance' => 'N',
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_by'         => Auth::user()->id,
+    //                                 'created_at'        => $value[18].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[18].' '.date('h:m:s')
+    //                             ];
                                 
-                                $createOpt = AllowanceOption::Insert($opts);
+    //                             $createOpt = AllowanceOption::Insert($opts);
                                 
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_type_id' => DB::getPdo()->lastInsertId(),
-                                    'amount'            => (($value[4] !=null) ? $value[4] : 0 ),
-                                    'created_by'        => Auth::user()->creatorId(),
-                                    'created_at'        => $value[18].' '.date('h:m:s'),
-                                    'updated_at'        => $value[18].' '.date('h:m:s')
-                                ];
-                                AllowanceFinance::insert($data);
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_type_id' => DB::getPdo()->lastInsertId(),
+    //                                 'amount'            => (($value[4] !=null) ? $value[4] : 0 ),
+    //                                 'created_by'        => Auth::user()->creatorId(),
+    //                                 'created_at'        => $value[18].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[18].' '.date('h:m:s')
+    //                             ];
+    //                             AllowanceFinance::insert($data);
                                 
-                            }
+    //                         }
                             
-                        }
-                        if ($value[5] !=null){
-                            $opt = AllowanceOption::where('name','Insentif')->where('pay_type','unfixed')->where('include_attendance','N')->first();
-                            if ($opt !=null){
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_option_id' => $opt->id,
-                                    'amount'            => (($value[5] !=null) ? $value[5] : 0 ),
-                                    'created_by'        => Auth::user()->id,
-                                    'date'              => date('Y-m-d', strtotime($value[18])),
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_at'        => $value[18].' '.date('h:m:s'),
-                                    'updated_at'        => $value[18].' '.date('h:m:s')
-                                ];
-                                DB::table('allowances')->insert($data);
-                            }else{
-                                $opts = [
-                                    'name'               => 'Insentif',
-                                    'pay_type'           => 'unfixed',
-                                    'include_attendance' => 'N',
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_by'         => Auth::user()->id,
-                                    'created_at'        =>  $value[18].' '.date('h:m:s'),
-                                    'updated_at'        =>  $value[18].' '.date('h:m:s')
-                                ];
+    //                     }
+    //                     if ($value[5] !=null){
+    //                         $opt = AllowanceOption::where('name','Insentif')->where('pay_type','unfixed')->where('include_attendance','N')->first();
+    //                         if ($opt !=null){
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_option_id' => $opt->id,
+    //                                 'amount'            => (($value[5] !=null) ? $value[5] : 0 ),
+    //                                 'created_by'        => Auth::user()->id,
+    //                                 'date'              => date('Y-m-d', strtotime($value[18])),
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_at'        => $value[18].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[18].' '.date('h:m:s')
+    //                             ];
+    //                             DB::table('allowances')->insert($data);
+    //                         }else{
+    //                             $opts = [
+    //                                 'name'               => 'Insentif',
+    //                                 'pay_type'           => 'unfixed',
+    //                                 'include_attendance' => 'N',
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_by'         => Auth::user()->id,
+    //                                 'created_at'        =>  $value[18].' '.date('h:m:s'),
+    //                                 'updated_at'        =>  $value[18].' '.date('h:m:s')
+    //                             ];
                                 
-                                $createOpt = AllowanceOption::Insert($opts);
+    //                             $createOpt = AllowanceOption::Insert($opts);
                                 
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_option_id' => DB::getPdo()->lastInsertId(),
-                                    'amount'            => (($value[5] !=null) ? $value[5] : 0 ),
-                                    'created_by'        => Auth::user()->creatorId(),
-                                    'date'              => date('Y-m-d', strtotime($value[18])),
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_at'        => $value[18].' '.date('h:m:s'),
-                                    'updated_at'        => $value[18].' '.date('h:m:s')
-                                ];
-                                DB::table('allowances')->insert($data);
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_option_id' => DB::getPdo()->lastInsertId(),
+    //                                 'amount'            => (($value[5] !=null) ? $value[5] : 0 ),
+    //                                 'created_by'        => Auth::user()->creatorId(),
+    //                                 'date'              => date('Y-m-d', strtotime($value[18])),
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_at'        => $value[18].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[18].' '.date('h:m:s')
+    //                             ];
+    //                             DB::table('allowances')->insert($data);
                                 
-                            }
+    //                         }
                             
-                        }
-                        if ($value[8] !=null){
-                            $idopt = LoanOption::where('name','KASBON')->first();
+    //                     }
+    //                     if ($value[8] !=null){
+    //                         $idopt = LoanOption::where('name','KASBON')->first();
                         
-                            $data = [
-                                'employee_id'           => $employeeId->id,
-                                'loan_type_id'          => $idopt->id,
-                                'installment'           => 0,
-                                'number_of_installment' => 0,
-                                'status'                => 'paid off',
-                                'amount'                => $value[8],
-                                'created_by'            => Auth::user()->id,
-                                'branch_id'             => $employeeId->branch_id,
-                                'created_at'            => $value[18].' '.date('h:m:s'),
-                                'updated_at'            => $value[18].' '.date('h:m:s')
-                            ];
-                            Loan::insert($data);
-                        }
+    //                         $data = [
+    //                             'employee_id'           => $employeeId->id,
+    //                             'loan_type_id'          => $idopt->id,
+    //                             'installment'           => 0,
+    //                             'number_of_installment' => 0,
+    //                             'status'                => 'paid off',
+    //                             'amount'                => $value[8],
+    //                             'created_by'            => Auth::user()->id,
+    //                             'branch_id'             => $employeeId->branch_id,
+    //                             'created_at'            => $value[18].' '.date('h:m:s'),
+    //                             'updated_at'            => $value[18].' '.date('h:m:s')
+    //                         ];
+    //                         Loan::insert($data);
+    //                     }
 
-                        // if ($value[9] != null){
-                        //     $checkAdm =  Deduction_admin::where('branch_id',$employeeId->branch_id)->where('name','admin')->count();
-                        //     if ($checkAdm > 0 ){
-                        //         Deduction_admin::where('')->update();
-                        //     }
-                        // }
-                        if ($value[12] != null){
-                            $deduc2 = [
-                                'employee_id'           => $employeeId->id,
-                                'branch_id'             => $employeeId->branch_id,
-                                'date'                  => $value[18],
-                                'name'                  => 'Koperasi',
-                                'amount'                => $value[12],
-                                'created_by'            => Auth::user()->id,
-                                'created_at'            => $value[18].' '.date('h:m:s'),
-                                'updated_at'            => $value[18].' '.date('h:m:s')
-                            ];
-                            Deduction_other::create($deduc2);
-                        }
-                        if ($value[13] != null){
-                            $deduc3 = [
-                                'employee_id'           => $employeeId->id,
-                                'branch_id'             => $employeeId->branch_id,
-                                'date'                  => $value[18],
-                                'name'                  => 'Seragam',
-                                'amount'                => $value[13],
-                                'created_by'            => Auth::user()->id,
-                                'created_at'            => $value[18].' '.date('h:m:s'),
-                                'updated_at'            => $value[18].' '.date('h:m:s')
-                            ];
-                            Deduction_other::create($deduc3);
-                        }
-                        if ($value[14] != null){
-                            $deduc4 = [
-                                'employee_id'           => $employeeId->id,
-                                'branch_id'             => $employeeId->branch_id,
-                                'date'                  => $value[18],
-                                'name'                  => 'Potongan Absensi',
-                                'amount'                => $value[14],
-                                'created_by'            => Auth::user()->id,
-                                'created_at'            => $value[18].' '.date('h:m:s'),
-                                'updated_at'            => $value[18].' '.date('h:m:s')
-                            ];
-                            Deduction_other::create($deduc4);
-                        }
-                        if ($value[15] != null){
-                            $deduc5 = [
-                                'employee_id'           => $employeeId->id,
-                                'branch_id'             => $employeeId->branch_id,
-                                'date'                  => $value[18],
-                                'name'                  => 'Potongan Lain-lain',
-                                'amount'                => $value[15],
-                                'created_by'            => Auth::user()->id,
-                                'created_at'            => $value[18].' '.date('h:m:s'),
-                                'updated_at'            => $value[18].' '.date('h:m:s')
-                            ];
-                            Deduction_other::create($deduc5);
-                        }
-                    endif;
-                endif;
-            endif;
-        }
-        $run = DB::table('take_home_pay')->insert($import);
-        DB::commit();
-            $res = [
-                'status' => 'success',
-                'msg'    => 'Import Data Successfuly !',
-            ];
-            return response()->json($res);
-        DB::rollBack();
-            $res = [
-                'status' => 'error',
-                'msg'    => 'Someting went Wrong!',
-            ];
-            return response()->json($res);
-    }
+    //                     // if ($value[9] != null){
+    //                     //     $checkAdm =  Deduction_admin::where('branch_id',$employeeId->branch_id)->where('name','admin')->count();
+    //                     //     if ($checkAdm > 0 ){
+    //                     //         Deduction_admin::where('')->update();
+    //                     //     }
+    //                     // }
+    //                     if ($value[12] != null){
+    //                         $deduc2 = [
+    //                             'employee_id'           => $employeeId->id,
+    //                             'branch_id'             => $employeeId->branch_id,
+    //                             'date'                  => $value[18],
+    //                             'name'                  => 'Koperasi',
+    //                             'amount'                => $value[12],
+    //                             'created_by'            => Auth::user()->id,
+    //                             'created_at'            => $value[18].' '.date('h:m:s'),
+    //                             'updated_at'            => $value[18].' '.date('h:m:s')
+    //                         ];
+    //                         Deduction_other::create($deduc2);
+    //                     }
+    //                     if ($value[13] != null){
+    //                         $deduc3 = [
+    //                             'employee_id'           => $employeeId->id,
+    //                             'branch_id'             => $employeeId->branch_id,
+    //                             'date'                  => $value[18],
+    //                             'name'                  => 'Seragam',
+    //                             'amount'                => $value[13],
+    //                             'created_by'            => Auth::user()->id,
+    //                             'created_at'            => $value[18].' '.date('h:m:s'),
+    //                             'updated_at'            => $value[18].' '.date('h:m:s')
+    //                         ];
+    //                         Deduction_other::create($deduc3);
+    //                     }
+    //                     if ($value[14] != null){
+    //                         $deduc4 = [
+    //                             'employee_id'           => $employeeId->id,
+    //                             'branch_id'             => $employeeId->branch_id,
+    //                             'date'                  => $value[18],
+    //                             'name'                  => 'Potongan Absensi',
+    //                             'amount'                => $value[14],
+    //                             'created_by'            => Auth::user()->id,
+    //                             'created_at'            => $value[18].' '.date('h:m:s'),
+    //                             'updated_at'            => $value[18].' '.date('h:m:s')
+    //                         ];
+    //                         Deduction_other::create($deduc4);
+    //                     }
+    //                     if ($value[15] != null){
+    //                         $deduc5 = [
+    //                             'employee_id'           => $employeeId->id,
+    //                             'branch_id'             => $employeeId->branch_id,
+    //                             'date'                  => $value[18],
+    //                             'name'                  => 'Potongan Lain-lain',
+    //                             'amount'                => $value[15],
+    //                             'created_by'            => Auth::user()->id,
+    //                             'created_at'            => $value[18].' '.date('h:m:s'),
+    //                             'updated_at'            => $value[18].' '.date('h:m:s')
+    //                         ];
+    //                         Deduction_other::create($deduc5);
+    //                     }
+    //                 endif;
+    //             endif;
+    //         endif;
+    //     }
+    //     $run = DB::table('take_home_pay')->insert($import);
+    //     DB::commit();
+    //         $res = [
+    //             'status' => 'success',
+    //             'msg'    => 'Import Data Successfuly !',
+    //         ];
+    //         return response()->json($res);
+    //     DB::rollBack();
+    //         $res = [
+    //             'status' => 'error',
+    //             'msg'    => 'Someting went Wrong!',
+    //         ];
+    //         return response()->json($res);
+    // }
     // public function import_run_payroll_v2(Request $request){
     //     $file_extension = request()->file('import-payroll')->extension();
     //     if ('csv' == $file_extension) {
@@ -1284,866 +1284,866 @@ class PayrollController extends Controller
     //         ];
     //         return response()->json($res);
     // }
-    public function import_run_payroll_v2(Request $request){
-        $file_extension = request()->file('import-payroll')->extension();
-        if ('csv' == $file_extension) {
-            $res = [
-                'status' => 'success',
-                'msg'    => 'Import Data Successfuly !',
-            ];
-            return response()->json($res);
-            return true;
-        } elseif ('xls' == $file_extension) {
-            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
-        } elseif ('xlsx' == $file_extension) {
-            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-        }
+    // public function import_run_payroll_v2(Request $request){
+    //     $file_extension = request()->file('import-payroll')->extension();
+    //     if ('csv' == $file_extension) {
+    //         $res = [
+    //             'status' => 'success',
+    //             'msg'    => 'Import Data Successfuly !',
+    //         ];
+    //         return response()->json($res);
+    //         return true;
+    //     } elseif ('xls' == $file_extension) {
+    //         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+    //     } elseif ('xlsx' == $file_extension) {
+    //         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+    //     }
 
-        // $reader = new Xls();
-        $spreadsheet = $reader->load(request()->file('import-payroll'));
-        $sheetData = $spreadsheet->getActiveSheet()->toArray();
-        $import =[];
-        DB::beginTransaction();
-        foreach ($sheetData as $key => $value) {
-            if ($key > 0) :
-                $branch = Branch::where('alias',$value[21])->first();
-                if ($branch != null) :
-                    $employeeId = Employee::where('no_employee',$value[1])->where('branch_id',$branch->id)->first();
-                    $takeHP = DB::table('take_home_pay')
-                                ->where('employee_id',$employeeId->id)
-                                ->where('startdate',$value[19])
-                                ->where('enddate',$value[20])
-                                ->count();
-                    if ($takeHP > 0){
-                        DB::table('take_home_pay')
-                            ->where('employee_id',$employeeId->id)
-                            ->where('startdate',$value[19])
-                            ->where('enddate',$value[20])
-                            ->delete();
-                    }
-                    $ded_other = Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[19],'enddate'=>$value[20]])->count();
-                    if($ded_other > 0 ){
-                        Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[19],'enddate'=>$value[20]])->delete();
-                    }
-                    $ded_loan = Loan::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[19],$value[20]])->count();
-                    if ($ded_loan > 0 ){
-                        Loan::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[19],$value[20]])->delete();
-                    }
-                    $allFinance = AllowanceFinance::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[19],$value[20]])->count();
-                    if ($allFinance > 0){
-                        AllowanceFinance::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[19],$value[20]])->delete();
-                    }
-                    $allother = DB::table('allowances')->where('employee_id',$employeeId->id)->whereBetween('date',[$value[19],$value[20]])->count();
-                    if ($allother > 0){
-                        DB::table('allowances')->where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[19],$value[20]])->delete();
-                    }
-                    if ($employeeId != null ):
-                        if($employeeId->id =='' | $employeeId->id ==null){
-                            return true;
-                        }
-                        $basic_salary     =  (($value[3] !=null) ? $value[3] : 0) * (($value[4] !=null) ? $value[4] : 0);
-                        $meal_allowance   =  (($value[6] !=null) ? $value[6] : 0) * (($value[4] !=null) ? $value[4] : 0);
-                        $allowancefixed   = $meal_allowance + (($value[5] !=null) ? $value[5] : 0 );
-                        $allowanceUnfixed = (($value[7] !=null) ? $value[7] : 0 );
-                        $overtime   =  (($value[8] !=null) ? $value[8] : 0)*(($value[9] !=null) ? $value[9] : 0);
-                        $val_salarymonth  =  $basic_salary + $meal_allowance + (($value[5] !=null) ? $value[5] : 0 ) + (($value[7] !=null) ? $value[7] : 0 ) +  $overtime;
-                        $total_loan      = (($value[10] !=null) ? $value[10] : 0 );
-                        $deduction_other = (($value[11] !=null) ? $value[11] : 0 ) + (($value[14] !=null) ? $value[14] : 0 ) + (($value[15] !=null) ? $value[15] : 0 ) + (($value[16] !=null) ? $value[16] : 0 ) + (($value[17] !=null) ? $value[17] : 0 ) + (($value[18] !=null) ? $value[18] : 0 );
-                        $bpjs = (($value[12] !=null) ? $value[12] : 0 ) + (($value[13] !=null) ? $value[13] : 0 );
-                        $total_deduction = $total_loan + $deduction_other + $bpjs;
-                        $thp = $val_salarymonth -  $total_deduction;
-                        $datas = [
-                            'date'                              => date('Y-m-d'),
-                            'employee_id'                       => $employeeId->id,
-                            'employee_code'                     => $employeeId->employee_id,
-                            'no_employee'                       => $employeeId->no_employee,
-                            'name'                              => $employeeId->name,
-                            'position_id'                       => $employeeId->position_id,
-                            // 'level'                          => $employeeId->position_id,
-                            'bank_name'                         => $employeeId->bank_name,
-                            'account_number'                    => $employeeId->account_number,
-                            'basic_salary'                      => $basic_salary,
-                            'allowance_fixed'                   => $allowancefixed,
-                            'allowance_unfixed'                 => $allowanceUnfixed,
-                            'allowance_other'                   => 0,
-                            'overtime'                          => $overtime,
-                            'salary_this_month'                 => $val_salarymonth,
-                            'company_pay_bpjs'                  => 0,
-                            'total_salary'                      => $val_salarymonth,
-                            'company_pay_bpjs_kesehatan'        => 0,
-                            'company_pay_bpjs_ketenagakerjaan'  => 0,
-                            'employee_pay_bpjs_kesehatan'       => (($value[13] !=null) ? $value[13] : 0 ),
-                            'employee_pay_bpjs_ketenagakerjaan' => (($value[12] !=null) ? $value[12] : 0 ),
-                            'company_total_pay_bpjs'            => 0,
-                            'employee_total_pay_bpjs'           => $bpjs,
-                            'installment'                       => 0,
-                            'loans'                             => (($value[10] !=null) ? $value[10] : 0 ),
-                            'total_pay_loans'                   => $total_loan,
-                            'sanksi_adm'                        => (($value[11] !=null) ? $value[11] : 0 ),
-                            'total_deduction_other'             => $deduction_other,
-                            'pph21'                             => 0,
-                            'total_deduction'                   => $total_deduction,
-                            'startdate'                         => $value[19],
-                            'enddate'                           => $value[20],
-                            'take_home_pay'                     => $thp,
-                            'branch_id'                         => $employeeId->branch_id,
-                            'total_attendance'                  => $value[4],
-                            'total_overtime_hour'               => $value[9],
-                            'created_at'                        => date('Y-m-d h:m:s'),
-                        ];
-                        if (!in_array($datas,$import)){
-                            array_push($import,$datas);
-                        }
+    //     // $reader = new Xls();
+    //     $spreadsheet = $reader->load(request()->file('import-payroll'));
+    //     $sheetData = $spreadsheet->getActiveSheet()->toArray();
+    //     $import =[];
+    //     DB::beginTransaction();
+    //     foreach ($sheetData as $key => $value) {
+    //         if ($key > 0) :
+    //             $branch = Branch::where('alias',$value[21])->first();
+    //             if ($branch != null) :
+    //                 $employeeId = Employee::where('no_employee',$value[1])->where('branch_id',$branch->id)->first();
+    //                 $takeHP = DB::table('take_home_pay')
+    //                             ->where('employee_id',$employeeId->id)
+    //                             ->where('startdate',$value[19])
+    //                             ->where('enddate',$value[20])
+    //                             ->count();
+    //                 if ($takeHP > 0){
+    //                     DB::table('take_home_pay')
+    //                         ->where('employee_id',$employeeId->id)
+    //                         ->where('startdate',$value[19])
+    //                         ->where('enddate',$value[20])
+    //                         ->delete();
+    //                 }
+    //                 $ded_other = Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[19],'enddate'=>$value[20]])->count();
+    //                 if($ded_other > 0 ){
+    //                     Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[19],'enddate'=>$value[20]])->delete();
+    //                 }
+    //                 $ded_loan = Loan::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[19],$value[20]])->count();
+    //                 if ($ded_loan > 0 ){
+    //                     Loan::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[19],$value[20]])->delete();
+    //                 }
+    //                 $allFinance = AllowanceFinance::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[19],$value[20]])->count();
+    //                 if ($allFinance > 0){
+    //                     AllowanceFinance::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[19],$value[20]])->delete();
+    //                 }
+    //                 $allother = DB::table('allowances')->where('employee_id',$employeeId->id)->whereBetween('date',[$value[19],$value[20]])->count();
+    //                 if ($allother > 0){
+    //                     DB::table('allowances')->where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[19],$value[20]])->delete();
+    //                 }
+    //                 if ($employeeId != null ):
+    //                     if($employeeId->id =='' | $employeeId->id ==null){
+    //                         return true;
+    //                     }
+    //                     $basic_salary     =  (($value[3] !=null) ? $value[3] : 0) * (($value[4] !=null) ? $value[4] : 0);
+    //                     $meal_allowance   =  (($value[6] !=null) ? $value[6] : 0) * (($value[4] !=null) ? $value[4] : 0);
+    //                     $allowancefixed   = $meal_allowance + (($value[5] !=null) ? $value[5] : 0 );
+    //                     $allowanceUnfixed = (($value[7] !=null) ? $value[7] : 0 );
+    //                     $overtime   =  (($value[8] !=null) ? $value[8] : 0)*(($value[9] !=null) ? $value[9] : 0);
+    //                     $val_salarymonth  =  $basic_salary + $meal_allowance + (($value[5] !=null) ? $value[5] : 0 ) + (($value[7] !=null) ? $value[7] : 0 ) +  $overtime;
+    //                     $total_loan      = (($value[10] !=null) ? $value[10] : 0 );
+    //                     $deduction_other = (($value[11] !=null) ? $value[11] : 0 ) + (($value[14] !=null) ? $value[14] : 0 ) + (($value[15] !=null) ? $value[15] : 0 ) + (($value[16] !=null) ? $value[16] : 0 ) + (($value[17] !=null) ? $value[17] : 0 ) + (($value[18] !=null) ? $value[18] : 0 );
+    //                     $bpjs = (($value[12] !=null) ? $value[12] : 0 ) + (($value[13] !=null) ? $value[13] : 0 );
+    //                     $total_deduction = $total_loan + $deduction_other + $bpjs;
+    //                     $thp = $val_salarymonth -  $total_deduction;
+    //                     $datas = [
+    //                         'date'                              => date('Y-m-d'),
+    //                         'employee_id'                       => $employeeId->id,
+    //                         'employee_code'                     => $employeeId->employee_id,
+    //                         'no_employee'                       => $employeeId->no_employee,
+    //                         'name'                              => $employeeId->name,
+    //                         'position_id'                       => $employeeId->position_id,
+    //                         // 'level'                          => $employeeId->position_id,
+    //                         'bank_name'                         => $employeeId->bank_name,
+    //                         'account_number'                    => $employeeId->account_number,
+    //                         'basic_salary'                      => $basic_salary,
+    //                         'allowance_fixed'                   => $allowancefixed,
+    //                         'allowance_unfixed'                 => $allowanceUnfixed,
+    //                         'allowance_other'                   => 0,
+    //                         'overtime'                          => $overtime,
+    //                         'salary_this_month'                 => $val_salarymonth,
+    //                         'company_pay_bpjs'                  => 0,
+    //                         'total_salary'                      => $val_salarymonth,
+    //                         'company_pay_bpjs_kesehatan'        => 0,
+    //                         'company_pay_bpjs_ketenagakerjaan'  => 0,
+    //                         'employee_pay_bpjs_kesehatan'       => (($value[13] !=null) ? $value[13] : 0 ),
+    //                         'employee_pay_bpjs_ketenagakerjaan' => (($value[12] !=null) ? $value[12] : 0 ),
+    //                         'company_total_pay_bpjs'            => 0,
+    //                         'employee_total_pay_bpjs'           => $bpjs,
+    //                         'installment'                       => 0,
+    //                         'loans'                             => (($value[10] !=null) ? $value[10] : 0 ),
+    //                         'total_pay_loans'                   => $total_loan,
+    //                         'sanksi_adm'                        => (($value[11] !=null) ? $value[11] : 0 ),
+    //                         'total_deduction_other'             => $deduction_other,
+    //                         'pph21'                             => 0,
+    //                         'total_deduction'                   => $total_deduction,
+    //                         'startdate'                         => $value[19],
+    //                         'enddate'                           => $value[20],
+    //                         'take_home_pay'                     => $thp,
+    //                         'branch_id'                         => $employeeId->branch_id,
+    //                         'total_attendance'                  => $value[4],
+    //                         'total_overtime_hour'               => $value[9],
+    //                         'created_at'                        => date('Y-m-d h:m:s'),
+    //                     ];
+    //                     if (!in_array($datas,$import)){
+    //                         array_push($import,$datas);
+    //                     }
                         
-                        if ($value[5] !=null){
-                            $opt = AllowanceOption::where('name','Tunjangan Jabatan')->where('pay_type','fixed')->where('include_attendance','N')->first();
-                            if ($opt !=null){
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_type_id' => $opt->id,
-                                    'amount'            => (($value[5] !=null) ? $value[5] : 0 ),
-                                    'created_by'        => Auth::user()->id,
-                                    'created_at'        => $value[20].' '.date('h:m:s'),
-                                    'updated_at'        => $value[20].' '.date('h:m:s')
-                                ];
-                                AllowanceFinance::insert($data);
-                            }else{
-                                $opts = [
-                                    'name'               => 'Tunjangan Jabatan',
-                                    'pay_type'           => 'fixed',
-                                    'include_attendance' => 'N',
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_by'         => Auth::user()->id,
-                                    'created_at'        => $value[20].' '.date('h:m:s'),
-                                    'updated_at'        => $value[20].' '.date('h:m:s')
-                                ];
+    //                     if ($value[5] !=null){
+    //                         $opt = AllowanceOption::where('name','Tunjangan Jabatan')->where('pay_type','fixed')->where('include_attendance','N')->first();
+    //                         if ($opt !=null){
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_type_id' => $opt->id,
+    //                                 'amount'            => (($value[5] !=null) ? $value[5] : 0 ),
+    //                                 'created_by'        => Auth::user()->id,
+    //                                 'created_at'        => $value[20].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[20].' '.date('h:m:s')
+    //                             ];
+    //                             AllowanceFinance::insert($data);
+    //                         }else{
+    //                             $opts = [
+    //                                 'name'               => 'Tunjangan Jabatan',
+    //                                 'pay_type'           => 'fixed',
+    //                                 'include_attendance' => 'N',
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_by'         => Auth::user()->id,
+    //                                 'created_at'        => $value[20].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[20].' '.date('h:m:s')
+    //                             ];
                                 
-                                $createOpt = AllowanceOption::Insert($opts);
+    //                             $createOpt = AllowanceOption::Insert($opts);
                                 
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_type_id' => DB::getPdo()->lastInsertId(),
-                                    'amount'            => (($value[5] !=null) ? $value[5] : 0 ),
-                                    'created_by'        => Auth::user()->creatorId(),
-                                    'created_at'        => $value[20].' '.date('h:m:s'),
-                                    'updated_at'        => $value[20].' '.date('h:m:s')
-                                ];
-                                AllowanceFinance::insert($data);
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_type_id' => DB::getPdo()->lastInsertId(),
+    //                                 'amount'            => (($value[5] !=null) ? $value[5] : 0 ),
+    //                                 'created_by'        => Auth::user()->creatorId(),
+    //                                 'created_at'        => $value[20].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[20].' '.date('h:m:s')
+    //                             ];
+    //                             AllowanceFinance::insert($data);
                                 
-                            }
+    //                         }
                             
-                        }
-                        if ($value[6] !=null){
-                            $opt = AllowanceOption::where('name','Uang Makan')->where('pay_type','fixed')->where('include_attendance','Y')->first();
-                            if ($opt !=null){
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_type_id' => $opt->id,
-                                    'amount'            => (($value[6] !=null) ? $value[6] : 0 ),
-                                    'created_by'        => Auth::user()->creatorId(),
-                                    'created_at'        => $value[20].' '.date('h:m:s'),
-                                    'updated_at'        => $value[20].' '.date('h:m:s')
-                                ];
-                                AllowanceFinance::insert($data);
-                            }else{
-                                $opts = [
-                                    'name'               => 'Uang Makan',
-                                    'pay_type'           => 'fixed',
-                                    'include_attendance' => 'Y',
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_by'         => Auth::user()->id,
-                                    'created_at'        =>  $value[20].' '.date('h:m:s'),
-                                    'updated_at'        =>  $value[20].' '.date('h:m:s')
-                                ];
+    //                     }
+    //                     if ($value[6] !=null){
+    //                         $opt = AllowanceOption::where('name','Uang Makan')->where('pay_type','fixed')->where('include_attendance','Y')->first();
+    //                         if ($opt !=null){
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_type_id' => $opt->id,
+    //                                 'amount'            => (($value[6] !=null) ? $value[6] : 0 ),
+    //                                 'created_by'        => Auth::user()->creatorId(),
+    //                                 'created_at'        => $value[20].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[20].' '.date('h:m:s')
+    //                             ];
+    //                             AllowanceFinance::insert($data);
+    //                         }else{
+    //                             $opts = [
+    //                                 'name'               => 'Uang Makan',
+    //                                 'pay_type'           => 'fixed',
+    //                                 'include_attendance' => 'Y',
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_by'         => Auth::user()->id,
+    //                                 'created_at'        =>  $value[20].' '.date('h:m:s'),
+    //                                 'updated_at'        =>  $value[20].' '.date('h:m:s')
+    //                             ];
                                 
-                                $createOpt = AllowanceOption::Insert($opts);
+    //                             $createOpt = AllowanceOption::Insert($opts);
                                 
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_type_id' => DB::getPdo()->lastInsertId(),
-                                    'amount'            => (($value[6] !=null) ? $value[6] : 0 ),
-                                    'created_by'        => Auth::user()->creatorId(),
-                                    'created_at'        => $value[20].' '.date('h:m:s'),
-                                    'updated_at'        => $value[20].' '.date('h:m:s')
-                                ];
-                                AllowanceFinance::insert($data);
-                            }
-                        }
-                        if ($value[7] !=null){
-                            $opt = AllowanceOption::where('name','Insentif')->where('pay_type','unfixed')->where('include_attendance','N')->first();
-                            if ($opt !=null){
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_option_id' => $opt->id,
-                                    'amount'            => (($value[7] !=null) ? $value[7] : 0 ),
-                                    'created_by'        => Auth::user()->id,
-                                    'date'              => date('Y-m-d', strtotime($value[20])),
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_at'        => $value[20].' '.date('h:m:s'),
-                                    'updated_at'        => $value[20].' '.date('h:m:s')
-                                ];
-                                DB::table('allowances')->insert($data);
-                            }else{
-                                $opts = [
-                                    'name'               => 'Insentif',
-                                    'pay_type'           => 'unfixed',
-                                    'include_attendance' => 'N',
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_by'         => Auth::user()->id,
-                                    'created_at'        =>  $value[20].' '.date('h:m:s'),
-                                    'updated_at'        =>  $value[20].' '.date('h:m:s')
-                                ];
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_type_id' => DB::getPdo()->lastInsertId(),
+    //                                 'amount'            => (($value[6] !=null) ? $value[6] : 0 ),
+    //                                 'created_by'        => Auth::user()->creatorId(),
+    //                                 'created_at'        => $value[20].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[20].' '.date('h:m:s')
+    //                             ];
+    //                             AllowanceFinance::insert($data);
+    //                         }
+    //                     }
+    //                     if ($value[7] !=null){
+    //                         $opt = AllowanceOption::where('name','Insentif')->where('pay_type','unfixed')->where('include_attendance','N')->first();
+    //                         if ($opt !=null){
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_option_id' => $opt->id,
+    //                                 'amount'            => (($value[7] !=null) ? $value[7] : 0 ),
+    //                                 'created_by'        => Auth::user()->id,
+    //                                 'date'              => date('Y-m-d', strtotime($value[20])),
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_at'        => $value[20].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[20].' '.date('h:m:s')
+    //                             ];
+    //                             DB::table('allowances')->insert($data);
+    //                         }else{
+    //                             $opts = [
+    //                                 'name'               => 'Insentif',
+    //                                 'pay_type'           => 'unfixed',
+    //                                 'include_attendance' => 'N',
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_by'         => Auth::user()->id,
+    //                                 'created_at'        =>  $value[20].' '.date('h:m:s'),
+    //                                 'updated_at'        =>  $value[20].' '.date('h:m:s')
+    //                             ];
                                 
-                                $createOpt = AllowanceOption::Insert($opts);
+    //                             $createOpt = AllowanceOption::Insert($opts);
                                 
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_option_id' => DB::getPdo()->lastInsertId(),
-                                    'amount'            => (($value[7] !=null) ? $value[7] : 0 ),
-                                    'created_by'        => Auth::user()->creatorId(),
-                                    'date'              => date('Y-m-d', strtotime($value[20])),
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_at'        => $value[20].' '.date('h:m:s'),
-                                    'updated_at'        => $value[20].' '.date('h:m:s')
-                                ];
-                                DB::table('allowances')->insert($data);
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_option_id' => DB::getPdo()->lastInsertId(),
+    //                                 'amount'            => (($value[7] !=null) ? $value[7] : 0 ),
+    //                                 'created_by'        => Auth::user()->creatorId(),
+    //                                 'date'              => date('Y-m-d', strtotime($value[20])),
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_at'        => $value[20].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[20].' '.date('h:m:s')
+    //                             ];
+    //                             DB::table('allowances')->insert($data);
                                 
-                            }
-                        }
-                        if ($value[10] !=null){
-                            $idopt = LoanOption::where('name','KASBON')->first();
+    //                         }
+    //                     }
+    //                     if ($value[10] !=null){
+    //                         $idopt = LoanOption::where('name','KASBON')->first();
                         
-                            $data = [
-                                'employee_id'           => $employeeId->id,
-                                'loan_type_id'          => $idopt->id,
-                                'installment'           => 0,
-                                'number_of_installment' => 0,
-                                'status'                => 'paid off',
-                                'amount'                => $value[10],
-                                'created_by'            => Auth::user()->id,
-                                'branch_id'             => $employeeId->branch_id,
-                                'created_at'            => $value[20].' '.date('h:m:s'),
-                                'updated_at'            => $value[20].' '.date('h:m:s')
-                            ];
-                            Loan::insert($data);
-                        }
-                        if ($value[14] != null){
-                            $deduc2 = [
-                                'employee_id'           => $employeeId->id,
-                                'branch_id'             => $employeeId->branch_id,
-                                'date'                  => $value[20],
-                                'name'                  => 'Koperasi',
-                                'amount'                => $value[14],
-                                'created_by'            => Auth::user()->id,
-                                'created_at'            => $value[20].' '.date('h:m:s'),
-                                'updated_at'            => $value[20].' '.date('h:m:s')
-                            ];
-                            Deduction_other::create($deduc2);
-                        }
-                        if ($value[15] != null){
-                            $deduc3 = [
-                                'employee_id'           => $employeeId->id,
-                                'branch_id'             => $employeeId->branch_id,
-                                'date'                  => $value[20],
-                                'name'                  => 'Seragam',
-                                'amount'                => $value[15],
-                                'created_by'            => Auth::user()->id,
-                                'created_at'            => $value[20].' '.date('h:m:s'),
-                                'updated_at'            => $value[20].' '.date('h:m:s')
-                            ];
-                            Deduction_other::create($deduc3);
-                        }
-                        if ($value[16] != null){
-                            $deduc4 = [
-                                'employee_id'           => $employeeId->id,
-                                'branch_id'             => $employeeId->branch_id,
-                                'date'                  => $value[20],
-                                'name'                  => 'Potongan Absensi',
-                                'amount'                => $value[16],
-                                'created_by'            => Auth::user()->id,
-                                'created_at'            => $value[20].' '.date('h:m:s'),
-                                'updated_at'            => $value[20].' '.date('h:m:s')
-                            ];
-                            Deduction_other::create($deduc4);
-                        }
-                        if ($value[17] != null){
-                            $deduc5 = [
-                                'employee_id'           => $employeeId->id,
-                                'branch_id'             => $employeeId->branch_id,
-                                'date'                  => $value[20],
-                                'name'                  => 'Potongan Terlambat',
-                                'amount'                => $value[17],
-                                'created_by'            => Auth::user()->id,
-                                'created_at'            => $value[20].' '.date('h:m:s'),
-                                'updated_at'            => $value[20].' '.date('h:m:s')
-                            ];
-                            Deduction_other::create($deduc5);
-                        }
-                        if ($value[18] != null){
-                            $deduc5 = [
-                                'employee_id'           => $employeeId->id,
-                                'branch_id'             => $employeeId->branch_id,
-                                'date'                  => $value[20],
-                                'name'                  => 'Potongan Lain-lain',
-                                'amount'                => $value[18],
-                                'created_by'            => Auth::user()->id,
-                                'created_at'            => $value[20].' '.date('h:m:s'),
-                                'updated_at'            => $value[20].' '.date('h:m:s')
-                            ];
-                            Deduction_other::create($deduc5);
-                        }
-                    endif;
-                endif;
-            endif;
-        }
+    //                         $data = [
+    //                             'employee_id'           => $employeeId->id,
+    //                             'loan_type_id'          => $idopt->id,
+    //                             'installment'           => 0,
+    //                             'number_of_installment' => 0,
+    //                             'status'                => 'paid off',
+    //                             'amount'                => $value[10],
+    //                             'created_by'            => Auth::user()->id,
+    //                             'branch_id'             => $employeeId->branch_id,
+    //                             'created_at'            => $value[20].' '.date('h:m:s'),
+    //                             'updated_at'            => $value[20].' '.date('h:m:s')
+    //                         ];
+    //                         Loan::insert($data);
+    //                     }
+    //                     if ($value[14] != null){
+    //                         $deduc2 = [
+    //                             'employee_id'           => $employeeId->id,
+    //                             'branch_id'             => $employeeId->branch_id,
+    //                             'date'                  => $value[20],
+    //                             'name'                  => 'Koperasi',
+    //                             'amount'                => $value[14],
+    //                             'created_by'            => Auth::user()->id,
+    //                             'created_at'            => $value[20].' '.date('h:m:s'),
+    //                             'updated_at'            => $value[20].' '.date('h:m:s')
+    //                         ];
+    //                         Deduction_other::create($deduc2);
+    //                     }
+    //                     if ($value[15] != null){
+    //                         $deduc3 = [
+    //                             'employee_id'           => $employeeId->id,
+    //                             'branch_id'             => $employeeId->branch_id,
+    //                             'date'                  => $value[20],
+    //                             'name'                  => 'Seragam',
+    //                             'amount'                => $value[15],
+    //                             'created_by'            => Auth::user()->id,
+    //                             'created_at'            => $value[20].' '.date('h:m:s'),
+    //                             'updated_at'            => $value[20].' '.date('h:m:s')
+    //                         ];
+    //                         Deduction_other::create($deduc3);
+    //                     }
+    //                     if ($value[16] != null){
+    //                         $deduc4 = [
+    //                             'employee_id'           => $employeeId->id,
+    //                             'branch_id'             => $employeeId->branch_id,
+    //                             'date'                  => $value[20],
+    //                             'name'                  => 'Potongan Absensi',
+    //                             'amount'                => $value[16],
+    //                             'created_by'            => Auth::user()->id,
+    //                             'created_at'            => $value[20].' '.date('h:m:s'),
+    //                             'updated_at'            => $value[20].' '.date('h:m:s')
+    //                         ];
+    //                         Deduction_other::create($deduc4);
+    //                     }
+    //                     if ($value[17] != null){
+    //                         $deduc5 = [
+    //                             'employee_id'           => $employeeId->id,
+    //                             'branch_id'             => $employeeId->branch_id,
+    //                             'date'                  => $value[20],
+    //                             'name'                  => 'Potongan Terlambat',
+    //                             'amount'                => $value[17],
+    //                             'created_by'            => Auth::user()->id,
+    //                             'created_at'            => $value[20].' '.date('h:m:s'),
+    //                             'updated_at'            => $value[20].' '.date('h:m:s')
+    //                         ];
+    //                         Deduction_other::create($deduc5);
+    //                     }
+    //                     if ($value[18] != null){
+    //                         $deduc5 = [
+    //                             'employee_id'           => $employeeId->id,
+    //                             'branch_id'             => $employeeId->branch_id,
+    //                             'date'                  => $value[20],
+    //                             'name'                  => 'Potongan Lain-lain',
+    //                             'amount'                => $value[18],
+    //                             'created_by'            => Auth::user()->id,
+    //                             'created_at'            => $value[20].' '.date('h:m:s'),
+    //                             'updated_at'            => $value[20].' '.date('h:m:s')
+    //                         ];
+    //                         Deduction_other::create($deduc5);
+    //                     }
+    //                 endif;
+    //             endif;
+    //         endif;
+    //     }
        
-        $run = DB::table('take_home_pay')->insert($import);
-        DB::commit();
-            $res = [
-                'status' => 'success',
-                'msg'    => 'Import Data Successfuly !',
-            ];
-            return response()->json($res);
-        DB::rollBack();
-            $res = [
-                'status' => 'error',
-                'msg'    => 'Someting went Wrong!',
-            ];
-            return response()->json($res);
-    }
-    public function import_run_payroll_v3(Request $request){
-        $file_extension = request()->file('import-payroll')->extension();
-        if ('csv' == $file_extension) {
-            $res = [
-                'status' => 'success',
-                'msg'    => 'Import Data Successfuly !',
-            ];
-            return response()->json($res);
-            return true;
-        } elseif ('xls' == $file_extension) {
-            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
-        } elseif ('xlsx' == $file_extension) {
-            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-        }
+    //     $run = DB::table('take_home_pay')->insert($import);
+    //     DB::commit();
+    //         $res = [
+    //             'status' => 'success',
+    //             'msg'    => 'Import Data Successfuly !',
+    //         ];
+    //         return response()->json($res);
+    //     DB::rollBack();
+    //         $res = [
+    //             'status' => 'error',
+    //             'msg'    => 'Someting went Wrong!',
+    //         ];
+    //         return response()->json($res);
+    // }
+    // public function import_run_payroll_v3(Request $request){
+    //     $file_extension = request()->file('import-payroll')->extension();
+    //     if ('csv' == $file_extension) {
+    //         $res = [
+    //             'status' => 'success',
+    //             'msg'    => 'Import Data Successfuly !',
+    //         ];
+    //         return response()->json($res);
+    //         return true;
+    //     } elseif ('xls' == $file_extension) {
+    //         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+    //     } elseif ('xlsx' == $file_extension) {
+    //         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+    //     }
 
-        // $reader = new Xls();
-        $spreadsheet = $reader->load(request()->file('import-payroll'));
-        $sheetData = $spreadsheet->getActiveSheet()->toArray();
-        $import =[];
-        DB::beginTransaction();
-        foreach ($sheetData as $key => $value) {
-            if ($key > 0) :
-                $branch = Branch::where('alias',$value[26])->first();
-                if ($branch != null) :
-                    $employeeId = Employee::where('no_employee',$value[1])->where('branch_id',$branch->id)->first();
-                    // dd($value[1]);
-                    $takeHP = DB::table('take_home_pay')
-                                ->where('employee_id',$employeeId->id)
-                                ->where('startdate',$value[24])
-                                ->where('enddate',$value[25])
-                                ->count();
-                    if ($takeHP > 0){
-                        DB::table('take_home_pay')
-                            ->where('employee_id',$employeeId->id)
-                            ->where('startdate',$value[24])
-                            ->where('enddate',$value[25])
-                            ->delete();
-                    }
-                    $ded_other = Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[24],'enddate'=>$value[25]])->count();
-                    if($ded_other > 0 ){
-                        Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[24],'enddate'=>$value[25]])->delete();
-                    }
-                    $ded_loan = Loan::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[24],$value[25]])->count();
-                    if ($ded_loan > 0 ){
-                        Loan::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[24],$value[25]])->delete();
-                    }
-                    $allFinance = AllowanceFinance::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[24],$value[25]])->count();
-                    if ($allFinance > 0){
-                        AllowanceFinance::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[24],$value[25]])->delete();
-                    }
-                    $allother = DB::table('allowances')->where('employee_id',$employeeId->id)->whereBetween('date',[$value[24],$value[25]])->count();
-                    if ($allother > 0){
-                        DB::table('allowances')->where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[24],$value[25]])->delete();
-                    }
-                    if ($employeeId != null ):
-                        if($employeeId->id =='' | $employeeId->id ==null){
-                            return true;
-                        }
-                        $basic_salary     =  (($value[3] !=null) ? $value[3] : 0);
-                        $meal_allowance   =  (($value[6] !=null) ? $value[6] : 0) * (($value[4] !=null) ? $value[4] : 0);
-                        $allowanceUnfixed = (($value[7] !=null) ? $value[7] : 0 ) + (($value[8] !=null) ? $value[8] : 0 ) + (($value[9] !=null) ? $value[9] : 0 ) +(($value[10] !=null) ? $value[10] : 0 )+(($value[11] !=null) ? $value[11] : 0 )+(($value[12] !=null) ? $value[12] : 0 );
-                        $allowancefixed   = $meal_allowance + (($value[5] !=null) ? $value[5] : 0 );
-                        $overtime         =  (($value[13] !=null) ? $value[13] : 0);
-                        $val_salarymonth  =  $basic_salary + $allowancefixed + $allowanceUnfixed +  $overtime;
-                        $total_loan       = (($value[15] !=null) ? $value[15] : 0 );
-                        $deduction_other  = (($value[16] !=null) ? $value[16] : 0 ) + (($value[19] !=null) ? $value[19] : 0 ) + (($value[20] !=null) ? $value[20] : 0 ) + (($value[21] !=null) ? $value[21] : 0 ) + (($value[22] !=null) ? $value[22] : 0 ) + (($value[23] !=null) ? $value[23] : 0 );
-                        $bpjs             = (($value[17] !=null) ? $value[17] : 0 ) + (($value[18] !=null) ? $value[18] : 0 );
-                        $total_deduction  = $total_loan + $deduction_other + $bpjs;
-                        $thp              = $val_salarymonth -  $total_deduction;
-                        $datas = [
-                            'date'                              => date('Y-m-d'),
-                            'employee_id'                       => $employeeId->id,
-                            'employee_code'                     => $employeeId->employee_id,
-                            'no_employee'                       => $employeeId->no_employee,
-                            'name'                              => $employeeId->name,
-                            'position_id'                       => $employeeId->position_id,
-                            // 'level'                          => $employeeId->position_id,
-                            'bank_name'                         => $employeeId->bank_name,
-                            'account_number'                    => $employeeId->account_number,
-                            'basic_salary'                      => $basic_salary,
-                            'allowance_fixed'                   => $allowancefixed,
-                            'allowance_unfixed'                 => $allowanceUnfixed,
-                            'allowance_other'                   => 0,
-                            'overtime'                          => $overtime,
-                            'salary_this_month'                 => $val_salarymonth,
-                            'company_pay_bpjs'                  => 0,
-                            'total_salary'                      => $val_salarymonth,
-                            'company_pay_bpjs_kesehatan'        => 0,
-                            'company_pay_bpjs_ketenagakerjaan'  => 0,
-                            'employee_pay_bpjs_kesehatan'       => (($value[18] !=null) ? $value[18] : 0 ),
-                            'employee_pay_bpjs_ketenagakerjaan' => (($value[17] !=null) ? $value[17] : 0 ),
-                            'company_total_pay_bpjs'            => 0,
-                            'employee_total_pay_bpjs'           => $bpjs,
-                            'installment'                       => 0,
-                            'loans'                             => (($value[15] !=null) ? $value[15] : 0 ),
-                            'total_pay_loans'                   => $total_loan,
-                            'sanksi_adm'                        => (($value[16] !=null) ? $value[16] : 0 ),
-                            'total_deduction_other'             => $deduction_other,
-                            'pph21'                             => 0,
-                            'total_deduction'                   => $total_deduction,
-                            'startdate'                         => $value[24],
-                            'enddate'                           => $value[25],
-                            'take_home_pay'                     => $thp,
-                            'branch_id'                         => $employeeId->branch_id,
-                            'total_attendance'                  => $value[4],
-                            'total_overtime_hour'               => $value[14],
-                            'created_at'                        => date('Y-m-d h:m:s'),
-                        ];
-                        if (!in_array($datas,$import)){
-                            array_push($import,$datas);
-                        }
+    //     // $reader = new Xls();
+    //     $spreadsheet = $reader->load(request()->file('import-payroll'));
+    //     $sheetData = $spreadsheet->getActiveSheet()->toArray();
+    //     $import =[];
+    //     DB::beginTransaction();
+    //     foreach ($sheetData as $key => $value) {
+    //         if ($key > 0) :
+    //             $branch = Branch::where('alias',$value[26])->first();
+    //             if ($branch != null) :
+    //                 $employeeId = Employee::where('no_employee',$value[1])->where('branch_id',$branch->id)->first();
+    //                 // dd($value[1]);
+    //                 $takeHP = DB::table('take_home_pay')
+    //                             ->where('employee_id',$employeeId->id)
+    //                             ->where('startdate',$value[24])
+    //                             ->where('enddate',$value[25])
+    //                             ->count();
+    //                 if ($takeHP > 0){
+    //                     DB::table('take_home_pay')
+    //                         ->where('employee_id',$employeeId->id)
+    //                         ->where('startdate',$value[24])
+    //                         ->where('enddate',$value[25])
+    //                         ->delete();
+    //                 }
+    //                 $ded_other = Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[24],'enddate'=>$value[25]])->count();
+    //                 if($ded_other > 0 ){
+    //                     Deduction_other::where('employee_id',$employeeId->id)->whereBetween('date',['startdate'=>$value[24],'enddate'=>$value[25]])->delete();
+    //                 }
+    //                 $ded_loan = Loan::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[24],$value[25]])->count();
+    //                 if ($ded_loan > 0 ){
+    //                     Loan::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[24],$value[25]])->delete();
+    //                 }
+    //                 $allFinance = AllowanceFinance::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[24],$value[25]])->count();
+    //                 if ($allFinance > 0){
+    //                     AllowanceFinance::where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[24],$value[25]])->delete();
+    //                 }
+    //                 $allother = DB::table('allowances')->where('employee_id',$employeeId->id)->whereBetween('date',[$value[24],$value[25]])->count();
+    //                 if ($allother > 0){
+    //                     DB::table('allowances')->where('employee_id',$employeeId->id)->whereBetween(DB::raw("DATE(created_at)"),[$value[24],$value[25]])->delete();
+    //                 }
+    //                 if ($employeeId != null ):
+    //                     if($employeeId->id =='' | $employeeId->id ==null){
+    //                         return true;
+    //                     }
+    //                     $basic_salary     =  (($value[3] !=null) ? $value[3] : 0);
+    //                     $meal_allowance   =  (($value[6] !=null) ? $value[6] : 0) * (($value[4] !=null) ? $value[4] : 0);
+    //                     $allowanceUnfixed = (($value[7] !=null) ? $value[7] : 0 ) + (($value[8] !=null) ? $value[8] : 0 ) + (($value[9] !=null) ? $value[9] : 0 ) +(($value[10] !=null) ? $value[10] : 0 )+(($value[11] !=null) ? $value[11] : 0 )+(($value[12] !=null) ? $value[12] : 0 );
+    //                     $allowancefixed   = $meal_allowance + (($value[5] !=null) ? $value[5] : 0 );
+    //                     $overtime         =  (($value[13] !=null) ? $value[13] : 0);
+    //                     $val_salarymonth  =  $basic_salary + $allowancefixed + $allowanceUnfixed +  $overtime;
+    //                     $total_loan       = (($value[15] !=null) ? $value[15] : 0 );
+    //                     $deduction_other  = (($value[16] !=null) ? $value[16] : 0 ) + (($value[19] !=null) ? $value[19] : 0 ) + (($value[20] !=null) ? $value[20] : 0 ) + (($value[21] !=null) ? $value[21] : 0 ) + (($value[22] !=null) ? $value[22] : 0 ) + (($value[23] !=null) ? $value[23] : 0 );
+    //                     $bpjs             = (($value[17] !=null) ? $value[17] : 0 ) + (($value[18] !=null) ? $value[18] : 0 );
+    //                     $total_deduction  = $total_loan + $deduction_other + $bpjs;
+    //                     $thp              = $val_salarymonth -  $total_deduction;
+    //                     $datas = [
+    //                         'date'                              => date('Y-m-d'),
+    //                         'employee_id'                       => $employeeId->id,
+    //                         'employee_code'                     => $employeeId->employee_id,
+    //                         'no_employee'                       => $employeeId->no_employee,
+    //                         'name'                              => $employeeId->name,
+    //                         'position_id'                       => $employeeId->position_id,
+    //                         // 'level'                          => $employeeId->position_id,
+    //                         'bank_name'                         => $employeeId->bank_name,
+    //                         'account_number'                    => $employeeId->account_number,
+    //                         'basic_salary'                      => $basic_salary,
+    //                         'allowance_fixed'                   => $allowancefixed,
+    //                         'allowance_unfixed'                 => $allowanceUnfixed,
+    //                         'allowance_other'                   => 0,
+    //                         'overtime'                          => $overtime,
+    //                         'salary_this_month'                 => $val_salarymonth,
+    //                         'company_pay_bpjs'                  => 0,
+    //                         'total_salary'                      => $val_salarymonth,
+    //                         'company_pay_bpjs_kesehatan'        => 0,
+    //                         'company_pay_bpjs_ketenagakerjaan'  => 0,
+    //                         'employee_pay_bpjs_kesehatan'       => (($value[18] !=null) ? $value[18] : 0 ),
+    //                         'employee_pay_bpjs_ketenagakerjaan' => (($value[17] !=null) ? $value[17] : 0 ),
+    //                         'company_total_pay_bpjs'            => 0,
+    //                         'employee_total_pay_bpjs'           => $bpjs,
+    //                         'installment'                       => 0,
+    //                         'loans'                             => (($value[15] !=null) ? $value[15] : 0 ),
+    //                         'total_pay_loans'                   => $total_loan,
+    //                         'sanksi_adm'                        => (($value[16] !=null) ? $value[16] : 0 ),
+    //                         'total_deduction_other'             => $deduction_other,
+    //                         'pph21'                             => 0,
+    //                         'total_deduction'                   => $total_deduction,
+    //                         'startdate'                         => $value[24],
+    //                         'enddate'                           => $value[25],
+    //                         'take_home_pay'                     => $thp,
+    //                         'branch_id'                         => $employeeId->branch_id,
+    //                         'total_attendance'                  => $value[4],
+    //                         'total_overtime_hour'               => $value[14],
+    //                         'created_at'                        => date('Y-m-d h:m:s'),
+    //                     ];
+    //                     if (!in_array($datas,$import)){
+    //                         array_push($import,$datas);
+    //                     }
                         
-                        if ($value[5] !=null){
-                            $opt = AllowanceOption::where('name','Tunjangan Jabatan')->where('pay_type','fixed')->where('include_attendance','N')->first();
-                            if ($opt !=null){
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_type_id' => $opt->id,
-                                    'amount'            => (($value[5] !=null) ? $value[5] : 0 ),
-                                    'created_by'        => Auth::user()->id,
-                                    'created_at'        => $value[25].' '.date('h:m:s'),
-                                    'updated_at'        => $value[25].' '.date('h:m:s')
-                                ];
-                                AllowanceFinance::insert($data);
-                            }else{
-                                $opts = [
-                                    'name'               => 'Tunjangan Jabatan',
-                                    'pay_type'           => 'fixed',
-                                    'include_attendance' => 'N',
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_by'         => Auth::user()->id,
-                                    'created_at'        => $value[25].' '.date('h:m:s'),
-                                    'updated_at'        => $value[25].' '.date('h:m:s')
-                                ];
+    //                     if ($value[5] !=null){
+    //                         $opt = AllowanceOption::where('name','Tunjangan Jabatan')->where('pay_type','fixed')->where('include_attendance','N')->first();
+    //                         if ($opt !=null){
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_type_id' => $opt->id,
+    //                                 'amount'            => (($value[5] !=null) ? $value[5] : 0 ),
+    //                                 'created_by'        => Auth::user()->id,
+    //                                 'created_at'        => $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[25].' '.date('h:m:s')
+    //                             ];
+    //                             AllowanceFinance::insert($data);
+    //                         }else{
+    //                             $opts = [
+    //                                 'name'               => 'Tunjangan Jabatan',
+    //                                 'pay_type'           => 'fixed',
+    //                                 'include_attendance' => 'N',
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_by'         => Auth::user()->id,
+    //                                 'created_at'        => $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[25].' '.date('h:m:s')
+    //                             ];
                                 
-                                $createOpt = AllowanceOption::Insert($opts);
+    //                             $createOpt = AllowanceOption::Insert($opts);
                                 
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_type_id' => DB::getPdo()->lastInsertId(),
-                                    'amount'            => (($value[5] !=null) ? $value[5] : 0 ),
-                                    'created_by'        => Auth::user()->creatorId(),
-                                    'created_at'        => $value[25].' '.date('h:m:s'),
-                                    'updated_at'        => $value[25].' '.date('h:m:s')
-                                ];
-                                AllowanceFinance::insert($data);
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_type_id' => DB::getPdo()->lastInsertId(),
+    //                                 'amount'            => (($value[5] !=null) ? $value[5] : 0 ),
+    //                                 'created_by'        => Auth::user()->creatorId(),
+    //                                 'created_at'        => $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[25].' '.date('h:m:s')
+    //                             ];
+    //                             AllowanceFinance::insert($data);
                                 
-                            }
+    //                         }
                             
-                        }
-                        if ($value[6] !=null){
-                            $opt = AllowanceOption::where('name','Uang Makan')->where('pay_type','fixed')->where('include_attendance','Y')->first();
-                            if ($opt !=null){
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_type_id' => $opt->id,
-                                    'amount'            => (($value[6] !=null) ? $value[6] : 0 ),
-                                    'created_by'        => Auth::user()->creatorId(),
-                                    'created_at'        => $value[25].' '.date('h:m:s'),
-                                    'updated_at'        => $value[25].' '.date('h:m:s')
-                                ];
-                                AllowanceFinance::insert($data);
-                            }else{
-                                $opts = [
-                                    'name'               => 'Uang Makan',
-                                    'pay_type'           => 'fixed',
-                                    'include_attendance' => 'Y',
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_by'         => Auth::user()->id,
-                                    'created_at'        =>  $value[25].' '.date('h:m:s'),
-                                    'updated_at'        =>  $value[25].' '.date('h:m:s')
-                                ];
+    //                     }
+    //                     if ($value[6] !=null){
+    //                         $opt = AllowanceOption::where('name','Uang Makan')->where('pay_type','fixed')->where('include_attendance','Y')->first();
+    //                         if ($opt !=null){
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_type_id' => $opt->id,
+    //                                 'amount'            => (($value[6] !=null) ? $value[6] : 0 ),
+    //                                 'created_by'        => Auth::user()->creatorId(),
+    //                                 'created_at'        => $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[25].' '.date('h:m:s')
+    //                             ];
+    //                             AllowanceFinance::insert($data);
+    //                         }else{
+    //                             $opts = [
+    //                                 'name'               => 'Uang Makan',
+    //                                 'pay_type'           => 'fixed',
+    //                                 'include_attendance' => 'Y',
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_by'         => Auth::user()->id,
+    //                                 'created_at'        =>  $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        =>  $value[25].' '.date('h:m:s')
+    //                             ];
                                 
-                                $createOpt = AllowanceOption::Insert($opts);
+    //                             $createOpt = AllowanceOption::Insert($opts);
                                 
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_type_id' => DB::getPdo()->lastInsertId(),
-                                    'amount'            => (($value[6] !=null) ? $value[6] : 0 ),
-                                    'created_by'        => Auth::user()->creatorId(),
-                                    'created_at'        => $value[25].' '.date('h:m:s'),
-                                    'updated_at'        => $value[25].' '.date('h:m:s')
-                                ];
-                                AllowanceFinance::insert($data);
-                            }
-                        }
-                        if ($value[7] !=null){
-                            $opt = AllowanceOption::where('name','Loyalitas')->where('pay_type','unfixed')->where('include_attendance','N')->first();
-                            if ($opt !=null){
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_option_id' => $opt->id,
-                                    'amount'            => (($value[7] !=null) ? $value[7] : 0 ),
-                                    'created_by'        => Auth::user()->id,
-                                    'date'              => date('Y-m-d', strtotime($value[25])),
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_at'        => $value[25].' '.date('h:m:s'),
-                                    'updated_at'        => $value[25].' '.date('h:m:s')
-                                ];
-                                DB::table('allowances')->insert($data);
-                            }else{
-                                $opts = [
-                                    'name'               => 'Loyalitas',
-                                    'pay_type'           => 'unfixed',
-                                    'include_attendance' => 'N',
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_by'         => Auth::user()->id,
-                                    'created_at'        =>  $value[25].' '.date('h:m:s'),
-                                    'updated_at'        =>  $value[25].' '.date('h:m:s')
-                                ];
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_type_id' => DB::getPdo()->lastInsertId(),
+    //                                 'amount'            => (($value[6] !=null) ? $value[6] : 0 ),
+    //                                 'created_by'        => Auth::user()->creatorId(),
+    //                                 'created_at'        => $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[25].' '.date('h:m:s')
+    //                             ];
+    //                             AllowanceFinance::insert($data);
+    //                         }
+    //                     }
+    //                     if ($value[7] !=null){
+    //                         $opt = AllowanceOption::where('name','Loyalitas')->where('pay_type','unfixed')->where('include_attendance','N')->first();
+    //                         if ($opt !=null){
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_option_id' => $opt->id,
+    //                                 'amount'            => (($value[7] !=null) ? $value[7] : 0 ),
+    //                                 'created_by'        => Auth::user()->id,
+    //                                 'date'              => date('Y-m-d', strtotime($value[25])),
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_at'        => $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[25].' '.date('h:m:s')
+    //                             ];
+    //                             DB::table('allowances')->insert($data);
+    //                         }else{
+    //                             $opts = [
+    //                                 'name'               => 'Loyalitas',
+    //                                 'pay_type'           => 'unfixed',
+    //                                 'include_attendance' => 'N',
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_by'         => Auth::user()->id,
+    //                                 'created_at'        =>  $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        =>  $value[25].' '.date('h:m:s')
+    //                             ];
                                 
-                                $createOpt = AllowanceOption::Insert($opts);
+    //                             $createOpt = AllowanceOption::Insert($opts);
                                 
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_option_id' => DB::getPdo()->lastInsertId(),
-                                    'amount'            => (($value[7] !=null) ? $value[7] : 0 ),
-                                    'created_by'        => Auth::user()->creatorId(),
-                                    'date'              => date('Y-m-d', strtotime($value[25])),
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_at'        => $value[25].' '.date('h:m:s'),
-                                    'updated_at'        => $value[25].' '.date('h:m:s')
-                                ];
-                                DB::table('allowances')->insert($data);
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_option_id' => DB::getPdo()->lastInsertId(),
+    //                                 'amount'            => (($value[7] !=null) ? $value[7] : 0 ),
+    //                                 'created_by'        => Auth::user()->creatorId(),
+    //                                 'date'              => date('Y-m-d', strtotime($value[25])),
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_at'        => $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[25].' '.date('h:m:s')
+    //                             ];
+    //                             DB::table('allowances')->insert($data);
                                 
-                            }
-                        }
-                        if ($value[8] !=null){
-                            $opt = AllowanceOption::where('name','Kehadiran')->where('pay_type','unfixed')->where('include_attendance','N')->first();
-                            if ($opt !=null){
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_option_id' => $opt->id,
-                                    'amount'            => (($value[8] !=null) ? $value[8] : 0 ),
-                                    'created_by'        => Auth::user()->id,
-                                    'date'              => date('Y-m-d', strtotime($value[25])),
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_at'        => $value[25].' '.date('h:m:s'),
-                                    'updated_at'        => $value[25].' '.date('h:m:s')
-                                ];
-                                DB::table('allowances')->insert($data);
-                            }else{
-                                $opts = [
-                                    'name'               => 'Kehadiran',
-                                    'pay_type'           => 'unfixed',
-                                    'include_attendance' => 'N',
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_by'         => Auth::user()->id,
-                                    'created_at'        =>  $value[25].' '.date('h:m:s'),
-                                    'updated_at'        =>  $value[25].' '.date('h:m:s')
-                                ];
+    //                         }
+    //                     }
+    //                     if ($value[8] !=null){
+    //                         $opt = AllowanceOption::where('name','Kehadiran')->where('pay_type','unfixed')->where('include_attendance','N')->first();
+    //                         if ($opt !=null){
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_option_id' => $opt->id,
+    //                                 'amount'            => (($value[8] !=null) ? $value[8] : 0 ),
+    //                                 'created_by'        => Auth::user()->id,
+    //                                 'date'              => date('Y-m-d', strtotime($value[25])),
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_at'        => $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[25].' '.date('h:m:s')
+    //                             ];
+    //                             DB::table('allowances')->insert($data);
+    //                         }else{
+    //                             $opts = [
+    //                                 'name'               => 'Kehadiran',
+    //                                 'pay_type'           => 'unfixed',
+    //                                 'include_attendance' => 'N',
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_by'         => Auth::user()->id,
+    //                                 'created_at'        =>  $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        =>  $value[25].' '.date('h:m:s')
+    //                             ];
                                 
-                                $createOpt = AllowanceOption::Insert($opts);
+    //                             $createOpt = AllowanceOption::Insert($opts);
                                 
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_option_id' => DB::getPdo()->lastInsertId(),
-                                    'amount'            => (($value[8] !=null) ? $value[8] : 0 ),
-                                    'created_by'        => Auth::user()->creatorId(),
-                                    'date'              => date('Y-m-d', strtotime($value[25])),
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_at'        => $value[25].' '.date('h:m:s'),
-                                    'updated_at'        => $value[25].' '.date('h:m:s')
-                                ];
-                                DB::table('allowances')->insert($data);
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_option_id' => DB::getPdo()->lastInsertId(),
+    //                                 'amount'            => (($value[8] !=null) ? $value[8] : 0 ),
+    //                                 'created_by'        => Auth::user()->creatorId(),
+    //                                 'date'              => date('Y-m-d', strtotime($value[25])),
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_at'        => $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[25].' '.date('h:m:s')
+    //                             ];
+    //                             DB::table('allowances')->insert($data);
                                 
-                            }
-                        }
-                        if ($value[9] !=null){
-                            $opt = AllowanceOption::where('name','Shif')->where('pay_type','unfixed')->where('include_attendance','N')->first();
-                            if ($opt !=null){
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_option_id' => $opt->id,
-                                    'amount'            => (($value[9] !=null) ? $value[9] : 0 ),
-                                    'created_by'        => Auth::user()->id,
-                                    'date'              => date('Y-m-d', strtotime($value[25])),
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_at'        => $value[25].' '.date('h:m:s'),
-                                    'updated_at'        => $value[25].' '.date('h:m:s')
-                                ];
-                                DB::table('allowances')->insert($data);
-                            }else{
-                                $opts = [
-                                    'name'               => 'Shif',
-                                    'pay_type'           => 'unfixed',
-                                    'include_attendance' => 'N',
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_by'         => Auth::user()->id,
-                                    'created_at'        =>  $value[25].' '.date('h:m:s'),
-                                    'updated_at'        =>  $value[25].' '.date('h:m:s')
-                                ];
+    //                         }
+    //                     }
+    //                     if ($value[9] !=null){
+    //                         $opt = AllowanceOption::where('name','Shif')->where('pay_type','unfixed')->where('include_attendance','N')->first();
+    //                         if ($opt !=null){
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_option_id' => $opt->id,
+    //                                 'amount'            => (($value[9] !=null) ? $value[9] : 0 ),
+    //                                 'created_by'        => Auth::user()->id,
+    //                                 'date'              => date('Y-m-d', strtotime($value[25])),
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_at'        => $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[25].' '.date('h:m:s')
+    //                             ];
+    //                             DB::table('allowances')->insert($data);
+    //                         }else{
+    //                             $opts = [
+    //                                 'name'               => 'Shif',
+    //                                 'pay_type'           => 'unfixed',
+    //                                 'include_attendance' => 'N',
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_by'         => Auth::user()->id,
+    //                                 'created_at'        =>  $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        =>  $value[25].' '.date('h:m:s')
+    //                             ];
                                 
-                                $createOpt = AllowanceOption::Insert($opts);
+    //                             $createOpt = AllowanceOption::Insert($opts);
                                 
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_option_id' => DB::getPdo()->lastInsertId(),
-                                    'amount'            => (($value[9] !=null) ? $value[9] : 0 ),
-                                    'created_by'        => Auth::user()->creatorId(),
-                                    'date'              => date('Y-m-d', strtotime($value[25])),
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_at'        => $value[25].' '.date('h:m:s'),
-                                    'updated_at'        => $value[25].' '.date('h:m:s')
-                                ];
-                                DB::table('allowances')->insert($data);
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_option_id' => DB::getPdo()->lastInsertId(),
+    //                                 'amount'            => (($value[9] !=null) ? $value[9] : 0 ),
+    //                                 'created_by'        => Auth::user()->creatorId(),
+    //                                 'date'              => date('Y-m-d', strtotime($value[25])),
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_at'        => $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[25].' '.date('h:m:s')
+    //                             ];
+    //                             DB::table('allowances')->insert($data);
                                 
-                            }
-                        }
-                        if ($value[10] !=null){
-                            $opt = AllowanceOption::where('name','Insentif Panel')->where('pay_type','unfixed')->where('include_attendance','N')->first();
-                            if ($opt !=null){
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_option_id' => $opt->id,
-                                    'amount'            => (($value[10] !=null) ? $value[10] : 0 ),
-                                    'created_by'        => Auth::user()->id,
-                                    'date'              => date('Y-m-d', strtotime($value[25])),
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_at'        => $value[25].' '.date('h:m:s'),
-                                    'updated_at'        => $value[25].' '.date('h:m:s')
-                                ];
-                                DB::table('allowances')->insert($data);
-                            }else{
-                                $opts = [
-                                    'name'               => 'Insentif Panel',
-                                    'pay_type'           => 'unfixed',
-                                    'include_attendance' => 'N',
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_by'         => Auth::user()->id,
-                                    'created_at'        =>  $value[25].' '.date('h:m:s'),
-                                    'updated_at'        =>  $value[25].' '.date('h:m:s')
-                                ];
+    //                         }
+    //                     }
+    //                     if ($value[10] !=null){
+    //                         $opt = AllowanceOption::where('name','Insentif Panel')->where('pay_type','unfixed')->where('include_attendance','N')->first();
+    //                         if ($opt !=null){
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_option_id' => $opt->id,
+    //                                 'amount'            => (($value[10] !=null) ? $value[10] : 0 ),
+    //                                 'created_by'        => Auth::user()->id,
+    //                                 'date'              => date('Y-m-d', strtotime($value[25])),
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_at'        => $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[25].' '.date('h:m:s')
+    //                             ];
+    //                             DB::table('allowances')->insert($data);
+    //                         }else{
+    //                             $opts = [
+    //                                 'name'               => 'Insentif Panel',
+    //                                 'pay_type'           => 'unfixed',
+    //                                 'include_attendance' => 'N',
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_by'         => Auth::user()->id,
+    //                                 'created_at'        =>  $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        =>  $value[25].' '.date('h:m:s')
+    //                             ];
                                 
-                                $createOpt = AllowanceOption::Insert($opts);
+    //                             $createOpt = AllowanceOption::Insert($opts);
                                 
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_option_id' => DB::getPdo()->lastInsertId(),
-                                    'amount'            => (($value[10] !=null) ? $value[10] : 0 ),
-                                    'created_by'        => Auth::user()->creatorId(),
-                                    'date'              => date('Y-m-d', strtotime($value[25])),
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_at'        => $value[25].' '.date('h:m:s'),
-                                    'updated_at'        => $value[25].' '.date('h:m:s')
-                                ];
-                                DB::table('allowances')->insert($data);
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_option_id' => DB::getPdo()->lastInsertId(),
+    //                                 'amount'            => (($value[10] !=null) ? $value[10] : 0 ),
+    //                                 'created_by'        => Auth::user()->creatorId(),
+    //                                 'date'              => date('Y-m-d', strtotime($value[25])),
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_at'        => $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[25].' '.date('h:m:s')
+    //                             ];
+    //                             DB::table('allowances')->insert($data);
                                 
-                            }
-                        }
-                        if ($value[11] !=null){
-                            $opt = AllowanceOption::where('name','Kirim Barang')->where('pay_type','unfixed')->where('include_attendance','N')->first();
-                            if ($opt !=null){
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_option_id' => $opt->id,
-                                    'amount'            => (($value[11] !=null) ? $value[11] : 0 ),
-                                    'created_by'        => Auth::user()->id,
-                                    'date'              => date('Y-m-d', strtotime($value[25])),
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_at'        => $value[25].' '.date('h:m:s'),
-                                    'updated_at'        => $value[25].' '.date('h:m:s')
-                                ];
-                                DB::table('allowances')->insert($data);
-                            }else{
-                                $opts = [
-                                    'name'               => 'Kirim Barang',
-                                    'pay_type'           => 'unfixed',
-                                    'include_attendance' => 'N',
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_by'         => Auth::user()->id,
-                                    'created_at'        =>  $value[25].' '.date('h:m:s'),
-                                    'updated_at'        =>  $value[25].' '.date('h:m:s')
-                                ];
+    //                         }
+    //                     }
+    //                     if ($value[11] !=null){
+    //                         $opt = AllowanceOption::where('name','Kirim Barang')->where('pay_type','unfixed')->where('include_attendance','N')->first();
+    //                         if ($opt !=null){
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_option_id' => $opt->id,
+    //                                 'amount'            => (($value[11] !=null) ? $value[11] : 0 ),
+    //                                 'created_by'        => Auth::user()->id,
+    //                                 'date'              => date('Y-m-d', strtotime($value[25])),
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_at'        => $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[25].' '.date('h:m:s')
+    //                             ];
+    //                             DB::table('allowances')->insert($data);
+    //                         }else{
+    //                             $opts = [
+    //                                 'name'               => 'Kirim Barang',
+    //                                 'pay_type'           => 'unfixed',
+    //                                 'include_attendance' => 'N',
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_by'         => Auth::user()->id,
+    //                                 'created_at'        =>  $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        =>  $value[25].' '.date('h:m:s')
+    //                             ];
                                 
-                                $createOpt = AllowanceOption::Insert($opts);
+    //                             $createOpt = AllowanceOption::Insert($opts);
                                 
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_option_id' => DB::getPdo()->lastInsertId(),
-                                    'amount'            => (($value[11] !=null) ? $value[11] : 0 ),
-                                    'created_by'        => Auth::user()->creatorId(),
-                                    'date'              => date('Y-m-d', strtotime($value[25])),
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_at'        => $value[25].' '.date('h:m:s'),
-                                    'updated_at'        => $value[25].' '.date('h:m:s')
-                                ];
-                                DB::table('allowances')->insert($data);
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_option_id' => DB::getPdo()->lastInsertId(),
+    //                                 'amount'            => (($value[11] !=null) ? $value[11] : 0 ),
+    //                                 'created_by'        => Auth::user()->creatorId(),
+    //                                 'date'              => date('Y-m-d', strtotime($value[25])),
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_at'        => $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[25].' '.date('h:m:s')
+    //                             ];
+    //                             DB::table('allowances')->insert($data);
                                 
-                            }
-                        }
-                        if ($value[12] !=null){
-                            $opt = AllowanceOption::where('name','Rapel')->where('pay_type','unfixed')->where('include_attendance','N')->first();
-                            if ($opt !=null){
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_option_id' => $opt->id,
-                                    'amount'            => (($value[12] !=null) ? $value[12] : 0 ),
-                                    'created_by'        => Auth::user()->id,
-                                    'date'              => date('Y-m-d', strtotime($value[25])),
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_at'        => $value[25].' '.date('h:m:s'),
-                                    'updated_at'        => $value[25].' '.date('h:m:s')
-                                ];
-                                DB::table('allowances')->insert($data);
-                            }else{
-                                $opts = [
-                                    'name'               => 'Rapel',
-                                    'pay_type'           => 'unfixed',
-                                    'include_attendance' => 'N',
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_by'         => Auth::user()->id,
-                                    'created_at'        =>  $value[25].' '.date('h:m:s'),
-                                    'updated_at'        =>  $value[25].' '.date('h:m:s')
-                                ];
+    //                         }
+    //                     }
+    //                     if ($value[12] !=null){
+    //                         $opt = AllowanceOption::where('name','Rapel')->where('pay_type','unfixed')->where('include_attendance','N')->first();
+    //                         if ($opt !=null){
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_option_id' => $opt->id,
+    //                                 'amount'            => (($value[12] !=null) ? $value[12] : 0 ),
+    //                                 'created_by'        => Auth::user()->id,
+    //                                 'date'              => date('Y-m-d', strtotime($value[25])),
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_at'        => $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[25].' '.date('h:m:s')
+    //                             ];
+    //                             DB::table('allowances')->insert($data);
+    //                         }else{
+    //                             $opts = [
+    //                                 'name'               => 'Rapel',
+    //                                 'pay_type'           => 'unfixed',
+    //                                 'include_attendance' => 'N',
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_by'         => Auth::user()->id,
+    //                                 'created_at'        =>  $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        =>  $value[25].' '.date('h:m:s')
+    //                             ];
                                 
-                                $createOpt = AllowanceOption::Insert($opts);
+    //                             $createOpt = AllowanceOption::Insert($opts);
                                 
-                                $data =[
-                                    'employee_id'       => $employeeId->id,
-                                    'allowance_option_id' => DB::getPdo()->lastInsertId(),
-                                    'amount'            => (($value[12] !=null) ? $value[12] : 0 ),
-                                    'created_by'        => Auth::user()->creatorId(),
-                                    'date'              => date('Y-m-d', strtotime($value[25])),
-                                    'branch_id'          => $employeeId->branch_id,
-                                    'created_at'        => $value[25].' '.date('h:m:s'),
-                                    'updated_at'        => $value[25].' '.date('h:m:s')
-                                ];
-                                DB::table('allowances')->insert($data);
+    //                             $data =[
+    //                                 'employee_id'       => $employeeId->id,
+    //                                 'allowance_option_id' => DB::getPdo()->lastInsertId(),
+    //                                 'amount'            => (($value[12] !=null) ? $value[12] : 0 ),
+    //                                 'created_by'        => Auth::user()->creatorId(),
+    //                                 'date'              => date('Y-m-d', strtotime($value[25])),
+    //                                 'branch_id'          => $employeeId->branch_id,
+    //                                 'created_at'        => $value[25].' '.date('h:m:s'),
+    //                                 'updated_at'        => $value[25].' '.date('h:m:s')
+    //                             ];
+    //                             DB::table('allowances')->insert($data);
                                 
-                            }
-                        }
-                        if ($value[15] !=null){
-                            $idopt = LoanOption::where('name','KASBON')->first();
+    //                         }
+    //                     }
+    //                     if ($value[15] !=null){
+    //                         $idopt = LoanOption::where('name','KASBON')->first();
                         
-                            $data = [
-                                'employee_id'           => $employeeId->id,
-                                'loan_type_id'          => $idopt->id,
-                                'installment'           => 0,
-                                'number_of_installment' => 0,
-                                'status'                => 'paid off',
-                                'amount'                => $value[15],
-                                'created_by'            => Auth::user()->id,
-                                'branch_id'             => $employeeId->branch_id,
-                                'created_at'            => $value[25].' '.date('h:m:s'),
-                                'updated_at'            => $value[25].' '.date('h:m:s')
-                            ];
-                            Loan::insert($data);
-                        }
-                        if ($value[19] != null){
-                            $deduc2 = [
-                                'employee_id'           => $employeeId->id,
-                                'branch_id'             => $employeeId->branch_id,
-                                'date'                  => $value[25],
-                                'name'                  => 'Koperasi',
-                                'amount'                => $value[19],
-                                'created_by'            => Auth::user()->id,
-                                'created_at'            => $value[25].' '.date('h:m:s'),
-                                'updated_at'            => $value[25].' '.date('h:m:s')
-                            ];
-                            Deduction_other::create($deduc2);
-                        }
-                        if ($value[20] != null){
-                            $deduc3 = [
-                                'employee_id'           => $employeeId->id,
-                                'branch_id'             => $employeeId->branch_id,
-                                'date'                  => $value[25],
-                                'name'                  => 'Seragam',
-                                'amount'                => $value[20],
-                                'created_by'            => Auth::user()->id,
-                                'created_at'            => $value[25].' '.date('h:m:s'),
-                                'updated_at'            => $value[25].' '.date('h:m:s')
-                            ];
-                            Deduction_other::create($deduc3);
-                        }
-                        if ($value[21] != null){
-                            $deduc4 = [
-                                'employee_id'           => $employeeId->id,
-                                'branch_id'             => $employeeId->branch_id,
-                                'date'                  => $value[25],
-                                'name'                  => 'Potongan Absensi',
-                                'amount'                => $value[21],
-                                'created_by'            => Auth::user()->id,
-                                'created_at'            => $value[25].' '.date('h:m:s'),
-                                'updated_at'            => $value[25].' '.date('h:m:s')
-                            ];
-                            Deduction_other::create($deduc4);
-                        }
-                        if ($value[22] != null){
-                            $deduc5 = [
-                                'employee_id'           => $employeeId->id,
-                                'branch_id'             => $employeeId->branch_id,
-                                'date'                  => $value[25],
-                                'name'                  => 'Potongan Terlambat',
-                                'amount'                => $value[22],
-                                'created_by'            => Auth::user()->id,
-                                'created_at'            => $value[25].' '.date('h:m:s'),
-                                'updated_at'            => $value[25].' '.date('h:m:s')
-                            ];
-                            Deduction_other::create($deduc5);
-                        }
-                        if ($value[23] != null){
-                            $deduc5 = [
-                                'employee_id'           => $employeeId->id,
-                                'branch_id'             => $employeeId->branch_id,
-                                'date'                  => $value[25],
-                                'name'                  => 'Potongan Lain-lain',
-                                'amount'                => $value[23],
-                                'created_by'            => Auth::user()->id,
-                                'created_at'            => $value[25].' '.date('h:m:s'),
-                                'updated_at'            => $value[25].' '.date('h:m:s')
-                            ];
-                            Deduction_other::create($deduc5);
-                        }
-                    endif;
-                endif;
-            endif;
-        }
+    //                         $data = [
+    //                             'employee_id'           => $employeeId->id,
+    //                             'loan_type_id'          => $idopt->id,
+    //                             'installment'           => 0,
+    //                             'number_of_installment' => 0,
+    //                             'status'                => 'paid off',
+    //                             'amount'                => $value[15],
+    //                             'created_by'            => Auth::user()->id,
+    //                             'branch_id'             => $employeeId->branch_id,
+    //                             'created_at'            => $value[25].' '.date('h:m:s'),
+    //                             'updated_at'            => $value[25].' '.date('h:m:s')
+    //                         ];
+    //                         Loan::insert($data);
+    //                     }
+    //                     if ($value[19] != null){
+    //                         $deduc2 = [
+    //                             'employee_id'           => $employeeId->id,
+    //                             'branch_id'             => $employeeId->branch_id,
+    //                             'date'                  => $value[25],
+    //                             'name'                  => 'Koperasi',
+    //                             'amount'                => $value[19],
+    //                             'created_by'            => Auth::user()->id,
+    //                             'created_at'            => $value[25].' '.date('h:m:s'),
+    //                             'updated_at'            => $value[25].' '.date('h:m:s')
+    //                         ];
+    //                         Deduction_other::create($deduc2);
+    //                     }
+    //                     if ($value[20] != null){
+    //                         $deduc3 = [
+    //                             'employee_id'           => $employeeId->id,
+    //                             'branch_id'             => $employeeId->branch_id,
+    //                             'date'                  => $value[25],
+    //                             'name'                  => 'Seragam',
+    //                             'amount'                => $value[20],
+    //                             'created_by'            => Auth::user()->id,
+    //                             'created_at'            => $value[25].' '.date('h:m:s'),
+    //                             'updated_at'            => $value[25].' '.date('h:m:s')
+    //                         ];
+    //                         Deduction_other::create($deduc3);
+    //                     }
+    //                     if ($value[21] != null){
+    //                         $deduc4 = [
+    //                             'employee_id'           => $employeeId->id,
+    //                             'branch_id'             => $employeeId->branch_id,
+    //                             'date'                  => $value[25],
+    //                             'name'                  => 'Potongan Absensi',
+    //                             'amount'                => $value[21],
+    //                             'created_by'            => Auth::user()->id,
+    //                             'created_at'            => $value[25].' '.date('h:m:s'),
+    //                             'updated_at'            => $value[25].' '.date('h:m:s')
+    //                         ];
+    //                         Deduction_other::create($deduc4);
+    //                     }
+    //                     if ($value[22] != null){
+    //                         $deduc5 = [
+    //                             'employee_id'           => $employeeId->id,
+    //                             'branch_id'             => $employeeId->branch_id,
+    //                             'date'                  => $value[25],
+    //                             'name'                  => 'Potongan Terlambat',
+    //                             'amount'                => $value[22],
+    //                             'created_by'            => Auth::user()->id,
+    //                             'created_at'            => $value[25].' '.date('h:m:s'),
+    //                             'updated_at'            => $value[25].' '.date('h:m:s')
+    //                         ];
+    //                         Deduction_other::create($deduc5);
+    //                     }
+    //                     if ($value[23] != null){
+    //                         $deduc5 = [
+    //                             'employee_id'           => $employeeId->id,
+    //                             'branch_id'             => $employeeId->branch_id,
+    //                             'date'                  => $value[25],
+    //                             'name'                  => 'Potongan Lain-lain',
+    //                             'amount'                => $value[23],
+    //                             'created_by'            => Auth::user()->id,
+    //                             'created_at'            => $value[25].' '.date('h:m:s'),
+    //                             'updated_at'            => $value[25].' '.date('h:m:s')
+    //                         ];
+    //                         Deduction_other::create($deduc5);
+    //                     }
+    //                 endif;
+    //             endif;
+    //         endif;
+    //     }
        
-        $run = DB::table('take_home_pay')->insert($import);
-        DB::commit();
-            $res = [
-                'status' => 'success',
-                'msg'    => 'Import Data Successfuly !',
-            ];
-            return response()->json($res);
-        DB::rollBack();
-            $res = [
-                'status' => 'error',
-                'msg'    => 'Someting went Wrong!',
-            ];
-            return response()->json($res);
-    }
+    //     $run = DB::table('take_home_pay')->insert($import);
+    //     DB::commit();
+    //         $res = [
+    //             'status' => 'success',
+    //             'msg'    => 'Import Data Successfuly !',
+    //         ];
+    //         return response()->json($res);
+    //     DB::rollBack();
+    //         $res = [
+    //             'status' => 'error',
+    //             'msg'    => 'Someting went Wrong!',
+    //         ];
+    //         return response()->json($res);
+    // }
     public function get_run_payroll(Request $request){
         $data   = DB::table('take_home_pay')
                     ->select('take_home_pay.*',

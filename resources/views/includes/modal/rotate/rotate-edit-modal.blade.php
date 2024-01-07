@@ -26,7 +26,7 @@
                                 <select name="employee_id" class="form-control mb-3" id="editEmployeeId" readonly>
                                 </select>
                                 <label>Position</label>
-                                <select name="position_id" class="form-control form-select mb-3" id="editpositionId">
+                                <select name="position_id" class="form-control form-select mb-3 edit-select-position" id="editpositionId">
                                     <option></option>
                                 </select>
                             </div>
@@ -43,7 +43,7 @@
                                 <select name="from_department" class="form-control form-select mb-3" id="editFromDepartment" readonly>
                                 </select>
                                 <label>To Department</label>
-                                <select name="to_department" class="form-control form-select mb-3" id="editToDepartment" required>
+                                <select name="to_department" class="form-control form-select mb-3 edit-to-depart" id="editToDepartment" required>
                                     <option></option>
                                 </select> 
 

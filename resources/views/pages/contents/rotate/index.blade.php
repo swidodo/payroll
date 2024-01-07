@@ -6,6 +6,9 @@
 @push('addon-style')
 <link rel="stylesheet" href="{{asset('assets/css/dataTables.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('assets/plugins/sweetalert2/sweetalert2.min.css')}}">
+<!-- Select2 CSS -->
+<link rel="stylesheet" href="{{asset('assets/css/select2.min.css')}}">
+
 @endpush
 <div class="page-wrapper">
     <!-- Page Content -->
@@ -92,6 +95,41 @@
     $('.containerLoader').attr('hidden',false)
     $(document).ready(function () {
         $('.containerLoader').attr('hidden',true)
+        if($('.select-employee').length > 0) {
+            $('.select-employee').select2({
+                width: '100%',
+                tags: true,
+                dropdownParent: $('#addRotate')
+            });
+        }
+        if($('.select-position').length > 0) {
+            $('.select-position').select2({
+                width: '100%',
+                tags: true,
+                dropdownParent: $('#addRotate')
+            });
+        }
+        if($('.to-depart').length > 0) {
+            $('.to-depart').select2({
+                width: '100%',
+                tags: true,
+                dropdownParent: $('#addRotate')
+            });
+        }
+        if($('.edit-to-depart').length > 0) {
+            $('.edit-to-depart').select2({
+                width: '100%',
+                tags: true,
+                dropdownParent: $('#editRotate')
+            });
+        }
+        if($('.edit-select-position').length > 0) {
+            $('.edit-select-position').select2({
+                width: '100%',
+                tags: true,
+                dropdownParent: $('#editRotate')
+            });
+        }
         var branchId = $('#branch_id').val();
         loadData(branchId)
         function loadData(branchId){

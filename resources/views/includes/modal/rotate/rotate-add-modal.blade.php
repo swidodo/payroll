@@ -22,10 +22,10 @@
                                     <option value="Demotion">Demotion</option>
                                 </select>
                                 <label>Employee Name</label>
-                                <select name="employee_id" class="form-control form-select mb-3" id="employeeId" required>
+                                <select name="employee_id" class="form-control form-select mb-3 select-employee" id="employeeId" required>
                                 </select>
                                 <label>Position</label>
-                                <select name="position_id" class="form-control form-select mb-3" id="position_id" >
+                                <select name="position_id" class="form-control form-select mb-3 select-position" id="position_id" >
                                     <option></option>
                                 </select>
                             </div>
@@ -39,10 +39,10 @@
                                 <input type="hidden" name="branch_id" id="branchId">
                                 <input type="hidden" name="branch_name" id="branchName">
                                 <label>From Department</label>
-                                <select name="from_department" class="form-control form-select mb-3" id="fromDepartment">
+                                <select name="from_department" class="form-control form-select mb-3 form-depart" id="fromDepartment">
                                 </select>
                                 <label>To Department</label>
-                                <select name="to_department" class="form-control form-select mb-3" id="toDepartment">
+                                <select name="to_department" class="form-control form-select mb-3 to-depart" id="toDepartment">
                                     <option></option>
                                 </select>
                             </div>

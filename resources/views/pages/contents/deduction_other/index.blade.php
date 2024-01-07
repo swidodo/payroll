@@ -163,6 +163,7 @@
                         name: 'action'
                     },
                 ],
+                order: [[1, 'desc']]
             })
         }
         $('#add-deductionOther').click(function(e){

@@ -33,7 +33,9 @@ class DeductionOtherController extends Controller
     public function get_data(Request $request){
         $data = Deduction_other::select('deduction_others.*','employees.no_employee','employees.name as employee_name')
                                 ->leftJoin('employees','employees.id','deduction_others.employee_id')
-                                ->where('deduction_others.branch_id',$request->branch_id)->get();
+                                ->where('deduction_others.branch_id',$request->branch_id)
+                                ->orderBy('deduction_others.date','DESC')
+                                ->get();
         return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action',function($row){

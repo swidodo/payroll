@@ -260,6 +260,7 @@
                             name: 'action'
                         },
                     ],
+                    order: [[1, 'desc']]
             })
             $('#searchData').on('click', function(){
                 var branch = $('#branch-filter').val();
