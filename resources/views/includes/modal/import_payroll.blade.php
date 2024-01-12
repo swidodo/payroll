@@ -237,7 +237,7 @@
                         <form id="UploadDataPayroll_v8">
                             <div class="mb-3">
                                 <label>File Import</label>
-                                <input type="file" name="import_payroll" id="import-payroll-v3" class="form-control" required>
+                                <input type="file" name="import_payroll" id="import-payroll-v8" class="form-control" required>
                                 <a download href="{{asset('file/template-excel-payroll/template-import-payroll_V8.xlsx')}}" class="text-small">Download template import payroll</a>
                                 
                             </div>
@@ -265,7 +265,7 @@
                         <form id="UploadDataPayroll_v9">
                             <div class="mb-3">
                                 <label>File Import</label>
-                                <input type="file" name="import_payroll" id="import-payroll-v3" class="form-control" required>
+                                <input type="file" name="import_payroll" id="import-payroll-v9" class="form-control" required>
                                 <a download href="{{asset('file/template-excel-payroll/template-import-payroll_V9.xlsx')}}" class="text-small">Download template import payroll</a>
                                 
                             </div>

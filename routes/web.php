@@ -65,6 +65,8 @@ use App\Http\Controllers\template\Template_v4Controller;
 use App\Http\Controllers\template\Template_v5Controller;
 use App\Http\Controllers\template\Template_v6Controller;
 use App\Http\Controllers\template\Template_v7Controller;
+use App\Http\Controllers\template\Template_v8Controller;
+use App\Http\Controllers\template\Template_v9Controller;
 // report
 use App\Http\Controllers\HRM\EmployeeReportController;
 use App\Http\Controllers\Report\ReportRecapAttendanceController;
@@ -267,6 +269,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('import-payroll-v5',[Template_v5Controller::class,'index'])->name('import-payroll-v5');
         Route::post('import-payroll-v6',[Template_v6Controller::class,'index'])->name('import-payroll-v6');
         Route::post('import-payroll-v7',[Template_v7Controller::class,'index'])->name('import-payroll-v7');
+        Route::post('import-payroll-v8',[Template_v8Controller::class,'index'])->name('import-payroll-v8');
+        Route::post('import-payroll-v9',[Template_v9Controller::class,'index'])->name('import-payroll-v9');
         // Route::post('import-payroll-v2',[PayrollController::class,'import_run_payroll_v2'])->name('import-payroll-v2');
         // Route::post('import-payroll-v3',[PayrollController::class,'import_run_payroll_v3'])->name('import-payroll-v3');
         
