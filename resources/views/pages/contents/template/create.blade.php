@@ -60,7 +60,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @for ($i=1;$i<=10;$i++)
+                                @for ($i=1;$i<=20;$i++)
                                     <tr>
                                         <td>{{$i}}</td>
                                         <td>Template Versi {{$i}}</td>
