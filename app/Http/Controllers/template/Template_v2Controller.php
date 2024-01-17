@@ -53,49 +53,59 @@ class Template_v2Controller extends Controller
         DB::beginTransaction();
         foreach ($sheetData as $key => $value) {
             if ($key > 0) :
-                $branch = Branch::where('alias',$value[21])->first();
+                $branch = Branch::where('alias',$value[23])->first();
                 if ($branch != null) :
                     $employeeId = Employee::where('no_employee',$value[1])->where('branch_id',$branch->id)->first();
                     $takeHP = DB::table('take_home_pay')
                                 ->where('employee_id',$employeeId->id)
-                                ->where('startdate',$value[19])
-                                ->where('enddate',$value[20])
+                                ->where('startdate',$value[21])
+                                ->where('enddate',$value[22])
                                 ->count();
                     if ($takeHP > 0){
                         DB::table('take_home_pay')
                             ->where('employee_id',$employeeId->id)
-                            ->where('startdate',$value[19])
-                            ->where('enddate',$value[20])
+                            ->where('startdate',$value[21])
+                            ->where('enddate',$value[22])
                             ->delete();
                     }
-                    $ded_other = Deduction_other::where('employee_id',$employeeId->id)->where('date',$value[20])->count();
+                    $ded_other = Deduction_other::where('employee_id',$employeeId->id)->where('date',$value[22])->count();
                     if($ded_other > 0 ){
-                        Deduction_other::where('employee_id',$employeeId->id)->where('date',$value[20])->delete();
+                        Deduction_other::where('employee_id',$employeeId->id)->where('date',$value[22])->delete();
                     }
-                    $ded_loan = Loan::where('employee_id',$employeeId->id)->where(DB::raw("DATE(created_at)"),$value[20])->count();
+                    $ded_loan = Loan::where('employee_id',$employeeId->id)->where(DB::raw("DATE(created_at)"),$value[22])->count();
                     if ($ded_loan > 0 ){
-                        Loan::where('employee_id',$employeeId->id)->where(DB::raw("DATE(created_at)"),$value[20])->delete();
+                        Loan::where('employee_id',$employeeId->id)->where(DB::raw("DATE(created_at)"),$value[22])->delete();
                     }
-                    $allFinance = AllowanceFinance::where('employee_id',$employeeId->id)->where(DB::raw("DATE(created_at)"),$value[20])->count();
+                    $allFinance = AllowanceFinance::where('employee_id',$employeeId->id)->where(DB::raw("DATE(created_at)"),$value[22])->count();
                     if ($allFinance > 0){
-                        AllowanceFinance::where('employee_id',$employeeId->id)->where(DB::raw("DATE(created_at)"),$value[20])->delete();
+                        AllowanceFinance::where('employee_id',$employeeId->id)->where(DB::raw("DATE(created_at)"),$value[22])->delete();
                     }
-                    $allother = DB::table('allowances')->where('employee_id',$employeeId->id)->where('date',$value[20])->count();
+                    $allother = DB::table('allowances')->where('employee_id',$employeeId->id)->where('date',$value[22])->count();
                     if ($allother > 0){
-                        DB::table('allowances')->where('employee_id',$employeeId->id)->where(DB::raw("DATE(created_at)"),$value[20])->delete();
+                        DB::table('allowances')->where('employee_id',$employeeId->id)->where(DB::raw("DATE(created_at)"),$value[22])->delete();
                     }
                     if ($employeeId != null ):
                         if($employeeId->id =='' | $employeeId->id ==null){
                             return true;
                         }
                         $basic_salary     =  (($value[3] !=null) ? $value[3] : 0) * (($value[4] !=null) ? $value[4] : 0);
+                        $allowancefixed   =  (($value[5] !=null) ? $value[5] : 0 );
                         $meal_allowance   =  (($value[6] !=null) ? $value[6] : 0) * (($value[4] !=null) ? $value[4] : 0);
-                        $allowancefixed   =  $meal_allowance + (($value[5] !=null) ? $value[5] : 0 );
-                        $allowanceUnfixed =  (($value[7] !=null) ? $value[7] : 0 );
+                        $allowanceUnfixed =  $meal_allowance + (($value[7] !=null) ? $value[7] : 0 );
                         $overtime         =  (($value[8] !=null) ? $value[8] : 0)*(($value[9] !=null) ? $value[9] : 0);
-                        $val_salarymonth  =  $basic_salary + $meal_allowance + (($value[5] !=null) ? $value[5] : 0 ) + (($value[7] !=null) ? $value[7] : 0 ) +  $overtime;
+                        $val_salarymonth  =  
+                        $basic_salary + $allowancefixed + $allowanceUnfixed + $overtime;
+
                         $total_loan       = (($value[10] !=null) ? $value[10] : 0 );
-                        $deduction_other  = (($value[11] !=null) ? $value[11] : 0 ) + (($value[14] !=null) ? $value[14] : 0 ) + (($value[15] !=null) ? $value[15] : 0 ) + (($value[16] !=null) ? $value[16] : 0 ) + (($value[17] !=null) ? $value[17] : 0 ) + (($value[18] !=null) ? $value[18] : 0 );
+                        $deduction_other  = 
+                        (($value[11] !=null) ? $value[11] : 0 ) + 
+                        (($value[14] !=null) ? $value[14] : 0 ) + 
+                        (($value[15] !=null) ? $value[15] : 0 ) + 
+                        (($value[16] !=null) ? $value[16] : 0 ) + 
+                        (($value[17] !=null) ? $value[17] : 0 ) + 
+                        (($value[18] !=null) ? $value[18] : 0 ) + 
+                        (($value[19] !=null) ? $value[19] : 0 ) + 
+                        (($value[20] !=null) ? $value[20] : 0 );
                         $bpjs             = (($value[12] !=null) ? $value[12] : 0 ) + (($value[13] !=null) ? $value[13] : 0 );
                         $total_deduction = $total_loan + $deduction_other + $bpjs;
                         $thp = $val_salarymonth -  $total_deduction;
@@ -130,8 +140,8 @@ class Template_v2Controller extends Controller
                             'total_deduction_other'             => $deduction_other,
                             'pph21'                             => 0,
                             'total_deduction'                   => $total_deduction,
-                            'startdate'                         => $value[19],
-                            'enddate'                           => $value[20],
+                            'startdate'                         => $value[21],
+                            'enddate'                           => $value[22],
                             'take_home_pay'                     => $thp,
                             'branch_id'                         => $employeeId->branch_id,
                             'total_attendance'                  => $value[4],
@@ -150,8 +160,8 @@ class Template_v2Controller extends Controller
                                     'allowance_type_id' => $opt->id,
                                     'amount'            => (($value[5] !=null) ? $value[5] : 0 ),
                                     'created_by'        => Auth::user()->id,
-                                    'created_at'        => $value[20].' '.date('h:m:s'),
-                                    'updated_at'        => $value[20].' '.date('h:m:s')
+                                    'created_at'        => $value[22].' '.date('h:m:s'),
+                                    'updated_at'        => $value[22].' '.date('h:m:s')
                                 ];
                                 AllowanceFinance::insert($data);
                             }else{
@@ -161,8 +171,8 @@ class Template_v2Controller extends Controller
                                     'include_attendance' => 'N',
                                     'branch_id'          => $employeeId->branch_id,
                                     'created_by'         => Auth::user()->id,
-                                    'created_at'        => $value[20].' '.date('h:m:s'),
-                                    'updated_at'        => $value[20].' '.date('h:m:s')
+                                    'created_at'        => $value[22].' '.date('h:m:s'),
+                                    'updated_at'        => $value[22].' '.date('h:m:s')
                                 ];
                                 
                                 $createOpt = AllowanceOption::Insert($opts);
@@ -172,8 +182,8 @@ class Template_v2Controller extends Controller
                                     'allowance_type_id' => DB::getPdo()->lastInsertId(),
                                     'amount'            => (($value[5] !=null) ? $value[5] : 0 ),
                                     'created_by'        => Auth::user()->creatorId(),
-                                    'created_at'        => $value[20].' '.date('h:m:s'),
-                                    'updated_at'        => $value[20].' '.date('h:m:s')
+                                    'created_at'        => $value[22].' '.date('h:m:s'),
+                                    'updated_at'        => $value[22].' '.date('h:m:s')
                                 ];
                                 AllowanceFinance::insert($data);
                                 
@@ -188,10 +198,10 @@ class Template_v2Controller extends Controller
                                     'allowance_option_id' => $opt->id,
                                     'amount'            => $meal_allowance,
                                     'created_by'        => Auth::user()->id,
-                                    'date'              => date('Y-m-d', strtotime($value[20])),
+                                    'date'              => date('Y-m-d', strtotime($value[22])),
                                     'branch_id'          => $employeeId->branch_id,
-                                    'created_at'        => $value[20].' '.date('h:m:s'),
-                                    'updated_at'        => $value[20].' '.date('h:m:s')
+                                    'created_at'        => $value[22].' '.date('h:m:s'),
+                                    'updated_at'        => $value[22].' '.date('h:m:s')
                                 ];
                                 DB::table('allowances')->insert($data);
                             }else{
@@ -201,8 +211,8 @@ class Template_v2Controller extends Controller
                                     'include_attendance' => 'Y',
                                     'branch_id'          => $employeeId->branch_id,
                                     'created_by'         => Auth::user()->id,
-                                    'created_at'        =>  $value[20].' '.date('h:m:s'),
-                                    'updated_at'        =>  $value[20].' '.date('h:m:s')
+                                    'created_at'        =>  $value[22].' '.date('h:m:s'),
+                                    'updated_at'        =>  $value[22].' '.date('h:m:s')
                                 ];
                                 
                                 $createOpt = AllowanceOption::Insert($opts);
@@ -212,10 +222,10 @@ class Template_v2Controller extends Controller
                                     'allowance_option_id' => DB::getPdo()->lastInsertId(),
                                     'amount'            => $meal_allowance,
                                     'created_by'        => Auth::user()->id,
-                                    'date'              => date('Y-m-d', strtotime($value[20])),
+                                    'date'              => date('Y-m-d', strtotime($value[22])),
                                     'branch_id'          => $employeeId->branch_id,
-                                    'created_at'        => $value[20].' '.date('h:m:s'),
-                                    'updated_at'        => $value[20].' '.date('h:m:s')
+                                    'created_at'        => $value[22].' '.date('h:m:s'),
+                                    'updated_at'        => $value[22].' '.date('h:m:s')
                                 ];
                                 DB::table('allowances')->insert($data);
                             }
@@ -228,10 +238,10 @@ class Template_v2Controller extends Controller
                                     'allowance_option_id' => $opt->id,
                                     'amount'            => (($value[7] !=null) ? $value[7] : 0 ),
                                     'created_by'        => Auth::user()->id,
-                                    'date'              => date('Y-m-d', strtotime($value[20])),
+                                    'date'              => date('Y-m-d', strtotime($value[22])),
                                     'branch_id'          => $employeeId->branch_id,
-                                    'created_at'        => $value[20].' '.date('h:m:s'),
-                                    'updated_at'        => $value[20].' '.date('h:m:s')
+                                    'created_at'        => $value[22].' '.date('h:m:s'),
+                                    'updated_at'        => $value[22].' '.date('h:m:s')
                                 ];
                                 DB::table('allowances')->insert($data);
                             }else{
@@ -241,8 +251,8 @@ class Template_v2Controller extends Controller
                                     'include_attendance' => 'N',
                                     'branch_id'          => $employeeId->branch_id,
                                     'created_by'         => Auth::user()->id,
-                                    'created_at'        =>  $value[20].' '.date('h:m:s'),
-                                    'updated_at'        =>  $value[20].' '.date('h:m:s')
+                                    'created_at'        =>  $value[22].' '.date('h:m:s'),
+                                    'updated_at'        =>  $value[22].' '.date('h:m:s')
                                 ];
                                 
                                 $createOpt = AllowanceOption::Insert($opts);
@@ -252,10 +262,10 @@ class Template_v2Controller extends Controller
                                     'allowance_option_id' => DB::getPdo()->lastInsertId(),
                                     'amount'            => (($value[7] !=null) ? $value[7] : 0 ),
                                     'created_by'        => Auth::user()->creatorId(),
-                                    'date'              => date('Y-m-d', strtotime($value[20])),
+                                    'date'              => date('Y-m-d', strtotime($value[22])),
                                     'branch_id'          => $employeeId->branch_id,
-                                    'created_at'        => $value[20].' '.date('h:m:s'),
-                                    'updated_at'        => $value[20].' '.date('h:m:s')
+                                    'created_at'        => $value[22].' '.date('h:m:s'),
+                                    'updated_at'        => $value[22].' '.date('h:m:s')
                                 ];
                                 DB::table('allowances')->insert($data);
                                 
@@ -273,8 +283,8 @@ class Template_v2Controller extends Controller
                                 'amount'                => $value[10],
                                 'created_by'            => Auth::user()->id,
                                 'branch_id'             => $employeeId->branch_id,
-                                'created_at'            => $value[20].' '.date('h:m:s'),
-                                'updated_at'            => $value[20].' '.date('h:m:s')
+                                'created_at'            => $value[22].' '.date('h:m:s'),
+                                'updated_at'            => $value[22].' '.date('h:m:s')
                             ];
                             Loan::insert($data);
                         }
@@ -282,12 +292,12 @@ class Template_v2Controller extends Controller
                             $deduc2 = [
                                 'employee_id'           => $employeeId->id,
                                 'branch_id'             => $employeeId->branch_id,
-                                'date'                  => $value[20],
+                                'date'                  => $value[22],
                                 'name'                  => 'Koperasi',
                                 'amount'                => $value[14],
                                 'created_by'            => Auth::user()->id,
-                                'created_at'            => $value[20].' '.date('h:m:s'),
-                                'updated_at'            => $value[20].' '.date('h:m:s')
+                                'created_at'            => $value[22].' '.date('h:m:s'),
+                                'updated_at'            => $value[22].' '.date('h:m:s')
                             ];
                             Deduction_other::create($deduc2);
                         }
@@ -295,12 +305,12 @@ class Template_v2Controller extends Controller
                             $deduc3 = [
                                 'employee_id'           => $employeeId->id,
                                 'branch_id'             => $employeeId->branch_id,
-                                'date'                  => $value[20],
+                                'date'                  => $value[22],
                                 'name'                  => 'Seragam',
                                 'amount'                => $value[15],
                                 'created_by'            => Auth::user()->id,
-                                'created_at'            => $value[20].' '.date('h:m:s'),
-                                'updated_at'            => $value[20].' '.date('h:m:s')
+                                'created_at'            => $value[22].' '.date('h:m:s'),
+                                'updated_at'            => $value[22].' '.date('h:m:s')
                             ];
                             Deduction_other::create($deduc3);
                         }
@@ -308,12 +318,12 @@ class Template_v2Controller extends Controller
                             $deduc4 = [
                                 'employee_id'           => $employeeId->id,
                                 'branch_id'             => $employeeId->branch_id,
-                                'date'                  => $value[20],
+                                'date'                  => $value[22],
                                 'name'                  => 'Potongan Absensi',
                                 'amount'                => $value[16],
                                 'created_by'            => Auth::user()->id,
-                                'created_at'            => $value[20].' '.date('h:m:s'),
-                                'updated_at'            => $value[20].' '.date('h:m:s')
+                                'created_at'            => $value[22].' '.date('h:m:s'),
+                                'updated_at'            => $value[22].' '.date('h:m:s')
                             ];
                             Deduction_other::create($deduc4);
                         }
@@ -321,12 +331,12 @@ class Template_v2Controller extends Controller
                             $deduc5 = [
                                 'employee_id'           => $employeeId->id,
                                 'branch_id'             => $employeeId->branch_id,
-                                'date'                  => $value[20],
+                                'date'                  => $value[22],
                                 'name'                  => 'Potongan Terlambat',
                                 'amount'                => $value[17],
                                 'created_by'            => Auth::user()->id,
-                                'created_at'            => $value[20].' '.date('h:m:s'),
-                                'updated_at'            => $value[20].' '.date('h:m:s')
+                                'created_at'            => $value[22].' '.date('h:m:s'),
+                                'updated_at'            => $value[22].' '.date('h:m:s')
                             ];
                             Deduction_other::create($deduc5);
                         }
@@ -334,12 +344,38 @@ class Template_v2Controller extends Controller
                             $deduc5 = [
                                 'employee_id'           => $employeeId->id,
                                 'branch_id'             => $employeeId->branch_id,
-                                'date'                  => $value[20],
-                                'name'                  => 'Potongan Lain-lain',
+                                'date'                  => $value[22],
+                                'name'                  => 'Potongan Hijab',
                                 'amount'                => $value[18],
                                 'created_by'            => Auth::user()->id,
-                                'created_at'            => $value[20].' '.date('h:m:s'),
-                                'updated_at'            => $value[20].' '.date('h:m:s')
+                                'created_at'            => $value[22].' '.date('h:m:s'),
+                                'updated_at'            => $value[22].' '.date('h:m:s')
+                            ];
+                            Deduction_other::create($deduc5);
+                        }
+                        if ($value[19] != null){
+                            $deduc5 = [
+                                'employee_id'           => $employeeId->id,
+                                'branch_id'             => $employeeId->branch_id,
+                                'date'                  => $value[22],
+                                'name'                  => 'Potongan Materai',
+                                'amount'                => $value[19],
+                                'created_by'            => Auth::user()->id,
+                                'created_at'            => $value[22].' '.date('h:m:s'),
+                                'updated_at'            => $value[22].' '.date('h:m:s')
+                            ];
+                            Deduction_other::create($deduc5);
+                        }
+                        if ($value[20] != null){
+                            $deduc5 = [
+                                'employee_id'           => $employeeId->id,
+                                'branch_id'             => $employeeId->branch_id,
+                                'date'                  => $value[22],
+                                'name'                  => 'Potongan Lain-lain',
+                                'amount'                => $value[20],
+                                'created_by'            => Auth::user()->id,
+                                'created_at'            => $value[22].' '.date('h:m:s'),
+                                'updated_at'            => $value[22].' '.date('h:m:s')
                             ];
                             Deduction_other::create($deduc5);
                         }
