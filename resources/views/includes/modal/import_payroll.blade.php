@@ -293,8 +293,92 @@
                         <form id="UploadDataPayroll_v10">
                             <div class="mb-3">
                                 <label>File Import</label>
-                                <input type="file" name="import_payroll" id="import-payroll-v3" class="form-control" required>
+                                <input type="file" name="import_payroll" id="import-payroll-v10" class="form-control" required>
                                 <a download href="{{asset('file/template-excel-payroll/template-import-payroll_V10.xlsx')}}" class="text-small">Download template import payroll</a>
+                                
+                            </div>
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary">IMPORT AND RUN</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- v11 --}}
+    <div class="modal custom-modal fade" id="modalImportPayroll_v11" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Import Payroll</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <form id="UploadDataPayroll_v11">
+                            <div class="mb-3">
+                                <label>File Import</label>
+                                <input type="file" name="import_payroll" id="import-payroll-v11" class="form-control" required>
+                                <a download href="{{asset('file/template-excel-payroll/template-import-payroll_V11.xlsx')}}" class="text-small">Download template import payroll</a>
+                                
+                            </div>
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary">IMPORT AND RUN</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- v12 --}}
+    <div class="modal custom-modal fade" id="modalImportPayroll_v12" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Import Payroll</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <form id="UploadDataPayroll_v12">
+                            <div class="mb-3">
+                                <label>File Import</label>
+                                <input type="file" name="import_payroll" id="import-payroll-v12" class="form-control" required>
+                                <a download href="{{asset('file/template-excel-payroll/template-import-payroll_V12.xlsx')}}" class="text-small">Download template import payroll</a>
+                                
+                            </div>
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary">IMPORT AND RUN</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- v13 --}}
+    <div class="modal custom-modal fade" id="modalImportPayroll_v13" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Import Payroll</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <form id="UploadDataPayroll_v13">
+                            <div class="mb-3">
+                                <label>File Import</label>
+                                <input type="file" name="import_payroll" id="import-payroll-v13" class="form-control" required>
+                                <a download href="{{asset('file/template-excel-payroll/template-import-payroll_V13.xlsx')}}" class="text-small">Download template import payroll</a>
                                 
                             </div>
                             <div class="mb-3">
