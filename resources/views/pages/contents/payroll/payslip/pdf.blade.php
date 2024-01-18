@@ -540,6 +540,17 @@
                                 </td>
                             </tr>
                         @endif
+                        @if($salary->total_overtime_hour_holiday > 0 )
+                            <tr>
+                                <td class="p-0 m-0" style="width: 58%;"></td>
+                                <td class="clearfix m-0 p-0" style="">
+                                    <p class=" text-left m-0 p-0" style="font-size: 11px;float: left; margin-bottom: -8px;">Total Overtime Hours(holiday)</p>
+                                    <p class=" text-right m-0 p-0" style="font-size: 11px;  margin-bottom: -8px;">
+                                        {{ $salary->total_overtime_hour_holiday }}
+                                    </p>
+                                </td>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
             </div> 

@@ -150,43 +150,83 @@ class Template_v7Controller extends Controller
                             array_push($import,$datas);
                         }
                         
+                        // if ($value[5] !=null){
+                        //     $opt = AllowanceOption::where('name','Tunjangan Jabatan')->where('pay_type','fixed')->where('include_attendance','N')->first();
+                        //     if ($opt !=null){
+                        //         $data =[
+                        //             'employee_id'       => $employeeId->id,
+                        //             'allowance_type_id' => $opt->id,
+                        //             'amount'            => (($value[5] !=null) ? $value[5] : 0 ),
+                        //             'created_by'        => Auth::user()->id,
+                        //             'created_at'        => $value[25].' '.date('h:m:s'),
+                        //             'updated_at'        => $value[25].' '.date('h:m:s')
+                        //         ];
+                        //         AllowanceFinance::insert($data);
+                        //     }else{
+                        //         $opts = [
+                        //             'name'               => 'Tunjangan Jabatan',
+                        //             'pay_type'           => 'fixed',
+                        //             'include_attendance' => 'N',
+                        //             'branch_id'          => $employeeId->branch_id,
+                        //             'created_by'         => Auth::user()->id,
+                        //             'created_at'        => $value[25].' '.date('h:m:s'),
+                        //             'updated_at'        => $value[25].' '.date('h:m:s')
+                        //         ];
+                                
+                        //         $createOpt = AllowanceOption::Insert($opts);
+                                
+                        //         $data =[
+                        //             'employee_id'       => $employeeId->id,
+                        //             'allowance_type_id' => DB::getPdo()->lastInsertId(),
+                        //             'amount'            => (($value[5] !=null) ? $value[5] : 0 ),
+                        //             'created_by'        => Auth::user()->creatorId(),
+                        //             'created_at'        => $value[25].' '.date('h:m:s'),
+                        //             'updated_at'        => $value[25].' '.date('h:m:s')
+                        //         ];
+                        //         AllowanceFinance::insert($data);
+                                
+                        //     }
+                            
+                        // }
                         if ($value[5] !=null){
                             $opt = AllowanceOption::where('name','Tunjangan Jabatan')->where('pay_type','fixed')->where('include_attendance','N')->first();
                             if ($opt !=null){
                                 $data =[
                                     'employee_id'       => $employeeId->id,
-                                    'allowance_type_id' => $opt->id,
-                                    'amount'            => (($value[5] !=null) ? $value[5] : 0 ),
+                                    'allowance_option_id' => $opt->id,
+                                    'amount'            => $value[5],
                                     'created_by'        => Auth::user()->id,
+                                    'date'              => date('Y-m-d', strtotime($value[25])),
+                                    'branch_id'          => $employeeId->branch_id,
                                     'created_at'        => $value[25].' '.date('h:m:s'),
                                     'updated_at'        => $value[25].' '.date('h:m:s')
                                 ];
-                                AllowanceFinance::insert($data);
+                                DB::table('allowances')->insert($data);
                             }else{
                                 $opts = [
                                     'name'               => 'Tunjangan Jabatan',
-                                    'pay_type'           => 'fixed',
-                                    'include_attendance' => 'N',
+                                    'pay_type'           => 'unfixed',
+                                    'include_attendance' => 'Y',
                                     'branch_id'          => $employeeId->branch_id,
                                     'created_by'         => Auth::user()->id,
-                                    'created_at'        => $value[25].' '.date('h:m:s'),
-                                    'updated_at'        => $value[25].' '.date('h:m:s')
+                                    'created_at'        =>  $value[25].' '.date('h:m:s'),
+                                    'updated_at'        =>  $value[25].' '.date('h:m:s')
                                 ];
                                 
                                 $createOpt = AllowanceOption::Insert($opts);
                                 
                                 $data =[
                                     'employee_id'       => $employeeId->id,
-                                    'allowance_type_id' => DB::getPdo()->lastInsertId(),
-                                    'amount'            => (($value[5] !=null) ? $value[5] : 0 ),
-                                    'created_by'        => Auth::user()->creatorId(),
+                                    'allowance_option_id' => DB::getPdo()->lastInsertId(),
+                                    'amount'            => $value[5],
+                                    'created_by'        => Auth::user()->id,
+                                    'date'              => date('Y-m-d', strtotime($value[25])),
+                                    'branch_id'          => $employeeId->branch_id,
                                     'created_at'        => $value[25].' '.date('h:m:s'),
                                     'updated_at'        => $value[25].' '.date('h:m:s')
                                 ];
-                                AllowanceFinance::insert($data);
-                                
+                                DB::table('allowances')->insert($data);
                             }
-                            
                         }
                         if ($value[6] !=null){
                             $opt = AllowanceOption::where('name','Uang Makan')->where('pay_type','unfixed')->where('include_attendance','N')->first();

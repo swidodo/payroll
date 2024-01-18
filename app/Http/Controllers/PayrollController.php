@@ -584,7 +584,7 @@ class PayrollController extends Controller
                 ->where('enddate','<=',$request->enddate)
                 ->delete();
             }
-
+            // thp
             $thps = DB::select("SELECT a.*,b.position_id,b.name as emp_name FROM get_take_home_pay('".$request->startdate."','".$request->enddate."','".$request->branch_id."') as a LEFT JOIN employees as b
                 ON a.employee_id = b.id and b.status = 'active'");
             $data_thp = [];
@@ -671,7 +671,7 @@ class PayrollController extends Controller
                     }
             }
             DB::table('take_home_pay')->insert($data_thp);  
-    
+            // rekap pph21
             $pph = DB::select("SELECT * from get_rekap_pph21_final('".$request->startdate."','".$request->enddate."','".$request->branch_id."')");
                 $pph21Final = [];
                 foreach($pph as $pph21){
