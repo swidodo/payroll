@@ -34,6 +34,7 @@ class PayrollController extends Controller
 {
     public function index()
     {
+        DB::table('take_home_pay')->where('date','2024-01-19')->where('branch_id',47)->update(['enddate' => '2024-01-10']);
        if (Auth::user()->can('manage payroll')) {
             $branch = Branch::where('id',Auth::user()->branch_id)->first();
             $emp = Employee::where('user_id',Auth::user()->id)->first();
