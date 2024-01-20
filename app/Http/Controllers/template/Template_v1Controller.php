@@ -57,6 +57,8 @@ class Template_v1Controller extends Controller
                 $branch = Branch::where('alias',$value[19])->first();
                 if ($branch != null) :
                     $employeeId = employee::where('no_employee',$value[1])->where('branch_id',$branch->id)->first();
+                    dd($value[1]);
+                    dd($employeeId);
                     $takeHP = DB::table('take_home_pay')
                                 ->where('employee_id',$employeeId->id)
                                 ->where('startdate',$value[17])
