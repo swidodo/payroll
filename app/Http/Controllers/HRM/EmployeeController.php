@@ -792,7 +792,7 @@ class EmployeeController extends Controller
                 // $active = (strtolower($row[24]) === "true") ? true : false;
                 
                     if ($branchId != null){
-                        $name = strtolower($row[0]);
+                        $name = strtolower($row[1]);
                         $departementId = DB::table('departements')
                                             ->select("id")
                                             ->where('departement_code',$row[14])
@@ -816,32 +816,32 @@ class EmployeeController extends Controller
                         }
                         $check = DB::select("select no_employee,id
                                             from employees
-                                            where no_employee ='$row[11]'
+                                            where no_employee ='$row[0]'
                                             AND branch_id ='$branchId->id'");
                         
                         if(count($check) > 0){
                             $doj            = ($row[22] != "" ) ? $row[22] : null;
                             $doe            = ($row[23] != "" ) ? $row[23] : null;
-                            $dob            = ($row[4] != "" && $row[4] !='0000-00-00') ? $row[4] : null;
-                            $checkThp = DB::table('take_home_pay')->where('employee_id',$check[0]->id)->count();
+                            $dob            = ($row[5] != "" && $row[5] !='0000-00-00') ? $row[5] : null;
+                            $checkThp = DB::table('take_home_pay')->where('employee_id',$check[0]->id)->where('branch_id',$branchId->id)->count();
                             if ($checkThp > 0){
                                 $uptemployee = [
-                                    "name"                  =>$row[0],
-                                    "identity_card"         =>$row[1],
-                                    "family_card"           =>$row[2],
-                                    "npwp_number"           =>$row[3],
+                                    "name"                  =>strtoupper($row[1]),
+                                    "identity_card"         =>$row[2],
+                                    "family_card"           =>$row[3],
+                                    "npwp_number"           =>$row[4],
                                     "dob"                   =>$dob,
-                                    "gender"                =>strtoupper($row[5]),
-                                    "religion"              =>$row[6],
-                                    "marital_status"        =>strtoupper($row[7]),
-                                    "phone"                 =>$row[8],
-                                    "address"               =>$row[9],
+                                    "gender"                =>strtoupper($row[6]),
+                                    "religion"              =>strtoupper($row[7]),
+                                    "marital_status"        =>strtoupper($row[8]),
+                                    "phone"                 =>$row[9],
+                                    "address"               =>$row[10],
                                     "employee_type"         =>strtoupper($row[12]),
                                     "work_type"             =>$row[13],
                                     "department_id"         =>$departId,
                                     "position_id"           =>$positId,
-                                    "account_holder_name"   =>$row[16],
-                                    "bank_name"             =>$row[17],
+                                    "account_holder_name"   =>strtoupper($row[16]),
+                                    "bank_name"             =>strtoupper($row[17]),
                                     "account_number"        =>$row[18],
                                     "bank_identifier_code"  =>$row[19],
                                     "branch_location"       =>$row[20],
@@ -849,7 +849,7 @@ class EmployeeController extends Controller
                                     "company_doj"           => $doj,
                                     "company_doe"           => $doe,
                                     "branch_id"             =>$branchId->id,
-                                    "user_id"               =>$userId,
+                                    // "user_id"               =>$userId,
                                     // "is_active"             =>$active,
                                     "created_by"            =>Auth::user()->creatorId(),
                                     "created_at"            => date('Y-m-d h:m:s'),
@@ -857,32 +857,32 @@ class EmployeeController extends Controller
                                 ];
                             }else{
                                 $uptemployee = [
-                                    "name"                  =>$row[0],
-                                    "identity_card"         =>$row[1],
-                                    "family_card"           =>$row[2],
-                                    "npwp_number"           =>$row[3],
+                                    "no_employee"           =>$row[0],
+                                    "name"                  =>strtoupper($row[1]),
+                                    "identity_card"         =>$row[2],
+                                    "family_card"           =>$row[3],
+                                    "npwp_number"           =>$row[4],
                                     "dob"                   =>$dob,
-                                    "gender"                =>strtoupper($row[5]),
-                                    "religion"              =>$row[6],
-                                    "marital_status"        =>strtoupper($row[7]),
-                                    "phone"                 =>$row[8],
-                                    "address"               =>$row[9],
-                                    "email"                 =>$row[10],
-                                    "no_employee"           =>$row[11],
+                                    "gender"                =>strtoupper($row[6]),
+                                    "religion"              =>strtoupper($row[7]),
+                                    "marital_status"        =>strtoupper($row[8]),
+                                    "phone"                 =>$row[9],
+                                    "address"               =>$row[10],
+                                    "email"                 =>$row[11],
                                     "employee_type"         =>strtoupper($row[12]),
                                     "work_type"             =>$row[13],
                                     "department_id"         =>$departId,
                                     "position_id"           =>$positId,
-                                    "account_holder_name"   =>$row[16],
-                                    "bank_name"             =>$row[17],
+                                    "account_holder_name"   =>strtoupper($row[16]),
+                                    "bank_name"             =>strtoupper($row[17]),
                                     "account_number"        =>$row[18],
                                     "bank_identifier_code"  =>$row[19],
                                     "branch_location"       =>$row[20],
                                     "status"                =>strtolower($row[21]),
                                     "company_doj"           => $doj,
                                     "company_doe"           => $doe,
-                                    "branch_id"             =>$branchId->id,
-                                    "user_id"               =>$userId,
+                                    "branch_id"             => $branchId->id,
+                                    // "user_id"               =>$userId,
                                     // "is_active"             =>$active,
                                     "created_by"            =>Auth::user()->creatorId(),
                                     "created_at"            => date('Y-m-d h:m:s'),
@@ -890,18 +890,18 @@ class EmployeeController extends Controller
                                 ];
                             }
                             
-                            Employee::where('no_employee',$row[11])->where('branch_id',$branchId->id)->update($uptemployee);
+                            Employee::where('no_employee',$row[0])->where('branch_id',$branchId->id)->update($uptemployee);
                         }
                         if (count($check) <= 0) {
                             $user = new User();
-                            $user->name     = $row[0];
+                            $user->name     = $row[1];
                             $user->email    = $row[10];
                             $user->branch_id = $branchId->id;
                             $user->password = Hash::make('12345678');
                             $user->type     = 'user'; //default
                             $doj            = ($row[22] != "" ) ? $row[22] : null;
                             $doe            = ($row[23] != "" ) ? $row[23] : null;
-                            $dob            = ($row[4] !="" && $row[4] !='0000-00-00') ? $row[4] : null;
+                            $dob            = ($row[5] !="" && $row[5] !='0000-00-00') ? $row[5] : null;
                             // cek user
                             $checkUser = DB::select("select id,email,name
                                             from users
@@ -915,24 +915,24 @@ class EmployeeController extends Controller
                                 $userId = $checkUser[0]->id;
                             }
                             $employee = [
-                                "name"                  =>$row[0],
-                                "identity_card"         =>$row[1],
-                                "family_card"           =>$row[2],
-                                "npwp_number"           =>$row[3],
+                                "no_employee"           =>$row[0],
+                                "name"                  =>strtoupper($row[1]),
+                                "identity_card"         =>$row[2],
+                                "family_card"           =>$row[3],
+                                "npwp_number"           =>$row[4],
                                 "dob"                   =>$dob,
-                                "gender"                =>strtoupper($row[5]),
-                                "religion"              =>strtoupper($row[6]),
-                                "marital_status"        =>strtoupper($row[7]),
-                                "phone"                 =>$row[8],
-                                "address"               =>$row[9],
-                                "email"                 =>$row[10],
-                                "no_employee"           =>$row[11],
+                                "gender"                =>strtoupper($row[6]),
+                                "religion"              =>strtoupper($row[7]),
+                                "marital_status"        =>strtoupper($row[8]),
+                                "phone"                 =>$row[9],
+                                "address"               =>$row[10],
+                                "email"                 =>$row[11],
                                 "employee_type"         =>strtoupper($row[12]),
                                 "work_type"             =>$row[13],
                                 "department_id"         =>$departId,
                                 "position_id"           =>$positId,
-                                "account_holder_name"   =>$row[16],
-                                "bank_name"             =>$row[17],
+                                "account_holder_name"   =>strtoupper($row[16]),
+                                "bank_name"             =>strtoupper($row[17]),
                                 "account_number"        =>$row[18],
                                 "bank_identifier_code"  =>$row[19],
                                 "branch_location"       =>$row[20],

@@ -101,6 +101,7 @@
 
     <!-- Datetimepicker CSS -->
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap-datetimepicker.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/plugins/sweetalert2/sweetalert2.min.css')}}">
 @endpush
 
 @push('addon-script')
@@ -117,6 +118,7 @@
     <!-- Datatable JS -->
     <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
 
     @if (Session::has('edit-show'))
     <script>
@@ -143,7 +145,7 @@
             if($('.select-employee').length > 0) {
                 $('.select-employee').select2({
                     width: '100%',
-                    tags: true,
+                    // tags: true,
                     dropdownParent: $('#add_leave')
                 });
             }
@@ -151,7 +153,7 @@
             if($('.select-leave-type').length > 0) {
                 $('.select-leave-type').select2({
                     width: '100%',
-                    tags: true,
+                    // tags: true,
                     dropdownParent: $('#add_leave')
                 });
             }
@@ -200,24 +202,7 @@
                     }
                     // 3 tier approval
 
-                    $('#start_date_edit').val(data[2].start_date)
-                    $('#end_date_edit').val(data[2].end_date)
-                    $('#leave_reason_edit').html(data[2].leave_reason)
-                    $('#rejected_reason_edit').html(data[2].rejected_reason)
-                    // $('#attachment_rejected_edit_anchor').attr('href', data[2].attachment_reject)
-                    // $('#attachment_rejected_edit_anchor').html(lastItem)
-
-                    $('#employee_id_edit option[value='+ data[0].id +']').attr('selected','selected');
-                    $('#employee_id_edit').val(data[0].id ? data[0].id : 0).trigger('change');
-
-                    $('#leave_type_id_edit option[value='+ data[2].leave_type_id +']').attr('selected','selected');
-                    $('#leave_type_id_edit').val(data[2].leave_type_id ? data[2].leave_type_id : 0).trigger('change');
-
-                    $('#status_edit option[value='+ data[2].status +']').attr('selected','selected');
-                    $('#status_edit').val(data[2].status ? data[2].status : 0).trigger('change');
-
-                    const urlNow = '{{ Request::url() }}'
-                    $('#edit-form-leave').attr('action', urlNow + '/' + data[2].id);
+                    
                 })
             });
 
@@ -277,7 +262,7 @@
                                 render : function(data,row,type){
                                     var btn ='';
                                     if (data !=null){
-                                        btn ="<a href='{{ asset('../"+data+"'); }}' target='_blank' class='btn btn-primary'>view file </a>";
+                                        btn ="<a href='"+data+"' target='_blank' class='btn btn-primary'>view file </a>";
                                     }
                                     return btn;
                                 }
@@ -295,6 +280,7 @@
                                 name : 'action'
                             },
                     ],
+                    order: [[4, 'desc']]
                 });
             }
              $('#searchBranch').on('click',function(e){
@@ -348,7 +334,7 @@
                 formData.append('start_date',start_date)
                 formData.append('end_date',end_date)
                 formData.append('leave_reason',leave_reason)
-                formData.append('attachment_request',attachment_leave)
+                formData.append('attachment_request',attachment_request)
                 $.ajax({
                     url : 'store-leave',
                     type : 'post',
@@ -361,8 +347,11 @@
 
                     },
                     success : function(respon){
+                        var branchId = $('#branch_id').val();
                         if (respon.status == 'success'){
                             $('#formLeave')[0].reset();
+                            $('#add_leave').modal('hide')
+                            loadData(branchId)
                         }
                         swal.fire({
                             icon : respon.status,
@@ -374,8 +363,9 @@
                     }
             })})
 
-            $(document).on('click','.edit_leave',function(e){
+            $(document).on('click','.edit-leave',function(e){
                 e.preventDefault()
+                var id = $(this).attr('data-id')
                 $.ajax({
                     url :'edit-leave',
                     type :'post',
@@ -386,23 +376,26 @@
                     },
                     success : function(respon){
                         $('#edit_leave').modal('show')
-                        var emp = '<option value="" selected>-- Select Employee --</option>';
-                        $.each(respon.employee,function(key,val){
-                            emp +=`<option value="`+val.id+`">`+val.name+`</option>`;
-                        })
-                        $('#employee_id').html(emp)
+                        var emp = `<option value="`+respon.employee.id+`">`+respon.employee.name+`</option>`
+                        $('#employee_id_edit').html(emp)
 
-                        var type ='<option value="" selected>-- Select Leave Type --</option>';
-                        $.each(respon.leaveType,function(key,val){
-                            type +=`<option value="`+val.id+`">`+val.title+`</option>`;
+                        var types ='<option value="" selected>-- Select Leave Type --</option>';
+                        $.each(respon.type,function(key,val){
+                            if (val.id == respon.leave.leave_type_id){
+                                types +=`<option value="`+val.id+`" selected>`+val.title+`</option>`;
+                            }else{
+                                types +=`<option value="`+val.id+`">`+val.title+`</option>`;
+                            }
+                            
                         })
-                        $('#leave_type_id_edit').html(type)
-                        $('#employee_id_edit').text();
-                        $('#employee_id_edit').val();
-                        $('#start_date_edit').val()
-                        $('#end_date_edit').val()
-                        $('#leave_reason_edit').val()
+                        $('#leave_type_id_edit').html(types)
+                       
+                        $('#start_date_edit').val(respon.leave.start_date)
+                        $('#end_date_edit').val(respon.leave.end_date)
+                        $('#leave_reason_edit').val(respon.leave.leave_reason)
                         $('#rejected_reason_edit').val()
+                         const urlNow = '{{ Request::url() }}'
+                        $('#edit-form-leave').attr('action', urlNow + '/' + respon.leave.id);
                     },
 
                     error : function(){

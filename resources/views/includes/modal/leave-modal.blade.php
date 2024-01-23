@@ -1,5 +1,5 @@
     <!-- Add overtime Modal -->
-    <div id="add_leave" class="modal custom-modal fade" role="dialog">
+    <div id="add_leave" class="modal custom-modal fade" id="modalImportPayroll_v8" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -13,23 +13,28 @@
                         @csrf
                         <div class="row">
                             <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label>Employee <span class="text-danger">*</span></label>
-                                    <select class="form-control select-employee" id="employee_id" name="employee_id">
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="leave_type_id" class="form-label">Leave Type</label>
-                                    <select name="leave_type_id" id="leave_type_id" class="form-control select-leave-type">
-                                    </select>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Employee <span class="text-danger">*</span></label>
+                                            <select class="form-control select-employee" id="employee_id" name="employee_id" required>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="leave_type_id" class="form-label">Leave Type</label>
+                                            <select name="leave_type_id" id="leave_type_id" class="form-control select-leave-type" required>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="start_date" class="form-label">Start Date</label>
-                                            <input class="form-control" name="start_date" type="date" id="start_date">
+                                            <input class="form-control" name="start_date" type="date" id="start_date" required>
 
                                             @if ($errors->has('start_date'))
                                                 <div class="text-danger" role="alert">
@@ -41,7 +46,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="end_date" class="form-label">End Date</label>
-                                            <input class="form-control" name="end_date" type="date" id="end_date">
+                                            <input class="form-control" name="end_date" type="date" id="end_date" required>
                                         </div>
 
                                         @if ($errors->has('end_date'))
@@ -131,7 +136,7 @@
     <!-- /Add User Modal -->
 
     <!-- Edit Overtime Modal -->
-    <div id="edit_leave" class="modal custom-modal fade" role="dialog">
+    <div id="edit_leave" class="modal custom-modal fade" id="modalImportPayroll_v8" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -146,17 +151,22 @@
                         @method('PUT')
                         <div class="row">
                             <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label>Employee <span class="text-danger">*</span></label>
-                                        <select  class="form-control select-employee-edit" id="employee_id_edit" name="employee_id">
-                                        </select>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Employee <span class="text-danger">*</span></label>
+                                            <select  class="form-control select-employee-edit" id="employee_id_edit" name="employee_id">
+                                            </select>
+                                        </div>
                                     </div>
-
-                                <div class="form-group">
-                                    <label for="leave_type_id" class="form-label">Leave Type</label>
-                                    <select name="leave_type_id" id="leave_type_id_edit" class="form-control select-leave-type-edit">
-                                       
-                                    </select>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="leave_type_id" class="form-label">Leave Type</label>
+                                            <select name="leave_type_id" id="leave_type_id_edit" class="form-control select-leave-type-edit">
+                                            
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="row">

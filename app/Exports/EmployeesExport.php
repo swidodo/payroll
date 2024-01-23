@@ -25,9 +25,8 @@ class EmployeesExport implements FromView
         return view('pages.contents.employee.export-excel', [
             'employee' => Employee::select('employees.*',
                                             'departements.name as departement_name',
-                                            'branches.name as branch_name',
-                                            'position_name',
-                                            'parameter_pph21s.name as marital_name'
+                                            'branches.alias as branch_code',
+                                            'position_name'
                                             )
                                     ->leftJoin('branches','branches.id','=','employees.branch_id')
                                     ->leftJoin('departements','departements.id','=','employees.department_id')

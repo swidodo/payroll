@@ -68,6 +68,8 @@
                         }                        
                     },
                 ],
+                // "columnDefs": [{ "orderData": [ 7 ],    "targets": 7 },],
+                "order": [[ 7, 'asc' ]]
               });
           }
           $('#filter_report_contract').on('click',function(e){

@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\URL;
 
 class LeaveController extends Controller
 {
@@ -81,7 +82,7 @@ class LeaveController extends Controller
                                         <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                         <div class="dropdown-menu dropdown-menu-right">';
                                         if(Auth()->user()->can('edit leave')){
-                                            $btn .= '<a  data-url="'.route('leaves.edit', $row->id).'" id="edit-leave" class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_leave"><i class="fa fa-pencil m-r-5"></i> Edit</a>';
+                                            $btn .= '<a  data-url="'.route('leaves.edit', $row->id).'" data-id="'.$row->id.'" id="edit-leave" class="dropdown-item edit-leave" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_leave"><i class="fa fa-pencil m-r-5"></i> Edit</a>';
                                         }
                                         if(Auth()->user()->can('edit leave')){
                                             $btn .= '<a id="delete-leave" data-url="'.route('leaves.destroy', $row->id).'" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_leave"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
@@ -126,70 +127,80 @@ class LeaveController extends Controller
                     //    'remark' => 'required',
                 ]
             );
-
+            
             if ($validator->fails()) {
                 return redirect()->back()->with('errors', $validator->messages());
             }
             try {
                 DB::beginTransaction();
-                $startDate = new DateTime($request->start_date);
-                $endDate   = new DateTime($request->end_date);
-                $total_leave_days = !empty($startDate->diff($endDate)) && $startDate < $endDate ? $startDate->diff($endDate)->days : 0;
-                $employee = Employee::where('id', '=', isset(Auth::user()->employee) ? Auth::user()->employee->id : $request->employee_id)->first();
-                $startDateCarbon = Carbon::parse($request->start_date);
-
+                $startDate          = new DateTime($request->start_date);
+                $endDate            = new DateTime($request->end_date);
+                $total_leave_days   = !empty($startDate->diff($endDate)) && $startDate < $endDate ? $startDate->diff($endDate)->days + 1 : 1;
+                $employee           = Employee::where('id', '=', isset(Auth::user()->employee) ? Auth::user()->employee->id : $request->employee_id)->first();
+                $startDateCarbon    = Carbon::parse($request->start_date);
+                $leaveType          = LeaveType::find($request->leave_type_id);
                 if (!is_null($employee)) {
                     if (is_null($employee->leave_type)) {
-                        toast('Please Set Leave Type in Employees Menu!', 'warning');
-                        return redirect()->route('leaves.index');
+                        $res = [
+                            'status' => 'error',
+                            'msg'    => 'Please Set Leave Type in Employees Menu!'
+                        ];
+                        return response()->json($res);
                     }
-
                     if (is_null($employee->total_leave_remaining)) {
                         $employee->total_leave_remaining = $employee->total_leave;
                         $employee->save();
                     }
-
+                    
                     if ($employee->total_leave_remaining < 1) {
-                        $leaveType = LeaveType::find($request->leave_type_id);
-                        if (strtolower($leaveType->title) == 'melahirkan' || strtolower($leaveType->title) == 'nikah' || strtolower($leaveType->title) == 'kematian' || strtolower($leaveType->title) == 'menikah' || strtolower($leaveType->title) == 'mati') {
+                        
+                        if ($leaveType->title == 'DISPENSATION') {
                         } else {
-                            toast('You cannot apply for leave!', 'warning');
-                            return redirect()->route('leaves.index');
+                            $res = [
+                                'status' => 'error',
+                                'msg'    => 'You cannot apply for leave!'
+                            ];
+                           return response()->json($res);
                         }
                     }
+                    
+                    // if ($employee->leave_type == 'monthly') {
+                    //     if (now()->format('m') == Carbon::parse($employee->company_doj)->addMonth()->format('m')) {
+                    //         toast('You can\'t apply for leave yet!', 'warning');
+                    //         return redirect()->route('leaves.index');
+                    //     }
 
-                    if ($employee->leave_type == 'monthly') {
-                        if (now()->format('m') == Carbon::parse($employee->company_doj)->addMonth()->format('m')) {
-                            toast('You can\'t apply for leave yet!', 'warning');
-                            return redirect()->route('leaves.index');
-                        }
-
-                        if ($employee->total_leave_remaining > 0) {
-                            $employee->total_leave_remaining = $employee->total_leave_remaining - 1;
-                            $employee->save();
-                        }
-                    } elseif ($employee->leave_type == 'annual') {
-                        if ($employee->total_leave_remaining > 0) {
-                            $employee->total_leave_remaining = $employee->total_leave_remaining - 1;
+                    //     if ($employee->total_leave_remaining > 0) {
+                    //         $employee->total_leave_remaining = $employee->total_leave_remaining - 1;
+                    //         $employee->save();
+                    //     }
+                    // } elseif ($employee->leave_type == 'annual') {
+                    //     if ($employee->total_leave_remaining > 0) {
+                    //         $employee->total_leave_remaining = $employee->total_leave_remaining - 1;
+                    //         $employee->save();
+                    //     }
+                    // }
+                    if ($employee->total_leave_remaining > 0 && $leaveType->title =='LEAVE') {
+                        if ($employee->total_leave_remaining >= $total_leave_days){
+                            $employee->total_leave_remaining = $employee->total_leave_remaining - $total_leave_days;
                             $employee->save();
                         }
                     }
+                    
                 }
-
+                
                 $leave    = new Leave();
                 if (Auth::user()->type == "employee") {
                     $leave->employee_id = $employee->id;
                 } else {
                     $leave->employee_id = $request->employee_id;
                 }
-
                 if ($request->file('attachment_request')) {
                     $fileName = time() . '_' . $request->file('attachment_request')->getClientOriginalName();
                     $store = $request->file('attachment_request')->storeAs('public', $fileName);
-                    $pathFile = '/storage/app/public/' . $fileName ?? null;
+                    $pathFile = URL::to('/').'/storage' . $fileName ?? null;
                     $leave->attachment_request_path =  $pathFile;
                 }
-
                 $leave->leave_type_id    = $request->leave_type_id;
                 $leave->applied_on       = date('Y-m-d');
                 $leave->start_date       = $request->start_date;
@@ -197,11 +208,11 @@ class LeaveController extends Controller
                 $leave->total_leave_days = $total_leave_days;
                 $leave->leave_reason     = $request->leave_reason;
                 // $leave->remark           = $request->remark;
-                $leave->status           = Auth::user()->type == "company" ? 'Approved' : 'Pending';
+                $leave->status           = Auth::user()->initial == "HO" ? 'Approved' : 'Pending';
                 $leave->created_by       = Auth::user()->creatorId();
                 $leave->save();
                 HistoryLeave::create($leave->toArray());
-
+                
                 // 3 Tier Approval
                 $levels = LevelApproval::where('created_by', Auth::user()->creatorId())->get();
                 foreach ($levels as $key => $value) {
@@ -216,7 +227,7 @@ class LeaveController extends Controller
                 }
                 // 3 Tier Approval
 
-                if (Auth::user()->type == "company") {
+                if (Auth::user()->initial == "HO") {
                     if ($leave->total_leave_day > 1) {
                         for ($i = 0; $i < $leave->total_leave_day; $i++) {
                             AttendanceEmployee::insertToAttendanceEmployeeLeave($leave, $leave->leave_type->title, $leave->attachment_request_path, $startDateCarbon);
@@ -227,22 +238,34 @@ class LeaveController extends Controller
                         AttendanceEmployee::insertToAttendanceEmployeeLeave($leave, $leave->leave_type->title, $leave->attachment_request_path, $startDateCarbon);
                     }
                 }
-
-                if (Auth::user()->type != "company" && Auth::user()->type != "client") {
+                
+                if (Auth::user()->type != "HO" && Auth::user()->type != "client") {
                     Utility::insertToRequest($leave, Auth::user(), 'Leave');
                 }
 
                 DB::commit();
-                toast('Leave successfully created.', 'success');
-                return redirect()->route('leaves.index');
+                $res = [
+                    'status' => 'success',
+                    'msg'    => 'Leave successfully created.'
+                ];
+                return response()->json($res);
+                
             } catch (Exception $e) {
                 DB::rollBack();
-                toast('Something went wrong.', 'error');
-                return redirect()->route('leaves.index');
+                $res = [
+                    'status' => 'error',
+                    'msg'    => 'Something went wrong.'
+                ];
+                return response()->json($res);
+               
             }
         } else {
-            toast('Permission denied.', 'error');
-            return redirect()->route('leaves.index');
+            $res = [
+                'status' => 'error',
+                'msg'    => 'Permission denied.'
+            ];
+            return response()->json($res);
+            
         }
     }
 
@@ -270,13 +293,14 @@ class LeaveController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
+        $id = $request->id;
         $leave = Leave::find($id);
         if (Auth::user()->can('edit leave')) {
             if ($leave->created_by == Auth::user()->creatorId()) {
                 $user = Auth::user();
-                $employee  = Employee::where('created_by', '=', Auth::user()->creatorId())->where('id', $leave->employee_id)->first();
+                $employee  = Employee::select('id','name')->where('created_by', '=', Auth::user()->creatorId())->where('id', $leave->employee_id)->first();
                 $leavetypes = LeaveType::where('created_by', '=', Auth::user()->creatorId())->get();
 
                 // 3 Tier Approval
@@ -295,7 +319,9 @@ class LeaveController extends Controller
                 // 3 Tier Approval
 
                 return response()->json([
-                    $employee, $leavetypes, $leave,
+                    'employee' => $employee, 
+                    'type'=>$leavetypes, 
+                    'leave'=>$leave,
                     'leaveApprovals' => $levelAndApprovals['approver'],
                     'level_approve' => $levelAndApprovals['level']
                 ]);
@@ -334,7 +360,7 @@ class LeaveController extends Controller
 
             $startDate = new DateTime($request->start_date);
             $endDate   = new DateTime($request->end_date);
-            $total_leave_days = !empty($startDate->diff($endDate)) && $startDate < $endDate ? $startDate->diff($endDate)->days : 0;
+            $total_leave_days = !empty($startDate->diff($endDate)) && $startDate < $endDate ? $startDate->diff($endDate)->days +1 : 1;
             $startDateCarbon = Carbon::parse($request->start_date);
 
 
