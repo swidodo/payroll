@@ -196,9 +196,15 @@ class LeaveController extends Controller
                     $leave->employee_id = $request->employee_id;
                 }
                 if ($request->file('attachment_request')) {
+                    $year  = date('Y');
+                    $month = date('m');
+                    $dir = 'leave/'.$year.'/'.$month.'/'.$request->get('attachment_request');;
+                    if (! Storage::exists($dir)) {
+                        Storage::makeDirectory($dir,775,true);
+                    }
                     $fileName = time() . '_' . $request->file('attachment_request')->getClientOriginalName();
-                    $store = $request->file('attachment_request')->storeAs('public', $fileName);
-                    $pathFile = URL::to('/').'/storage' . $fileName ?? null;
+                    $store = $request->file('attachment_request')->storeAs($dir, $fileName);
+                    $pathFile = URL::to('/').'/'.'public/storage/'.$dir.$fileName ?? null;
                     $leave->attachment_request_path =  $pathFile;
                 }
                 $leave->leave_type_id    = $request->leave_type_id;
