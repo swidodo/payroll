@@ -405,6 +405,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('time-management-report/export-pdf', [TimeManagementReportController::class, 'exportPdf'])->name('time-management.export');
         Route::resource('request-shift-schedule', ReqShiftScheduleController::class);
         Route::resource('shift-schedule', ShiftScheduleController::class);
+        Route::post('upload-schedule',[ShiftScheduleController::class,'importSchedule'])->name('upload-schedule');
+        
         Route::resource('attendance', AttendanceEmployeeController::class);
         Route::post('data-attendance-employee', [AttendanceEmployeeController::class,'get_data'])->name('data-attendance-employee');
         Route::post('getList-employee-attendance', [AttendanceEmployeeController::class,'get_list_employee'])->name('getList-employee-attendance');

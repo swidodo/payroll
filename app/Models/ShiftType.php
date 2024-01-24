@@ -16,6 +16,7 @@ class ShiftType extends Model
         'start_time',
         'end_time',
         'is_wfh',
+        'branch_id',
     ];
 
     public function break_time()

@@ -422,7 +422,6 @@ class AttendanceEmployeeController extends Controller
     public function clockStore(Request $request)
     {
         $employeeShift = ShiftSchedule::where('employee_id', Auth::user()->employee->id)->where('schedule_date', Carbon::now()->format('Y-m-d'))->where('status', 'Approved')->first();
-
         $startTime = Utility::getValByName('company_start_time');
         $endTime   = Utility::getValByName('company_end_time');
         $shiftSchedule = ShiftSchedule::where('employee_id', Auth::user()->employee->id)
@@ -432,21 +431,16 @@ class AttendanceEmployeeController extends Controller
 
         if (Auth::user()->type != 'company') {
             if (!is_null($shiftSchedule)) {
-
                 $employee = Employee::where('user_id', Auth::user()->id)->first();
                 if ($request->clock == 'clock_in') {
                     $in  = date("H:i:s");
-
                     $totalLateSeconds = strtotime($in) - strtotime($employeeShift->shift_type->start_time);
-
                     // late
                     $hours = floor($totalLateSeconds / 3600);
                     $mins  = floor($totalLateSeconds / 60 % 60);
                     $secs  = floor($totalLateSeconds % 60);
                     $late  = sprintf('%02d:%02d:%02d', $hours, $mins, $secs);
-
                     $dendas = Denda::where('created_by', Auth::user()->creatorId())->get();
-
 
                     $employeeAttendance              = new AttendanceEmployee();
                     $employeeAttendance->employee_id = $employee->id;
@@ -492,70 +486,69 @@ class AttendanceEmployeeController extends Controller
                     $mins                     = floor($totalEarlyLeavingSeconds / 60 % 60);
                     $secs                     = floor($totalEarlyLeavingSeconds % 60);
                     $earlyLeaving             = sprintf('%02d:%02d:%02d', $hours, $mins, $secs);
+                    
+                    // dihidden untuk kalkulasi overtime otomatis
+                    // if ($shiftSchedule->is_dayoff) {
+                    //     if (strtotime($out) > strtotime($employeeShift->shift_type->start_time)) {
+                    //         //Overtime
+                    //         $totalOvertimeSeconds = strtotime($out) - strtotime($employeeShift->shift_type->start_time);
+                    //         $hours                = floor($totalOvertimeSeconds / 3600);
+                    //         $mins                 = floor($totalOvertimeSeconds / 60 % 60);
+                    //         $secs                 = floor($totalOvertimeSeconds % 60);
+                    //         $overtime             = sprintf('%02d:%02d:%02d', $hours, $mins, $secs);
+                    //     }
 
-                    if ($shiftSchedule->is_dayoff) {
-                        if (strtotime($out) > strtotime($employeeShift->shift_type->start_time)) {
-                            //Overtime
-                            $totalOvertimeSeconds = strtotime($out) - strtotime($employeeShift->shift_type->start_time);
-                            $hours                = floor($totalOvertimeSeconds / 3600);
-                            $mins                 = floor($totalOvertimeSeconds / 60 % 60);
-                            $secs                 = floor($totalOvertimeSeconds % 60);
-                            $overtime             = sprintf('%02d:%02d:%02d', $hours, $mins, $secs);
-                        }
+                    //     // overtime calculation fee
+                    //     $diffInHour     = Carbon::parse($out)->diffInHours(Carbon::parse($employeeAttendance->clock_in));
+                    //     $diffInDay     = 1;
+                    //     $duration       = strtotime($out) - strtotime($employeeAttendance->clock_in);
+                    //     $durationToTime =  gmdate('H:i:s', $duration);
 
-                        // overtime calculation fee
-                        $diffInHour     = Carbon::parse($out)->diffInHours(Carbon::parse($employeeAttendance->clock_in));
-                        $diffInDay     = 1;
-                        $duration       = strtotime($out) - strtotime($employeeAttendance->clock_in);
-                        $durationToTime =  gmdate('H:i:s', $duration);
+                    //     $pay = 0;
+                    //     $amount_fee = 0;
+                    //     if (!is_null($employee->basic_salary)) {
+                    //         $overtimePayPerHour    = 1 / 173 * $employee->basic_salary->amount;
+                    //         if ($diffInHour == 1) {
+                    //             $pay = 1.5 * floor($overtimePayPerHour);
+                    //         } elseif ($diffInHour > 1) {
+                    //             $pay = 0;
+                    //             for ($i = 0; $i < $diffInHour; $i++) {
+                    //                 if ($i == 0) {
+                    //                     $pay += 1.5 * floor($overtimePayPerHour);
+                    //                 } else {
+                    //                     $pay += 2 * floor($overtimePayPerHour);
+                    //                 }
+                    //             }
+                    //         }
+                    //         $amount_fee = $diffInDay > 0 ? $pay * $diffInDay : 0;
+                    //     } else {
+                    //         toast('Please set employee salary.', 'warning');
+                    //         return redirect()->back();
+                    //     }
 
-                        $pay = 0;
-                        $amount_fee = 0;
-                        if (!is_null($employee->basic_salary)) {
-                            $overtimePayPerHour    = 1 / 173 * $employee->basic_salary->amount;
-                            if ($diffInHour == 1) {
-                                $pay = 1.5 * floor($overtimePayPerHour);
-                            } elseif ($diffInHour > 1) {
-                                $pay = 0;
-                                for ($i = 0; $i < $diffInHour; $i++) {
-                                    if ($i == 0) {
-                                        $pay += 1.5 * floor($overtimePayPerHour);
-                                    } else {
-                                        $pay += 2 * floor($overtimePayPerHour);
-                                    }
-                                }
-                            }
-                            $amount_fee = $diffInDay > 0 ? $pay * $diffInDay : 0;
-                        } else {
-                            toast('Please set employee salary.', 'warning');
-                            return redirect()->back();
-                        }
+                    //     $overtimeType = OvertimeType::where('name', 'Dayoff Overtime')->first();
+                    //     if (is_null($overtimeType)) {
+                    //         $overtimeType = OvertimeType::create([
+                    //             'name' => 'Dayoff Overtime',
+                    //             'created_by' => Auth::user()->creatorId()
+                    //         ]);
+                    //     }
 
-                        $overtimeType = OvertimeType::where('name', 'Dayoff Overtime')->first();
-                        if (is_null($overtimeType)) {
-                            $overtimeType = OvertimeType::create([
-                                'name' => 'Dayoff Overtime',
-                                'created_by' => Auth::user()->creatorId()
-                            ]);
-                        }
-
-                        $overtimeModel = new Overtime();
-                        $overtimeModel->employee_id      = $employee->id;
-                        $overtimeModel->start_date       = $employeeAttendance->date;
-                        $overtimeModel->end_date         = $employeeAttendance->date;
-                        $overtimeModel->start_time       = $employeeAttendance->clock_in;
-                        $overtimeModel->end_time         = $out;
-                        $overtimeModel->duration         = $durationToTime;
-                        $overtimeModel->amount_fee       = $amount_fee;
-                        $overtimeModel->status           =  'Approved';
-                        $overtimeModel->overtime_type_id =  $overtimeType->id;
-                        $overtimeModel->created_by       = Auth::user()->creatorId();
-                        $overtimeModel->save();
-                    } else {
-                        $overtime = '00:00:00';
-                    }
-
-
+                    //     $overtimeModel = new Overtime();
+                    //     $overtimeModel->employee_id      = $employee->id;
+                    //     $overtimeModel->start_date       = $employeeAttendance->date;
+                    //     $overtimeModel->end_date         = $employeeAttendance->date;
+                    //     $overtimeModel->start_time       = $employeeAttendance->clock_in;
+                    //     $overtimeModel->end_time         = $out;
+                    //     $overtimeModel->duration         = $durationToTime;
+                    //     $overtimeModel->amount_fee       = $amount_fee;
+                    //     $overtimeModel->status           =  'Approved';
+                    //     $overtimeModel->overtime_type_id =  $overtimeType->id;
+                    //     $overtimeModel->created_by       = Auth::user()->creatorId();
+                    //     $overtimeModel->save();
+                    // } else {
+                    //     $overtime = '00:00:00';
+                    // }
 
                     $employeeAttendance->clock_out     = $out;
                     $employeeAttendance->early_leaving = ($earlyLeaving > 0) && $shiftSchedule->is_dayoff != true ? $earlyLeaving : '00:00:00';
@@ -573,8 +566,140 @@ class AttendanceEmployeeController extends Controller
                     return redirect()->route('dashboard');
                 }
             } else {
-                toast('You dont have shift today', 'warning');
-                return redirect()->route('dashboard');
+                $employee = Employee::where('user_id', Auth::user()->id)->first();
+                if ($request->clock == 'clock_in') {
+                    $in  = date("H:i:s");
+                    $totalLateSeconds = strtotime($in) - strtotime($employeeShift->shift_type->start_time);
+                    // late
+                    $hours = floor($totalLateSeconds / 3600);
+                    $mins  = floor($totalLateSeconds / 60 % 60);
+                    $secs  = floor($totalLateSeconds % 60);
+                    $late  = sprintf('%02d:%02d:%02d', $hours, $mins, $secs);
+                    $dendas = Denda::where('created_by', Auth::user()->creatorId())->get();
+
+                    $employeeAttendance              = new AttendanceEmployee();
+                    $employeeAttendance->employee_id = $employee->id;
+                    $employeeAttendance->created_by  = Auth::user()->creatorId();
+                    $employeeAttendance->date          = date("Y-m-d");
+                    $employeeAttendance->status        = $shiftSchedule->is_dayoff ? 'OVERTIME' : 'PRESENT';
+                    $employeeAttendance->clock_in      = $in;
+                    $employeeAttendance->clock_out     = '00:00:00';
+                    $employeeAttendance->late          = ($late > 0) && $shiftSchedule->is_dayoff != true ? $late : '00:00:00';
+                    $employeeAttendance->early_leaving = '00:00:00';
+                    $employeeAttendance->overtime      = '00:00:00';
+                    $employeeAttendance->total_rest    = '00:00:00';
+                    $employeeAttendance->save();
+
+                    if (!is_null($dendas)) {
+                        $amountDenda = 0;
+                        foreach ($dendas as $key => $value) {
+                            if ($late > 0 && strtotime($late) < strtotime($value->time)) {
+                                $attendanceEmployee = AttendanceEmployee::where('employee_id', Auth::user()->employee->id)->where('date', date('Y-m-d'))->first();
+
+                                $attendanceEmployee->denda = $value->amount;
+                                $attendanceEmployee->save();
+                            }
+                        }
+                    }
+
+                    LogAttendance::create([
+                        'employee_id'   => $employeeAttendance->employee_id,
+                        'date'          => now(),
+                        'activity'      => ucwords($employeeAttendance->employee->name) . ' Has Clocked In',
+                        'created_by'    => Auth::user()->creatorId()
+                    ]);
+                    toast('Succes Clock In!', 'success');
+                    return redirect()->back();
+                } else {
+                    $out = date("H:i:s");
+                    $employee         = Employee::where('user_id', Auth::user()->id)->first();
+                    $employeeAttendance = AttendanceEmployee::where('employee_id', $employee->id)->orderBy('id', 'desc')->first();
+
+                    //early Leaving
+                    $totalEarlyLeavingSeconds = strtotime($employeeShift->shift_type->end_time) - strtotime($out);
+                    $hours                    = floor($totalEarlyLeavingSeconds / 3600);
+                    $mins                     = floor($totalEarlyLeavingSeconds / 60 % 60);
+                    $secs                     = floor($totalEarlyLeavingSeconds % 60);
+                    $earlyLeaving             = sprintf('%02d:%02d:%02d', $hours, $mins, $secs);
+                    
+                    // dihidden untuk kalkulasi overtime otomatis
+                    // if ($shiftSchedule->is_dayoff) {
+                    //     if (strtotime($out) > strtotime($employeeShift->shift_type->start_time)) {
+                    //         //Overtime
+                    //         $totalOvertimeSeconds = strtotime($out) - strtotime($employeeShift->shift_type->start_time);
+                    //         $hours                = floor($totalOvertimeSeconds / 3600);
+                    //         $mins                 = floor($totalOvertimeSeconds / 60 % 60);
+                    //         $secs                 = floor($totalOvertimeSeconds % 60);
+                    //         $overtime             = sprintf('%02d:%02d:%02d', $hours, $mins, $secs);
+                    //     }
+
+                    //     // overtime calculation fee
+                    //     $diffInHour     = Carbon::parse($out)->diffInHours(Carbon::parse($employeeAttendance->clock_in));
+                    //     $diffInDay     = 1;
+                    //     $duration       = strtotime($out) - strtotime($employeeAttendance->clock_in);
+                    //     $durationToTime =  gmdate('H:i:s', $duration);
+
+                    //     $pay = 0;
+                    //     $amount_fee = 0;
+                    //     if (!is_null($employee->basic_salary)) {
+                    //         $overtimePayPerHour    = 1 / 173 * $employee->basic_salary->amount;
+                    //         if ($diffInHour == 1) {
+                    //             $pay = 1.5 * floor($overtimePayPerHour);
+                    //         } elseif ($diffInHour > 1) {
+                    //             $pay = 0;
+                    //             for ($i = 0; $i < $diffInHour; $i++) {
+                    //                 if ($i == 0) {
+                    //                     $pay += 1.5 * floor($overtimePayPerHour);
+                    //                 } else {
+                    //                     $pay += 2 * floor($overtimePayPerHour);
+                    //                 }
+                    //             }
+                    //         }
+                    //         $amount_fee = $diffInDay > 0 ? $pay * $diffInDay : 0;
+                    //     } else {
+                    //         toast('Please set employee salary.', 'warning');
+                    //         return redirect()->back();
+                    //     }
+
+                    //     $overtimeType = OvertimeType::where('name', 'Dayoff Overtime')->first();
+                    //     if (is_null($overtimeType)) {
+                    //         $overtimeType = OvertimeType::create([
+                    //             'name' => 'Dayoff Overtime',
+                    //             'created_by' => Auth::user()->creatorId()
+                    //         ]);
+                    //     }
+
+                    //     $overtimeModel = new Overtime();
+                    //     $overtimeModel->employee_id      = $employee->id;
+                    //     $overtimeModel->start_date       = $employeeAttendance->date;
+                    //     $overtimeModel->end_date         = $employeeAttendance->date;
+                    //     $overtimeModel->start_time       = $employeeAttendance->clock_in;
+                    //     $overtimeModel->end_time         = $out;
+                    //     $overtimeModel->duration         = $durationToTime;
+                    //     $overtimeModel->amount_fee       = $amount_fee;
+                    //     $overtimeModel->status           =  'Approved';
+                    //     $overtimeModel->overtime_type_id =  $overtimeType->id;
+                    //     $overtimeModel->created_by       = Auth::user()->creatorId();
+                    //     $overtimeModel->save();
+                    // } else {
+                    //     $overtime = '00:00:00';
+                    // }
+
+                    $employeeAttendance->clock_out     = $out;
+                    $employeeAttendance->early_leaving = ($earlyLeaving > 0) && $shiftSchedule->is_dayoff != true ? $earlyLeaving : '00:00:00';
+                    $employeeAttendance->overtime      = $overtime;
+                    $employeeAttendance->total_rest    = '00:00:00';
+                    $employeeAttendance->save();
+
+                    LogAttendance::create([
+                        'employee_id'   => $employeeAttendance->employee_id,
+                        'date'          => now(),
+                        'activity'      => ucwords($employeeAttendance->employee->name) . ' Has Clocked Out',
+                        'created_by'    => Auth::user()->creatorId()
+                    ]);
+                    toast('Succes Clock Out!', 'success');
+                    return redirect()->route('dashboard');
+                }
             }
         } else {
             toast('You are not an employee!', 'warning');
@@ -694,7 +819,7 @@ class AttendanceEmployeeController extends Controller
         // dd($sheetData);
         foreach ($sheetData as $key => $value) {
             if ($key > 0) :
-                $employeeId = employee::where('no_employee',$value[1])->first();
+                $employeeId = employee::where('no_employee',$value[1])->where('branch_id',Auth::user()->branch_id)->first();
                 if ($employeeId != null ):
                     $checked = AttendanceEmployee::where('employee_id',$employeeId->id)->where('date',$value[3])->first();
                     if ($checked !=null):

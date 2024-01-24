@@ -59,7 +59,7 @@ class DayTypeController extends Controller
             $dayType                = new DayType();
             $dayType->name          = $request->name;
             $dayType->created_by    = Auth::user()->creatorId();
-            $dayType->branch_id     = Auth::user()->baranch_id();
+            $dayType->branch_id     = Auth::user()->branch_id;
             $dayType->save();
 
             return redirect()->route('day-type.index')->with('success', 'Day Type ' . $dayType->name . ' successfully created.');

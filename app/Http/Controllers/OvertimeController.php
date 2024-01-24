@@ -168,30 +168,15 @@ class OvertimeController extends Controller
     }
     public function get_data(Request $request){
         $defaultDate = date('m');
-        $data = DB::table('overtimes')
-                    ->select('overtimes.id',
-                            'employees.no_employee',
-                            'employees.name',
-                            'overtimes.overtime_type',
-                            'overtimes.start_date',
-                            'overtimes.start_time',
-                            'day_types.name as day_name',
-                            'overtimes.end_time',
-                            'overtimes.duration',
-                            'overtimes.nominal_per_hour',
-                            'overtimes.amount_fee',
-                            'overtimes.status',
-                            'overtimes.multiplier',
-                            'overtimes.notes')
-                    ->leftJoin('employees','employees.id','=','overtimes.employee_id')
-                    ->leftJoin('day_types','day_types.id','=','overtimes.day_type_id')
-                    ->where('employees.branch_id','=',$request->branch_id);
+        $data = DB::table('v_data_overtimes')
+                    ->select('*')
+                    ->where('branch_id','=',$request->branch_id);
                     if ($request->date !=""){
-                        $data->where('overtimes.start_date','=',$request->date);
+                        $data->where('start_date','=',$request->date);
                     }else{
-                        $data->where(DB::raw("TO_CHAR(overtimes.start_date,'MM')"),'=',$defaultDate);
+                        $data->where(DB::raw("TO_CHAR(start_date,'MM')"),'=',$defaultDate);
                     }
-                    $data->orderBy('employees.name','ASC');
+                    $data->orderBy('start_date','DESC');
                     $data->get();
         return DataTables::of($data)
                     ->addIndexColumn()

@@ -275,12 +275,6 @@ class LeaveController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $leave = Leave::find($id);
@@ -293,12 +287,6 @@ class LeaveController extends Controller
         return view('pages.contents.time-management.leaves.detail-rejected', compact('leave', 'fileType'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Request $request)
     {
         $id = $request->id;
@@ -473,12 +461,6 @@ class LeaveController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $leave = Leave::find($id);

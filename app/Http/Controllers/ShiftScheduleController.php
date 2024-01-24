@@ -7,6 +7,7 @@ use App\Models\ReqShiftSchedule;
 use App\Models\ShiftSchedule;
 use App\Models\ShiftType;
 use App\Models\Utility;
+use App\Models\Dayoff;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,16 +15,16 @@ use Illuminate\Support\Facades\Validator;
 
 class ShiftScheduleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function index()
     {
         //show shift schedule
         if (Auth::user()->can('show shift schedule')) {
-            $shiftSchedules = ShiftSchedule::where('created_by', '=', Auth::user()->creatorId())->where('status', 'Approved')->orderBy('id', 'asc')->get();
+            $shiftSchedules = ShiftSchedule::leftJoin('employees','employees.id','=','shift_schedules.employee_id')
+            ->where('employees.branch_id', '=', Auth::user()->branch_id)
+            ->where('shift_schedules.status', 'Approved')
+            ->orderBy('shift_schedules.id', 'asc')
+            ->get();
 
             $nationalDay = Utility::nationalHoliday();
 
@@ -40,7 +41,7 @@ class ShiftScheduleController extends Controller
                 }
             }
 
-            $employees = Employee::where('created_by', '=', Auth::user()->creatorId())->get();
+            $employees = Employee::where('branch_id', '=', Auth::user()->branch_id)->get();
             return view('pages.contents.shift-schedule.index', compact('shiftSchedules', 'employees'));
         } else {
             toast('Permission denied.', 'error');
@@ -48,44 +49,20 @@ class ShiftScheduleController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         if (Auth::user()->can('edit shift schedule')) {
@@ -100,14 +77,6 @@ class ShiftScheduleController extends Controller
             return redirect()->back();
         }
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $reqShiftSchedule = ReqShiftSchedule::find($id);
@@ -166,12 +135,6 @@ class ShiftScheduleController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $reqShiftSchedule = ReqShiftSchedule::find($id);
@@ -207,5 +170,86 @@ class ShiftScheduleController extends Controller
             toast('Permission denied.', 'error');
             return redirect()->back();
         }
+    }
+    public function importSchedule()
+    {
+        try{
+            $file_extension = request()->file('file-excel')->extension();
+            if ('csv' == $file_extension) {
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+            } elseif ('xls' == $file_extension) {
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+            } elseif ('xlsx' == $file_extension) {
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+            }
+
+            // $reader = new Xls();
+            $spreadsheet = $reader->load(request()->file('file-excel'));
+            $sheetData = $spreadsheet->getActiveSheet()->toArray();
+
+            $scheduleShift = [];
+            foreach ($sheetData as $key => $value) {
+                if ($key > 0) :
+                    $employeeId = employee::where('no_employee',$value[1])->where('branch_id',Auth::user()->branch_id)->first();
+                    if ($employeeId != null ):
+                        $checked    = ShiftSchedule::where('employee_id',$employeeId->id)->where('schedule_date',$value[3])->first();
+                        $dayOff     = Dayoff::where('date',$value[3])->where('branch_id',Auth::user()->branch_id)->first();
+                        $shift      = ShiftType::where('name', $value[4])->where('branch_id',Auth::user()->branch_id)->first();
+                        if ($dayOff != null){
+                            $is_dayoff = 1;
+                        }else{
+                            $is_dayoff = 0;
+                        }
+                        if ($checked !=null):
+                            $data = [
+                                'schedule_date'     => $value[3],
+                                'shift_id'          => $shift->id,
+                                'status'            => 1,
+                                'is_dayoff'         => $is_dayoff,
+                                'is_active'         => 1,
+                                'created_at'        => date('Y-m-d h:m:s'),
+                                'updated_at'        => date('Y-m-d h:m:s'),
+                                'created_by'        => Auth::user()->id,
+                            ];
+                            if ($shift !=null){
+                                $updateSchedule = ShiftSchedule::where('schedule_date',$checked->schedule_date)->where('employee_id',$employeeId->id)->update($data);
+                            }
+                        endif;
+                        if($checked == null):
+                                $data = [
+                                    'employee_id'       => $employeeId->id,
+                                    'schedule_date'     => $value[3],
+                                    'shift_id'          => ($shift !==null) ?  $shift->id:0,
+                                    'status'            => 1,
+                                    'is_dayoff'         => $is_dayoff,
+                                    'is_active'         => 1,
+                                    'created_at'        => date('Y-m-d h:m:s'),
+                                    'updated_at'        => date('Y-m-d h:m:s'),
+                                    'created_by'        => Auth::user()->id,
+                                ];
+                                if ($shift !=null){
+                                    if(!in_array($data,$scheduleShift)){
+                                        array_push($scheduleShift,$data);
+                                    }
+                                }
+                        endif;
+                    endif;
+                endif;
+            }
+            if (count($scheduleShift) > 0){
+                $insertSchedule = ShiftSchedule::insert($scheduleShift);
+            }
+            $res = [
+                'status' => 'success',
+                'msg'    => 'Successfully Import Schedule !'
+            ];
+            return response()->json($res);
+        }catch(Exception $e){
+            $res = [
+                'status' => 'info',
+                'msg'    => 'Data not Found !'
+            ];
+            return response()->json($res);
+        } 
     }
 }

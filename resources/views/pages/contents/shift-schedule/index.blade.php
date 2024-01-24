@@ -18,6 +18,11 @@
                         <li class="breadcrumb-item active"> Shift Schedule</li>
                     </ul>
                 </div>
+                @can('import schedule')
+                    <div class="col-auto float-end ms-auto">
+                        <a href="#" id="ImportData" class="btn add-btn"><i class="fa fa-upload"></i> Import</a>
+                    </div>
+                @endcan
                 {{-- @can('create request shift schedule')
                     <div class="col-auto float-end ms-auto">
                         <a href="{{route('request-shift-schedule.create')}}" class="btn add-btn"><i class="fa fa-plus"></i> New Request</a>
@@ -144,7 +149,7 @@
     </div>
     <!-- /Page Content -->
 
-
+    @include('includes.modal.schedule.import')
 </div>
 @endsection
 
@@ -161,6 +166,7 @@
 
     <!-- Datetimepicker CSS -->
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap-datetimepicker.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/plugins/sweetalert2/sweetalert2.min.css')}}">
 @endpush
 
 @push('addon-script')
@@ -180,5 +186,51 @@
     <!-- Datatable JS -->
     <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
+
+    <script>
+         $.ajaxSetup({
+                headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
+            });
+        $(document).ready(function(){
+            $('#ImportData').on('click', function(){
+                $('#import_schedule').modal('show');
+            })
+            $('#formImportSchedule').on('submit',function(e){
+                e.preventDefault();
+                var schedule  = $('#schedule-file')[0].files[0];
+                var formData = new FormData();
+                formData.append('file-excel',schedule)
+                $.ajax({
+                    url : 'upload-schedule',
+                    type : 'post',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    data : formData,
+                    dataType : 'json',
+                    beforeSend : function(){
+                        $('.containerLoader').attr('hidden',false)
+                    },
+                    success : function(respon){
+                        $('.containerLoader').attr('hidden',true)
+                        if (respon.status == 'success'){
+                            $('#formImportSchedule')[0].reset();
+                            $('#import_schedule').modal('hide')
+                        }
+                        swal.fire({
+                            icon : respon.status,
+                            text : respon.msg,
+                        })
+                    },
+                    error : function(){
+                        alert('Someting went wrong !');
+                        $('.containerLoader').attr('hidden',true)
+                    }
+
+                })
+            })
+        })
+    </script>
 
 @endpush

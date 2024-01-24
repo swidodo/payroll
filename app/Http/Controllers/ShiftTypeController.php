@@ -11,12 +11,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ShiftTypeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+   public function index()
     {
         if (Auth::user()->can('manage shift type')) {
             $shiftTypes = ShiftType::where('created_by', '=', Auth::user()->creatorId())->get();
@@ -28,12 +23,6 @@ class ShiftTypeController extends Controller
             return redirect()->back();
         }
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         if (Auth::user()->can('create shift type')) {
@@ -46,13 +35,7 @@ class ShiftTypeController extends Controller
             return redirect()->back();
         }
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
         // dd($request->all()['break_time'][1]);
@@ -68,7 +51,7 @@ class ShiftTypeController extends Controller
             if ($validator->fails()) {
                 return redirect()->back()->with('errors', $validator->messages());
             }
-
+            // dd(Auth::user()->branch_id);
             $shiftType = ShiftType::create([
                 'name'          => $request->name,
                 'day_type_id'   => $request->day_type_id,
@@ -76,6 +59,7 @@ class ShiftTypeController extends Controller
                 'end_time'      => $request->end_time,
                 'is_wfh'        => isset($request->is_wfh) &&  $request->is_wfh == 'on' ? 1 : 0,
                 'created_by'    => Auth::user()->creatorId(),
+                'branch_id'     => Auth::user()->branch_id,
             ]);
 
             if (isset($request->break_time)) {
