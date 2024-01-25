@@ -101,13 +101,15 @@ class LeaveController extends Controller
             $data['employee'] = Employee::select('id','name')->where('branch_id',Auth::user()->branch_id)->get();
             $data['leaveType'] = LeaveType::select('leave_types.id','leave_types.title')
                                     ->leftJoin('users','users.id','=','leave_types.created_by')
-                                    ->where('users.branch_id',Auth::user()->branch_id)->get();
+                                    // ->where('users.branch_id',Auth::user()->branch_id)
+                                    ->get();
             return response()->json($data);
         }else{
             $data['employee'] = Employee::select('id','name')->where('branch_id',Auth::user()->branch_id)->get();
             $data['leaveType'] = LeaveType::select('leave_types.id','leave_types.title')
                                     ->leftJoin('users','users.id','=','leave_types.created_by')
-                                    ->where('users.branch_id',Auth::user()->branch_id)->get();
+                                    // ->where('users.branch_id',Auth::user()->branch_id)
+                                    ->get();
             return response()->json($data);
         }
     }
