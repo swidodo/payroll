@@ -108,8 +108,7 @@ class LeaveController extends Controller
             $data['employee'] = Employee::select('id','name')->where('branch_id',$request->branch_id)->get();
             $data['leaveType'] = LeaveType::select('leave_types.id','leave_types.title')
                                     ->leftJoin('users','users.id','=','leave_types.created_by')
-                                    ->leftJoin('branches','branches.id','=','users.branch_id')
-                                    ->where('branches.id',$branch->id)->get();
+                                    ->where('users.branch_id',$branch->id)->get();
             return response()->json($data);
         }
     }
@@ -294,7 +293,7 @@ class LeaveController extends Controller
         if (Auth::user()->can('edit leave')) {
             if ($leave->created_by == Auth::user()->creatorId()) {
                 $user = Auth::user();
-                $employee  = Employee::select('id','name')->where('created_by', '=', Auth::user()->creatorId())->where('id', $leave->employee_id)->first();
+                $employee  = Employee::select('id','name')->where('branch_id', '=', Auth::user()->branch_id)->where('id', $leave->employee_id)->first();
                 $leavetypes = LeaveType::where('created_by', '=', Auth::user()->creatorId())->get();
 
                 // 3 Tier Approval
