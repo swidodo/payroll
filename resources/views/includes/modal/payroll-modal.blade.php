@@ -226,11 +226,11 @@
                 <div class="modal-body">
                     <div class="row">
                         <table>
-                            <tr>
+                            {{-- <tr>
                                 <td width="50%">Employee Code</td>
                                 <td>:</td>
                                 <td id="empCode">:</td>
-                            </tr>
+                            </tr> --}}
                             <tr>
                                 <td width="50%">Employee ID</td>
                                 <td>:</td>
