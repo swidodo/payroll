@@ -96,19 +96,18 @@ class LeaveController extends Controller
 
     }
     public function request_manage_leave(Request $request){
-        $branch = Branch::where('id',$request->branch_id)->first();
+        $branch = Branch::where('id',Auth::user()->branch_id)->first();
         if (Auth::user()->initial == 'HO'){
-            $data['employee'] = Employee::select('id','name')->where('branch_id',$request->branch_id)->get();
+            $data['employee'] = Employee::select('id','name')->where('branch_id',Auth::user()->branch_id)->get();
             $data['leaveType'] = LeaveType::select('leave_types.id','leave_types.title')
                                     ->leftJoin('users','users.id','=','leave_types.created_by')
-                                    ->leftJoin('branches','branches.id','=','users.branch_id')
-                                    ->where('branches.company_id',$branch->company_id)->get();
+                                    ->where('users.branch_id',Auth::user()->branch_id)->get();
             return response()->json($data);
         }else{
-            $data['employee'] = Employee::select('id','name')->where('branch_id',$request->branch_id)->get();
+            $data['employee'] = Employee::select('id','name')->where('branch_id',Auth::user()->branch_id)->get();
             $data['leaveType'] = LeaveType::select('leave_types.id','leave_types.title')
                                     ->leftJoin('users','users.id','=','leave_types.created_by')
-                                    ->where('users.branch_id',$branch->id)->get();
+                                    ->where('users.branch_id',Auth::user()->branch_id)->get();
             return response()->json($data);
         }
     }
