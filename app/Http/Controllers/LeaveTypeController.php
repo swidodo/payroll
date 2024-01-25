@@ -62,7 +62,10 @@ class LeaveTypeController extends Controller
                 ];
                 return response()->json($res);
             }
-            $check = LeaveType::where('code',$request->code)->count();
+            $check = LeaveType::leftJoin('users','users.id','leave_types.created_by')
+                                ->where('code',$request->code)
+                                ->where('users.branch_id',Auth::user()->branch_id)
+                                ->count();
             if($check > 0){
                 $res = [
                     'status' => 'error',
