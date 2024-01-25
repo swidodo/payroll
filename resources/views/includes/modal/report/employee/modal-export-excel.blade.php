@@ -21,6 +21,7 @@
                   <label>Status</label>
                   <select class="form-select form-control" name="status">
                      <option value="active">Active</option>
+                     <option value="resign">Resign</option>
                      <option value="fired">Fired</option>
                      <option value="pension">Pension</option>
                   </select>

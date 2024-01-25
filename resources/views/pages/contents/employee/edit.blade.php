@@ -125,7 +125,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="bank_name" class="form-label">Bank Name</label>
-                                        <input class="form-control"  name="account_nubank_namember" type="text" value="{{$employee->bank_name ?? ''}}" id="name">
+                                        <input class="form-control"  name="bank_name" type="text" value="{{$employee->bank_name ?? ''}}" id="name">
                                     </div> 
                                     <div class="form-group col-md-6">
                                         <label for="account_number" class="form-label">Bank Account</label>

@@ -144,10 +144,9 @@
                                             <option value="permanent">Permanent</option>
                                             <option value="probation">Probation</option>
                                             <option value="contract">Contract</option>
-                                            <option value="outsourcing">Outsourcing</option>
-                                            <option value="hl">Past Daily</option>
+                                            {{-- <option value="outsourcing">Outsourcing</option> --}}
+                                            <option value="hl">Daily Worker</option>
                                             <option value="magang">Magang</option>
-                                            <option value="freelancers">Freelancers</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-md-6">
