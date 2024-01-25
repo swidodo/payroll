@@ -139,55 +139,55 @@ class LeaveController extends Controller
                 $employee           = Employee::where('id', '=', isset(Auth::user()->employee) ? Auth::user()->employee->id : $request->employee_id)->first();
                 $startDateCarbon    = Carbon::parse($request->start_date);
                 $leaveType          = LeaveType::find($request->leave_type_id);
-                if (!is_null($employee)) {
-                    if (is_null($employee->leave_type)) {
-                        $res = [
-                            'status' => 'error',
-                            'msg'    => 'Please Set Leave Type in Employees Menu!'
-                        ];
-                        return response()->json($res);
-                    }
-                    if (is_null($employee->total_leave_remaining)) {
-                        $employee->total_leave_remaining = $employee->total_leave;
-                        $employee->save();
-                    }
+                // if (!is_null($employee)) {
+                //     if (is_null($employee->leave_type)) {
+                //         $res = [
+                //             'status' => 'error',
+                //             'msg'    => 'Please Set Leave Type in Employees Menu!'
+                //         ];
+                //         return response()->json($res);
+                //     }
+                //     if (is_null($employee->total_leave_remaining)) {
+                //         $employee->total_leave_remaining = $employee->total_leave;
+                //         $employee->save();
+                //     }
                     
-                    if ($employee->total_leave_remaining < 1) {
+                //     if ($employee->total_leave_remaining < 1) {
                         
-                        if ($leaveType->title == 'DISPENSATION') {
-                        } else {
-                            $res = [
-                                'status' => 'error',
-                                'msg'    => 'You cannot apply for leave!'
-                            ];
-                           return response()->json($res);
-                        }
-                    }
+                //         if ($leaveType->title == 'DISPENSATION') {
+                //         } else {
+                //             $res = [
+                //                 'status' => 'error',
+                //                 'msg'    => 'You cannot apply for leave!'
+                //             ];
+                //            return response()->json($res);
+                //         }
+                //     }
                     
-                    // if ($employee->leave_type == 'monthly') {
-                    //     if (now()->format('m') == Carbon::parse($employee->company_doj)->addMonth()->format('m')) {
-                    //         toast('You can\'t apply for leave yet!', 'warning');
-                    //         return redirect()->route('leaves.index');
-                    //     }
+                //     // if ($employee->leave_type == 'monthly') {
+                //     //     if (now()->format('m') == Carbon::parse($employee->company_doj)->addMonth()->format('m')) {
+                //     //         toast('You can\'t apply for leave yet!', 'warning');
+                //     //         return redirect()->route('leaves.index');
+                //     //     }
 
-                    //     if ($employee->total_leave_remaining > 0) {
-                    //         $employee->total_leave_remaining = $employee->total_leave_remaining - 1;
-                    //         $employee->save();
-                    //     }
-                    // } elseif ($employee->leave_type == 'annual') {
-                    //     if ($employee->total_leave_remaining > 0) {
-                    //         $employee->total_leave_remaining = $employee->total_leave_remaining - 1;
-                    //         $employee->save();
-                    //     }
-                    // }
-                    if ($employee->total_leave_remaining > 0 && $leaveType->title =='LEAVE') {
-                        if ($employee->total_leave_remaining >= $total_leave_days){
-                            $employee->total_leave_remaining = $employee->total_leave_remaining - $total_leave_days;
-                            $employee->save();
-                        }
-                    }
+                //     //     if ($employee->total_leave_remaining > 0) {
+                //     //         $employee->total_leave_remaining = $employee->total_leave_remaining - 1;
+                //     //         $employee->save();
+                //     //     }
+                //     // } elseif ($employee->leave_type == 'annual') {
+                //     //     if ($employee->total_leave_remaining > 0) {
+                //     //         $employee->total_leave_remaining = $employee->total_leave_remaining - 1;
+                //     //         $employee->save();
+                //     //     }
+                //     // }
+                //     if ($employee->total_leave_remaining > 0 && $leaveType->title =='LEAVE') {
+                //         if ($employee->total_leave_remaining >= $total_leave_days){
+                //             $employee->total_leave_remaining = $employee->total_leave_remaining - $total_leave_days;
+                //             $employee->save();
+                //         }
+                //     }
                     
-                }
+                // }
                 
                 $leave    = new Leave();
                 if (Auth::user()->type == "employee") {
