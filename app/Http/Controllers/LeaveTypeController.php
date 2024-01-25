@@ -179,14 +179,14 @@ class LeaveTypeController extends Controller
     {
         $leavetype = LeaveType::find($id);
         if (Auth::user()->can('delete leave type')) {
-            if ($leavetype->created_by == Auth::user()->creatorId()) {
+            // if ($leavetype->created_by == Auth::user()->creatorId()) {
                 $leavetype->delete();
 
                 return redirect()->route('leave-type.index')->with('success', 'LeaveType successfully deleted.');
-            } else {
-                toast('Permission denied.', 'error');
-                return redirect()->back();
-            }
+            // } else {
+            //     toast('Permission denied.', 'error');
+            //     return redirect()->back();
+            // }
         } else {
             toast('Permission denied.', 'error');
             return redirect()->back();
