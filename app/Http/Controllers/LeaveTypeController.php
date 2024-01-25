@@ -17,7 +17,8 @@ class LeaveTypeController extends Controller
     public function index()
     {
         if (Auth::user()->can('manage leave type')) {
-            $leavetypes = LeaveType::where('created_by', '=', Auth::user()->creatorId())->get();
+            $leavetypes = LeaveType::leftJoin('users','users.id','leave_types.created_by')
+                                    ->where('users.branch_id', '=', Auth::user()->branch_id)->get();
 
             return view('pages.contents.leave-type.index', compact('leavetypes'));
         } else {
