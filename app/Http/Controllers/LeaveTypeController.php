@@ -20,7 +20,7 @@ class LeaveTypeController extends Controller
             $leavetypes = LeaveType::leftJoin('users','users.id','leave_types.created_by')
                                     ->where('users.branch_id', '=', Auth::user()->branch_id)
                                     ->get();
-            dd(Auth::user()->branch_id);
+            // dd(Auth::user()->branch_id);
             return view('pages.contents.leave-type.index', compact('leavetypes'));
         } else {
             toast('Permission denied.', 'error');
@@ -79,7 +79,7 @@ class LeaveTypeController extends Controller
             $leavetype->code            = $request->code;
             $leavetype->days            = $request->days;
             $leavetype->include_salary  = $request->include_salary;
-            $leavetype->created_by = Auth::user()->creatorId();
+            $leavetype->created_by = Auth::user()->id;
             $insert = $leavetype->save();
             if($insert){
                 $res = [
