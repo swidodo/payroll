@@ -177,10 +177,11 @@ class LeaveTypeController extends Controller
      */
     public function destroy($id)
     {
-        $leavetype = LeaveType::find($id);
         if (Auth::user()->can('delete leave type')) {
+            // $leavetype = LeaveType::find($id);
             // if ($leavetype->created_by == Auth::user()->creatorId()) {
-                $leavetype->delete();
+                // $leavetype->delete();
+                LeaveType::where('id',$id)->delete();
 
                 return redirect()->route('leave-type.index')->with('success', 'LeaveType successfully deleted.');
             // } else {
