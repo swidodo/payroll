@@ -18,7 +18,7 @@ class LeaveTypeController extends Controller
     {
         if (Auth::user()->can('manage leave type')) {
             $leavetypes = LeaveType::leftJoin('users','users.id','leave_types.created_by')
-                                    ->where('users.branch_id', '=', Auth::user()->branch_id)
+                                    // ->where('users.branch_id', '=', Auth::user()->branch_id)
                                     ->get();
             // dd(Auth::user()->branch_id);
             return view('pages.contents.leave-type.index', compact('leavetypes'));
@@ -113,12 +113,7 @@ class LeaveTypeController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
         $leavetype = LeaveType::find($id);
@@ -169,25 +164,15 @@ class LeaveTypeController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy($id)
     {
         if (Auth::user()->can('delete leave type')) {
-            // $leavetype = LeaveType::find($id);
-            // if ($leavetype->created_by == Auth::user()->creatorId()) {
-                // $leavetype->delete();
+          
                 LeaveType::where('id',$id)->delete();
 
                 return redirect()->route('leave-type.index')->with('success', 'LeaveType successfully deleted.');
-            // } else {
-            //     toast('Permission denied.', 'error');
-            //     return redirect()->back();
-            // }
+            
         } else {
             toast('Permission denied.', 'error');
             return redirect()->back();
