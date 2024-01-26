@@ -895,7 +895,7 @@ class EmployeeController extends Controller
                         if (count($check) <= 0) {
                             $user = new User();
                             $user->name     = $row[1];
-                            $user->email    = $row[10];
+                            $user->email    = $row[11];
                             $user->branch_id = $branchId->id;
                             $user->password = Hash::make('12345678');
                             $user->type     = 'user'; //default
