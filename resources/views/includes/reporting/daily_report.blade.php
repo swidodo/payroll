@@ -1,0 +1,65 @@
+
+<script>
+    $(document).ready(function () {
+          $.ajaxSetup({
+              headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              }
+          });
+          
+          var department_id = $('#department_id').val();
+          getData(department_id);
+          function getData(department_id){
+              $('#daily_report').DataTable({
+                  processing: true,
+                  serverSide: true,
+                  destroy: true,
+                  ajax : {
+                      "url" : 'get-daily-report',
+                      "type": 'post',
+                      "data" : {department_id:department_id}
+                  },
+                  columns: [
+                    { data: 'no', name:'employee_id', render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                    }},
+                    {
+                        data: 'date',
+                        name: 'date'
+                    },
+                    {
+                        data: 'employee_name',
+                        name: 'employee_name'
+                    },
+                    {
+                        data: 'time',
+                        name: 'time'
+                    },
+                    {
+                        data: 'location_name',
+                        name: 'location_name'
+                    },
+                    {
+                        data: 'foto_url',
+                        render : function(data,row,type){
+                            var link = `<a href="`+data+`" class="btn btn-success w-100" target="_blank">view</a>`;
+                            return link;
+                        }
+                    },
+                    {
+                        data: 'view_map',
+                        name: 'view_map'
+                    },
+                    
+                ],
+                
+              });
+          }
+        //   $('#filter_report_contract').on('click',function(e){
+        //       e.preventDefault();
+        //       var branch_id = $('#branch_id').val();
+        //       getData(branch_id);
+        //   })
+          
+      });
+  </script>

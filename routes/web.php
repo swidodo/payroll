@@ -74,6 +74,7 @@ use App\Http\Controllers\template\Template_v12Controller;
 use App\Http\Controllers\HRM\EmployeeReportController;
 use App\Http\Controllers\Report\ReportRecapAttendanceController;
 use App\Http\Controllers\Report\RekapPayrollController;
+use App\Http\Controllers\DailyReportController;
 // unisment
 use App\Http\Controllers\InformationController;
 
@@ -478,6 +479,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('get-reporting-attandance',[ReportRecapAttendanceController::class,'get_report_attadance'])->name('get-reporting-attandance');
         Route::get('reporting-attandance-excel',[ReportRecapAttendanceController::class,'attandanceExportExcel'])->name('reporting-attandance-excel');
         Route::get('reporting-attandance-pdf',[ReportRecapAttendanceController::class,'attandancePrintPdf'])->name('reporting-attandance-pdf');
+        // daily report
+        Route::get('daily-report',[DailyReportController::class,'index'])->name('daily-report');
+        Route::post('get-daily-report',[DailyReportController::class,'get_data'])->name('get-daily-report');
+        Route::post('get-daily-report',[DailyReportController::class,'get_data'])->name('get-daily-report');
+        Route::get('maps',[DailyReportController::class,'view_maps'])->name('maps');
 
         // Master bpjs
         Route::get('master-bpjs',[BpjsController::class,'index'])->name('master-bpjs');
