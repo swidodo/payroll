@@ -87,9 +87,9 @@
                                                     @can('edit branch')
                                                         <a  data-url="{{route('branches.edit', $branch->id)}}" id="edit-branch" class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_branch"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                                                     @endcan
-                                                    @can('delete branch')
+                                                    {{-- @can('delete branch')
                                                         <a id="delete-branch" data-url="{{route('branches.destroy', $branch->id)}}" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_branch"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                    @endcan
+                                                    @endcan --}}
 
                                                 </div>
                                             </div>
