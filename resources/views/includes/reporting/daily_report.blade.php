@@ -19,7 +19,7 @@
                       "url" : 'get-daily-report',
                       "type": 'post',
                       "data" : {
-                            department_id:department_id
+                            department_id:department_id,
                             employee_id:employee_id,
                             date:date
                         }
