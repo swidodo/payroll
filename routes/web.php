@@ -96,9 +96,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/foo', function () {
-        Artisan::call('storage:link');
-    });
 Route::get('/login', [AuthenticationController::class, 'loginView'])
         ->name('login.view')
         ->middleware('checkUserIfLogin');
