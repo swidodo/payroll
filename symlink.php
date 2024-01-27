@@ -1,5 +1,5 @@
 <?php
-$targetFolder = $_SERVER['DOCUMENT_ROOT'].'/storage/app/public';
+$targetFolder = base_path().'/storage/app/public';
 $linkFolder = $_SERVER['DOCUMENT_ROOT'].'/public/storage';
 symlink($targetFolder,$linkFolder);
 
