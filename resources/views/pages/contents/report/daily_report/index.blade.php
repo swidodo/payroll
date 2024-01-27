@@ -34,13 +34,17 @@
                             </select>
                         </div>
                         <div class="col-md-4 mb-2">
+                            <label>Date</label>
+                           <input type="date" class="form-control" id="date" value="{{ date('Y-m-d') }}">
+                        </div>
+                        <div class="col-md-4 mb-2">
                             <label>Employee</label>
                             <select class="form-control form-select" id="employee_id" name="employee_id">
                                 <option value="">-- pilih --</option>
                             </select>
                         </div>
                         <div class="col-md-3  mb-2">
-                            <button type="button" id="filter_report_contract" class="btn btn-success me-1 mt-4"><span class="fa fa-filter"></span> Filter</button>
+                            <button type="button" id="filter_report_daily" class="btn btn-success me-1 mt-4"><span class="fa fa-filter"></span> Filter</button>
                         </div>
                     </div>
                 </div>

@@ -107,10 +107,6 @@ Route::post('/logout', [AuthenticationController::class, 'logout'])
         ->name('logout');
 
 Route::group(['middleware' => 'auth'], function () {
-        Route::get('/storage', function(){
-                \Artisan::call('storage:link');
-                return "Se han vinculado las imágenes";
-            });
         Route::get('/', [DashboardController::class, 'index'])
                 ->name('dashboard');
         Route::post('/chart/filter-attendance', [DashboardController::class, 'filterChartAttendance'])
@@ -488,6 +484,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('get-daily-report',[DailyReportController::class,'get_data'])->name('get-daily-report');
         Route::post('get-daily-report',[DailyReportController::class,'get_data'])->name('get-daily-report');
         Route::get('maps',[DailyReportController::class,'view_maps'])->name('maps');
+        Route::get('get-emp-depart',[DailyReportController::class,'get_employee'])->name('get-emp-depart');
 
         // Master bpjs
         Route::get('master-bpjs',[BpjsController::class,'index'])->name('master-bpjs');

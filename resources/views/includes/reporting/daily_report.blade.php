@@ -8,8 +8,9 @@
           });
           
           var department_id = $('#department_id').val();
-          getData(department_id);
-          function getData(department_id){
+          var date = $('#date').val();
+          getData(department_id,"",date);
+          function getData(department_id,employee_id,date){
               $('#daily_report').DataTable({
                   processing: true,
                   serverSide: true,
@@ -17,8 +18,12 @@
                   ajax : {
                       "url" : 'get-daily-report',
                       "type": 'post',
-                      "data" : {department_id:department_id}
-                  },
+                      "data" : {
+                            department_id:department_id
+                            employee_id:employee_id,
+                            date:date
+                        }
+                    },
                   columns: [
                     { data: 'no', name:'employee_id', render: function (data, type, row, meta) {
                             return meta.row + meta.settings._iDisplayStart + 1;
@@ -55,11 +60,29 @@
                 
               });
           }
-        //   $('#filter_report_contract').on('click',function(e){
-        //       e.preventDefault();
-        //       var branch_id = $('#branch_id').val();
-        //       getData(branch_id);
-        //   })
+          $('#department_id').on('change', function(){
+                var department_id = $(this).val();
+                $.ajax({
+                    url : 'get-emp-depart',
+                    type : 'post',
+                    data : {department_id : department_id},
+                    dataType: 'json',
+                    success : function(respon){
+                        html ='';
+                        $.each(respon, function(key,val){
+                            html +=`<option value="`+val.id+`">`+val.name+`</option>`
+                        })
+                        $('#employee_id').html(html);
+                    }
+                })
+          })
+          $('#filter_report_daily').on('click',function(e){
+              e.preventDefault();
+              var department_id = $('#department_id').val();
+              var employee_id = $('#employee_id').val();
+              var date = $('#date').val();
+              getData(department_id,employee_id,date);
+          })
           
       });
   </script>

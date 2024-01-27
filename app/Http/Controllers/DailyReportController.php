@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Departement;
+use App\Models\Employee;
 use DataTables;
 class DailyReportController extends Controller
 {
@@ -16,9 +17,9 @@ class DailyReportController extends Controller
     public function get_data(Request $request){
         $data = DB::table('v_daily_reports')
                     ->select('v_daily_reports.*','employees.name as employee_name')
-                    ->leftJoin('employees','employees.id','=','v_daily_reports.employee_id');
-                    // ->where('v_daily_reports.department_id',$request->department_id)
-                    // ->where('v_daily_reports.date',$request->date);
+                    ->leftJoin('employees','employees.id','=','v_daily_reports.employee_id')
+                    ->where('v_daily_reports.department_id',$request->department_id)
+                    ->where('v_daily_reports.date',$request->date);
                     if ($request->employee_id != null){
                         $data->where('v_daily_reports.employee_id',$request->employee_id);
                     }
@@ -31,6 +32,9 @@ class DailyReportController extends Controller
                         })
                     ->rawColumns(['view_map'])
                     ->make(true);
+    }
+    public function get_employee(Request $request){
+        $data = Employee::where('department_id',$request->department_id)->get();
     }
     public function view_maps(Request $request){
         $data = DB::table('daily_report_details')
@@ -56,6 +60,5 @@ class DailyReportController extends Controller
             }
         }
         return view('pages.contents.report.daily_report.maps', compact('initialMarkers'));
-        // return view('map', );
     }
 }
