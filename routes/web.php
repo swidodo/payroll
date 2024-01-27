@@ -107,6 +107,9 @@ Route::post('/logout', [AuthenticationController::class, 'logout'])
         ->name('logout');
 
 Route::group(['middleware' => 'auth'], function () {
+        Route::get('/foo', function () {
+                Artisan::call('storage:link');
+            });
         Route::get('/', [DashboardController::class, 'index'])
                 ->name('dashboard');
         Route::post('/chart/filter-attendance', [DashboardController::class, 'filterChartAttendance'])
