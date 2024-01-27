@@ -107,8 +107,9 @@ Route::post('/logout', [AuthenticationController::class, 'logout'])
         ->name('logout');
 
 Route::group(['middleware' => 'auth'], function () {
-        Route::get('/foo', function () {
-                Artisan::call('storage:link');
+        Route::get('/storage', function(){
+                \Artisan::call('storage:link');
+                return "Se han vinculado las imágenes";
             });
         Route::get('/', [DashboardController::class, 'index'])
                 ->name('dashboard');
