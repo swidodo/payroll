@@ -1,7 +1,7 @@
 /node_modules
 /public/build
 /public/hot
-#/public/storage
+/public/storage
 /storage/*.key
 /vendor
 .env
@@ -14,7 +14,7 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
-composer.json
+#composer.json
 composer.lock
 assets
 .htaccess
