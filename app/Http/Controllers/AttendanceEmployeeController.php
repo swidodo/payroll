@@ -901,17 +901,19 @@ class AttendanceEmployeeController extends Controller
         $data = DB::table('attendance_locations')->where('attendance_employees_id',$request->id)->get();
         $initialMarkers = [];
         foreach($data as $loglat){
-            $loc = [
-                'position' => [
-                    'lat' => $loglat->longitude,
-                    'lng' => $loglat->latitude
-                ],
-                'draggable' => true,
-                'name' => $loglat->name
-            ];
-            if (!in_array($loc,$initialMarkers)){
-                array_push($initialMarkers,$loc);
-            }
+            if ($loglat->longitude != null &&  $loglat->latitude != null):
+                $loc = [
+                    'position' => [
+                        'lat' => $loglat->longitude,
+                        'lng' => $loglat->latitude
+                    ],
+                    'draggable' => true,
+                    'name' => $loglat->name
+                ];
+                if (!in_array($loc,$initialMarkers)){
+                    array_push($initialMarkers,$loc);
+                }
+            endif;
         }
         return view('pages.contents.report.daily_report.maps', compact('initialMarkers'));
     }
