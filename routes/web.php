@@ -327,7 +327,7 @@ Route::group(['middleware' => 'auth'], function () {
         // Attendance
         // Route::post('import-excel-attendance', [AttendanceEmployeeController::class, 'importExcel'])->name('import.excel.attendace');
         Route::post('import-excel-attendance', [AttendanceEmployeeController::class, 'importExcel'])->name('import-excel-attendance');
-        Route::post('location-attendance-maps', [AttendanceEmployeeController::class, 'view_maps'])->name('location-attendance-maps');
+        Route::post('location-attendance-maps/{id}', [AttendanceEmployeeController::class, 'view_maps'])->name('location-attendance-maps');
 
         // Employees
         Route::get('/employee/education/{employeeEducation}', [EmployeeController::class, 'employeeEducations'])
