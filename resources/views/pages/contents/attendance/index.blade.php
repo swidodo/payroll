@@ -123,6 +123,7 @@
                                         <th>Late</th>
                                         <th>Early Leaving</th>
                                         <th>Overtime</th>
+                                        <th>Location</th>
                                         @if(Auth::user()->can('edit attendance') || Auth::user()->can('delete attendance'))
                                             <th class="text-end">Action</th>
                                         @endif
@@ -289,6 +290,13 @@
                     {
                         data: 'overtime',
                         name: 'overtime'
+                    },
+                    {
+                        data: 'id',
+                        render : function(data,row,type){
+                            var link = `<a href="">locations maps</a>`;
+                            return link;
+                        }
                     },
                     {
                         data: 'action',

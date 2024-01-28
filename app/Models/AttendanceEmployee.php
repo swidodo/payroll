@@ -25,9 +25,7 @@ class AttendanceEmployee extends Model
         'early_leaving',
         'overtime',
         'total_rest',
-        'created_by',
-        'longitude',
-        'latitude'
+        'created_by'
     ];
 
     // public function employees()
