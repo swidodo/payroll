@@ -904,8 +904,8 @@ class AttendanceEmployeeController extends Controller
             if ($loglat->longitude != null &&  $loglat->latitude != null):
                 $loc = [
                     'position' => [
-                        'lat' => $loglat->longitude,
-                        'lng' => $loglat->latitude
+                        'lat' => substr($loglat->longitude,0,8),
+                        'lng' => substr($loglat->latitude,0,8)
                     ],
                     'draggable' => true,
                     'name' => '',
