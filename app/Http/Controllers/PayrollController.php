@@ -2256,7 +2256,7 @@ class PayrollController extends Controller
                             ->whereIn('take_home_pay.employee_id', $employee)
                             // ->limit(50)
                             ->get();
-        $data['allowance_fixed'] = DB::select("SELECT * from get_allowance_fixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."')");
+        $data['allowance_fixed'] = DB::select("SELECT * from log_allowance_fixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."')");
         $data['allowance_unfixed'] = DB::select("SELECT * from getallowance_unfixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
         $data['allowance_other'] = DB::select("SELECT * from get_other_allowance('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
         $data['reimbursement'] = DB::select("SELECT * FROM get_reimburstment('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
