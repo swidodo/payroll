@@ -26,6 +26,8 @@ class AttendanceEmployee extends Model
         'overtime',
         'total_rest',
         'created_by',
+        'longitude',
+        'latitude'
     ];
 
     // public function employees()
