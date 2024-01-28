@@ -15,14 +15,18 @@ class DailyReportController extends Controller
         return view('pages.contents.report.daily_report.index', $depart);
     }
     public function get_data(Request $request){
+
         $data = DB::table('v_daily_reports')
                     ->select('v_daily_reports.*','employees.name as employee_name')
                     ->leftJoin('employees','employees.id','=','v_daily_reports.employee_id')
-                    ->where('v_daily_reports.department_id',$request->department_id)
-                    ->where('v_daily_reports.date',$request->date);
+                    ->where('v_daily_reports.department_id',$request->department_id);
+                    if ($request->startdate != null && $request->enddate != null){
+                        $data->whereBetween('v_daily_reports.date',[$request->startdate,$request->enddate]);
+                    }
                     if ($request->employee_id != null){
                         $data->where('v_daily_reports.employee_id',$request->employee_id);
                     }
+                    $data->orderBy('date','DESC');
                     $data->get();
         return DataTables::of($data)
                     ->addIndexColumn()

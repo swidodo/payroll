@@ -33,11 +33,15 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-4 mb-2">
-                            <label>Date</label>
-                           <input type="date" class="form-control" id="date" value="{{ date('Y-m-d') }}">
+                        <div class="col-md-2 mb-2">
+                            <label>Start Date</label>
+                           <input type="date" class="form-control" id="startdate" value="">
                         </div>
-                        <div class="col-md-4 mb-2">
+                        <div class="col-md-2 mb-2">
+                            <label>End Date</label>
+                           <input type="date" class="form-control" id="enddate" value="">
+                        </div>
+                        <div class="col-md-3 mb-2">
                             <label>Employee</label>
                             <select class="form-control form-select" id="employee_id" name="employee_id">
                                 <option value="">-- pilih --</option>

@@ -9,8 +9,8 @@
           
           var department_id = $('#department_id').val();
           var date = $('#date').val();
-          getData(department_id,"",date);
-          function getData(department_id,employee_id,date){
+          getData(department_id,"","","");
+          function getData(department_id,employee_id,startdate,enddate){
               $('#daily_report').DataTable({
                   processing: true,
                   serverSide: true,
@@ -21,7 +21,8 @@
                       "data" : {
                             department_id:department_id,
                             employee_id:employee_id,
-                            date:date
+                            startdate:startdate,
+                            enddate:enddate
                         }
                     },
                   columns: [
@@ -80,8 +81,9 @@
               e.preventDefault();
               var department_id = $('#department_id').val();
               var employee_id = $('#employee_id').val();
-              var date = $('#date').val();
-              getData(department_id,employee_id,date);
+              var startdate = $('#startdate').val();
+              var enddate = $('#enddate').val();
+              getData(department_id,employee_id,startdate,startdate);
           })
           
       });
