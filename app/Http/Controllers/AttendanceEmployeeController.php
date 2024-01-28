@@ -908,7 +908,7 @@ class AttendanceEmployeeController extends Controller
                         'lng' => substr($loglat->longitude,0,20)
                     ],
                     'draggable' => true,
-                    'name' => $loglat->status,
+                    'name' => $loglat->status.' : ',
                 ];
                 if (!in_array($loc,$initialMarkers)){
                     array_push($initialMarkers,$loc);
