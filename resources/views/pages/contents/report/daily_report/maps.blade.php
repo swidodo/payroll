@@ -48,7 +48,7 @@
             var initialMarkers = '<?php echo json_encode($initialMarkers); ?>';
                 $.each(JSON.parse(initialMarkers),function(key,val){
                     const marker = generateMarker(val,key);
-                    marker.addTo(map).bindPopup(`<b>${val.name} in locate(${val.position.lat},  ${val.position.lng})</b>`);
+                    marker.addTo(map).bindPopup(`<b>${val.name} in Location(${val.position.lat},  ${val.position.lng})</b>`);
                     map.panTo([val.position.lng,val.position.lat]);
                     markers.push(marker)
                     console.log(val.position);
