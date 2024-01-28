@@ -294,7 +294,7 @@
                     {
                         data: 'id',
                         render : function(data,row,type){
-                            var link = `<a href="location-attendance-maps/`+data+`" target="_blank" class="btn btn-primary">locations maps</a>`;
+                            var link = `<a href="location-attendance-maps/`+data+`" target="_blank" class="btn btn-primary">maps</a>`;
                             return link;
                         }
                     },
