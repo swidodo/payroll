@@ -898,7 +898,7 @@ class AttendanceEmployeeController extends Controller
     }
 
     public function view_maps(Request $request){
-        $data = DB::table('attendace_locations')->where('attendance_employees_id',$request->id)->get();
+        $data = DB::table('attendance_locations')->where('attendance_employees_id',$request->id)->get();
         $initialMarkers = [];
         foreach($data as $loglat){
             $loc = [
