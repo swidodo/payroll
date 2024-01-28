@@ -17,7 +17,7 @@
 </head>
 
 <body>
-    <h1 class='text-center'>Daily Report View Map</h1>
+    <h1 class='text-center'>Report View Map</h1>
     <div id='map'></div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>    
