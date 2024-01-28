@@ -896,4 +896,23 @@ class AttendanceEmployeeController extends Controller
         return response()->json($res);
         
     }
+
+    public function view_maps(Request $request){
+        $data = DB::table('attendace_locations')->where('attendance_employees_id',$request->id)->get();
+        $initialMarkers = [];
+        foreach($data as $loglat){
+            $loc = [
+                'position' => [
+                    'lat' => $loglat->longitude,
+                    'lng' => $loglat->latitude
+                ],
+                'draggable' => true,
+                'name' => $loglat->name
+            ];
+            if (!in_array($loc,$initialMarkers)){
+                array_push($initialMarkers,$loc);
+            }
+        }
+        return view('pages.contents.report.daily_report.maps', compact('initialMarkers'));
+    }
 }

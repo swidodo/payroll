@@ -324,9 +324,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('update-deduction-admin', [DeductionadminController::class, 'update'])->name('update-deduction-admin');
         Route::post('delete-deduction-admin', [DeductionadminController::class, 'destroy'])->name('delete-deduction-admin');
         
-        // import
+        // Attendance
         // Route::post('import-excel-attendance', [AttendanceEmployeeController::class, 'importExcel'])->name('import.excel.attendace');
         Route::post('import-excel-attendance', [AttendanceEmployeeController::class, 'importExcel'])->name('import-excel-attendance');
+        Route::post('location-attendance-maps', [AttendanceEmployeeController::class, 'view_maps'])->name('location-attendance-maps');
 
         // Employees
         Route::get('/employee/education/{employeeEducation}', [EmployeeController::class, 'employeeEducations'])
