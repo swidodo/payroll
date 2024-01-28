@@ -17,7 +17,13 @@ class DailyReportController extends Controller
     public function get_data(Request $request){
 
         $data = DB::table('v_daily_reports')
-                    ->select('v_daily_reports.*','employees.name as employee_name')
+                    ->select('v_daily_reports.date',
+                    'v_daily_reports.time',
+                    'v_daily_reports.location_name',
+                    'v_daily_reports.employee_id',
+                    'v_daily_reports.foto_url',
+                    'v_daily_reports.branch_id',
+                    'employees.name as employee_name')
                     ->leftJoin('employees','employees.id','=','v_daily_reports.employee_id')
                     ->where('v_daily_reports.department_id',$request->department_id);
                     if ($request->startdate != "" && $request->enddate != ""){
