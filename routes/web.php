@@ -70,6 +70,9 @@ use App\Http\Controllers\template\Template_v9Controller;
 use App\Http\Controllers\template\Template_v10Controller;
 use App\Http\Controllers\template\Template_v11Controller;
 use App\Http\Controllers\template\Template_v12Controller;
+use App\Http\Controllers\template\Template_v13Controller;
+use App\Http\Controllers\template\Template_v14Controller;
+use App\Http\Controllers\template\Template_v16Controller;
 // report
 use App\Http\Controllers\HRM\EmployeeReportController;
 use App\Http\Controllers\Report\ReportRecapAttendanceController;
@@ -278,8 +281,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('import-payroll-v10',[Template_v10Controller::class,'index'])->name('import-payroll-v10');
         Route::post('import-payroll-v11',[Template_v11Controller::class,'index'])->name('import-payroll-v11');
         Route::post('import-payroll-v12',[Template_v12Controller::class,'index'])->name('import-payroll-v12');
-        // Route::post('import-payroll-v2',[PayrollController::class,'import_run_payroll_v2'])->name('import-payroll-v2');
-        // Route::post('import-payroll-v3',[PayrollController::class,'import_run_payroll_v3'])->name('import-payroll-v3');
+        Route::post('import-payroll-v13',[Template_v13Controller::class,'index'])->name('import-payroll-v13');
+        Route::post('import-payroll-v14',[Template_v14Controller::class,'index'])->name('import-payroll-v14');
+        Route::post('import-payroll-v16',[Template_v16Controller::class,'index'])->name('import-payroll-v16');
         
         // Payroll Setting
         Route::get('/setting/bpjs-tk', [PayrollController::class, 'indexBpjsTk'])

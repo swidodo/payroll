@@ -594,6 +594,14 @@
             e.preventDefault();
             $('#modalImportPayroll_v14').modal('show')
         })
+        $(document).on('click','.import_run_V15',function(e){
+            e.preventDefault();
+            $('#modalImportPayroll_v15').modal('show')
+        })
+        $(document).on('click','.import_run_V16',function(e){
+            e.preventDefault();
+            $('#modalImportPayroll_v16').modal('show')
+        })
         // submit import
         // v1
         $('#UploadDataPayroll_v1').on('submit',function(e){
@@ -1116,7 +1124,7 @@
                 })
         })
          // v14
-         $('#UploadDataPayroll_v14').on('submit',function(e){
+        $('#UploadDataPayroll_v14').on('submit',function(e){
             e.preventDefault();
             var startdate   = $('#startdate').val();
             var enddate     = $('#enddate').val();
@@ -1141,6 +1149,86 @@
                         if (respon.status == 'success'){
                             $('#UploadDataPayroll_v14')[0].reset();
                             $('#modalImportPayroll_v14').modal('hide')
+                            loadData(startdate,enddate,branch_id)
+                        }
+                        swal.fire({
+                            icon : respon.status,
+                            text : respon.msg,
+                        })
+                    },
+                    error : function(){
+                        alert('Someting went wrong !');
+                        $('.containerLoader').attr('hidden',true)
+                    }
+
+                })
+        })
+        // v15
+        $('#UploadDataPayroll_v15').on('submit',function(e){
+            e.preventDefault();
+            var startdate   = $('#startdate').val();
+            var enddate     = $('#enddate').val();
+            var branch_id   = $('#branch_id').val();
+            
+            var payroll  = $('#import-payroll-v15')[0].files[0];
+            var formData = new FormData();
+            formData.append('import-payroll',payroll)
+                $.ajax({
+                    url : 'import-payroll-v15',
+                    type : 'post',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    data : formData,
+                    dataType : 'json',
+                    beforeSend : function(){
+                        $('.containerLoader').attr('hidden',false)
+                    },
+                    success : function(respon){
+                        $('.containerLoader').attr('hidden',true)
+                        if (respon.status == 'success'){
+                            $('#UploadDataPayroll_v15')[0].reset();
+                            $('#modalImportPayroll_v15').modal('hide')
+                            loadData(startdate,enddate,branch_id)
+                        }
+                        swal.fire({
+                            icon : respon.status,
+                            text : respon.msg,
+                        })
+                    },
+                    error : function(){
+                        alert('Someting went wrong !');
+                        $('.containerLoader').attr('hidden',true)
+                    }
+
+                })
+        })
+        // v16
+        $('#UploadDataPayroll_v16').on('submit',function(e){
+            e.preventDefault();
+            var startdate   = $('#startdate').val();
+            var enddate     = $('#enddate').val();
+            var branch_id   = $('#branch_id').val();
+            
+            var payroll  = $('#import-payroll-v16')[0].files[0];
+            var formData = new FormData();
+            formData.append('import-payroll',payroll)
+                $.ajax({
+                    url : 'import-payroll-v16',
+                    type : 'post',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    data : formData,
+                    dataType : 'json',
+                    beforeSend : function(){
+                        $('.containerLoader').attr('hidden',false)
+                    },
+                    success : function(respon){
+                        $('.containerLoader').attr('hidden',true)
+                        if (respon.status == 'success'){
+                            $('#UploadDataPayroll_v16')[0].reset();
+                            $('#modalImportPayroll_v16').modal('hide')
                             loadData(startdate,enddate,branch_id)
                         }
                         swal.fire({
