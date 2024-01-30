@@ -89,6 +89,7 @@ class LoanController extends Controller
                     ->where('loans.installment','=',0)
                     ->where('loans.number_of_installment','=',0)
                     ->where('loans.status','=',$status)
+                    ->whereIn('loans.type',['cash_advance',null])
                     ->orderBy('loans.created_at','DESC')
                     ->with('loan_type')
                     ->get();
