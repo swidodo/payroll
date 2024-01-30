@@ -49,6 +49,7 @@
                         <label for="attendance" class="form-label">Status</label>
                         <select class="form-control form-control-sm select" id="status-filter" name="status-filter">
                             <option value="ongoing" selected>Ongoing</option>
+                            <option value="pending" selected>Pending</option>
                             <option value="paid off">Paid Off</option>
                         </select>
                     </div>
