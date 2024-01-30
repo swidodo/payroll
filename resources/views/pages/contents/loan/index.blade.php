@@ -263,11 +263,6 @@
                     ],
                     order: [[1, 'desc']]
             })
-            $('#searchData').on('click', function(){
-                var branch = $('#branch-filter').val();
-                var status = $('#status-filter').val()
-                loadData(branch,status)
-            })
             $('#NewLoan').on('click',function(){
                 var branch = $('#branch-filter').val();
                  $.ajax({
@@ -347,6 +342,11 @@
                         })
                     }
                 })
+            })
+            $('#searchData').on('click', function(){
+                var branch = $('#branch-filter').val();
+                var status = $('#status-filter').val()
+                loadData(branch,status)
             })
         }
     </script>
