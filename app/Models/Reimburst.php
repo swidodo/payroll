@@ -15,6 +15,7 @@ class Reimburst extends Model
         'amount',
         'date',
         'status',
+        'branch_id',
         'created_by',
     ];
 
