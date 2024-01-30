@@ -13,6 +13,8 @@ class Reimburst extends Model
         'employee_id',
         'reimburst_type_id',
         'amount',
+        'date',
+        'status',
         'created_by',
     ];
 

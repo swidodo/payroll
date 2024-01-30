@@ -91,15 +91,16 @@ class Template_v4Controller extends Controller
                         }
                         $basic_salary     =  (($value[3] !=null) ? $value[3] : 0);
                         $meal_allowance   =  (($value[6] !=null) ? $value[6] : 0);
-
-                        $allowanceUnfixed = $meal_allowance + (($value[7] !=null) ? $value[7] : 0 ) + (($value[8] !=null) ? $value[8] : 0 ) + (($value[9] !=null) ? $value[9] : 0 ) + (($value[10] !=null) ? $value[10] : 0 );
-
-                        $allowancefixed   = (($value[5] !=null) ? $value[5] : 0 );
-                        $overtime         = (($value[11] !=null) ? $value[11] : 0);
                         $rapel            = (($value[12] !=null) ? $value[12] : 0);
                         $kompensasi       = (($value[13] !=null) ? $value[13] : 0);
 
-                        $val_salarymonth  = $basic_salary + $allowancefixed + $allowanceUnfixed + $overtime + $rapel + $kompensasi;
+                        $allowanceUnfixed = $meal_allowance + (($value[7] !=null) ? $value[7] : 0 ) + (($value[8] !=null) ? $value[8] : 0 ) + (($value[9] !=null) ? $value[9] : 0 ) + (($value[10] !=null) ? $value[10] : 0 ) + $kompensasi;
+
+                        $allowancefixed   = (($value[5] !=null) ? $value[5] : 0 );
+                        $overtime         = (($value[11] !=null) ? $value[11] : 0);
+                       
+
+                        $val_salarymonth  = $basic_salary + $allowancefixed + $allowanceUnfixed + $overtime + $rapel;
 
                         $total_loan       = (($value[14] !=null) ? $value[14] : 0 );
                         $deduction_other  = (($value[15] !=null) ? $value[15] : 0 ) + (($value[18] !=null) ? $value[18] : 0 ) + (($value[19] !=null) ? $value[19] : 0 ) + (($value[20] !=null) ? $value[20] : 0 ) + (($value[21] !=null) ? $value[21] : 0 ) + (($value[22] !=null) ? $value[22] : 0 ) + (($value[23] !=null) ? $value[23] : 0 );
@@ -141,7 +142,7 @@ class Template_v4Controller extends Controller
                             'total_attendance'                  => $value[4],
                             // 'total_overtime_hour'               => 0,
                             'rapel'                             => $rapel,
-                            'kompensasi'                        => $kompensasi,
+                            // 'kompensasi'                        => $kompensasi,
                             'startdate'                         => $value[24],
                             'enddate'                           => $value[25],
                             'take_home_pay'                     => $thp,
@@ -432,7 +433,48 @@ class Template_v4Controller extends Controller
                                 
                             }
                         }
-                        // komponent pengurang
+                        if ($value[13] !=null){
+                            $opt = AllowanceOption::where('name','Kompensasi')->where('pay_type','unfixed')->where('include_attendance','N')->first();
+                            if ($opt !=null){
+                                $data =[
+                                    'employee_id'       => $employeeId->id,
+                                    'allowance_option_id' => $opt->id,
+                                    'amount'            => (($value[13] !=null) ? $value[13] : 0 ),
+                                    'created_by'        => Auth::user()->id,
+                                    'date'              => date('Y-m-d', strtotime($value[25])),
+                                    'branch_id'          => $employeeId->branch_id,
+                                    'created_at'        => $value[25].' '.date('h:m:s'),
+                                    'updated_at'        => $value[25].' '.date('h:m:s')
+                                ];
+                                DB::table('allowances')->insert($data);
+                            }else{
+                                $opts = [
+                                    'name'               => 'Kompensasi',
+                                    'pay_type'           => 'unfixed',
+                                    'include_attendance' => 'N',
+                                    'branch_id'          => $employeeId->branch_id,
+                                    'created_by'         => Auth::user()->id,
+                                    'created_at'        =>  $value[25].' '.date('h:m:s'),
+                                    'updated_at'        =>  $value[25].' '.date('h:m:s')
+                                ];
+                                
+                                $createOpt = AllowanceOption::Insert($opts);
+                                
+                                $data =[
+                                    'employee_id'       => $employeeId->id,
+                                    'allowance_option_id' => DB::getPdo()->lastInsertId(),
+                                    'amount'            => (($value[13] !=null) ? $value[13] : 0 ),
+                                    'created_by'        => Auth::user()->creatorId(),
+                                    'date'              => date('Y-m-d', strtotime($value[25])),
+                                    'branch_id'          => $employeeId->branch_id,
+                                    'created_at'        => $value[25].' '.date('h:m:s'),
+                                    'updated_at'        => $value[25].' '.date('h:m:s')
+                                ];
+                                DB::table('allowances')->insert($data);
+                                
+                            }
+                        }
+                       // =================== komponent pengurang
                         if ($value[14] !=null){
                             $idopt = LoanOption::where('name','KASBON')->first();
                         
@@ -450,7 +492,19 @@ class Template_v4Controller extends Controller
                             ];
                             Loan::insert($data);
                         }
-                        
+                        if ($value[18] != null){
+                            $deduc2 = [
+                                'employee_id'           => $employeeId->id,
+                                'branch_id'             => $employeeId->branch_id,
+                                'date'                  => $value[25],
+                                'name'                  => 'BPJS JPK',
+                                'amount'                => $value[18],
+                                'created_by'            => Auth::user()->id,
+                                'created_at'            => $value[25].' '.date('h:m:s'),
+                                'updated_at'            => $value[25].' '.date('h:m:s')
+                            ];
+                            Deduction_other::create($deduc2);
+                        }
                         if ($value[19] != null){
                             $deduc3 = [
                                 'employee_id'           => $employeeId->id,
@@ -482,7 +536,7 @@ class Template_v4Controller extends Controller
                                 'employee_id'           => $employeeId->id,
                                 'branch_id'             => $employeeId->branch_id,
                                 'date'                  => $value[25],
-                                'name'                  => 'Potongan Absensi',
+                                'name'                  => 'Absensi',
                                 'amount'                => $value[21],
                                 'created_by'            => Auth::user()->id,
                                 'created_at'            => $value[25].' '.date('h:m:s'),
@@ -495,7 +549,7 @@ class Template_v4Controller extends Controller
                                 'employee_id'           => $employeeId->id,
                                 'branch_id'             => $employeeId->branch_id,
                                 'date'                  => $value[25],
-                                'name'                  => 'Potongan Terlambat',
+                                'name'                  => 'Terlambat',
                                 'amount'                => $value[22],
                                 'created_by'            => Auth::user()->id,
                                 'created_at'            => $value[25].' '.date('h:m:s'),
@@ -508,7 +562,7 @@ class Template_v4Controller extends Controller
                                 'employee_id'           => $employeeId->id,
                                 'branch_id'             => $employeeId->branch_id,
                                 'date'                  => $value[25],
-                                'name'                  => 'Potongan Lain-lain',
+                                'name'                  => 'Lain-lain',
                                 'amount'                => $value[23],
                                 'created_by'            => Auth::user()->id,
                                 'created_at'            => $value[25].' '.date('h:m:s'),
@@ -516,19 +570,7 @@ class Template_v4Controller extends Controller
                             ];
                             Deduction_other::create($deduc5);
                         }
-                        if ($value[18] != null){
-                            $deduc2 = [
-                                'employee_id'           => $employeeId->id,
-                                'branch_id'             => $employeeId->branch_id,
-                                'date'                  => $value[25],
-                                'name'                  => 'BPJS JPK',
-                                'amount'                => $value[18],
-                                'created_by'            => Auth::user()->id,
-                                'created_at'            => $value[25].' '.date('h:m:s'),
-                                'updated_at'            => $value[25].' '.date('h:m:s')
-                            ];
-                            Deduction_other::create($deduc2);
-                        }
+                       
                     endif;
                 endif;
             endif;

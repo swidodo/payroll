@@ -606,7 +606,7 @@ class Template_v3Controller extends Controller
                                 'employee_id'           => $employeeId->id,
                                 'branch_id'             => $employeeId->branch_id,
                                 'date'                  => $value[27],
-                                'name'                  => 'Potongan Lain-lain',
+                                'name'                  => 'Lain-lain',
                                 'amount'                => $value[25],
                                 'created_by'            => Auth::user()->id,
                                 'created_at'            => $value[27].' '.date('h:m:s'),

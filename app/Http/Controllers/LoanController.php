@@ -130,6 +130,7 @@ class LoanController extends Controller
                     ->leftJoin('employees','employees.id','loans.employee_id')
                     ->where('loans.branch_id','=',$branchId)
                     ->where('loans.installment','<>',0)
+                    ->where('loans.type','installment')
                     ->where('loans.status','=',$status)
                     ->with('loan_type')
                     ->get();
@@ -198,14 +199,18 @@ class LoanController extends Controller
                 $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
                 $loan    = new Loan();
                 if ($request->loan == "installment"){
-                    $loan->employee_id = $request->employee_id;
+                    $loan->employee_id          = $request->employee_id;
                     $loan->loan_type_id         = $request->loan_type_id;
-                    $loan->amount               = $request->amount;
-                    $loan->installment          = $request->installment;
                     $loan->number_of_installment= 0;
                     $loan->tenor                = $request->tenor;
+                    $loan->remaining_installment= $request->amount;
+                    $loan->amount               = $request->amount;
+                    $loan->installment          = $request->installment;
                     $loan->status               = 'ongoing';
+                    $loan->type                 = 'installment';
                     $loan->branch_id            = $request->branch_id;
+                    $loan->application_date     = date('Y-m-d');
+                    $loan->is_update            = '0';
                     $loan->created_by           = Auth::user()->creatorId();
                 }else{
                     $loan->employee_id = $request->employee_id;
@@ -214,6 +219,7 @@ class LoanController extends Controller
                     $loan->installment          = 0;
                     $loan->number_of_installment = 0;
                     $loan->status               = 'ongoing';
+                    $loan->type                 = 'cash_advance';
                     $loan->branch_id            = $request->branch_id;
                     $loan->created_by           = Auth::user()->creatorId();
                 }
@@ -279,7 +285,14 @@ class LoanController extends Controller
                 }
 
                 try {
-                    $data = $loan->update($request->all());
+                    $arr = [
+                        'loan_type_id' => $request->loan_type_id,
+                        'installment'  => $request->installment,
+                        'tenor'        => $request->tenor,
+                        'amount'       => $request->amount,
+                        'is_update'    => '0',
+                    ];
+                    $data = $loan->update($arr);
                     if ($data){
                         $res = [
                             'status' => 'success',

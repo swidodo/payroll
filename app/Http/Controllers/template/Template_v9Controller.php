@@ -95,9 +95,7 @@ class Template_v9Controller extends Controller
                         $allowanceUnfixed = (($value[6] !=null) ? $value[6] : 0);
                         $overtime         = (($value[7] !=null) ? $value[7] : 0) * (($value[8] !=null) ? $value[8] : 0);
                         $rapel            = (($value[9] !=null) ? $value[9] : 0 );
-                        $kompensasi       =  0;
-
-                        $val_salarymonth  = $basic_salary + $allowancefixed + $allowanceUnfixed + $overtime + $rapel + $kompensasi;
+                        $val_salarymonth  = $basic_salary + $allowancefixed + $allowanceUnfixed + $overtime + $rapel;
 
                         $total_loan       = (($value[12] !=null) ? $value[12] : 0 );
                         $deduction_other  = 

@@ -52,7 +52,10 @@ class ReimburstController extends Controller
     }
 
    public function get_data(Request $request){
-    $data = Reimburst::select('reimbursts.*','reimburstment_options.name as type','employees.no_employee','employees.name as employee_name')
+    $data = Reimburst::select('reimbursts.*',
+                                'reimburstment_options.name as type',
+                                'employees.no_employee',
+                                'employees.name as employee_name')
                         ->leftJoin('reimburstment_options','reimburstment_options.id','=','reimbursts.reimburst_type_id')
                         ->leftJoin('employees','employees.id','=','reimbursts.employee_id')
                         ->where('employees.branch_id',$request->branch_id)
@@ -96,8 +99,9 @@ class ReimburstController extends Controller
                 $request->all(),
                 [
                     'reimburst_type_id' => 'required',
-                    'employee_id' => 'required',
-                    'amount' => 'required',
+                    'employee_id'       => 'required',
+                    'date'              => 'required',
+                    'amount'            => 'required',
                 ]
             );
 
@@ -111,6 +115,9 @@ class ReimburstController extends Controller
                     'employee_id'       => $request->employee_id,
                     'reimburst_type_id' => $request->reimburst_type_id,
                     'amount'            => $request->amount,
+                    // 'date'              => $request->date,
+                    'branch_id'         => Auth::user()->branch_id,
+                    'status'            => 'pending',
                     'created_by'        => Auth::user()->id,
                     'date'              => date('Y-m-d'),
                 ];
