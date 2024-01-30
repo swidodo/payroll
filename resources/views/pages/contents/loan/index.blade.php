@@ -141,6 +141,11 @@
                 $.ajaxSetup({
                     headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
                 });
+                $('#searchData').on('click', function(){
+                    var branch = $('#branch-filter').val();
+                    var status = $('#status-filter').val()
+                    loadData(branch,status)
+                })
                 $('select#status_edit').change(function(){
                     let selectedItem = $(this).children('option:selected').val()
 
@@ -343,11 +348,7 @@
                     }
                 })
             })
-            $('#searchData').on('click', function(){
-                var branch = $('#branch-filter').val();
-                var status = $('#status-filter').val()
-                loadData(branch,status)
-            })
+           
         }
     </script>
 @endpush
