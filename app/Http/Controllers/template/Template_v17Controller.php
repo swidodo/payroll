@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 // basic salary hl = gaji harian X HK, uang makan X hk, overtime X jam
-class Template_v2Controller extends Controller
+class Template_v17Controller extends Controller
 {
     public function index(Request $request){
         $file_extension = request()->file('import-payroll')->extension();
