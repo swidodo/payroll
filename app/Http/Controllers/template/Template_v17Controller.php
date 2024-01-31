@@ -92,7 +92,7 @@ class Template_v2Controller extends Controller
                         $allowancefixed   =  (($value[5] !=null) ? $value[5] : 0 );
                         $meal_allowance   =  (($value[6] !=null) ? $value[6] : 0) * (($value[4] !=null) ? $value[4] : 0);
                         $allowanceUnfixed =  $meal_allowance + (($value[7] !=null) ? $value[7] : 0 );
-                        $overtime         =  (($value[8] !=null) ? $value[8] : 0)*(($value[9] !=null) ? $value[9] : 0);
+                        $overtime         =  (($value[8] !=null) ? $value[8] : 0);
                         $val_salarymonth  =  
                         $basic_salary + $allowancefixed + $allowanceUnfixed + $overtime;
 
