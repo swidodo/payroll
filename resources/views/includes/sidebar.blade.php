@@ -398,11 +398,11 @@
                         </ul>
                     </li>
                 @endcanany
-                @canany(['payslip-user'])
+                @if(Auth::user()->type == 'user')
                     <li class=" {{(request()->routeIs('payslip-user')) ? 'active' : ''}}">
                         <a href="{{route('payslip-user')}}"><i class="la la-file"></i> <span> Payslip</span></a>
                     </li>
-                @endcanany
+                @endif
             
             </ul>
         </div>
