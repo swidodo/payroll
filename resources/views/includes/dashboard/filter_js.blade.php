@@ -93,7 +93,7 @@
             dataType : 'json',
             success :function (response){
                 var data = (response.data[0].turnover == null) ? 0 : response.data[0].turnover;
-                $val = (parseFloat(response.data[0].turnover)).toFixed(2);
+                $val = (parseFloat(response.data[0].turnover)).toFixed(1);
                 turnover(val);
             },
         });
