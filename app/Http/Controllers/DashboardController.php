@@ -67,12 +67,12 @@ class DashboardController extends Controller
                                 ->where('information.status',1)
                                 ->whereNotIn('information.id', $pesan)
                                 ->get();
-            $data['inbox'] = Information::select('information.*')->leftJoin('sys','sys.information_id','=','information.id')
+            $inbox = Information::select('information.*')->leftJoin('sys','sys.information_id','=','information.id')
                                 ->where('information.branch_id',Auth::user()->branch_id)
                                 ->where('information.status',1)
                                 ->whereNotIn('information.id', $pesan)
                                 ->get();
-            return view('pages.contents.dashboard.dashboard', compact('employee', 'attendanceStatus', 'attendanceEmployee', 'shiftSchedule', 'timesheet'));
+            return view('pages.contents.dashboard.dashboard', compact('inbox','employee', 'attendanceStatus', 'attendanceEmployee', 'shiftSchedule', 'timesheet'));
         }
     }
 
