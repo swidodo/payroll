@@ -28,7 +28,7 @@
                     <div class="card-body">
                         <table class="table border border-0">
                             <thead>
-                                <th>
+                                <th class="text-center">
                                     <h4>LIST PAYSLIP</h4>
                                 </th>
                             </thead>
