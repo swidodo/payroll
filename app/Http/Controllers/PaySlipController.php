@@ -126,9 +126,13 @@ class PaySlipController extends Controller
     //     return response()->download(storage_path('app/public/' . $payslipEmployee->pdf_filename));
     // }
     public function payslip_user(){
+        if (Auth::user()->can('payslip-user')){
         $employeeId = Employee::where('user_id',Auth::user()->id)->first();
         $data['payslip'] = DB::table('take_home_pay')->where('employee_id', $employeeId->id)->orderBy('enddate','DESC')->get();
         return view('pages.contents.payroll.payslip.payslip_employee',$data);
+        }else{
+            return redirect()->back();
+        }
     }
     
 }
