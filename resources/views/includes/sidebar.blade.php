@@ -398,14 +398,10 @@
                         </ul>
                     </li>
                 @endcanany
-                <li class=" {{(request()->routeIs('payslip-user')) ? 'active' : ''}}">
-                    <a href="{{route('payslip-user')}}"><i class="la la-paper"></i> <span> Payslip</span>
-                        {{-- <span class="menu-arrow"></span> --}}
-                   </a>
-
-                </li>
                 @canany(['payslip-user'])
-                        
+                    <li class=" {{(request()->routeIs('payslip-user')) ? 'active' : ''}}">
+                        <a href="{{route('payslip-user')}}"><i class="la la-file"></i> <span> Payslip</span></a>
+                    </li>
                 @endcanany
             
             </ul>
