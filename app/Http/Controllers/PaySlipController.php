@@ -131,7 +131,7 @@ class PaySlipController extends Controller
         $data['payslip'] = DB::table('take_home_pay')->where('employee_id', $employeeId->id)->orderBy('enddate','DESC')->get();
         return view('pages.contents.payroll.payslip.payslip_employee',$data);
         }else{
-            return redirect()->back();
+            return redirect('dashboard')->back();
         }
     }
     
