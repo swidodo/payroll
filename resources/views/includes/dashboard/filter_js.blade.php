@@ -93,8 +93,8 @@
             dataType : 'json',
             success :function (response){
                 var data = (response.data[0].turnover == null) ? 0 : response.data[0].turnover;
-                var val = data.toFixed(2);
-                turnover(val);
+                turnover(Math.round(data));
+                console.log(data);
             },
         });
     }
