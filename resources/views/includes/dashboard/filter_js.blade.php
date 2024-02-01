@@ -94,7 +94,7 @@
             success :function (response){
                 var data = (response.data[0].turnover == null) ? 0 : response.data[0].turnover;
                 turnover(Math.round(data));
-                console.log(ParseInt(data).toFixed(2));
+                console.log(0.6666.toFixed(1));
             },
         });
     }
