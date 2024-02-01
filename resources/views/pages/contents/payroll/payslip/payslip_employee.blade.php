@@ -26,10 +26,10 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <table class="table">
+                        <table class="table border border-0">
                             <thead>
                                 <th>
-                                    <h4>LIst Payslip</h4>
+                                    <h4>LIST PAYSLIP</h4>
                                 </th>
                             </thead>
                             <tbody>
