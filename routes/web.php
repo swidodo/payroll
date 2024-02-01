@@ -579,6 +579,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('clear-notif',[InformationController::class,'clear_notif'])->name('clear-notif');
         Route::get('list-inbox',[InformationController::class,'list_notif'])->name('list-inbox');
         Route::get('/view-inbox/{id}',[InformationController::class,'view_notif'])->name('view-inbox');
+        Route::get('payslip-user',[PaySlipController::class,'payslip_user'])->name('payslip-user');
+
 });
 
 

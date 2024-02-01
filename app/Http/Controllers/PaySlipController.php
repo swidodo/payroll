@@ -62,67 +62,73 @@ class PaySlipController extends Controller
         }
     }
 
-    public function show($id)
-    {
-        $employee = Employee::find($id);
+    // public function show($id)
+    // {
+    //     $employee = Employee::find($id);
 
-        if (is_null($employee) || empty($employee)) {
-            toast('Employee not found', 'warning');
-            return redirect()->route('payslips.index');
-        }
+    //     if (is_null($employee) || empty($employee)) {
+    //         toast('Employee not found', 'warning');
+    //         return redirect()->route('payslips.index');
+    //     }
 
-        $paySlips = PaySlip::where('created_by', Auth::user()->creatorId())->where('employee_id', $employee->id)->get();
-        return view('pages.contents.payroll.payslip.detail', compact('paySlips'));
+    //     $paySlips = PaySlip::where('created_by', Auth::user()->creatorId())->where('employee_id', $employee->id)->get();
+    //     return view('pages.contents.payroll.payslip.detail', compact('paySlips'));
+    // }
+
+    // public function downloadSlip(Employee $employee)
+    // {
+    //     $payslipPin = PayslipCodePin::where('created_by', Auth::user()->creatorId())->where('employee_id', Auth::user()->type == 'company' ? 0 : Auth::user()->employee->id)->first();
+
+    //     if (is_null($payslipPin)) {
+    //         $payslipPin = PayslipCodePin::where('created_by', Auth::user()->creatorId())->where('employee_id', null)->first();
+    //     }
+
+    //     if (Auth::user()->can('generate payslip') && Hash::check(request()->get('pin'), isset($payslipPin->pin) ? $payslipPin->pin : 0)) {
+    //         try {
+    //             $res = Utility::generatePayslip($employee, 'download');
+    //             return $res;
+    //         } catch (Exception $e) {
+    //             DB::rollBack();
+    //             toast($e->getMessage(), 'error');
+    //             return redirect()->back();
+    //         }
+    //     } else {
+    //         toast('Permission Denied.', 'error');
+    //         return redirect()->back();
+    //     }
+    // }
+
+    // public function showSlip(Employee $employee)
+    // {
+    //     $payslipPin = PayslipCodePin::where('created_by', Auth::user()->creatorId())->where('employee_id', Auth::user()->type == 'company' ? 0 : Auth::user()->employee->id)->first();
+
+    //     if (is_null($payslipPin)) {
+    //         $payslipPin = PayslipCodePin::where('created_by', Auth::user()->creatorId())->where('employee_id', null)->first();
+    //     }
+
+    //     if (Auth::user()->can('generate payslip') && Hash::check(request()->get('pin'), isset($payslipPin->pin) ? $payslipPin->pin : 0)) {
+    //         try {
+    //             $res = Utility::generatePayslip($employee, 'view');
+    //             return $res;
+    //         } catch (Exception $e) {
+    //             DB::rollBack();
+    //             toast($e->getMessage(), 'error');
+    //             return redirect()->back();
+    //         }
+    //     } else {
+    //         toast('Permission Denied.', 'error');
+    //         return redirect()->back();
+    //     }
+    // }
+
+    // public function downloadPDF(PaySlip $payslipEmployee)
+    // {
+    //     return response()->download(storage_path('app/public/' . $payslipEmployee->pdf_filename));
+    // }
+    public function payslip_user(){
+        $employeeId = Employee::where('user_id',Auth::user()->id)->first();
+        $data['payslip'] = DB::table('take_home_pay')->where('employee_id', $employeeId->id)->orderBy('enddate','DESC')->get();
+        return view('pages.contents.payroll.payslip.payslip_employee',$data);
     }
-
-    public function downloadSlip(Employee $employee)
-    {
-        $payslipPin = PayslipCodePin::where('created_by', Auth::user()->creatorId())->where('employee_id', Auth::user()->type == 'company' ? 0 : Auth::user()->employee->id)->first();
-
-        if (is_null($payslipPin)) {
-            $payslipPin = PayslipCodePin::where('created_by', Auth::user()->creatorId())->where('employee_id', null)->first();
-        }
-
-        if (Auth::user()->can('generate payslip') && Hash::check(request()->get('pin'), isset($payslipPin->pin) ? $payslipPin->pin : 0)) {
-            try {
-                $res = Utility::generatePayslip($employee, 'download');
-                return $res;
-            } catch (Exception $e) {
-                DB::rollBack();
-                toast($e->getMessage(), 'error');
-                return redirect()->back();
-            }
-        } else {
-            toast('Permission Denied.', 'error');
-            return redirect()->back();
-        }
-    }
-
-    public function showSlip(Employee $employee)
-    {
-        $payslipPin = PayslipCodePin::where('created_by', Auth::user()->creatorId())->where('employee_id', Auth::user()->type == 'company' ? 0 : Auth::user()->employee->id)->first();
-
-        if (is_null($payslipPin)) {
-            $payslipPin = PayslipCodePin::where('created_by', Auth::user()->creatorId())->where('employee_id', null)->first();
-        }
-
-        if (Auth::user()->can('generate payslip') && Hash::check(request()->get('pin'), isset($payslipPin->pin) ? $payslipPin->pin : 0)) {
-            try {
-                $res = Utility::generatePayslip($employee, 'view');
-                return $res;
-            } catch (Exception $e) {
-                DB::rollBack();
-                toast($e->getMessage(), 'error');
-                return redirect()->back();
-            }
-        } else {
-            toast('Permission Denied.', 'error');
-            return redirect()->back();
-        }
-    }
-
-    public function downloadPDF(PaySlip $payslipEmployee)
-    {
-        return response()->download(storage_path('app/public/' . $payslipEmployee->pdf_filename));
-    }
+    
 }
