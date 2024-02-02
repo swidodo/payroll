@@ -538,7 +538,7 @@
         })
 
         // show modal import
-         $(document).on('click','.import_run_V1',function(e){
+        $(document).on('click','.import_run_V1',function(e){
             e.preventDefault();
             $('#modalImportPayroll_v1').modal('show')
         })
@@ -605,6 +605,10 @@
         $(document).on('click','.import_run_V17',function(e){
             e.preventDefault();
             $('#modalImportPayroll_v17').modal('show')
+        })
+        $(document).on('click','.import_run_V18',function(e){
+            e.preventDefault();
+            $('#modalImportPayroll_v18').modal('show')
         })
         // submit import
         // v1
@@ -1287,6 +1291,46 @@
 
                 })
         })
-    });  
+    }); 
+     // v1.1
+     $('#UploadDataPayroll_v18').on('submit',function(e){
+            e.preventDefault();
+            var startdate   = $('#startdate').val();
+            var enddate     = $('#enddate').val();
+            var branch_id   = $('#branch_id').val();
+            
+            var payroll  = $('#import-payroll-v18')[0].files[0];
+            var formData = new FormData();
+            formData.append('import-payroll',payroll)
+                $.ajax({
+                    url : 'import-payroll-v18',
+                    type : 'post',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    data : formData,
+                    dataType : 'json',
+                    beforeSend : function(){
+                        $('.containerLoader').attr('hidden',false)
+                    },
+                    success : function(respon){
+                        $('.containerLoader').attr('hidden',true)
+                        if (respon.status == 'success'){
+                            $('#UploadDataPayroll_v18')[0].reset();
+                            $('#modalImportPayroll_v18').modal('hide')
+                            loadData(startdate,enddate,branch_id)
+                        }
+                        swal.fire({
+                            icon : respon.status,
+                            text : respon.msg,
+                        })
+                    },
+                    error : function(){
+                        alert('Someting went wrong !');
+                        $('.containerLoader').attr('hidden',true)
+                    }
+
+                })
+        }) 
     </script>
 @endpush

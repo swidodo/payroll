@@ -59,6 +59,7 @@ use App\Http\Controllers\DeductionOtherController;
 use App\Http\Controllers\DeductionadminController;
 //template payroll
 use App\Http\Controllers\template\Template_v1Controller;
+use App\Http\Controllers\template\Template_v18Controller;
 use App\Http\Controllers\template\Template_v2Controller;
 use App\Http\Controllers\template\Template_v3Controller;
 use App\Http\Controllers\template\Template_v4Controller;
@@ -270,6 +271,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         // template import payroll
         Route::post('import-payroll',[PayrollController::class,'import_run_payroll'])->name('import-payroll');
+        Route::post('import-payroll-v18',[Template_v18Controller::class,'index'])->name('import-payroll-v18');
         Route::post('import-payroll-v1',[Template_v1Controller::class,'index'])->name('import-payroll-v1');
         Route::post('import-payroll-v2',[Template_v2Controller::class,'index'])->name('import-payroll-v2');
         Route::post('import-payroll-v3',[Template_v3Controller::class,'index'])->name('import-payroll-v3');
