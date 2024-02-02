@@ -351,7 +351,7 @@ class Template_v18Controller extends Controller
                                 'employee_id'           => $employeeId->id,
                                 'branch_id'             => $employeeId->branch_id,
                                 'date'                  => $value[21],
-                                'name'                  => 'Lain-lain',
+                                'name'                  => 'Admin Payroll',
                                 'amount'                => $value[18],
                                 'created_by'            => Auth::user()->id,
                                 'created_at'            => $value[21].' '.date('h:m:s'),
