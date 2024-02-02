@@ -1291,9 +1291,8 @@
 
                 })
         })
-    }); 
-     // v1.1
-     $('#UploadDataPayroll_v18').on('submit',function(e){
+        // v18
+        $('#UploadDataPayroll_v18').on('submit',function(e){
             e.preventDefault();
             var startdate   = $('#startdate').val();
             var enddate     = $('#enddate').val();
@@ -1332,5 +1331,7 @@
 
                 })
         }) 
+    }); 
+        
     </script>
 @endpush

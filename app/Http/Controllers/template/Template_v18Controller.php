@@ -55,6 +55,7 @@ class Template_v18Controller extends Controller
         foreach ($sheetData as $key => $value) {
             if ($key > 0) :
                 $branch = Branch::where('alias',$value[22])->first();
+                // dd($value);
                 if ($branch != null) :
                     $employeeId = employee::where('no_employee',$value[1])->where('branch_id',$branch->id)->first();
                     $takeHP = DB::table('take_home_pay')
