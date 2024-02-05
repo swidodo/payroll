@@ -59,7 +59,6 @@ use App\Http\Controllers\DeductionOtherController;
 use App\Http\Controllers\DeductionadminController;
 //template payroll
 use App\Http\Controllers\template\Template_v1Controller;
-use App\Http\Controllers\template\Template_v18Controller;
 use App\Http\Controllers\template\Template_v2Controller;
 use App\Http\Controllers\template\Template_v3Controller;
 use App\Http\Controllers\template\Template_v4Controller;
@@ -75,6 +74,8 @@ use App\Http\Controllers\template\Template_v13Controller;
 use App\Http\Controllers\template\Template_v14Controller;
 use App\Http\Controllers\template\Template_v16Controller;
 use App\Http\Controllers\template\Template_v17Controller;
+use App\Http\Controllers\template\Template_v18Controller;
+use App\Http\Controllers\template\Template_v19BoronganController;
 // report
 use App\Http\Controllers\HRM\EmployeeReportController;
 use App\Http\Controllers\Report\ReportRecapAttendanceController;
@@ -271,7 +272,6 @@ Route::group(['middleware' => 'auth'], function () {
 
         // template import payroll
         Route::post('import-payroll',[PayrollController::class,'import_run_payroll'])->name('import-payroll');
-        Route::post('import-payroll-v18',[Template_v18Controller::class,'index'])->name('import-payroll-v18');
         Route::post('import-payroll-v1',[Template_v1Controller::class,'index'])->name('import-payroll-v1');
         Route::post('import-payroll-v2',[Template_v2Controller::class,'index'])->name('import-payroll-v2');
         Route::post('import-payroll-v3',[Template_v3Controller::class,'index'])->name('import-payroll-v3');
@@ -288,6 +288,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('import-payroll-v14',[Template_v14Controller::class,'index'])->name('import-payroll-v14');
         Route::post('import-payroll-v16',[Template_v16Controller::class,'index'])->name('import-payroll-v16');
         Route::post('import-payroll-v17',[Template_v17Controller::class,'index'])->name('import-payroll-v17');
+        Route::post('import-payroll-v18',[Template_v18Controller::class,'index'])->name('import-payroll-v18');
+        Route::post('import-payroll-v19',[Template_v19BoronganController::class,'index'])->name('import-payroll-v19');
         
         // Payroll Setting
         Route::get('/setting/bpjs-tk', [PayrollController::class, 'indexBpjsTk'])
