@@ -53,18 +53,20 @@
                             </div>
                             <div class="col-md-2 align-items-center text-right mt-4"> 
                                 @can('run normatif payroll')
-                                <button type="button" class="btn btn-primary  me-1" id="generate_run_payroll">RUN PAYROLL</button>
+                                    @if (Auth::user()->branch_id != 6)
+                                        <button type="button" class="btn btn-primary  me-1" id="generate_run_payroll">RUN PAYROLL</button>
+                                    @endif
                                 @endcan
-                            @if (Auth::user()->branch_id == 30)
+                            {{-- @if (Auth::user()->branch_id == 30) --}}
                                 {{-- <button type="button" class="btn btn-primary me-1" id="import_run_auto"><i class="fa fa-download"></i> IMPORT AND RUN V2</button> --}}
                                 {{-- <button type="button" class="btn btn-danger mt-1 me-1" id="import_run_v3" hidden><i class="fa fa-download"></i> IMPORT AND RUN V3</button> --}}
-                                @can('run import Auto payroll')
-                                @endcan
-                            @else
-                                @can('run import manual payroll')
+                                {{-- @can('run import Auto payroll')
+                                @endcan --}}
+                            {{-- @else
+                                @can('run import manual payroll') --}}
                                     {{-- <button type="button" class="btn btn-primary" id="import_run_payroll"><i class="fa fa-download"></i> IMPORT AND RUN</button> --}}
-                                @endcan
-                            @endif
+                                {{-- @endcan
+                            @endif --}}
                             </div>
                             <div class="col-md-3 import-template align-items-center mt-4"></div>
                         </div>
