@@ -180,15 +180,24 @@ class EmployeeController extends Controller
                                             ->first();
             // $employement        = Employement::find($employee->id);
             $employeeEducations  = EmployeeEducation::where('employee_id', $employee->id)->get();
-            $employeeExperience = EmployeeExperience::find($employee->id);
+            $employeeExperience  = EmployeeExperience::find($employee->id);
             $employeeExperiences = EmployeeExperience::where('employee_id', $employee->id)->get();
             $employeeFamilies    = Family::where('employee_id', $employee->id)->get();
-            $employeeMedical    = EmployeeMedical::where('employee_id', $employee->id)->first();
+            $employeeMedical     = EmployeeMedical::where('employee_id', $employee->id)->first();
+            $contract          = DB::table('log_contract')
+                                ->select('log_contract.*','employees.no_employee','employees.name')
+                                ->leftJoin('employees','employees.id','=','log_contract.employee_id')
+                                ->where('log_contract.employee_id',$employee->id)->get();
+            $max_cont_num = DB::table('log_contract')
+                                ->select(DB::raw('MAX(contract_number) as max_no'))
+                                ->where('log_contract.employee_id',$employee->id)
+                                ->groupBy('employee_id')
+                                ->first();
 
             $employeesId  = $employee->employee_id;
 
 
-            return view('pages.contents.employee.show', compact('employee', 'employeesId', 'employeeEducations', 'employeeExperience', 'employeeExperiences', 'documents', 'employeeFamilies', 'employeeMedical'));
+            return view('pages.contents.employee.show', compact('employee', 'employeesId', 'contract','max_cont_num', 'employeeEducations', 'employeeExperience', 'employeeExperiences', 'documents', 'employeeFamilies', 'employeeMedical'));
         } else {
             toast('Permission denied.', 'error');
             return redirect()->back();
@@ -210,18 +219,27 @@ class EmployeeController extends Controller
                 return view('pages.contents.employee.edit');
             }
 
-            $employement        = Employement::find($employee->id);
-            $employeeEducation  = EmployeeEducation::find($employee->id);
-            $employeeEducations  = EmployeeEducation::where('employee_id', $employee->id)->get();
-            $employeeExperience = EmployeeExperience::find($employee->id);
-            $employeeExperiences = EmployeeExperience::where('employee_id', $employee->id)->get();
-            $employeeFamilies    = Family::where('employee_id', $employee->id)->get();
-            $employeeMedical    = EmployeeMedical::where('employee_id', $employee->id)->first();
-            $employeesId  = $employee->employee_id;
+            $employement            = Employement::find($employee->id);
+            $employeeEducation      = EmployeeEducation::find($employee->id);
+            $employeeEducations     = EmployeeEducation::where('employee_id', $employee->id)->get();
+            $employeeExperience     = EmployeeExperience::find($employee->id);
+            $employeeExperiences    = EmployeeExperience::where('employee_id', $employee->id)->get();
+            $employeeFamilies       = Family::where('employee_id', $employee->id)->get();
+            $employeeMedical        = EmployeeMedical::where('employee_id', $employee->id)->first();
+            $employeesId            = $employee->employee_id;
+            $contract               = DB::table('log_contract')
+                                            ->select('log_contract.*','employees.no_employee','employees.name')
+                                            ->leftJoin('employees','employees.id','=','log_contract.employee_id')
+                                            ->where('log_contract.employee_id',$employee->id)->get();
+            $max_cont_num = DB::table('log_contract')
+                                ->select(DB::raw('MAX(contract_number) as max_no'))
+                                ->where('log_contract.employee_id',$employee->id)
+                                ->groupBy('employee_id')
+                                ->first();
             $currentDate = Carbon::now()->format('Y-m-d');
 
 
-            return view('pages.contents.employee.edit', compact('employee', 'employeesId', 'branches', 'employement', 'employeeEducation', 'employeeExperience', 'employeeExperiences', 'branches', 'employeeEducations', 'documents', 'employeeFamilies', 'employeeMedical', 'currentDate','paramPph21'));
+            return view('pages.contents.employee.edit', compact('employee', 'employeesId', 'contract','max_cont_num','branches', 'employement', 'employeeEducation', 'employeeExperience', 'employeeExperiences', 'branches', 'employeeEducations', 'documents', 'employeeFamilies', 'employeeMedical', 'currentDate','paramPph21'));
          } else {
             toast('Permission denied.', 'error');
             return redirect()->back();
@@ -522,7 +540,149 @@ class EmployeeController extends Controller
             return redirect()->back();
         }
     }
+    public function Store_LogContract(Request $request){
+        try{
+            $log = DB::table('log_contract')
+                    ->where('employee_id',$request->employee_id)
+                    ->orderBy('id','DESC')->limit(1)->first();
+            if ($log != null){
+                // dd(strtotime($log->enddate));
+                if (strtotime($log->enddate) > strtotime($request->start_date)){
+                    $res = [
+                        'status' => 'error',
+                        'msg'    => 'Please current end date < new start date !'
+                    ];
+                    return response()->json($res);
+                }
+            }
 
+            $checkData = Employee::where('id',$request->employee_id)->first();
+            $checkNum = DB::table('log_contract')->where('employee_id',$request->employee_id)->count();
+            $number   = (int)$checkNum + 1;
+            $data = [
+                'employee_id'       => $request->employee_id, 
+                'startdate'        => $request->start_date,
+                'enddate'          => $request->end_date,
+                'contract_type'     => $request->contract_type,
+                'contract_number'   => $number,
+                'status'            => '1', //active
+                'branch_id'         => $checkData->branch_id,
+                'created_by'        => Auth::user()->id,
+                'created_at'        => date('Y-m-d H:m:s'),
+                'updated_at'        => date('Y-m-d H:m:s'),
+            ];
+            DB::table('log_contract')->where('employee_id',$request->employee_id)->update(['status'=>'0']);
+            $log = DB::table('log_contract')->insert($data);
+            $dataR['contract'] = DB::table('log_contract')
+                                ->select('log_contract.*','employees.no_employee')
+                                ->leftJoin('employees','employees.id','log_contract.employee_id')
+                                ->where('log_contract.employee_id',$request->employee_id)
+                                ->get();
+            $dataR['max_contract'] = DB::table('log_contract')
+                                        ->select('contract_number as max_no')
+                                        ->where('log_contract.id',DB::getPdo()->lastInsertId())
+                                        ->first();
+            $res = [
+                'status'    => 'success',
+                'contract'  =>  $dataR,
+                'msg'       => 'Created Contract successfuly.'
+            ];
+            return response()->json($res);
+        }catch(Exeption $e){
+            $res = [
+                'status' => 'error',
+                'msg'    => 'Something went wrong !'
+            ];
+            return response()->json($res);
+        }        
+    }
+    public function edit_Store_LogContract(Request $request){
+        $data = DB::table('log_contract')
+                    ->select('log_contract.*','employees.no_employee','employees.name','employees.id as employee_id')
+                    ->leftJoin('employees','employees.id','=','log_contract.employee_id')
+                    ->where('log_contract.id',$request->id)->first();
+        return response()->json($data);
+    }
+    public function update_Store_LogContract(Request $request){
+        $log = DB::table('log_contract')
+                    ->where('employee_id',$request->employee_id)
+                    ->whereNotIn('id',[$request->id])
+                    ->orderBy('id','DESC')->limit(1)->first();
+        if ($log != null){
+            if (strtotime($log->enddate) >= strtotime($request->start_date)){
+                $res = [
+                    'status' => 'error',
+                    'msg'    => 'Please current end date < new start date !'
+                ];
+                return response()->json($res);
+            }
+        } 
+        
+        if (strtotime($request->start_date) >= strtotime($request->end_date)){
+            $res = [
+                'status' => 'error',
+                'msg'    => 'Start data must be < end date !'
+            ];
+            return response()->json($res);
+        }
+        try {
+            $data = [
+                'startdate'        => $request->start_date,
+                'enddate'          => $request->end_date,
+                'contract_type'    => $request->contract_type,
+                'created_by'       => Auth::user()->id,
+                'updated_at'       => date('Y-m-d H:m:s'),
+            ];
+            DB::table('log_contract')->where('id',$request->id)->update($data);
+            $dataR['contract'] = DB::table('log_contract')
+                                ->select('log_contract.*','employees.no_employee')
+                                ->leftJoin('employees','employees.id','log_contract.employee_id')
+                                ->where('log_contract.employee_id',$request->employee_id)
+                                ->get();
+            $dataR['max_contract'] = DB::table('log_contract')
+                                        ->select('contract_number as max_no')
+                                        ->where('log_contract.id',$request->id)
+                                        ->first();
+            $res = [
+                'status'    => 'success',
+                'contract'  => $dataR,
+                'msg'       => 'Data Contract successfuly updated.'
+            ];
+            return response()->json($res);
+        }catch(Exeption $e){
+            $res = [
+                'status' => 'error',
+                'msg'    => 'Something went wrong !'
+            ];
+            return response()->json($res);
+        }
+    }
+    public function destroy_Store_LogContract(Request $request){
+        $del = DB::table('log_contract')->where('id',$request->id)->delete();
+        if ($del){
+            $dataR['contract'] = DB::table('log_contract')
+                                ->select('log_contract.*','employees.no_employee')
+                                ->leftJoin('employees','employees.id','log_contract.employee_id')
+                                ->where('log_contract.employee_id',$request->employee_id)
+                                ->get();
+            $dataR['max_contract'] = DB::table('log_contract')
+                                        ->select(DB::raw('max(contract_number) as max_no'))
+                                        ->where('log_contract.employee_id',$request->employee_id)
+                                        ->groupBy('employee_id')
+                                        ->first();
+            $res = [
+                'status' => 'success',
+                'contract'  => $dataR,
+                'msg'    => 'Data Contract successfuly deleted !'
+            ];
+        }else{
+            $res = [
+                'status' => 'error',
+                'msg'    => 'Something went wrong!'
+            ];
+        }
+        return response()->json($res);
+    }
     public function employeeEducations(EmployeeEducation $employeeEducation)
     {
         return $employeeEducation;

@@ -125,7 +125,7 @@ Route::group(['middleware' => 'auth'], function () {
                 ->name('dashboard.filter-employee-resume');
         Route::post('get_report_timesheet',[DashboardController::class,'get_report_timesheet'])->name('get_report_timesheet');
         Route::post('get_report_birtday',[DashboardController::class,'get_birtday'])->name('get_report_birtday');
-
+        
         // user
         Route::resource('users', UsersController::class);
         Route::resource('roles', RolesController::class);
@@ -155,6 +155,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('create_employee',[EmployeeController::class,'create_employee'])->name('add-employee');
         Route::post('save-create-employee',[EmployeeController::class,'save_create_employee'])->name('save-create-employee');
         Route::post('get-data-employees',[EmployeeController::class,'GetDataEmployees'])->name('employees.get-data-employees');
+        Route::post('contract-store',[EmployeeController::class,'Store_LogContract'])->name('contract-store');
+        Route::post('edit-log_contract',[EmployeeController::class,'edit_Store_LogContract'])->name('edit-log_contract');
+        Route::post('update-contract',[EmployeeController::class,'update_Store_LogContract'])->name('update-contract');
+        Route::post('delete-contract',[EmployeeController::class,'destroy_Store_LogContract'])->name('delete-contract');
+
         /** end route employees */
 
         // HRM Config Master Data

@@ -227,6 +227,44 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-12">
+                <div class="card emp_details">
+                    <div class="card-header p-3 d-flex align-items-center justify-content-between">
+                        <h4 class="mb-0">Contract</h4>
+                        <div class="d-flex justify-content-end">
+                        </div>
+                    </div>
+                    <div class="card-body employee-detail-edit-body fulls-card">
+                        <div id="card-body-contract" class="h-25">
+                           <table class="table table-sm table-bordered table-striped table-hover">
+                                <thead style="background: #FD7861;">
+                                    <th class="text-center">No</th>
+                                    <th>Employee ID</th>
+                                    <th class="text-center">Start Date</th>
+                                    <th class="text-center">End Date</th>
+                                    <th class="text-center">Type</th>
+                                </thead>
+                                <tbody id="tb-contract">
+                                    
+                                    @foreach ($contract as $pkwt)
+                                    
+                                        <tr>
+                                            <td class="text-center">{{$pkwt->contract_number}}</td>
+                                            <td>{{$pkwt->no_employee}}</td>
+                                            <td class="text-center">{{$pkwt->startdate}}</td>
+                                            <td class="text-center">{{$pkwt->enddate}}</td>
+                                            <td class="text-center">{{$pkwt->contract_type}}</td>
+                                        </tr>                                        
+                                    @endforeach
+                                    
+                                </tbody>
+                           </table>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="col-md-6">
                 {{-- <div class="card ">
                     <div class="card-body employee-detail-body fulls-card">
