@@ -9,41 +9,19 @@ use Illuminate\Support\Facades\Validator;
 
 class LeaveTypeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         if (Auth::user()->can('manage leave type')) {
-            $leavetypes = LeaveType::leftJoin('users','users.id','leave_types.created_by')
-                                    // ->where('users.branch_id', '=', Auth::user()->branch_id)
+            $leavetypes = LeaveType::select('leave_types.*')
+                                    ->leftJoin('users','users.id','leave_types.created_by')
+                                    ->where('users.branch_id', '=', Auth::user()->branch_id)
                                     ->get();
-            // dd(Auth::user()->branch_id);
             return view('pages.contents.leave-type.index', compact('leavetypes'));
         } else {
             toast('Permission denied.', 'error');
             return redirect()->back();
         }
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         if (Auth::user()->can('create leave type')) {
@@ -70,7 +48,7 @@ class LeaveTypeController extends Controller
             if($check > 0){
                 $res = [
                     'status' => 'error',
-                    'msg'    => 'Data already in leave Type.',
+                    'msg'    => 'Data already in list leave Type.',
                 ];
                 return response()->json($res);
             }
@@ -101,81 +79,69 @@ class LeaveTypeController extends Controller
             return response()->json($res);
         }
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-
     public function edit($id)
     {
-        $leavetype = LeaveType::find($id);
+        
         if (Auth::user()->can('edit leave type')) {
-            if ($leavetype->created_by == Auth::user()->creatorId()) {
-                return response()->json($leavetype);
-            } else {
-                return response()->json(['error' => 'Permission denied.'], 401);
-            }
+            $leavetype = LeaveType::find($id);
+            return response()->json($leavetype);
+            
         } else {
             return response()->json(['error' => 'Permission denied.'], 401);
         }
     }
     public function update(Request $request, $id)
     {
-        $leavetype = LeaveType::find($id);
         if (Auth::user()->can('edit leave type')) {
-            if ($leavetype->created_by == Auth::user()->creatorId()) {
-                $validator = Validator::make(
-                    $request->all(),
-                    [
-                        'title' => 'required',
-                        'days' => 'required',
-                    ]
-                );
+            $validator = Validator::make(
+                $request->all(),
+                [
+                    'title' => 'required',
+                    'days' => 'required',
+                ]
+            );
 
-                if ($validator->fails()) {
+            if ($validator->fails()) {
 
-                    return redirect()->back()->with([
-                        'errors'    => $validator->messages(),
-                        'edit-show' => true,
-                    ]);
-                }
-
-                $leavetype->title           = $request->title;
-                $leavetype->days            = $request->days;
-                $leavetype->include_salary  = $request->include_salary;
-                $leavetype->save();
-
-                return redirect()->route('leave-type.index')->with('success', 'LeaveType successfully updated.');
-            } else {
-                toast('Permission denied.', 'error');
-                return redirect()->back();
+                return redirect()->back()->with([
+                    'errors'    => $validator->messages(),
+                    'edit-show' => true,
+                ]);
             }
+            $leavetype = LeaveType::find($id);
+            $leavetype->title           = $request->title;
+            $leavetype->days            = $request->days;
+            $leavetype->include_salary  = $request->include_salary;
+            $leavetype->save();
+            return redirect()->route('leave-type.index')->with('success', 'LeaveType successfully updated.');
         } else {
             toast('Permission denied.', 'error');
             return redirect()->back();
         }
     }
-
-    
     public function destroy($id)
     {
         if (Auth::user()->can('delete leave type')) {
-          
+            try {
                 LeaveType::where('id',$id)->delete();
-
-                return redirect()->route('leave-type.index')->with('success', 'LeaveType successfully deleted.');
-            
+                $res = [
+                    'status' => 'success',
+                    'msg'    => 'LeaveType successfully deleted.',
+                ];
+                return response()->json($res);
+            }catch(Exeption $e){
+                $res = [
+                    'status' => 'error',
+                    'msg'    => 'Something went wrong!.',
+                ];
+                return response()->json($res);
+            }
         } else {
-            toast('Permission denied.', 'error');
-            return redirect()->back();
+            $res = [
+                'status' => 'error',
+                'msg'    => 'Permission denied.',
+            ];
+            return response()->json($res);
         }
     }
 }

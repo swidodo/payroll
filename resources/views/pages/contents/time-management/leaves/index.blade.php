@@ -47,7 +47,7 @@
                             <label>Branch</label>
                             <select class="form-select form-control" id="branch_id">
                                 @foreach($branch as $br)
-                                <option value="{{ $br->id }} ">{{ $br->name }}</option>
+                                <option value="{{ $br->id }}" {{(Auth::user()->branch_id == $br->id) ? 'selected' : ''}}>{{ $br->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -73,9 +73,7 @@
                                 <th>Attachment</th>
                                 <th>Leave Reason</th>
                                 <th>Status</th>
-                                {{-- @if(Auth::user()->can('edit leave') || Auth::user()->can('delete leave')) --}}
-                                    <th class="text-end">Action</th>
-                                {{-- @endif --}}
+                                <th class="text-end">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -175,36 +173,36 @@
                 });
             }
 
-            $('body').on('click', '#edit-leave', function () {
-                const editUrl = $(this).data('url');
-                $('.wrapper-approver').empty()
-                $('#approver').hide()
+            // $('body').on('click', '#edit-leave', function () {
+            //     const editUrl = $(this).data('url');
+            //     $('.wrapper-approver').empty()
+            //     $('#approver').hide()
 
 
-                $.get(editUrl, (data) => {
-                    // let splitFile = data[2].attachment_reject.split('/')
-                    // const lastItem = splitFile[splitFile.length - 1]
+            //     $.get(editUrl, (data) => {
+            //         // let splitFile = data[2].attachment_reject.split('/')
+            //         // const lastItem = splitFile[splitFile.length - 1]
 
-                    // 3 tier approval
-                    if(data.level_approve != null)
-                    {
-                        $('#level_approve').attr('value', data.level_approve)
-                        $('#form-status').show()
-                    }
-                    if(data.leaveApprovals.length > 0)
-                    {
-                        $.each(data.leaveApprovals, function (indexInArray, valueOfElement) {
-                            if (valueOfElement !== null) {
-                                $('.wrapper-approver').append(`<input disabled style="margin-bottom: 3px" class="form-control"  type="text" value="${valueOfElement.approver}">`)
-                                $('#approver').show()
-                            }
-                        });
-                    }
-                    // 3 tier approval
+            //         // 3 tier approval
+            //         if(data.level_approve != null)
+            //         {
+            //             $('#level_approve').attr('value', data.level_approve)
+            //             $('#form-status').show()
+            //         }
+            //         if(data.leaveApprovals.length > 0)
+            //         {
+            //             $.each(data.leaveApprovals, function (indexInArray, valueOfElement) {
+            //                 if (valueOfElement !== null) {
+            //                     $('.wrapper-approver').append(`<input disabled style="margin-bottom: 3px" class="form-control"  type="text" value="${valueOfElement.approver}">`)
+            //                     $('#approver').show()
+            //                 }
+            //             });
+            //         }
+            //         // 3 tier approval
 
                     
-                })
-            });
+            //     })
+            // });
 
             $('body').on('click', '#delete-leave', function(){
                 const deleteURL = $(this).data('url');
@@ -262,7 +260,7 @@
                                 render : function(data,row,type){
                                     var btn ='';
                                     if (data !=null){
-                                        btn ="<a href='"+data+"' target='_blank' class='btn btn-primary'>view file </a>";
+                                        btn ="<a href='"+data+"' target='_blank' class='btn btn-sm btn-primary'>view file </a>";
                                     }
                                     return btn;
                                 }
@@ -273,7 +271,18 @@
                             },
                             {
                                 data: 'status',
-                                name : 'status'
+                                render : function(data,type,row){
+                                    var st = '';
+                                    if (data == 'Approved'){
+                                        st = `<span class="badge badge-success">`+data+`</span>`;
+                                    }
+                                    else if(data == 'Rejected'){
+                                        st = `<span class="badge badge-danger">`+data+`</span>`;
+                                    }else{
+                                        st = `<span class="badge badge-warning">`+data+`</span>`;
+                                    }
+                                    return st;
+                                }
                             },
                             {
                                 data: 'action',
@@ -389,19 +398,112 @@
                             
                         })
                         $('#leave_type_id_edit').html(types)
-                       
+                        $('#id').val(respon.leave.id)
                         $('#start_date_edit').val(respon.leave.start_date)
                         $('#end_date_edit').val(respon.leave.end_date)
                         $('#leave_reason_edit').val(respon.leave.leave_reason)
                         $('#rejected_reason_edit').val()
-                         const urlNow = '{{ Request::url() }}'
-                        $('#edit-form-leave').attr('action', urlNow + '/' + respon.leave.id);
                     },
 
                     error : function(){
                         alert('Sameting went wrong!')
                     }
                 })
+            })
+            $('#edit-form-leave').on('submit',function(e){
+                e.preventDefault();
+                var branchId = $('#branch_id').val();
+                var Data = new FormData(this);
+                $.ajax({
+                    url : 'update-leave',
+                    type : 'post',
+                    data : Data,
+                    dataType : 'json',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    beforeSend : function(){
+
+                    },
+                    success : function(respon){
+                        if (respon.status == "success"){
+                            swal.fire({
+                                icon : respon.status,
+                                text : respon.msg
+                            })
+                            loadData(branchId)
+                            $('#edit_leave').modal('hide')
+                        }else{
+                            swal.fire({
+                                icon : respon.status,
+                                text : respon.msg
+                            })
+                        }
+                    }
+                })
+            })
+           
+            $(document).on('click','.delete-leave', function(e){
+                e.preventDefault()
+                var id = $(this).attr('data-id')
+                var branchId = $('#branch_id').val();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then(function(confirm){
+                    if(confirm.value == true){
+                        $.ajax({
+                            url : 'delete-leave',
+                            type : 'post',
+                            data : {id : id},
+                            beforeSend : function(){
+
+                            },
+                            success : function(respon){
+                                swal.fire({
+                                    icon : respon.status,
+                                    text : respon.msg,
+                                })
+                                loadData(branchId)
+                            },
+                            error : function (){
+                                alert('There is an error !, please try again')
+                            }
+                        })
+                    }
+                })
+            })
+
+            $('#leave_type_id').on('change',function(){
+                var type = $('#leave_type_id option:selected').text();
+                var emp  = $('#employee_id').val();
+                if (emp == ''){
+                    return false;
+                }
+                if (type == 'LEAVE'){
+                    $.ajax({
+                        url : 'get-total-leave',
+                        type : 'post',
+                        data : {employee_id : emp},
+                        dataType : 'json',
+                        success : function(respon){
+                            $('#total_leave').val(respon);
+                            if (respon == '0'){
+                                $('#add-leave').attr('disabled',true)
+                            }else{
+                                $('#add-leave').attr('disabled',false)
+                            }
+                        },
+                        error : function(){
+                            alert('someting went wrong !');
+                        }
+                    })
+                }
             })
 
         });

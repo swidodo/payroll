@@ -43,7 +43,8 @@
                             <tr>
                                 <th>No</th>
                                 <th>Leave Type</th>
-                                <th>Days / Year</th>
+                                <th class="text-center">Days / Year</th>
+                                <th class="text-center">Include Salary</th>
                                 @if(Auth::user()->can('edit leave type') || Auth::user()->can('delete leave type'))
                                     <th class="text-end">Action</th>
                                 @endif
@@ -59,8 +60,11 @@
                                     <td>
                                         {{$type->title}}
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         {{$type->days}}
+                                    </td>
+                                    <td class="text-center">
+                                        {{($type->include_salary =='') ? 'N' : $type->include_salary }}
                                     </td>
                                     @canany(['edit leave type', 'delete leave type'])
                                         <td class="text-end">
@@ -72,7 +76,7 @@
                                                         <a  data-url="{{route('leave-type.edit', $type->id)}}" id="edit-leave-type" class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_leave_type"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                                                     @endcan
                                                     @can('delete leave type')
-                                                        <a id="delete-leave-type" data-url="{{route('leave-type.destroy', $type->id)}}" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_leave_type"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                        <a href="javascript:void(0);" data-id="{{ $type->id }}" data-url="{{route('leave-type.destroy', $type->id)}}" class="dropdown-item delete-leave-type"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                                     @endcan
 
                                                 </div>
@@ -137,26 +141,32 @@
                 });
                 /* When click show user */
 
-
                     $('body').on('click', '#edit-leave-type', function () {
                         const editUrl = $(this).data('url');
                         $('#edit-title-leave-type').val('')
                         $('#edit-days-leave-type').val('')
-
-
+                        
                         $.get(editUrl, (data) => {
                             $('#edit-title-leave-type').val(data.title)
                             $('#edit-days-leave-type').val(data.days)
-
+                            var option = '';
+                            if(data.include_salary == 'Y'){
+                                option = `<option value="N">No</option>
+                                        <option value="Y" selected>Yes</option>`;
+                            }else{
+                                option = `<option value="N" selected>No</option>
+                                        <option value="Y">Yes</option>`;
+                            }
+                            $('#editincludeSalary').html(option)
                             const urlNow = '{{ Request::url() }}'
                             $('#edit-form-leave-type').attr('action', urlNow + '/' + data.id);
                         })
                     });
 
-                $('body').on('click', '#delete-leave-type', function(){
-                    const deleteURL = $(this).data('url');
-                    $('#form-delete-leave-type').attr('action', deleteURL);
-                })
+                // $('body').on('click', '#delete-leave-type', function(){
+                //     const deleteURL = $(this).data('url');
+                //     $('#form-delete-leave-type').attr('action', deleteURL);
+                // })
             });
             $('#fromAddLeaveType').on('submit', function(e){
                 e.preventDefault();
@@ -173,17 +183,58 @@
 
                     },
                     success : function(respon){
+                        $('#add_leave_type').modal('hide');
                         Swal.fire({
                             icon : respon.status,
                             text : respon.msg,
+                        }).then(function(e){
+                            if(respon.status == 'success'){
+                                window.location.href = "{{ route('leave-type.index')}}"
+                            }
                         })
-                       $('#add_leave_type').modal('hide');
                     },
                     error : function () {
                         alert('There is an error !, please try again')
                     }
                 })
+            })
+            $(document).on('click','.delete-leave-type', function(e){
+                e.preventDefault()
+                var id = $(this).attr('data-id')
+                const deleteURL = $(this).data('url');
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then(function(confirm){
+                    if(confirm.value == true){
+                        $.ajax({
+                            url : deleteURL,
+                            type : 'DELETE',
+                            beforeSend : function(){
 
+                            },
+                            success : function(respon){
+                                swal.fire({
+                                    icon : respon.status,
+                                    text : respon.msg,
+                                }).then(function(e){
+                                    if (respon.status == "success"){
+                                        window.location.href = "{{ route('leave-type.index')}}"
+                                    }
+                                })
+                                
+                            },
+                            error : function (){
+                                alert('There is an error !, please try again')
+                            }
+                        })
+                    }
+                })
             })
     </script>
 @endpush

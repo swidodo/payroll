@@ -6,6 +6,7 @@
 <table class="table ">
     <thead>
         <tr>
+            <th style="font-weight: 700">Employee ID</th>
             <th style="font-weight: 700">Employee</th>
             <th style="font-weight: 700">Leave Type</th>
             <th style="font-weight: 700">Applied on</th>
@@ -20,11 +21,12 @@
     <tbody>
         @foreach ($leaves as $leave)
             <tr>
+                <td>{{$leave->employee->no_employee}}</td>
                 <td>{{$leave->employee->name}}</td>
                 <td>{{ isset($leave->leave_type) ? $leave->leave_type->title : ''}}</td>
-                <td>{{$leave->applied_on}}</td>
-                <td>{{$leave->start_date}}</td>
-                <td>{{$leave->end_date}}</td>
+                <td>{{ date('d-m-Y', strtotime($leave->applied_on))}}</td>
+                <td>{{ date('d-m-Y', strtotime($leave->start_date))}}</td>
+                <td>{{ date('d-m-Y', strtotime($leave->end_date))}}</td>
                 <td>{{$leave->total_leave_days}}</td>
                 <td>{{$leave->status}}</td>
                 <td>{{$leave->leave_reason}}</td>

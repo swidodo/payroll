@@ -411,6 +411,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('add-request-leave',[LeaveController::class,'request_manage_leave'])->name('add-request-leave');
         Route::post('store-leave',[LeaveController::class,'store'])->name('store-leave');
         Route::post('edit-leave',[LeaveController::class,'edit'])->name('edit-leave');
+        Route::post('update-leave',[LeaveController::class,'update'])->name('update-leave');
+        Route::post('delete-leave',[LeaveController::class,'destroy'])->name('delete-leave');
+        Route::post('get-total-leave',[LeaveController::class,'get_total_leave'])->name('get-total-leave');
 
         Route::resource('overtimes', OvertimeController::class);
         Route::post('get-list-overtime', [OvertimeController::class,'get_data'])->name('get-list-overtime');

@@ -616,6 +616,10 @@
             e.preventDefault();
             $('#modalImportPayroll_v19').modal('show')
         })
+        $(document).on('click','.import_run_V20',function(e){
+            e.preventDefault();
+            $('#modalImportPayroll_v20').modal('show')
+        })
         // submit import
         // v1
         $('#UploadDataPayroll_v1').on('submit',function(e){
@@ -1363,6 +1367,45 @@
                         if (respon.status == 'success'){
                             $('#UploadDataPayroll_v19')[0].reset();
                             $('#modalImportPayroll_v19').modal('hide')
+                            loadData(startdate,enddate,branch_id)
+                        }
+                        swal.fire({
+                            icon : respon.status,
+                            text : respon.msg,
+                        })
+                    },
+                    error : function(){
+                        alert('Someting went wrong !');
+                        $('.containerLoader').attr('hidden',true)
+                    }
+
+                })
+        }) 
+        $('#UploadDataPayroll_v20').on('submit',function(e){
+            e.preventDefault();
+            var startdate   = $('#startdate').val();
+            var enddate     = $('#enddate').val();
+            var branch_id   = $('#branch_id').val();
+            
+            var payroll  = $('#import-payroll-v20')[0].files[0];
+            var formData = new FormData();
+            formData.append('import-payroll',payroll)
+                $.ajax({
+                    url : 'import-payroll-v20',
+                    type : 'post',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    data : formData,
+                    dataType : 'json',
+                    beforeSend : function(){
+                        $('.containerLoader').attr('hidden',false)
+                    },
+                    success : function(respon){
+                        $('.containerLoader').attr('hidden',true)
+                        if (respon.status == 'success'){
+                            $('#UploadDataPayroll_v20')[0].reset();
+                            $('#modalImportPayroll_v20').modal('hide')
                             loadData(startdate,enddate,branch_id)
                         }
                         swal.fire({

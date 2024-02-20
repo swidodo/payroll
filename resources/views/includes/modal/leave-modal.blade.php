@@ -1,5 +1,5 @@
-    <!-- Add overtime Modal -->
-    <div id="add_leave" class="modal custom-modal fade" id="modalImportPayroll_v8" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <!-- Add leave Modal -->
+    <div id="add_leave" class="modal custom-modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -16,7 +16,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Employee <span class="text-danger">*</span></label>
+                                            <label for="employee_id"  class="form-label">Employee <span class="text-danger">*</span></label>
                                             <select class="form-control select-employee" id="employee_id" name="employee_id" required>
                                             </select>
                                         </div>
@@ -29,7 +29,7 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -39,7 +39,7 @@
                                             @if ($errors->has('start_date'))
                                                 <div class="text-danger" role="alert">
                                                     <small><strong>{{ $errors->get('start_date')[0] }}</strong></small>
-                                                </div>x
+                                                </div>
                                             @endif
                                         </div>
                                     </div>
@@ -56,7 +56,21 @@
                                         @endif
                                     </div>
                                 </div>
-
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group col-md-6">
+                                            <label for="total_leave" class="form-label">Have Leave</label>
+                                            <input class="form-control" type="text" id="total_leave" readonly disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">   
+                                        <div class="form-group col-md-6">
+                                            <label for="formFile" class="form-label">Attachment (opsional)</label>
+                                            <input name="attachment_request" class="form-control" type="file" id="attachment_leave">
+                                            <a href="" id="attachment_rejected_add_anchor"></a>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label for="leave_reason" class="form-label">Leave Reason</label>
                                     <textarea class="form-control" placeholder="Leave Reason" name="leave_reason" cols="50" rows="3" id="leave_reason"></textarea>
@@ -67,16 +81,10 @@
                                             </div>
                                         @endif
                                 </div>
-                                
-                                <div class="form-group">
-                                    <label for="formFile" class="form-label">Attachment (opsional)</label>
-                                    <input name="attachment_request" class="form-control" type="file" id="attachment_leave">
-                                    <a href="" id="attachment_rejected_add_anchor"></a>
-                                </div>
                             </div>
                         </div>
                         <div class="submit-section">
-                            <button type="submit" class="btn btn-primary submit-btn">Submit</button>
+                            <button type="submit" class="btn btn-primary submit-btn" id="add-leave">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -85,8 +93,8 @@
     </div>
     <!-- /Add User Modal -->
 
-    <!-- Add overtime Modal -->
-    <div id="modal_export" class="modal custom-modal fade" role="dialog">
+    <!-- export leave Modal -->
+    <div id="modal_export" class="modal custom-modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-l" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -135,8 +143,8 @@
     </div>
     <!-- /Add User Modal -->
 
-    <!-- Edit Overtime Modal -->
-    <div id="edit_leave" class="modal custom-modal fade" id="modalImportPayroll_v8" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <!-- Edit leave Modal -->
+    <div id="edit_leave" class="modal custom-modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -146,15 +154,14 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="" id="edit-form-leave" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
+                    <form id="edit-form-leave">
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Employee <span class="text-danger">*</span></label>
+                                            <label for="employee_id_edit">Employee <span class="text-danger">*</span></label>
+                                            <input type="hidden" name="id" id="id">
                                             <select  class="form-control select-employee-edit" id="employee_id_edit" name="employee_id">
                                             </select>
                                         </div>
@@ -195,7 +202,7 @@
                                         @endif
                                     </div>
                                 </div>
-
+                               
                                 <div class="form-group">
                                     <label for="leave_reason" class="form-label">Leave Reason</label>
                                     <textarea class="form-control" placeholder="Leave Reason" name="leave_reason" cols="50" rows="3" id="leave_reason_edit"></textarea>
@@ -252,37 +259,4 @@
         </div>
     </div>
     <!-- /Edit User Modal -->
-
-    <!-- Delete User Modal -->
-    <div class="modal custom-modal fade" id="delete_leave" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="form-header">
-                        <h3>Delete Leave</h3>
-                        <p>Are you sure want to delete?</p>
-                    </div>
-                    <div class="modal-btn delete-action">
-                        <div class="row">
-                            <div class="col-6">
-                                <form action="" id="form-delete-leave" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <div class="d-grid gap-2">
-                                        <button type="submit" class="btn btn-primary continue-btn">Delete</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="col-6">
-                                <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Delete User Modal -->
-
-
 

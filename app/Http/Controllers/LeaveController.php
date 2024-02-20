@@ -26,11 +26,6 @@ use Illuminate\Support\Facades\URL;
 
 class LeaveController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         if (Auth::user()->can('manage leave')) {
@@ -84,8 +79,8 @@ class LeaveController extends Controller
                                         if(Auth()->user()->can('edit leave')){
                                             $btn .= '<a  data-url="'.route('leaves.edit', $row->id).'" data-id="'.$row->id.'" id="edit-leave" class="dropdown-item edit-leave" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#edit_leave"><i class="fa fa-pencil m-r-5"></i> Edit</a>';
                                         }
-                                        if(Auth()->user()->can('edit leave')){
-                                            $btn .= '<a id="delete-leave" data-url="'.route('leaves.destroy', $row->id).'" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_leave"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
+                                        if(Auth()->user()->can('delete leave') && $row->status !='Approved'){
+                                            $btn .= '<a data-id = "'.$row->id.'" class="dropdown-item delete-leave" href="#" data-bs-toggle="modal" data-bs-target="#delete_leave"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
                                         }
                             $btn .= '</div></div>';
                         }
@@ -95,20 +90,24 @@ class LeaveController extends Controller
         ->make(true);
 
     }
+    public function get_total_leave(Request $request){
+        $data = EMployee::where('id',$request->employee_id)->pluck('total_leave')->first();
+        return response()->json($data);
+    }
     public function request_manage_leave(Request $request){
         $branch = Branch::where('id',Auth::user()->branch_id)->first();
         if (Auth::user()->initial == 'HO'){
             $data['employee'] = Employee::select('id','name')->where('branch_id',Auth::user()->branch_id)->get();
             $data['leaveType'] = LeaveType::select('leave_types.id','leave_types.title')
                                     ->leftJoin('users','users.id','=','leave_types.created_by')
-                                    // ->where('users.branch_id',Auth::user()->branch_id)
+                                    ->where('users.branch_id',Auth::user()->branch_id)
                                     ->get();
             return response()->json($data);
         }else{
             $data['employee'] = Employee::select('id','name')->where('branch_id',Auth::user()->branch_id)->get();
             $data['leaveType'] = LeaveType::select('leave_types.id','leave_types.title')
                                     ->leftJoin('users','users.id','=','leave_types.created_by')
-                                    // ->where('users.branch_id',Auth::user()->branch_id)
+                                    ->where('users.branch_id',Auth::user()->branch_id)
                                     ->get();
             return response()->json($data);
         }
@@ -195,18 +194,45 @@ class LeaveController extends Controller
                 } else {
                     $leave->employee_id = $request->employee_id;
                 }
-                if ($request->file('attachment_request')) {
-                    $year  = date('Y');
-                    $month = date('m');
-                    $dir = 'leave/'.$year.'/'.$month.'/'.$request->get('attachment_request');;
-                    if (! Storage::exists($dir)) {
-                        Storage::makeDirectory($dir,775,true);
+                // if ($request->file('attachment_request')) {
+                //     $year  = date('Y');
+                //     $month = date('m');
+                //     $dir = 'leave/'.$year.'/'.$month.'/'.$request->get('attachment_request');;
+                //     if (! Storage::exists($dir)) {
+                //         Storage::makeDirectory($dir,775,true);
+                //     }
+                //     $fileName = time() . '_' . $request->file('attachment_request')->getClientOriginalName();
+                //     $store = $request->file('attachment_request')->storeAs($dir, $fileName);
+                //     $pathFile = URL::to('/').'/'.'public/storage/'.$dir.$fileName ?? null;
+                //     $leave->attachment_request_path =  $pathFile;
+                // }
+
+                // upload file
+                if(isset($request->attachment_request)){
+                    $dta = Branch::select('branches.name as branch_name','companies.name as company_name')
+                                ->leftJoin('companies','companies.id','=','branches.company_id')
+                                ->where('branches.id',Auth::user()->branch_id)->first();
+                    $company    =  $dta->branch_name;
+                    $branch     =  $dta->company_name;
+                    $tahun      =  date('Y');
+                    $bulan      =  date('m');
+                    $tanggal    =  date('d-m-Y');
+
+                    $dir        = $company.'/'.$branch.'/'.$tahun.'/'.$bulan.'/'.$tanggal.'/';
+                    $path = 'leave/'.$dir.$request->get('attachment_request');
+                    if (! Storage::exists($path)) {
+                        Storage::makeDirectory($path,775,true);
                     }
-                    $fileName = time() . '_' . $request->file('attachment_request')->getClientOriginalName();
-                    $store = $request->file('attachment_request')->storeAs($dir, $fileName);
-                    $pathFile = URL::to('/').'/'.'public/storage/'.$dir.$fileName ?? null;
-                    $leave->attachment_request_path =  $pathFile;
+        
+                    $fileName = time() . $request->file('attachment_request')->getClientOriginalName();
+                    $store = $request->file('attachment_request')->storeAs($path, $fileName);
+                    $pathFile_application = 'storage/app/public/'.$path . $fileName ?? null;
+                    $base = URL::to('/');
+                    $linkAttach = $base.'/'.$pathFile_application;
+                }else{
+                    $linkAttach = null;
                 }
+
                 $leave->leave_type_id    = $request->leave_type_id;
                 $leave->applied_on       = date('Y-m-d');
                 $leave->start_date       = $request->start_date;
@@ -215,7 +241,9 @@ class LeaveController extends Controller
                 $leave->leave_reason     = $request->leave_reason;
                 // $leave->remark           = $request->remark;
                 $leave->status           = Auth::user()->initial == "HO" ? 'Approved' : 'Pending';
+                $leave->attachment_request_path = $linkAttach;
                 $leave->created_by       = Auth::user()->creatorId();
+                $leave->branch_id        = Auth::user()->branch_id;
                 $leave->save();
                 HistoryLeave::create($leave->toArray());
                 
@@ -289,14 +317,19 @@ class LeaveController extends Controller
 
     public function edit(Request $request)
     {
-        $id = $request->id;
-        $leave = Leave::find($id);
+        
         if (Auth::user()->can('edit leave')) {
-            if ($leave->created_by == Auth::user()->creatorId()) {
+            $id = $request->id;
+            $leave = Leave::find($id);
+            $leavetypes = LeaveType::select('leave_types.id','leave_types.title','users.branch_id')
+                                    ->leftJoin('users','users.id','=','leave_types.created_by')
+                                    ->where('users.branch_id',Auth::user()->branch_id)
+                                    ->get();
+            if ($leavetypes[0]->branch_id == Auth::user()->branch_id) {
                 $user = Auth::user();
                 $employee  = Employee::select('id','name')->where('branch_id', '=', Auth::user()->branch_id)->where('id', $leave->employee_id)->first();
-                $leavetypes = LeaveType::where('created_by', '=', Auth::user()->creatorId())->get();
-
+                // $leavetypes = LeaveType::leftJoinwhere('branch_id', '=', Auth::user()->branch_id)->get();
+               
                 // 3 Tier Approval
                 if (Auth::user()->type == 'company') {
                     $levelApprove = LevelApproval::where('created_by', '=', Auth::user()->creatorId())
@@ -327,14 +360,7 @@ class LeaveController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         if (Auth::user()->can('edit leave')) {
             $validator = Validator::make(
@@ -356,11 +382,10 @@ class LeaveController extends Controller
             $endDate   = new DateTime($request->end_date);
             $total_leave_days = !empty($startDate->diff($endDate)) && $startDate < $endDate ? $startDate->diff($endDate)->days +1 : 1;
             $startDateCarbon = Carbon::parse($request->start_date);
-
-
+            
             try {
                 DB::beginTransaction();
-                $leave    =  Leave::find($id);
+                $leave    =  Leave::find($request->id);
 
                 $filePath = '';
                 if ($request->file('attachment_reject')) {
@@ -369,8 +394,7 @@ class LeaveController extends Controller
                     $leave->attachment_reject =  'storage/' . $fileName ?? null;
                 }
 
-
-                $leave->employee_id     = $request->employee_id;
+                $leave->employee_id      = $request->employee_id;
                 $leave->leave_type_id    = $request->leave_type_id;
                 $leave->applied_on       = date('Y-m-d');
                 $leave->start_date       = $request->start_date;
@@ -384,111 +408,124 @@ class LeaveController extends Controller
                 $leave->save();
 
                 // 3 Tier Approval
-                if (isset($request->status) && $request->status != 0 && isset($request->level_approve) && $leave->status != 'Rejected') {
-                    $leaveApprove = LeaveApproval::where('leave_id', $leave->id)
-                        ->where('level', $request->level_approve)
-                        ->where('status', 'Pending')
-                        ->first();
+                // if (isset($request->status) && $request->status != 0 && isset($request->level_approve) && $leave->status != 'Rejected') {
+                //     $leaveApprove = LeaveApproval::where('leave_id', $leave->id)
+                //         ->where('level', $request->level_approve)
+                //         ->where('status', 'Pending')
+                //         ->first();
 
 
-                    if (!is_null($leaveApprove)) {
-                        //check if employee can be a approver
-                        $employee = Employee::find($leaveApprove->approver_id);
-                        $level = null;
-                        if ($employee) {
-                            $level = LevelApproval::where('created_by', Auth::user()->creatorId())
-                                ->where('employee_id', $employee->id)
-                                ->first();
-                        }
+                //     if (!is_null($leaveApprove)) {
+                //         //check if employee can be a approver
+                //         $employee = Employee::find($leaveApprove->approver_id);
+                //         $level = null;
+                //         if ($employee) {
+                //             $level = LevelApproval::where('created_by', Auth::user()->creatorId())
+                //                 ->where('employee_id', $employee->id)
+                //                 ->first();
+                //         }
 
-                        if ($leaveApprove->is_approver_company && Auth::user()->type == 'company') {
-                            if ($request->status == 'Rejected') {
-                                $leaveApprove->status = 'Rejected';
-                                $leave->status        =  'Rejected';
-                                $leave->save();
-                            } else {
-                                $leaveApprove->status = $request->status;
-                            }
-                            $leaveApprove->save();
-                        } elseif (!$leaveApprove->is_approver_company && Auth::user()->type != 'company' && !is_null($level)) {
-                            if ($request->status == 'Rejected') {
-                                $leaveApprove->status = 'Rejected';
-                                $leave->status           =  'Rejected';
-                                $leave->save();
-                            } else {
-                                $leaveApprove->status = $request->status;
-                            }
-                            $leaveApprove->save();
-                        }
-                    }
+                //         if ($leaveApprove->is_approver_company && Auth::user()->type == 'company') {
+                //             if ($request->status == 'Rejected') {
+                //                 $leaveApprove->status = 'Rejected';
+                //                 $leave->status        =  'Rejected';
+                //                 $leave->save();
+                //             } else {
+                //                 $leaveApprove->status = $request->status;
+                //             }
+                //             $leaveApprove->save();
+                //         } elseif (!$leaveApprove->is_approver_company && Auth::user()->type != 'company' && !is_null($level)) {
+                //             if ($request->status == 'Rejected') {
+                //                 $leaveApprove->status = 'Rejected';
+                //                 $leave->status           =  'Rejected';
+                //                 $leave->save();
+                //             } else {
+                //                 $leaveApprove->status = $request->status;
+                //             }
+                //             $leaveApprove->save();
+                //         }
+                //     }
 
-                    $countLeaveApproved = LeaveApproval::where('leave_id', $leave->id)
-                        ->where('status', 'Approved')
-                        ->count();
-                    $countLevel = LevelApproval::where('created_by', Auth::user()->creatorId())->count();
-                    if ($countLeaveApproved == $countLevel) {
-                        $leave->status       =  'Approved';
-                        $leave->save();
-                    }
-                }
+                //     $countLeaveApproved = LeaveApproval::where('leave_id', $leave->id)
+                //         ->where('status', 'Approved')
+                //         ->count();
+                //     $countLevel = LevelApproval::where('created_by', Auth::user()->creatorId())->count();
+                //     if ($countLeaveApproved == $countLevel) {
+                //         $leave->status       =  'Approved';
+                //         $leave->save();
+                //     }
+                // }
                 // 3 Tier Approval
 
 
-                if ($leave->status == 'Approved' && Auth::user()->type == "employee" && Auth::user()->type != "company") {
-                    if ($leave->total_leave_day > 1) {
-                        for ($i = 0; $i < $leave->total_leave_day; $i++) {
-                            AttendanceEmployee::insertToAttendanceEmployeeLeave($leave, $leave->leave_type->title, $leave->attachment_request_path, $startDateCarbon);
-                            //add day to date
-                            $startDateCarbon->addDay(1);
-                        }
-                    } else {
-                        AttendanceEmployee::insertToAttendanceEmployeeLeave($leave, $leave->leave_type->title, $leave->attachment_request_path, $startDateCarbon);
-                    }
-                }
+                // if ($leave->status == 'Approved' && Auth::user()->type == "employee" && Auth::user()->type != "company") {
+                //     if ($leave->total_leave_day > 1) {
+                //         for ($i = 0; $i < $leave->total_leave_day; $i++) {
+                //             AttendanceEmployee::insertToAttendanceEmployeeLeave($leave, $leave->leave_type->title, $leave->attachment_request_path, $startDateCarbon);
+                //             //add day to date
+                //             $startDateCarbon->addDay(1);
+                //         }
+                //     } else {
+                //         AttendanceEmployee::insertToAttendanceEmployeeLeave($leave, $leave->leave_type->title, $leave->attachment_request_path, $startDateCarbon);
+                //     }
+                // }
 
                 DB::commit();
-                toast('Leave successfully updated.', 'success');
-                return redirect()->route('leaves.index');
+                $res = [
+                    'status' => 'success',
+                    'msg'    => 'Leave successfully updated.'
+                ];
+                return response()->json($res);
             } catch (Exception $e) {
                 DB::rollBack();
-                dd($e);
-                toast('Something went wrong.' . $e, 'error');
-                return redirect()->route('leaves.index');
+                $res = [
+                    'status' => 'error',
+                    'msg'    => 'Something went wrong!'
+                ];
+                return response()->json($res);
             }
         } else {
-            toast('Permission denied.', 'error');
-            return redirect()->route('leaves.index');
+            $res = [
+                'status' => 'error',
+                'msg'    => 'Permission denied.'
+            ];
+            return response()->json($res);
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $leave = Leave::find($id);
+        $leave = Leave::find($request->id);
         if (Auth::user()->can('delete leave')) {
-            if ($leave->created_by == Auth::user()->creatorId()) {
-                // if ($leave->attachment_reject != null) {
-                //     $fileNameAttReject = explode('/', $leave->attachment_reject);
-                //     if (Storage::exists('public/' . $fileNameAttReject[1])) {
-                //         Storage::delete('public/' . $fileNameAttReject[1]);
-                //     }
-                // }
-                // if ($leave->attachment_request_path != null) {
-                //     $fileNameAttReject = explode('/', $leave->attachment_request_path);
-                //     if (Storage::exists('public/' . $fileNameAttReject[1])) {
-                //         Storage::delete('public/' . $fileNameAttReject[1]);
-                //     }
-                // }
-                $leave->delete();
+            // if ($leave->attachment_reject != null) {
+            //     $fileNameAttReject = explode('/', $leave->attachment_reject);
+            //     if (Storage::exists('public/' . $fileNameAttReject[1])) {
+            //         Storage::delete('public/' . $fileNameAttReject[1]);
+            //     }
+            // }
+           
+            // upload data
 
-                toast('Leave successfully deleted.', 'success');
-                return redirect()->route('leaves.index');
-            } else {
-                toast('Permission denied.', 'error');
-                return redirect()->route('leaves.index');
+            $linkId = Leave::where('id',$request->id)->first();
+            $base = URL::to('/');
+            $hide = $base.'/storage/app/public';
+            $storagePublic = str_replace($hide,'',$linkId->attachment_request_path);
+            if (Storage::exists($storagePublic)) {
+                Storage::delete($storagePublic);
             }
+
+            $leave->delete();
+            $res = [
+                'status' => 'success',
+                'msg'    => 'Leave successfully deleted.'
+            ];
+            return response()->json($res);
         } else {
-            toast('Permission denied.', 'error');
-            return redirect()->route('leaves.index');
+            $res = [
+                'status' => 'error',
+                'msg'    => 'Permission denied.'
+            ];
+            return response()->json($res);
         }
     }
 }

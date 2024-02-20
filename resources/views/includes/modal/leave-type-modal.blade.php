@@ -2,7 +2,7 @@
 
 
     <!-- Add leave_type Modal -->
-    <div id="add_leave_type" class="modal custom-modal fade" role="dialog">
+    <div id="add_leave_type" class="modal custom-modal fade" tabindex="-1" data-bs-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-l" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -18,7 +18,8 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>Leave Type  <span class="text-danger">*</span></label>
-                                    <select class="form-select" name="type_name" id="typeName">
+                                    <select class="form-select" name="type_name" id="typeName" required>
+                                        <option value="" selected>-- Select --</option>
                                         <option value="SDS">SICK</option>
                                         <option value="IZN">PERMIT</option>
                                         <option value="A">ALPHA</option>
@@ -35,7 +36,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>Days Per Year <span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text" name="days" placeholder="Enter Days / Year Name" id="days">
+                                    <input class="form-control" type="text" name="days" placeholder="Enter Days / Year Name" id="days" required>
 
                                     @if ($errors->has('days'))
                                     <div class="text-danger" role="alert">
@@ -47,7 +48,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>Include Salary<span class="text-danger">*</span></label>
-                                     <select class="form-select" name="include_salary" id="includeSalary">
+                                     <select class="form-select" name="include_salary" id="includeSalary" required>
                                         <option value="N">No</option>
                                         <option value="Y">Yes</option>
                                     </select>
@@ -71,8 +72,8 @@
     <!-- /Add User Modal -->
 
     <!-- Edit leave_type Modal -->
-    <div id="edit_leave_type" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div id="edit_leave_type" class="modal custom-modal fade" tabindex="-1" data-bs-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Edit Leave Type</h5>
