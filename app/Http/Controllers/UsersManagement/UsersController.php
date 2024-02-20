@@ -26,9 +26,7 @@ class UsersController extends Controller
    
     public function index()
     {
-        User::where('branch_id',56)->delete();
-        Employee::where('branch_id',56)->delete();
-        // User::where('email','9BTP@3099')->where('id','20773')->update(['password'=>'$2y$10$jTaWSvVzivCMRyQKZGzKH.1GxGe/eQIfU9OM.KQ1ayCwzB9KbWwRu']);
+       // User::where('email','9BTP@3099')->where('id','20773')->update(['password'=>'$2y$10$jTaWSvVzivCMRyQKZGzKH.1GxGe/eQIfU9OM.KQ1ayCwzB9KbWwRu']);
         $branch = Branch::where('id',Auth::user()->branch_id)->first();
         if (Auth::user()->type == 'superadmin'){
             $data['company'] = Company::all();
