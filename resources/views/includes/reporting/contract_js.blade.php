@@ -26,8 +26,8 @@
                         className : 'dt-center',
                     },
                     {
-                        data: 'employee_id',
-                        name: 'employee_id'
+                        data: 'no_employee',
+                        name: 'no_employee'
                     },
                     {
                         data: 'employee_name',
