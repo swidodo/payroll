@@ -68,7 +68,7 @@
                                     <th colspan="2">@if(isset($brch)){{($brch != null) ? strtoupper($brch->name) :'' }}@endif</th>
                                 </tr>
                                 <tr>
-                                    <th class="text-center">Name</th>
+                                    <th>Name</th>
                                     <th class="text-center">Total</th>
                                 </tr>
                             </thead>
