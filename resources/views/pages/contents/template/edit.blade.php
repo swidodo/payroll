@@ -57,9 +57,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @for ($i=1;$i<=20;$i++)
+                                @for ($i=1;$i<=50;$i++)
                                     <tr>
-                                        <td>1</td>
+                                        <td>{{$i}}</td>
                                         <td>Template Versi {{$i}}</td>
                                         <td class="text-center">
                                             @if ($data->versi == "V".$i)

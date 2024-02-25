@@ -15,7 +15,7 @@
                 <div class="col-md-8">
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="">Report</a></li>
-                        <li class="breadcrumb-item active">turnover</li>
+                        <li class="breadcrumb-item active">Reminder Contract</li>
                     </ul>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                             </select>
                         </div>
                         <div class="col-md-3  mb-2">
-                            <button type="button" id="filter_report_contract" class="btn btn-success me-1 mt-4"><span class="fa fa-filter"></span> Filter</button>
+                            <button type="button" id="filter_report_contract" class="btn btn-primary me-1 mt-4">Search</button>
                         </div>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                                     <th>Position</th>
                                     <th>Department</th>
                                     <th>Status</th>
-                                    <th>Join Date</th>
+                                    <th>Start Date</th>
                                     <th>End Date</th>
                                     <th>Remainder</th>
                                 </tr>

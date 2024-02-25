@@ -554,7 +554,7 @@ class EmployeeReportController extends Controller
         return view('pages.contents.report.turnover.report',$data);
     }
     public function get_turnover_report(Request $request){
-        $data = DB::table('v_turnover')
+        $data = DB::table('v_remainder_contracts')
                     ->where('branch_id',$request->branch_id)
                     ->where('remainder','<=',60)
                     ->where('status','active')
@@ -608,25 +608,25 @@ class EmployeeReportController extends Controller
                                         branch_name,
                                         status, 
                                         count(status) as total
-                                    FROM v_turnover WHERE branch_id = '$request->branch_id' and status <> 'active'
+                                    FROM v_remainder_contracts WHERE branch_id = '$request->branch_id' and status <> 'active'
                                     AND date(updated_at) BETWEEN '$request->from_date' AND '$request->to_date'
                                     GROUP BY status, branch_id,branch_name");
          $data['active'] = DB::SELECT("SELECT branch_id,
-                                        'EMPLOYEE ACTIVE' as active, 
+                                        'EMPLOYEE - ACTIVE' as active, 
                                         count(status) as total
                                     FROM employees 
                                     WHERE branch_id = '$request->branch_id' and status ='active'
                                     GROUP BY status, branch_id");
         $data['permanent'] = DB::SELECT("SELECT branch_id,
-                                        'EMPLOYEE PERMANENT' as permanent, 
+                                        'EMPLOYEE - PERMANENT' as permanent, 
                                         count(status) as total
                                     FROM employees 
                                     WHERE branch_id = '$request->branch_id' and status ='active' and UPPER(employee_type) ='PERMANENT'
                                     GROUP BY status, branch_id");
         $data['in'] = DB::SELECT("SELECT branch_id,branch_name,
-                                    'EMPLOYEE JOIN' as join, 
+                                    'EMPLOYEE - JOIN' as join, 
                                     count(status) as total
-                                    FROM v_turnover 
+                                    FROM v_remainder_contracts 
                                     WHERE status = 'active' 
                                     and branch_id = '$request->branch_id'
                                     AND date(created_at) BETWEEN '$request->from_date' AND '$request->to_date'

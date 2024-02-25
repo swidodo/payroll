@@ -22,7 +22,9 @@
                   columns: [
                     { data: 'no', name:'employee_id', render: function (data, type, row, meta) {
                             return meta.row + meta.settings._iDisplayStart + 1;
-                    }},
+                        },
+                        className : 'dt-center',
+                    },
                     {
                         data: 'employee_id',
                         name: 'employee_id'
@@ -36,20 +38,20 @@
                         name: 'position_name'
                     },
                     {
-                        data: 'departement_name',
-                        name: 'departement_name'
+                        data: 'department_name',
+                        name: 'department_name'
                     },
                     {
                         data: 'status',
                         name: 'status'
                     },
                     {
-                        data: 'company_doj',
-                        name: 'company_doj'
+                        data: 'startdate',
+                        name: 'startdate'
                     },
                     {
-                        data: 'company_doe',
-                        name: 'company_doe'
+                        data: 'enddate',
+                        name: 'enddate'
                     },
                     {
                         data: null,
@@ -57,12 +59,12 @@
                             var remain =data.remainder;
                             if(data.remainder > 0){
                                 if (data.remainder <= 31 && data.status_contract =='AVAILABLE'){
-                                    remain = '<span class="badge badge-warning  p-3 text-dark fw-bold">'+data.remainder+ ' DAY</span>'
+                                    remain = '<span class="badge badge-warning  p-3 text-dark fw-bold w-100">'+data.remainder+ ' DAY</span>'
                                 }else if (data.remainder > 31 && data.status_contract =='AVAILABLE'){
-                                    remain = '<span class="badge badge-success p-3 text-dark fw-bold">'+data.remainder+ ' DAY</span>'
+                                    remain = '<span class="badge badge-success p-3 text-dark fw-bold w-100">'+data.remainder+ ' DAY</span>'
                                 }
                             }else if(data.remainder <= 0 && data.status_contract =='EXPIRED CONTRACT'){
-                                remain = '<span class="badge badge-danger p-3 text-dark fw-bold">EXPIRED</span>'
+                                remain = '<span class="badge badge-danger p-3 text-dark fw-bold w-100">EXPIRED</span>'
                             }
                             return remain;
                         }                        

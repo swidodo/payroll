@@ -53,7 +53,7 @@
                             <input type="date" name="to_date" id="to_date" class="form-control" required>
                         </div>
                         <div class="col-md-3  mb-2">
-                            <button type="submit" class="btn btn-success me-1 mt-4"><span class="fa fa-filter"></span> Filter</button>
+                            <button type="submit" class="btn btn-primary me-1 mt-4">Search</button>
                         </div>
                     </div>
                     </form>

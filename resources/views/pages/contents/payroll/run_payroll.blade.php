@@ -1420,7 +1420,9 @@
 
                 })
         }) 
-    }); 
+        
+        }); 
         
     </script>
+    @include('includes.js.template-payroll21_40');
 @endpush
