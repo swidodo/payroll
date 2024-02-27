@@ -675,7 +675,7 @@ class PayrollController extends Controller
             $pph = DB::select("SELECT * from get_rekap_pph21_final('".$request->startdate."','".$request->enddate."','".$request->branch_id."')");
             
             $pph21Final = [];
-            dd($pph);
+            // dd($pph);
                 foreach($pph as $pph21){
                     // $pphData = [
                     //     'date' => $request->enddate,
@@ -702,12 +702,12 @@ class PayrollController extends Controller
                     //     'enddate' => $request->enddate,
                     // ];
                     dd($ppa21);
-                    $cekPayroll = Payroll::where('employee_id',$pph21->employee_id)->first();
-                    if ($cekPayroll->status_pph21 == '1' || $cekPayroll->status_pph21 == 1){
-                        if (!in_array($pphData,$pph21Final)){
-                            array_push($pph21Final,$pphData);
-                        }
-                    }
+                    // $cekPayroll = Payroll::where('employee_id',$pph21->employee_id)->first();
+                    // if ($cekPayroll->status_pph21 == '1' || $cekPayroll->status_pph21 == 1){
+                    //     if (!in_array($pphData,$pph21Final)){
+                    //         array_push($pph21Final,$pphData);
+                    //     }
+                    // }
 
                 }
                 
