@@ -673,7 +673,7 @@ class PayrollController extends Controller
             DB::table('take_home_pay')->insert($data_thp);  
             // rekap pph21
             $pph = DB::select("SELECT * from get_rekap_pph21_final('".$request->startdate."','".$request->enddate."','".$request->branch_id."')");
-            dd($pph);
+            
             $pph21Final = [];
                 foreach($pph as $pph21){
                     $pphData = [
@@ -709,6 +709,7 @@ class PayrollController extends Controller
                     }
 
                 }
+                dd($pph21Final );
                 if (count($pph21Final) > 0){
                     $checkPayrollpph = DB::table('rekap_pph21s')->where('startdate','<=',$request->startdate)->where('enddate','>=',$request->enddate)->get();
                     if ($checkPayrollpph !=null){
