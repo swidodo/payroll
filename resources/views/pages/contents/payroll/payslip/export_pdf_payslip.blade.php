@@ -368,7 +368,7 @@
                                         @endif
                                     @endforeach
                                     @foreach($allowance_unfixed as $unfixed)
-                                        @if ($unfixed->employee_id == $salary->employee_id)
+                                        @if ($unfixed->employee_id )
                                         <tr class="fs-14 " style="font-weight: 400">
                                             <td style="width: 45%">{{ Ucwords(strtolower($unfixed->allowance_name)) }}</td>
                                             <td>:</td>
