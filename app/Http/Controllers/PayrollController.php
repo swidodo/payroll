@@ -701,7 +701,7 @@ class PayrollController extends Controller
                         'startdate' => $request->startdate,
                         'enddate' => $request->enddate,
                     ];
-                    // $cekPayroll = Payroll::where('employee_id',$pph21->employee_id)->first();
+                    $cekPayroll = Payroll::where('employee_id',$pph21->employee_id)->first();
                     // if ($cekPayroll->status_pph21 == '1' || $cekPayroll->status_pph21 == 1){
                     //     if (!in_array($pphData,$pph21Final)){
                     //         array_push($pph21Final,$pphData);
