@@ -725,7 +725,7 @@ class PayrollController extends Controller
              DB::rollBack();
                 $res = [
                     'status' => 'error',
-                    'msg'    => 'Someting went wrong!',
+                    'msg'    => $e,
                 ];
             return response()->json($res);
         }
