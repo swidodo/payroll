@@ -670,6 +670,7 @@ class PayrollController extends Controller
                         }
                     }
             }
+            dd();
             DB::table('take_home_pay')->insert($data_thp);  
             // rekap pph21
             $pph = DB::select("SELECT * from get_rekap_pph21_final('".$request->startdate."','".$request->enddate."','".$request->branch_id."')");
@@ -725,7 +726,7 @@ class PayrollController extends Controller
              DB::rollBack();
                 $res = [
                     'status' => 'error',
-                    'msg'    => $e,
+                    'msg'    => 'Someting went wrong!',
                 ];
             return response()->json($res);
         }
