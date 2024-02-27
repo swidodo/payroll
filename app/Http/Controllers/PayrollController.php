@@ -676,30 +676,30 @@ class PayrollController extends Controller
             
             $pph21Final = [];
                 foreach($pph as $pph21){
-                    $pphData = [
-                        'date' => date('Y-m-d'),
-                        'branch_id' => $request->branch_id,
-                        'employee_id' => $pph21->employee_id, 
-                        'salary_pokok' => $pph21->salary_pokok, 
-                        'total_allowance_fixed'=> $pph21->total_allowance_fixed,
-                        'total_allowance_unfixed'=> $pph21->total_allowance_unfixed,
-                        'total_allowance_other'=> $pph21->total_allowance_other,
-                        'total_overtime'=> $pph21->total_overtime,
-                        'salary_in_month'=> $pph21->salary_in_month, 
-                        'pay_bpjs_company'=> $pph21->pay_bpjs_company, 
-                        'salary_brutto'=> $pph21->salary_brutto,
-                        'biaya_jabatan'=> $pph21->biaya_jabatan,
-                        'pay_bpjs_employee'=> $pph21->pay_bpjs_employee, 
-                        'total_pengurangan'=> $pph21->total_pengurangan,
-                        'salary_netto'=> $pph21->salary_netto,
-                        // 'salary_1_tahun'=> $pph21->salary_1_year, 
-                        // 'ptkp_1_tahun'=> $pph21->ptkp_1_tahun,
-                        // 'pkp'=> $pph21->ptkp_1_tahun,
-                        // 'pph21_terhutang_1_tahun'=> $pph21->pph21_terhutang_1_tahun, 
-                        // 'pph21_terhutang_1_bulan'=> $pph21->pph21_terhutang_1_bulan,
-                        // 'startdate' => $request->startdate,
-                        // 'enddate' => $request->enddate,
-                    ];
+                    // $pphData = [
+                    //     'date' => $request->enddate,
+                    //     'branch_id' => $request->branch_id,
+                    //     'employee_id' => $pph21->employee_id, 
+                    //     'salary_pokok' => $pph21->salary_pokok, 
+                    //     'total_allowance_fixed'=> $pph21->total_allowance_fixed,
+                    //     'total_allowance_unfixed'=> $pph21->total_allowance_unfixed,
+                    //     'total_allowance_other'=> $pph21->total_allowance_other,
+                    //     'total_overtime'=> $pph21->total_overtime,
+                    //     'salary_in_month'=> $pph21->salary_in_month, 
+                    //     'pay_bpjs_company'=> $pph21->pay_bpjs_company, 
+                    //     'salary_brutto'=> $pph21->salary_brutto,
+                    //     'biaya_jabatan'=> $pph21->biaya_jabatan,
+                    //     'pay_bpjs_employee'=> $pph21->pay_bpjs_employee, 
+                    //     'total_pengurangan'=> $pph21->total_pengurangan,
+                    //     'salary_netto'=> $pph21->salary_netto,
+                    //     'salary_1_tahun'=> $pph21->salary_1_year, 
+                    //     'ptkp_1_tahun'=> $pph21->ptkp_1_tahun,
+                    //     'pkp'=> $pph21->ptkp_1_tahun,
+                    //     'pph21_terhutang_1_tahun'=> $pph21->pph21_terhutang_1_tahun, 
+                    //     'pph21_terhutang_1_bulan'=> $pph21->pph21_terhutang_1_bulan,
+                    //     'startdate' => $request->startdate,
+                    //     'enddate' => $request->enddate,
+                    // ];
                     dd($ppa21);
                     $cekPayroll = Payroll::where('employee_id',$pph21->employee_id)->first();
                     if ($cekPayroll->status_pph21 == '1' || $cekPayroll->status_pph21 == 1){
