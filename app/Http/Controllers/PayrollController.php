@@ -675,7 +675,7 @@ class PayrollController extends Controller
             $pph = DB::select("SELECT * from get_rekap_pph21_final('".$request->startdate."','".$request->enddate."','".$request->branch_id."')");
             
             $pph21Final = [];
-            
+            dd($pph);
                 foreach($pph as $pph21){
                     // $pphData = [
                     //     'date' => $request->enddate,
@@ -710,7 +710,7 @@ class PayrollController extends Controller
                     }
 
                 }
-                dd($pph);
+                
                 if (count($pph21Final) > 0){
                     $checkPayrollpph = DB::table('rekap_pph21s')->where('startdate','<=',$request->startdate)->where('enddate','>=',$request->enddate)->get();
                     if ($checkPayrollpph !=null){
