@@ -703,7 +703,7 @@ class PayrollController extends Controller
                     ];
                     $cekPayroll = Payroll::where('employee_id',$pph21->employee_id)->first();
                     if($cekPayroll !=null){
-                        if ($cekPayroll->status_pph21 == "1"){
+                        if ($cekPayroll->status_pph21 == '1'){
                             if (!in_array($pphData,$pph21Final)){
                                 array_push($pph21Final,$pphData);
                             }
