@@ -697,8 +697,8 @@ class PayrollController extends Controller
                         'pkp'=> $pph21->ptkp_1_tahun,
                         'pph21_terhutang_1_tahun'=> $pph21->pph21_terhutang_1_tahun, 
                         'pph21_terhutang_1_bulan'=> $pph21->pph21_terhutang_1_bulan,
-                        'startdate' => $request->startdate,
-                        'enddate' => $request->enddate,
+                        // 'startdate' => $request->startdate,
+                        // 'enddate' => $request->enddate,
                     ];
                     dd($ppa21);
                     $cekPayroll = Payroll::where('employee_id',$pph21->employee_id)->first();
