@@ -204,8 +204,7 @@ Route::group(['middleware' => 'auth'], function () {
                 ->name('get-list-installment');
         Route::post('get-list-loan',[LoanController::class,'get_data_castReceipt'])
                 ->name('get-list-loan');
-        Route::post('get-emp-loan',[LoanController::class,'get_employee'])
-                ->name('get-emp-loan');
+        Route::post('get-emp-loan',[LoanController::class,'get_employee'])->name('get-emp-loan');
         Route::post('update-loan-installment',[LoanController::class,'update'])
                 ->name('update-loan-installment');
         Route::post('update-loan',[LoanController::class,'update'])
