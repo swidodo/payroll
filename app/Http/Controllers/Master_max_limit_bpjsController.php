@@ -45,7 +45,7 @@ class Master_max_limit_bpjsController extends Controller
     }
     public function store(Request $request){
 
-        $check = Master_limit_max_bpjs::where('bpjs_code','=',$request->bpjs_code)->first();
+        $check = Master_limit_max_bpjs::where('bpjs_code','=',$request->bpjs_code)->where('branch_id',Auth::user()->branch_id)->first();
         if($check != null){
             if ($check->bpjs_code != "" ){
                 $data = [
