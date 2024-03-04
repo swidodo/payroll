@@ -12,10 +12,10 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Setting PPH21</h3>
+                    <h3 class="page-title">Setting PPh21</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Setting PPH21</li>
+                        <li class="breadcrumb-item active">Setting PPh21</li>
                     </ul>
                 </div>
             </div>

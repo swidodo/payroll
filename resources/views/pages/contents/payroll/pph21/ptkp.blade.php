@@ -31,8 +31,8 @@
             <div class="table-responsive">
                 <table class="table table-striped table-bordered table-hover" id="tblPtkp">
                     <thead>
-                        <th>Ptkp Deskripsi</th>
-                        <th>Ptkp Code</th>
+                        <th>PTKP</th>
+                        <th>PTKP Code</th>
                         <th>Amount</th>
                         <th>Action</th>
                     </thead>

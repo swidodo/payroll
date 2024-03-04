@@ -12,10 +12,10 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Rekap PPH21</h3>
+                    <h3 class="page-title">Rekap PPh21</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Rekap PPH21</li>
+                        <li class="breadcrumb-item active">Rekap PPh21</li>
                     </ul>
                 </div>
             </div>
@@ -81,8 +81,8 @@
                                 <th>Salary 1 Year</th>
                                 <th>PTKP 1 Year</th>
                                 <th>PKP</th>
-                                <th>PPH21 OWED 1 Year</th>
-                                <th>PPH21 OWED 1 Month</th>
+                                <th>PPh21 OWED 1 Year</th>
+                                <th>PPh21 OWED 1 Month</th>
                             </tr>
                         </thead>
                         <tbody>
