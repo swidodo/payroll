@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\models\MontlyRateRelative;
-use App\models\MonthlyRate;
+use App\Models\MontlyRateRelative;
+use App\Models\MonthlyRate;
 
 class MontlyRateController extends Controller
 {
