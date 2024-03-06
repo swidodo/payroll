@@ -307,8 +307,8 @@
                                                     </li>
                                                 @endcanany
                                                 @canany(['manage ptkp', 'edit ptkp'])
-                                                    <li class=" {{(request()->routeIs('ter-monthly-rate')) ? 'active' : ''}}">
-                                                        <a class=" {{(request()->routeIs('ter-monthly-rate')) ? 'active' : ''}}" href="{{route('ter-monthly-rate')}}"> Ter Rate
+                                                    <li class=" {{(request()->routeIs('ter-rate')) ? 'active' : ''}}">
+                                                        <a class=" {{(request()->routeIs('ter-rate')) ? 'active' : ''}}" href="{{route('ter-rate')}}"> Ter Rate
                                                         </a>
                                                     </li>
                                                 @endcanany
