@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MonthlyRate extends Model
+class MonthlyRateAbsolute extends Model
 {
     use HasFactory;
     protected $table = 'ter_monthly_rate_pph21';
