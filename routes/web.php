@@ -90,6 +90,10 @@ use App\Http\Controllers\AccessTemplateController;
 // access mobile
 use App\Http\Controllers\AccessMobileController;
 
+// montly-rate pph21
+use App\Http\Controllers\MontlyRateController;
+
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -175,6 +179,17 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('get-data-allowance-option', [AllowanceOptionController::class,'get_data'])->name('get-data-allowance-option');
         Route::post('delete-allowance-option', [AllowanceOptionController::class,'destroy'])->name('delete-allowance-option');
         
+        // montly rate table ter pph21
+        Route::get('ter-monthly-rate', [MontlyRateController::class,'index'])->name('ter-monthly-rate');
+        Route::post('edit-data-rate', [MontlyRateController::class,'edit_rate_absolute_employee'])->name('edit-data-rate');
+        Route::post('update-data-ter-absolute', [MontlyRateController::class,'update_rate_absolute_employee'])->name('update-data-ter-absolute');
+        Route::get('ter-categoryA-monthly-rate', [MontlyRateController::class,'categoryA'])->name('ter-categoryA-monthly-rate');
+        Route::get('ter-categoryB-monthly-rate', [MontlyRateController::class,'categoryB'])->name('ter-categoryB-monthly-rate');
+        Route::get('ter-categoryC-monthly-rate', [MontlyRateController::class,'categoryC'])->name('ter-categoryC-monthly-rate');
+        Route::get('ter-category-daily-rate', [MontlyRateController::class,'daily_rate'])->name('ter-category-daily-rate');
+        Route::post('edit-data-ter', [MontlyRateController::class,'edit'])->name('edit-data-ter');
+        Route::post('update-data-ter', [MontlyRateController::class,'update'])->name('update-data-ter');
+
         // other allowance
         Route::get('allowance-other',[Allowance_otherController::class,'index'])->name('allowance-other');
         Route::post('get-allowance-other',[Allowance_otherController::class,'get_data'])->name('get-allowance-other');

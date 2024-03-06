@@ -259,14 +259,14 @@
                                 <li class="{{(request()->routeIs('level-approvals*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('level-approvals*')) ? 'active' : ''}}" href="{{ route('level-approvals.index') }}">Set Level Approval </a></li>
                             @endcanany -->
 
-                            @canany(['manage denda', 'create denda', 'edit denda', 'delete denda', 'manage bpjs kesehatan', 'create bpjs kesehatan', 'edit bpjs kesehatan', 'delete bpjs kesehatan', 'manage pph21', 'edit pph21', 'manage jht', 'create jht', 'manage jkk', 'create jkk', 'manage jkm', 'create jkm', 'manage jp', 'create jp', 'manage payslip code pin', 'manage payslip checklist attendance summary'])
+                            {{-- @canany(['manage denda', 'create denda', 'edit denda', 'delete denda', 'manage bpjs kesehatan', 'create bpjs kesehatan', 'edit bpjs kesehatan', 'delete bpjs kesehatan', 'manage pph21', 'edit pph21', 'manage jht', 'create jht', 'manage jkk', 'create jkk', 'manage jkm', 'create jkm', 'manage jp', 'create jp', 'manage payslip code pin', 'manage payslip checklist attendance summary'])
                                 <li class="submenu" >
                                     <a style="padding: 9px 10px 9px 50px" href="#"> <span>Payroll</span> <span class="menu-arrow"></span></a>
                                     <ul style="display: none;">
 
                                         @canany(['manage payslip checklist attendance summary', 'edit payslip checklist attendance summary'])
                                             <li class="{{(request()->routeIs('checklist-attendance-summary*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('checklist-attendance-summary*')) ? 'active' : ''}}" href="{{ route('checklist-attendance-summary.index') }}">Checklist Attendance Summary</a></li>
-                                        @endcanany
+                                        @endcanany --}}
 
                                        <!--  @canany(['manage payslip code pin', 'edit payslip code pin'])
                                             <li class="{{(request()->routeIs('payslip-code-pin*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('payslip-code-pin*')) ? 'active' : ''}}" href="{{ route('payslip-code-pin.index') }}">Payslip Code PIN</a></li>
@@ -306,11 +306,41 @@
                                                         </a>
                                                     </li>
                                                 @endcanany
+                                                @canany(['manage ptkp', 'edit ptkp'])
+                                                    <li class=" {{(request()->routeIs('ter-monthly-rate')) ? 'active' : ''}}">
+                                                        <a class=" {{(request()->routeIs('ter-monthly-rate')) ? 'active' : ''}}" href="{{route('ter-monthly-rate')}}"> Montly Rate
+                                                        </a>
+                                                    </li>
+                                                @endcanany
+                                                @canany(['manage ptkp', 'edit ptkp'])
+                                                    <li class=" {{(request()->routeIs('ter-categoryA-monthly-rate')) ? 'active' : ''}}">
+                                                        <a class=" {{(request()->routeIs('ter-categoryA-monthly-rate')) ? 'active' : ''}}" href="{{route('ter-categoryA-monthly-rate')}}"> Ter Category A
+                                                        </a>
+                                                    </li>
+                                                @endcanany
+                                                @canany(['manage ptkp', 'edit ptkp'])
+                                                    <li class=" {{(request()->routeIs('ter-categoryB-monthly-rate')) ? 'active' : ''}}">
+                                                        <a class=" {{(request()->routeIs('ter-categoryB-monthly-rate')) ? 'active' : ''}}" href="{{route('ter-categoryB-monthly-rate')}}"> Ter Category B
+                                                        </a>
+                                                    </li>
+                                                @endcanany
+                                                @canany(['manage ptkp', 'edit ptkp'])
+                                                    <li class=" {{(request()->routeIs('ter-categoryC-monthly-rate')) ? 'active' : ''}}">
+                                                        <a class=" {{(request()->routeIs('ter-categoryC-monthly-rate')) ? 'active' : ''}}" href="{{route('ter-categoryC-monthly-rate')}}"> Ter Category C
+                                                        </a>
+                                                    </li>
+                                                @endcanany
+                                                @canany(['manage ptkp', 'edit ptkp'])
+                                                    <li class=" {{(request()->routeIs('ter-category-daily-rate')) ? 'active' : ''}}">
+                                                        <a class=" {{(request()->routeIs('ter-category-daily-rate')) ? 'active' : ''}}" href="{{route('ter-category-daily-rate')}}"> Ter Daily
+                                                        </a>
+                                                    </li>
+                                                @endcanany
                                             </ul>
                                         </li>
-                                    </ul>
+                                    {{-- </ul>
                                 </li>
-                            @endcanany
+                            @endcanany --}}
 
                             @canany(['manage allowance option', 'create allowance option', 'manage leave type', 'manage reimbursement option', 'manage branch', 'manage loan option', 'manage payslip type'])
                                 <li class="submenu" >
