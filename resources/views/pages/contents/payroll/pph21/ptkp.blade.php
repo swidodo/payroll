@@ -78,14 +78,7 @@
     <script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
     <script src="{{asset('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
 
-    @if (Session::has('edit-show'))
-    <script>
-        $(window).on('load', function(){
-            $('#edit_reimburst').modal('show')
-        });
-    </script>
-    @endif
-
+    
     <script>
         $(document).ready(function () {
             $.ajaxSetup({
@@ -115,10 +108,10 @@
                             },
                             {
                                 data: 'action',
-                                render : function(data, row,type){
-                                    return '';
-                                }
-                                // name: 'action' //hidden sementara
+                                // render : function(data, row,type){
+                                //     return '';
+                                // }
+                                name: 'action' //hidden sementara
                             },
                         ],
                     })
