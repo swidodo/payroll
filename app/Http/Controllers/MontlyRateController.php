@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\MontlyRateRelative;
-use App\Models\MonthlyRate;
+use App\Models\MonthlyRateAbsolute;
 
 class MontlyRateController extends Controller
 {
     public function index(){
-        $data['rate'] = MonthlyRate::orderBy('start_value','ASC')->get();
+        $data['rate'] = MonthlyRateAbsolute::orderBy('start_value','ASC')->get();
         return view('pages.contents.tarif_pph21.index',$data);
     }
     public function categoryA(){
@@ -54,7 +54,7 @@ class MontlyRateController extends Controller
         }
     }
     public function edit_rate_absolute_employee(Request $request){
-        $data = MontlyRateAbsolute::where('id',$request->id)->first();
+        $data = MonthlyRateAbsolute::where('id',$request->id)->first();
         return response()->json($data);
     }
     public function update_rate_absolute_employee(Request $request){
@@ -64,7 +64,7 @@ class MontlyRateController extends Controller
                 'end_value'     => $request->end_value,
                 'tarif'         => $request->tarif
             ];
-            MontlyRateAbsolute::where('id',$request->id)->update($data);
+            MonthlyRateAbsolute::where('id',$request->id)->update($data);
             $res = [
                 'status'    => 'success',
                 'msg'       => 'Data successfuly updated.'
