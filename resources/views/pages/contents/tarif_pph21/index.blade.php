@@ -21,10 +21,10 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Manage TER Montly Rate</h3>
+                    <h3 class="page-title">Manage TER Rate</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Ter Montly Rate</li>
+                        <li class="breadcrumb-item active">Ter Rate</li>
                     </ul>
                 </div>
                     {{-- <div class="col-auto float-end ms-auto">
@@ -40,7 +40,7 @@
                     <table class="table table-striped table-bordered table-sm w-100" id="tblTarif-monthly-rate">
                         <thead>
                             <tr>
-                                <th colspan="5" class="text-center" style="background:#FE8C51">TER MONTHLY RATE</th>
+                                <th colspan="5" class="text-center" style="background:#FE8C51">TER RATE</th>
                             </tr>
                             <tr>
                                 <th colspan="5" class="text-center">Employee Absolute</th></th>
