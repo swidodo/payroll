@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\models\MontlyRateRelative;
-use App\models\MontlyRateAbsolute;
+use App\models\MonthlyRateAbsolute;
 
 class MontlyRateController extends Controller
 {
     public function index(){
-        $data['rate'] = MontlyRateAbsolute::orderBy('start_value','ASC')->get();
+        $data['rate'] = MonthlyRateAbsolute::orderBy('start_value','ASC')->get();
         return view('pages.contents.tarif_pph21.index',$data);
     }
     public function categoryA(){
