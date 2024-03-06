@@ -49,7 +49,7 @@
                                 <th class="text-center">Start</th>
                                 <th class="text-center"></th>
                                 <th class="text-center">End</th>
-                                <th class="text-center">Monthly Rate</th>
+                                <th class="text-center">Rate</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
