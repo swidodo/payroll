@@ -18,10 +18,10 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Manage Table Ter Montly Rate</h3>
+                    <h3 class="page-title">Manage Table Ter</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Ter Montly Rate</li>
+                        <li class="breadcrumb-item active">Table Ter</li>
                     </ul>
                 </div>
                     {{-- <div class="col-auto float-end ms-auto">
