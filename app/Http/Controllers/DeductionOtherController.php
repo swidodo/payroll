@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 class DeductionOtherController extends Controller
 {
     public function index(){
+        Deduction_other::where('branch_id',38)->where('date','2024-01-25')->delete();
         $branch = Branch::where('id',Auth::user()->branch_id)->first();
         $emp = Employee::where('user_id',Auth::user()->id)->first();
         
