@@ -108,10 +108,10 @@
                             },
                             {
                                 data: 'action',
-                                // render : function(data, row,type){
-                                //     return '';
-                                // }
-                                name: 'action' //hidden sementara
+                                render : function(data, row,type){
+                                    return '';
+                                }
+                                // name: 'action' //hidden sementara
                             },
                         ],
                     })
