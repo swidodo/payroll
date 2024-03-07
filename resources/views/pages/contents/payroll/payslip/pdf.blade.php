@@ -404,19 +404,19 @@
                                     <td>:</td>
                                     <td class="text-right">{{ ($salary->installment =='') ? 0 : formatRupiah($salary->installment) }}</td>
                                 </tr>
-                                {{-- @if(isset($deduction_other)) --}}
+                                @php 
+                                // dd($do->date_deduction);
+                                dd($salary->startdate);
+                                @endphp
+                                @if(isset($deduction_other))
                                     @foreach($deduction_other as $do)
-                                    @php 
-                                        dd($do->date_deduction);
-                                        dd($salary->startdate);
-                                        @endphp
                                     <tr class="fs-14 " style="font-weight: 400">
                                         <td style="width: 45%">{{ Ucwords($do->deduction_name) }}</td>
                                         <td>:</td>
                                         <td class="text-right">{{ ($do->amount_deduction == '') ? 0 : formatRupiah($do->amount_deduction) }}</td>
                                     </tr>
                                     @endforeach
-                                {{-- @endif --}}
+                                @endif
                                 @if(isset($adm))
                                     @foreach($adm as $admin)
                                     <tr class="fs-14 " style="font-weight: 400">
