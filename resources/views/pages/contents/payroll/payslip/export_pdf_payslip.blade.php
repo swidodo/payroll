@@ -414,7 +414,7 @@
                                     </tr>
                                     @if(isset($deduction_other))
                                         @foreach($deduction_other as $do)
-                                        @if ($do->employee_id == $salary->employee_id && $do->date_deduction >= $salary->startdate && $do->date_deduction <= $salary->enddate)
+                                        @if ($do->employeeid == $salary->employee_id && $do->date_deduction >= $salary->startdate)
                                         <tr class="fs-14 " style="font-weight: 400">
                                             <td style="width: 45%">{{ Ucwords($do->deduction_name) }}</td>
                                             <td>:</td>
