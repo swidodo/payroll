@@ -404,10 +404,6 @@
                                     <td>:</td>
                                     <td class="text-right">{{ ($salary->installment =='') ? 0 : formatRupiah($salary->installment) }}</td>
                                 </tr>
-                                @php 
-                                // dd($do->date_deduction);
-                                dd($salary->startdate);
-                                @endphp
                                 @if(isset($deduction_other))
                                     @foreach($deduction_other as $do)
                                     <tr class="fs-14 " style="font-weight: 400">
