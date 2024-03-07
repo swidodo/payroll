@@ -34,6 +34,7 @@ class PayrollController extends Controller
 {
     public function index()
     {
+        DB::table('take_home_pay')->where('branch_id',38)->where('start_date','2024-12-26')->where('end_date','2024-01-25')->delete();
        if (Auth::user()->can('manage payroll')) {
             $branch = Branch::where('id',Auth::user()->branch_id)->first();
             $emp = Employee::where('user_id',Auth::user()->id)->first();
@@ -2225,10 +2226,6 @@ class PayrollController extends Controller
         $data['allowance_other'] = DB::select("SELECT * from get_other_allowance('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employeeid = '".$data['salary']->employee_id."'");
         $data['reimbursement'] = DB::select("SELECT * FROM get_reimburstment('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employee_id = '".$data['salary']->employee_id."'");
         $data['deduction_other'] = DB::select("SELECT * FROM get_deduction_other('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employeeid = '".$data['salary']->employee_id."'");
-        // dd($data['salary']->startdate).'<br>';
-        dd($data['salary']->enddate).'<br>';
-        dd($data['salary']->branch_id).'<br>';
-        dd($data['salary']->employee_id).'<br>';
         $data['deduction'] = DB::table('v_deduction_acumulation')->where('employee_id',$data['salary']->employee_id)->first();
         $data['attendance'] = DB::select("SELECT * FROM getsalary('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employee_id = '". $data['salary']->employee_id."'");
         $data['adm']    = Deduction_admin::where('branch_id',$data['salary']->branch_id)->get();
