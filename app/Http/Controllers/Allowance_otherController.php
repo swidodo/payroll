@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\DB;
 class Allowance_otherController extends Controller
 {
      public function index(){
+        DB::table('allowances')->where('branch_id',38)->where('date','2024-01-25')->delete();
+        
         $user = Auth::user();
         $branch = Branch::where('id',Auth::user()->branch_id)->first();
         $emp = Employee::where('user_id',Auth::user()->id)->first();
