@@ -2225,7 +2225,7 @@ class PayrollController extends Controller
         $data['allowance_other'] = DB::select("SELECT * from get_other_allowance('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employeeid = '".$data['salary']->employee_id."'");
         $data['reimbursement'] = DB::select("SELECT * FROM get_reimburstment('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employee_id = '".$data['salary']->employee_id."'");
         $data['deduction_other'] = DB::select("SELECT * FROM get_deduction_other('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employeeid = '".$data['salary']->employee_id."'");
-        dd($data['salary']->startdate).'<br>';
+        // dd($data['salary']->startdate).'<br>';
         dd($data['salary']->enddate).'<br>';
         dd($data['salary']->branch_id).'<br>';
         dd($data['salary']->employee_id).'<br>';
