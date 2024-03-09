@@ -88,7 +88,12 @@ class Template_v6Controller extends Controller
                         if($employeeId->id =='' | $employeeId->id ==null){
                             return true;
                         }
-                        $basic_salary     =  (($value[3] !=null) ? $value[3] : 0) * (($value[4] !=null) ? $value[4] : 0);
+                        $salaryAct = (($value[3] !=null) ? $value[3] : 0);
+                        if($salaryAct > 200000){
+                            $basic_salary     =  (($value[3] !=null) ? $value[3] : 0);
+                        }else{
+                            $basic_salary     =  (($value[3] !=null) ? $value[3] : 0) * (($value[4] !=null) ? $value[4] : 0);
+                        }
                         $meal_allowance   =  (($value[6] !=null) ? $value[6] : 0);
                         $allowancefixed   =  (($value[5] !=null) ? $value[5] : 0 );
                         $allowanceUnfixed =  $meal_allowance + (($value[7] !=null) ? $value[7] : 0 ) + (($value[8] !=null) ? $value[8] : 0);
