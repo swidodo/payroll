@@ -44,13 +44,10 @@ use PhpOffice\PhpSpreadsheet\Reader\Csv;
 
 class EmployeeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {       
+        Employee::where('branch_id',23)->update('status','resign');
         if (Auth::user()->can('manage employee')) {
             $user = Auth::user();
             $emp = Employee::where('user_id',Auth::user()->id)->first();

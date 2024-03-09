@@ -97,13 +97,13 @@ class Template_v6Controller extends Controller
                         $meal_allowance   =  (($value[6] !=null) ? $value[6] : 0);
                         $allowancefixed   =  (($value[5] !=null) ? $value[5] : 0 );
                         $allowanceUnfixed =  $meal_allowance + (($value[7] !=null) ? $value[7] : 0 ) + (($value[8] !=null) ? $value[8] : 0);
-                        $overtime        = (($value[9] !=null) ? $value[9] : 0) + (($value[10] !=null) ? $value[10] : 0);
+                        $overtime         = (($value[9] !=null) ? $value[9] : 0) + (($value[10] !=null) ? $value[10] : 0);
                         $koreksi_plus     = (($value[11] !=null) ? $value[11] : 0);
                         $val_salarymonth  =  $basic_salary + $allowancefixed + $allowanceUnfixed + $overtime + $koreksi_plus;
                         $total_loan       = (($value[12] !=null) ? $value[12] : 0 );
                         $deduction_other  = (($value[13] !=null) ? $value[13] : 0 ) + (($value[16] !=null) ? $value[16] : 0 ) + (($value[17] !=null) ? $value[17] : 0 ) + (($value[18] !=null) ? $value[18] : 0 ) + (($value[19] !=null) ? $value[19] : 0 ) + (($value[20] !=null) ? $value[20] : 0 ) + (($value[21] !=null) ? $value[21] : 0 ) + (($value[22] !=null) ? $value[22] : 0 );
                         $bpjs             = (($value[14] !=null) ? $value[14] : 0 ) + (($value[15] !=null) ? $value[15] : 0 );
-                        $total_deduction = $total_loan + $deduction_other + $bpjs;
+                        $total_deduction  = $total_loan + $deduction_other + $bpjs;
                         $thp = $val_salarymonth -  $total_deduction;
 
                         $datas = [
