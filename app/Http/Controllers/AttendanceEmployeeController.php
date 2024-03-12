@@ -31,7 +31,7 @@ class AttendanceEmployeeController extends Controller
 {
     public function index(Request $request)
     {
-       if (Auth::user()->can('manage attendance')) {
+        if (Auth::user()->can('manage attendance')) {
             $branches = Branch::where('created_by', Auth::user()->creatorId())->get();
             $employees = Employee::where('created_by', Auth::user()->creatorId())->get();
             if (Auth::user()->initial !="HO") {
@@ -89,6 +89,7 @@ class AttendanceEmployeeController extends Controller
             toast('Permission denied.', 'error');
             return redirect()->back();
         }
+
     }
     public function get_data(Request $request){
         $data = DB::table('attendance_employees')
@@ -916,5 +917,114 @@ class AttendanceEmployeeController extends Controller
             endif;
         }
         return view('pages.contents.report.daily_report.maps', compact('initialMarkers'));
+    }
+    public function rekap_cutoff_montnly(Request $request){
+        $branch = Branch::find(Auth::user()->branch_id);
+                $emp = Employee::where('user_id',Auth::user()->id)->first();
+                if (Auth::user()->type == "company"){
+                    $branches = Branch::where('company_id',$branch->company_id)->get();
+                }else{
+                    $branches = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                                    ->where('access_branches.employee_id',$emp->id)
+                                                    ->where('access_branches.company_id',$branch->company_id)->get();
+                }
+        if(($request->startdate == null) || ($request->enddate == null)){
+            $bulan      = date('m');
+            $tahun      = date('Y');
+            $tglstart   = date('d');
+            $bulanEnd   = date('m');
+            $tahunEnd   = date('Y');
+            $tglEnd     = date('d');
+            $start_date = date('Y-m');
+            $end_date   = date('Y-m');
+            
+        }else{
+            $bulan       = date('m',strtotime($request->startdate));
+            $tahun       = date('Y',strtotime($request->startdate));
+            $tglstart    = date('d',strtotime($request->startdate));
+
+            $bulanEnd  = date('m',strtotime($request->enddate));
+            $tahunEnd  = date('Y',strtotime($request->enddate));
+            $tglEnd    = date('d',strtotime($request->enddate));
+
+            $start_date = date('Y-m',strtotime($request->startdate));
+            $end_date   = date('Y-m',strtotime($request->enddate));
+        }
+        
+        $jumtglstart = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun); // dapat jumlah tanggal 
+        $jumtglEnd = cal_days_in_month(CAL_GREGORIAN, $bulanEnd, $tahunEnd); // dapat jumlah tanggal
+        
+        if ($start_date != $end_date ){
+            $header = [];
+            $field = ['employee_id','employee_name'];
+            for($i=$tglstart; $i<=$jumtglstart;$i ++){
+                if($i < 10){
+                    array_push($header,'0'.(int)$i);
+                    array_push($field,'0'.(int)$i.' as d'.(int)$i);
+                }else{
+                    array_push($header,$i);
+                    array_push($field,$i.' as d'.$i);
+                }
+            }
+
+            $headerEnd = [];
+            $fieldEnd = [];
+            for($i=$tglEnd; $i<=$jumtglEnd;$i ++){
+                if($i < 10){
+                    array_push($headerEnd,'0'.(int)$i);
+                    array_push($fieldEnd,'0'.(int)$i.' as e'.(int)$i);
+                }else{
+                    array_push($headerEnd,$i);
+                    array_push($fieldEnd,$i.' as e'.$i);
+                }
+            }
+            $dtfield = [];
+            foreach($field as $fs){
+                $f = "v_rekap_periode_attendance.$fs";
+                array_push($dtfield,$f);
+            }
+            foreach($fieldEnd as $fe){
+                $f = "v_rekap_periode_attendance_end.$fe";
+                array_push($dtfield,$f);
+            }
+            $data= DB::table('v_rekap_periode_attendance')
+                        ->distinct()
+                        ->leftJoin('v_rekap_periode_attendance_end','v_rekap_periode_attendance_end.employee_id','=', 'v_rekap_periode_attendance.employee_id')
+                        ->where('v_rekap_periode_attendance.bulan','=',$start_date)
+                        ->where('v_rekap_periode_attendance_end.bulan','=',$end_date)
+                        ->where('v_rekap_periode_attendance.branch_id',$request->branch_id)
+                        ->get($dtfield);
+        }else{
+            $header = [];
+            $field = ['employee_id','employee_name'];
+            for($i=$tglstart; $i<=$jumtglstart;$i ++){
+                if($i < 10){
+                    array_push($header,'0'.(int)$i);
+                    array_push($field,'0'.(int)$i.' as d'.(int)$i);
+                }else{
+                    array_push($field,$i.' as d'.$i);
+                    array_push($header,$i);
+                }
+            }
+            $dtfield = [];
+            foreach($field as $fs){
+                $f = "v_rekap_periode_attendance.$fs";
+                array_push($dtfield,$f);
+            }
+            
+            $headerEnd = [];
+            $jumtglEnd = 0;
+            $tglEnd    = 0;
+            $data= DB::table('v_rekap_periode_attendance')
+                        ->distinct()
+                        ->leftJoin('v_rekap_periode_attendance_end','v_rekap_periode_attendance_end.employee_id','=', 'v_rekap_periode_attendance.employee_id')
+                        ->where('v_rekap_periode_attendance.bulan','=',$start_date)
+                        ->where('v_rekap_periode_attendance.branch_id',$request->branch_id)
+                        ->get($dtfield);
+                        // dd($start_date);
+        }
+        return view('pages.contents.report.attendance.rekap_monthly',
+                compact('header','data','tglstart','jumtglstart',
+                        'headerEnd','tglEnd','jumtglEnd','branches'));
     }
 }

@@ -512,6 +512,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('get-reporting-attandance',[ReportRecapAttendanceController::class,'get_report_attadance'])->name('get-reporting-attandance');
         Route::get('reporting-attandance-excel',[ReportRecapAttendanceController::class,'attandanceExportExcel'])->name('reporting-attandance-excel');
         Route::get('reporting-attandance-pdf',[ReportRecapAttendanceController::class,'attandancePrintPdf'])->name('reporting-attandance-pdf');
+        Route::get('rekap_monthly_att',[AttendanceEmployeeController::class,'rekap_cutoff_montnly'])->name('rekap_monthly_att');
+        Route::post('rekap_monthly_filter',[AttendanceEmployeeController::class,'rekap_cutoff_montnly'])->name('rekap_monthly_filter');
         // daily report
         Route::get('daily-report',[DailyReportController::class,'index'])->name('daily-report');
         Route::post('get-daily-report',[DailyReportController::class,'get_data'])->name('get-daily-report');

@@ -196,6 +196,7 @@
                         <ul style="display: none;">
                         @canany(['report attendance'])
                             <li class="{{(request()->routeIs('reporting-attandance')) ? 'active' : ''}}"><a class="{{(request()->routeIs('reporting-attandance')) ? 'active' : ''}}" href="{{ route('reporting-attandance') }}">Report Attandance</a></li>
+                            <li class="{{(request()->routeIs('rekap_monthly_att')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap_monthly_att')) ? 'active' : ''}}" href="{{ route('rekap_monthly_att') }}">Monthly Attandance</a></li>
                             <li class="{{(request()->routeIs('rekap-attandance')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap-attandance')) ? 'active' : ''}}" href="{{ route('rekap-attandance') }}">Rekap Attandance</a></li>
                         @endcanany
                         @canany(['daily report'])
@@ -298,7 +299,7 @@
                                         @endcanany
 
                                         <li class="submenu" >
-                                            <a style="padding: 9px 10px 9px 44px" href="#"> <span> PPH21 </span> <span class="menu-arrow"></span></a>
+                                            <a style="padding: 9px 10px 9px 44px" href="#"> <span> PPh21 </span> <span class="menu-arrow"></span></a>
                                             <ul style="display: none;">
                                                 @canany(['manage ptkp', 'edit ptkp'])
                                                     <li class=" {{(request()->routeIs('setting.ptkp*')) ? 'active' : ''}}">
