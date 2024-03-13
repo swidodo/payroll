@@ -52,7 +52,7 @@
                             </div> --}}
                             <div class="col-md-3 d-flex justify-content-start mb-2">
                                 {{-- <button type="button" id="filter_rekap_attendance" class="btn btn-success btn-sm me-1"><span class="fa fa-filter"></span> Filter</button> --}}
-                                <button type="submit" id="print_rekap_attendance" class="btn btn-primary btn-sm"> <span class="fa fa-print"></span> Search</button>
+                                <button type="submit" id="print_rekap_attendance" class="btn btn-primary btn-sm"> Search</button>
                             </div>
                         </div>
                     </form>

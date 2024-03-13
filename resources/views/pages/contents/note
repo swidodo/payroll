@@ -1,1 +1,410 @@
-validasi angka pada bpjs belum
+ SELECT a.no_employee,
+    a.branch_id,
+    a.name,
+    b.date AS tanggal,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '01'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d1,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '02'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d2,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '03'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d3,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '04'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d4,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '05'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d5,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '06'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d6,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '07'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d7,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '08'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d8,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '09'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d9,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '10'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d10,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '11'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d11,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '12'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d12,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '13'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d13,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '14'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d14,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '15'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d15,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '16'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d16,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '17'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d17,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '18'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d18,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '19'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d19,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '20'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d20,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '21'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d21,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '22'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d22,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '23'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d23,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '24'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d24,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '25'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d25,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '26'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d26,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '27'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d27,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '28'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d28,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '29'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d29,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '30'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d30,
+        CASE
+            WHEN to_char(b.date::timestamp with time zone, 'dd'::text) = '31'::text THEN
+            CASE
+                WHEN INITCAP(b.status)::text = 'Present'::text THEN 'P'::text
+                WHEN INITCAP(b.status)::text = 'Sick'::text THEN 'S'::text
+                WHEN INITCAP(b.status)::text = 'Permit'::text THEN 'I'::text
+                WHEN INITCAP(b.status)::text = 'Leave'::text THEN 'CT'::text
+                WHEN INITCAP(b.status)::text = 'Dispensation'::text THEN 'CTD'::text
+                WHEN INITCAP(b.status)::text = 'Alpha'::text THEN 'A'::text
+                ELSE 'X'::text
+            END
+            ELSE NULL::text
+        END AS d31
+   FROM employees a
+     LEFT JOIN v_actual_attendance b ON a.id = b.employee_id
+  WHERE b.date IS NOT NULL
