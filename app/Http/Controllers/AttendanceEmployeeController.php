@@ -1011,7 +1011,7 @@ class AttendanceEmployeeController extends Controller
                 $f = "v_rekap_periode_attendance.$fs";
                 array_push($dtfield,$f);
             }
-            
+            $tglstart    = date('d',strtotime($request->enddate));
             $headerEnd = [];
             $jumtglEnd = 0;
             $tglEnd    = 0;
