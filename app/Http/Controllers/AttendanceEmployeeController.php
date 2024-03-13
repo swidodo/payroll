@@ -928,7 +928,7 @@ class AttendanceEmployeeController extends Controller
                                                     ->where('access_branches.employee_id',$emp->id)
                                                     ->where('access_branches.company_id',$branch->company_id)->get();
                 }
-        if(($request->startdate == null) || ($request->enddate == null)){
+        if(($request->startdate == null)){
             $bulan      = date('m');
             $tahun      = date('Y');
             $tglstart   = date('d');
