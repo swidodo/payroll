@@ -677,6 +677,7 @@ class PayrollController extends Controller
                 if($cekFinance != null){
                     foreach($cekFinance as $f){
                         $aF = [
+                            'id'                => $f->id,
                             'employee_id'       => $thp->employee_id,
                             'allowance_type_id' => $f->allowance_type_id,
                             'amount'            => $f->amount,
