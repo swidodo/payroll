@@ -585,6 +585,18 @@ class PayrollController extends Controller
                 ->where('enddate','=',$request->enddate)
                 ->delete();
             }
+            $tocekFinance = DB::table('log_allowance_finances')
+                                ->where('startdate','=',$request->startdate)
+                                ->where('enddate','=',$request->enddate)
+                                ->where('created_by',Auth::user()->id)
+                                ->count();
+            if($tocekFinance > 0 ){
+                DB::table('log_allowance_finances')
+                        ->where('branch_id','=',$request->branch_id)
+                        ->where('startdate','=',$request->startdate)
+                        ->where('created_by',Auth::user()->id)
+                        ->delete();
+            }
 
             // thp
             $thps = DB::select("SELECT a.*,b.position_id,b.name as emp_name FROM get_take_home_pay('".$request->startdate."','".$request->enddate."','".$request->branch_id."') as a LEFT JOIN employees as b
