@@ -2254,6 +2254,7 @@ class PayrollController extends Controller
                             ->leftJoin('companies','companies.id','=','branches.company_id')
                             ->where('take_home_pay.id',$id)->first();
         $data['allowance_fixed'] = DB::select("SELECT * from log_allowance_fixed('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employeeid = '".$data['salary']->employee_id."'");
+       dd($data['allowance_fixed']);
         $data['allowance_unfixed'] = DB::select("SELECT * from getallowance_unfixed('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employeeid = '". $data['salary']->employee_id."'");
         $data['allowance_other'] = DB::select("SELECT * from get_other_allowance('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employeeid = '".$data['salary']->employee_id."'");
         $data['reimbursement'] = DB::select("SELECT * FROM get_reimburstment('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employee_id = '".$data['salary']->employee_id."'");
