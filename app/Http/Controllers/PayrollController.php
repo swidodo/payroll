@@ -571,22 +571,25 @@ class PayrollController extends Controller
     }
     public function generate_run_payroll(Request $request){
         try {
+            
             DB::beginTransaction();
             $tochecked = DB::table('take_home_pay')->select('*')
                                     ->where('branch_id',$request->branch_id)
-                                    ->where('startdate','>=',$request->startdate)
-                                    ->where('enddate','<=',$request->enddate)
+                                    ->where('startdate','=',$request->startdate)
+                                    ->where('enddate','=',$request->enddate)
                                     ->get();
             if($tochecked !=null){
                 DB::table('take_home_pay')
                 ->where('branch_id','=',$request->branch_id)
-                ->where('startdate','>=',$request->startdate)
-                ->where('enddate','<=',$request->enddate)
+                ->where('startdate','=',$request->startdate)
+                ->where('enddate','=',$request->enddate)
                 ->delete();
             }
+            
             // thp
             $thps = DB::select("SELECT a.*,b.position_id,b.name as emp_name FROM get_take_home_pay('".$request->startdate."','".$request->enddate."','".$request->branch_id."') as a LEFT JOIN employees as b
                 ON a.employee_id = b.id and b.status = 'active'");
+                
             $data_thp = [];
             foreach($thps as $thp) {
                 $data = [
@@ -641,41 +644,59 @@ class PayrollController extends Controller
                     // ->whereYear('loans.updated_at', $year)
                     ->get();
 
-                    if ($loans !=null){
-                        foreach($loans as $empLoans){
-                            if ($empLoans->installment != 0 && $empLoans->number_of_installment < $empLoans->tenor){
-                                $numberInstallment = $empLoans->number_of_installment + 1;
-                                if ($empLoans->tenor == $numberInstallment){
-                                    $status = 'paid off';
-                                }else{
-                                    $status = 'ongoing';
-                                }
-                                $dataLoans = [
-                                    'status' =>  $status,
-                                    'number_of_installment' => $numberInstallment,
-                                    'updated_at' => $request->enddate.' '.date('h:m:s'),
-                                ];
-                                DB::table('loans')->where('employee_id',$empLoans->employee_id)
-                                                 ->where('installment','!=',0)
-                                                 ->update($dataLoans);
-                            }else if($empLoans->installment == 0){
-                                $dataLoans = [
-                                    'status' =>'paid off',
-                                    'updated_at' => $request->enddate.' '.date('h:m:s'),
-                                ];
-                                DB::table('loans')->where('employee_id',$empLoans->employee_id)
-                                                 ->where('installment','=',0)
-                                                 ->update($dataLoans);
+                if ($loans !=null){
+                    foreach($loans as $empLoans){
+                        if ($empLoans->installment != 0 && $empLoans->number_of_installment < $empLoans->tenor){
+                            $numberInstallment = $empLoans->number_of_installment + 1;
+                            if ($empLoans->tenor == $numberInstallment){
+                                $status = 'paid off';
+                            }else{
+                                $status = 'ongoing';
                             }
+                            $dataLoans = [
+                                'status' =>  $status,
+                                'number_of_installment' => $numberInstallment,
+                                'updated_at' => $request->enddate.' '.date('h:m:s'),
+                            ];
+                            DB::table('loans')->where('employee_id',$empLoans->employee_id)
+                                                ->where('installment','!=',0)
+                                                ->update($dataLoans);
+                        }else if($empLoans->installment == 0){
+                            $dataLoans = [
+                                'status' =>'paid off',
+                                'updated_at' => $request->enddate.' '.date('h:m:s'),
+                            ];
+                            DB::table('loans')->where('employee_id',$empLoans->employee_id)
+                                                ->where('installment','=',0)
+                                                ->update($dataLoans);
                         }
                     }
+                }
+                
+                $cekFinance = AllowanceFinance::where('employee_id',$thp->employee_id)->where('branch_id',$request->branch_id)->get();
+                if($cekFinance != null){
+                    foreach($cekFinance as $f){
+                        $aF = [
+                            'employee_id'       => $thp->employee_id,
+                            'allowance_type_id' => $f->allowance_type_id,
+                            'amount'            => $f->amount,
+                            'branch_id'         => $f->branch_id,
+                            'startdate'         => $request->startdate,
+                            'enddate'           => $request->enddate,
+                            'created_by'        => Auth::user()->id,
+                            'created_at'        => date('Y-m-d H:m:s'),
+                            'updated_at'        => date('Y-m-d H:m:s')
+                        ];
+                        DB::table('log_allowance_finances')->insert($aF);
+                    }
+                }
+                
             }
             DB::table('take_home_pay')->insert($data_thp);  
             // rekap pph21
             $pph = DB::select("SELECT * from get_rekap_pph21_final('".$request->startdate."','".$request->enddate."','".$request->branch_id."')");
             
             $pph21Final = [];
-           
                 foreach($pph as $pph21){
                     $pphData = [
                         'date' => $request->enddate,
@@ -709,7 +730,6 @@ class PayrollController extends Controller
                             }
                         }
                     }
-
                 }
                 if (count($pph21Final) > 0){
                     $checkPayrollpph = DB::table('rekap_pph21s')->where('startdate','<=',$request->startdate)->where('enddate','>=',$request->enddate)->get();
@@ -728,7 +748,7 @@ class PayrollController extends Controller
              DB::rollBack();
                 $res = [
                     'status' => 'error',
-                    'msg'    => 'Someting went wrong!',
+                    'msg'    => $e,
                 ];
             return response()->json($res);
         }
