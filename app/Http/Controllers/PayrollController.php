@@ -2273,7 +2273,7 @@ class PayrollController extends Controller
                             ->leftJoin('companies','companies.id','=','branches.company_id')
                             ->where('take_home_pay.id',$id)->first();
         $ckNormatif = DB::table('payrolls')->where('employee_id',$data['salary']->employee_id)->count();
-        if($ckNormatif <= 0 ){
+        if($ckNormatif < 0 ){
             $data['allowance_unfixed'] = DB::select("SELECT * from getallowance_unfixed('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employeeid = '". $data['salary']->employee_id."'");
         }
         $data['allowance_fixed'] = DB::select("SELECT * from log_allowance_fixed('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employeeid = '".$data['salary']->employee_id."'");
