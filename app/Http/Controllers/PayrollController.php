@@ -598,8 +598,8 @@ class PayrollController extends Controller
                 ->where('created_by',Auth::user()->id)
                 ->delete();
             }
-            dd();
             $tofixed = DB::select("SELECT * from get_allowance_fixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') WHERE employee_id = '".$thp->employee_id."'");
+            dd();
             
             if($tofixed > 0 ){
                 DB::table('log_allowance_finances')
