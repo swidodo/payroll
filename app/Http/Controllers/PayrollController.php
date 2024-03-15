@@ -592,13 +592,30 @@ class PayrollController extends Controller
                                 ->count();
             if($tocekFinance > 0 ){
                 DB::table('log_allowance_finances')
-                        // ->where('branch_id','=',$request->branch_id)
+                        ->where('branch_id','=',$request->branch_id)
                         ->where('startdate','=',$request->startdate)
                         ->where('enddate','=',$request->enddate)
                         ->where('created_by',Auth::user()->id)
                         ->delete();
             }
-
+            $tofixed = DB::select("SELECT * from get_allowance_fixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') WHERE employee_id = '".$thp->employee_id."'");
+            if($tofixed > 0 ){
+                DB::table('log_allowance_finances')
+                        ->where('branch_id','=',$request->branch_id)
+                        ->where('startdate','=',$request->startdate)
+                        ->where('enddate','=',$request->enddate)
+                        ->where('created_by',Auth::user()->id)
+                        ->delete();
+            }
+            $tounfixed = DB::select("SELECT * from getallowance_unfixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') WHERE employee_id = '".$thp->employee_id."'");
+            if($tounfixed > 0 ){
+                DB::table('log_allowance_finances')
+                        ->where('branch_id','=',$request->branch_id)
+                        ->where('startdate','=',$request->startdate)
+                        ->where('enddate','=',$request->enddate)
+                        ->where('created_by',Auth::user()->id)
+                        ->delete();
+            }
             // thp
             $thps = DB::select("SELECT a.*,b.position_id,b.name as emp_name FROM get_take_home_pay('".$request->startdate."','".$request->enddate."','".$request->branch_id."') as a LEFT JOIN employees as b
                 ON a.employee_id = b.id and b.status = 'active'");
@@ -686,7 +703,7 @@ class PayrollController extends Controller
                     }
                 }
                 
-                $cekFinance = AllowanceFinance::where('employee_id',$thp->employee_id)->get();
+                $cekFinance = DB::select("SELECT * from get_allowance_fixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') WHERE employee_id = '".$thp->employee_id."'");
                 if($cekFinance != null){
                     foreach($cekFinance as $f){
                         $aF = [
@@ -704,7 +721,24 @@ class PayrollController extends Controller
                         DB::table('log_allowance_finances')->insert($aF);
                     }
                 }
-                
+                $cekunfixed = DB::select("SELECT * from getallowance_unfixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') WHERE employee_id = '".$thp->employee_id."'");
+                if($cekunfixed != null){
+                    foreach($cekFinance as $uf){
+                        $unf = [
+                            'id'                => $ff->allowance_finance_id,
+                            'employee_id'       => $thp->employee_id,
+                            'allowance_type_id' => $uf->allowance_type,
+                            'amount'            => $uf->actual_amount,
+                            'branch_id'         => $request->branch_id,
+                            'startdate'         => $request->startdate,
+                            'enddate'           => $request->enddate,
+                            'created_by'        => Auth::user()->id,
+                            'created_at'        => date('Y-m-d H:m:s'),
+                            'updated_at'        => date('Y-m-d H:m:s')
+                        ];
+                        DB::table('log_allowance_finances')->insert($aF);
+                    }
+                }
             }
             DB::table('take_home_pay')->insert($data_thp);  
             // rekap pph21
