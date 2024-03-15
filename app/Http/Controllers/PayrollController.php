@@ -701,10 +701,11 @@ class PayrollController extends Controller
                             'created_at'        => date('Y-m-d H:m:s'),
                             'updated_at'        => date('Y-m-d H:m:s')
                         ];
+                        dd( $aF);
                         DB::table('log_allowance_finances')->insert($aF);
                     }
                 }
-                dd($cekFinance);
+                
                 $cekunfixed = DB::select("SELECT * from getallowance_unfixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') WHERE employeeid = '".$thp->employee_id."'");
                 if($cekunfixed != null){
                     foreach($cekFinance as $uf){
