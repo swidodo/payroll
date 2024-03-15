@@ -686,7 +686,7 @@ class PayrollController extends Controller
                     }
                 }
                 
-                $cekFinance = DB::select("SELECT * from get_allowance_fixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') WHERE employee_id = '".$thp->employee_id."'");
+                $cekFinance = DB::select("SELECT * from get_allowance_fixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') WHERE employee_id = '".$thp->employeeid."'");
                 if($cekFinance != null){
                     foreach($cekFinance as $f){
                         $aF = [
@@ -704,7 +704,7 @@ class PayrollController extends Controller
                         DB::table('log_allowance_finances')->insert($aF);
                     }
                 }
-                $cekunfixed = DB::select("SELECT * from getallowance_unfixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') WHERE employee_id = '".$thp->employee_id."'");
+                $cekunfixed = DB::select("SELECT * from getallowance_unfixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') WHERE employeeid = '".$thp->employee_id."'");
                 if($cekunfixed != null){
                     foreach($cekFinance as $uf){
                         $unf = [
