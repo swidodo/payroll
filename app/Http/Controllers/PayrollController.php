@@ -585,29 +585,29 @@ class PayrollController extends Controller
                 ->where('enddate','=',$request->enddate)
                 ->delete();
             }
-            dd();
             $tocekFinance = DB::table('log_allowance_finances')
-                                ->where('startdate','=',$request->startdate)
-                                ->where('enddate','=',$request->enddate)
-                                ->where('created_by',Auth::user()->id)
-                                ->count();
+            ->where('startdate','=',$request->startdate)
+            ->where('enddate','=',$request->enddate)
+            ->where('created_by',Auth::user()->id)
+            ->count();
             if($tocekFinance > 0 ){
                 DB::table('log_allowance_finances')
-                        ->where('branch_id','=',$request->branch_id)
-                        ->where('startdate','=',$request->startdate)
-                        ->where('enddate','=',$request->enddate)
-                        ->where('created_by',Auth::user()->id)
-                        ->delete();
+                ->where('branch_id','=',$request->branch_id)
+                ->where('startdate','=',$request->startdate)
+                ->where('enddate','=',$request->enddate)
+                ->where('created_by',Auth::user()->id)
+                ->delete();
             }
+            dd();
             $tofixed = DB::select("SELECT * from get_allowance_fixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') WHERE employee_id = '".$thp->employee_id."'");
-           
+            
             if($tofixed > 0 ){
                 DB::table('log_allowance_finances')
-                        ->where('branch_id','=',$request->branch_id)
-                        ->where('startdate','=',$request->startdate)
-                        ->where('enddate','=',$request->enddate)
-                        ->where('created_by',Auth::user()->id)
-                        ->delete();
+                ->where('branch_id','=',$request->branch_id)
+                ->where('startdate','=',$request->startdate)
+                ->where('enddate','=',$request->enddate)
+                ->where('created_by',Auth::user()->id)
+                ->delete();
             }
             $tounfixed = DB::select("SELECT * from getallowance_unfixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') WHERE employee_id = '".$thp->employee_id."'");
             if($tounfixed > 0 ){
