@@ -707,7 +707,7 @@ class PayrollController extends Controller
                 
                 $cekunfixed = DB::select("SELECT * from getallowance_unfixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') WHERE employeeid = '".$thp->employee_id."'");
                 if($cekunfixed != null){
-                    foreach($cekFinance as $uf){
+                    foreach($cekunfixed as $uf){
                         $unf = [
                             'id'                => $uf->allowance_finance_id,
                             'employee_id'       => $thp->employee_id,
