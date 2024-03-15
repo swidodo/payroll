@@ -367,15 +367,17 @@
                                             @endif
                                         @endif
                                     @endforeach
-                                    @foreach($allowance_unfixed as $unfixed)
-                                        @if ($unfixed->employeeid == $salary->employee_id)
-                                        <tr class="fs-14 " style="font-weight: 400">
-                                            <td style="width: 45%">{{ Ucwords(strtolower($unfixed->allowance_name)) }}</td>
-                                            <td>:</td>
-                                            <td class="text-right">{{ ($unfixed->amount == '') ? 0 : formatRupiah($unfixed->amount)  }}</td>
-                                        </tr>
-                                        @endif
-                                    @endforeach
+                                    @if(isset($allowance_unfixed))
+                                        @foreach($allowance_unfixed as $unfixed)
+                                            @if ($unfixed->employeeid == $salary->employee_id)
+                                            <tr class="fs-14 " style="font-weight: 400">
+                                                <td style="width: 45%">{{ Ucwords(strtolower($unfixed->allowance_name)) }}</td>
+                                                <td>:</td>
+                                                <td class="text-right">{{ ($unfixed->amount == '') ? 0 : formatRupiah($unfixed->amount)  }}</td>
+                                            </tr>
+                                            @endif
+                                        @endforeach
+                                    @endif
                                     @foreach($allowance_other as $other)
                                         @if ($other->employeeid == $salary->employee_id && $other->allowance_date >= date('Y-m-d',strtotime($salary->startdate)) && $other->allowance_date <=  date('Y-m-d',strtotime($salary->enddate)))
                                         <tr class="fs-14 " style="font-weight: 400">

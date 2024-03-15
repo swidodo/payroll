@@ -365,13 +365,15 @@
                                         </tr>
                                     @endif
                                 @endforeach
-                                @foreach($allowance_unfixed as $unfixed)
-                                <tr class="fs-14 " style="font-weight: 400">
-                                    <td style="width: 45%">{{ Ucwords(strtolower($unfixed->allowance_name)) }}</td>
-                                    <td>:</td>
-                                    <td class="text-right">{{ ($unfixed->amount == '') ? 0 : formatRupiah($unfixed->amount)  }}</td>
-                                </tr>
-                                @endforeach
+                                @if(isset($allowance_unfixed))
+                                    @foreach($allowance_unfixed as $unfixed)
+                                    <tr class="fs-14 " style="font-weight: 400">
+                                        <td style="width: 45%">{{ Ucwords(strtolower($unfixed->allowance_name)) }}</td>
+                                        <td>:</td>
+                                        <td class="text-right">{{ ($unfixed->amount == '') ? 0 : formatRupiah($unfixed->amount)  }}</td>
+                                    </tr>
+                                    @endforeach
+                                @endif
                                 @foreach($allowance_other as $other)
                                 <tr class="fs-14 " style="font-weight: 400">
                                     <td style="width: 45%">{{ strtolower($other->allowance_name) }}</td>
