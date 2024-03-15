@@ -704,8 +704,8 @@ class PayrollController extends Controller
                         DB::table('log_allowance_finances')->insert($aF);
                     }
                 }
+                dd();
                 $cekunfixed = DB::select("SELECT * from getallowance_unfixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') WHERE employeeid = '".$thp->employee_id."'");
-                // dd();
                 if($cekunfixed != null){
                     foreach($cekFinance as $uf){
                         $unf = [
