@@ -720,7 +720,7 @@ class PayrollController extends Controller
                             'created_at'        => date('Y-m-d H:m:s'),
                             'updated_at'        => date('Y-m-d H:m:s')
                         ];
-                        dd($unf);
+                        // dd($unf);
                         DB::table('log_allowance_finances')->insert($unf);
                     }
                 }
