@@ -2315,8 +2315,8 @@ class PayrollController extends Controller
                             // ->limit(50)
                             ->get();
         $ckNormatif = DB::table('payrolls')->where('employee_id',$employee)->count();
-        dd( $ckNormatif);
-        if($ckNormatif <= 0 ){
+        // dd( $ckNormatif);
+        if($ckNormatif < 0 ){
             $data['allowance_unfixed'] = DB::select("SELECT * from getallowance_unfixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
         }
         $data['allowance_fixed'] = DB::select("SELECT * from log_allowance_fixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."')");
