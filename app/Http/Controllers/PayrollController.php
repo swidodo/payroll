@@ -701,7 +701,6 @@ class PayrollController extends Controller
                             'created_at'        => date('Y-m-d H:m:s'),
                             'updated_at'        => date('Y-m-d H:m:s')
                         ];
-                        dd( $aF);
                         DB::table('log_allowance_finances')->insert($aF);
                     }
                 }
@@ -711,7 +710,7 @@ class PayrollController extends Controller
                     foreach($cekFinance as $uf){
                         $unf = [
                             'id'                => $uf->allowance_finance_id,
-                            'employee_id'       => $thp->employeeid,
+                            'employee_id'       => $thp->employee_id,
                             'allowance_type_id' => $uf->allowance_type,
                             'amount'            => $uf->actual_amount,
                             'branch_id'         => $request->branch_id,
@@ -721,6 +720,7 @@ class PayrollController extends Controller
                             'created_at'        => date('Y-m-d H:m:s'),
                             'updated_at'        => date('Y-m-d H:m:s')
                         ];
+                        dd( $aF);
                         DB::table('log_allowance_finances')->insert($aF);
                     }
                 }
