@@ -691,7 +691,7 @@ class PayrollController extends Controller
                     foreach($cekFinance as $f){
                         $aF = [
                             'id'                => $f->allowance_finance_id,
-                            'employee_id'       => $thp->employeeid,
+                            'employee_id'       => $thp->employee_id,
                             'allowance_type_id' => $f->allowance_type,
                             'amount'            => $f->allowance_amount,
                             'branch_id'         => $request->branch_id,
