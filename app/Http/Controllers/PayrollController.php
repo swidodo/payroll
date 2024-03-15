@@ -691,7 +691,7 @@ class PayrollController extends Controller
                     foreach($cekFinance as $f){
                         $aF = [
                             'id'                => $f->id,
-                            'employee_id'       => $thp->employee_id,
+                            'employee_id'       => $thp->employeeid,
                             'allowance_type_id' => $f->allowance_type_id,
                             'amount'            => $f->amount,
                             'branch_id'         => $request->branch_id,
@@ -708,8 +708,8 @@ class PayrollController extends Controller
                 if($cekunfixed != null){
                     foreach($cekFinance as $uf){
                         $unf = [
-                            'id'                => $ff->allowance_finance_id,
-                            'employee_id'       => $thp->employee_id,
+                            'id'                => $uf->allowance_finance_id,
+                            'employee_id'       => $thp->employeeid,
                             'allowance_type_id' => $uf->allowance_type,
                             'amount'            => $uf->actual_amount,
                             'branch_id'         => $request->branch_id,
