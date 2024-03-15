@@ -705,8 +705,8 @@ class PayrollController extends Controller
                     }
                 }
                 
-                dd();
                 $cekunfixed = DB::select("SELECT * from getallowance_unfixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') WHERE employeeid = '".$thp->employee_id."'");
+                // dd();
                 if($cekunfixed != null){
                     foreach($cekFinance as $uf){
                         $unf = [
@@ -721,7 +721,7 @@ class PayrollController extends Controller
                             'created_at'        => date('Y-m-d H:m:s'),
                             'updated_at'        => date('Y-m-d H:m:s')
                         ];
-                        DB::table('log_allowance_finances')->insert($aF);
+                        DB::table('log_allowance_finances')->insert($unf);
                     }
                 }
             }
