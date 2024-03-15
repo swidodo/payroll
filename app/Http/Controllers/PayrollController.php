@@ -687,14 +687,14 @@ class PayrollController extends Controller
                 }
                 
                 $cekFinance = DB::select("SELECT * from get_allowance_fixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') WHERE employeeid = '".$thp->employee_id."'");
-                dd($cekFinance);
+                // dd($cekFinance);
                 if($cekFinance != null){
                     foreach($cekFinance as $f){
                         $aF = [
-                            'id'                => $f->id,
+                            'id'                => $f->allowance_finance_id,
                             'employee_id'       => $thp->employeeid,
                             'allowance_type_id' => $f->allowance_type,
-                            'amount'            => $f->amount,
+                            'amount'            => $f->allowance_amount,
                             'branch_id'         => $request->branch_id,
                             'startdate'         => $request->startdate,
                             'enddate'           => $request->enddate,
