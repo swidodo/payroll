@@ -720,7 +720,6 @@ class PayrollController extends Controller
                             'created_at'        => date('Y-m-d H:m:s'),
                             'updated_at'        => date('Y-m-d H:m:s')
                         ];
-                        // dd($unf);
                         DB::table('log_allowance_finances')->insert($unf);
                     }
                 }
@@ -2273,8 +2272,11 @@ class PayrollController extends Controller
                             ->leftJoin('position','position.id','=','employees.position_id')
                             ->leftJoin('companies','companies.id','=','branches.company_id')
                             ->where('take_home_pay.id',$id)->first();
+        $ckNormatif = DB::table('payrolls')->where('employee_Id',$employee)->count();
+        if($ckNormatif <= 0 ){
+            $data['allowance_unfixed'] = DB::select("SELECT * from getallowance_unfixed('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employeeid = '". $data['salary']->employee_id."'");
+        }
         $data['allowance_fixed'] = DB::select("SELECT * from log_allowance_fixed('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employeeid = '".$data['salary']->employee_id."'");
-        $data['allowance_unfixed'] = DB::select("SELECT * from getallowance_unfixed('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employeeid = '". $data['salary']->employee_id."'");
         $data['allowance_other'] = DB::select("SELECT * from get_other_allowance('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employeeid = '".$data['salary']->employee_id."'");
         $data['reimbursement'] = DB::select("SELECT * FROM get_reimburstment('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employee_id = '".$data['salary']->employee_id."'");
         $data['deduction_other'] = DB::select("SELECT * FROM get_deduction_other('".$data['salary']->startdate."','".$data['salary']->enddate."','".$data['salary']->branch_id."') where employeeid = '".$data['salary']->employee_id."'");
@@ -2312,8 +2314,11 @@ class PayrollController extends Controller
                             ->whereIn('take_home_pay.employee_id', $employee)
                             // ->limit(50)
                             ->get();
+        $ckNormatif = DB::table('payrolls')->where('employee_Id',$employee)->count();
+        if($ckNormatif <= 0 ){
+            $data['allowance_unfixed'] = DB::select("SELECT * from getallowance_unfixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
+        }
         $data['allowance_fixed'] = DB::select("SELECT * from log_allowance_fixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."')");
-        $data['allowance_unfixed'] = DB::select("SELECT * from getallowance_unfixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
         $data['allowance_other'] = DB::select("SELECT * from get_other_allowance('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
         $data['reimbursement'] = DB::select("SELECT * FROM get_reimburstment('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
         $data['deduction_other'] = DB::select("SELECT * FROM get_deduction_other('".$request->startdate."','".$request->enddate."','".$request->branch_id."') ");
