@@ -586,31 +586,11 @@ class PayrollController extends Controller
                 ->delete();
             }
             $tocekFinance = DB::table('log_allowance_finances')
-            ->where('startdate','=',$request->startdate)
-            ->where('enddate','=',$request->enddate)
-            ->where('created_by',Auth::user()->id)
-            ->count();
+                                ->where('startdate','=',$request->startdate)
+                                ->where('enddate','=',$request->enddate)
+                                ->where('created_by',Auth::user()->id)
+                                ->count();
             if($tocekFinance > 0 ){
-                DB::table('log_allowance_finances')
-                ->where('branch_id','=',$request->branch_id)
-                ->where('startdate','=',$request->startdate)
-                ->where('enddate','=',$request->enddate)
-                ->where('created_by',Auth::user()->id)
-                ->delete();
-            }
-            $tofixed = DB::select("SELECT * from get_allowance_fixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') WHERE employee_id = '".$thp->employee_id."'");
-            
-            dd($tofixed);
-            if($tofixed > 0 ){
-                DB::table('log_allowance_finances')
-                ->where('branch_id','=',$request->branch_id)
-                ->where('startdate','=',$request->startdate)
-                ->where('enddate','=',$request->enddate)
-                ->where('created_by',Auth::user()->id)
-                ->delete();
-            }
-            $tounfixed = DB::select("SELECT * from getallowance_unfixed('".$request->startdate."','".$request->enddate."','".$request->branch_id."') WHERE employee_id = '".$thp->employee_id."'");
-            if($tounfixed > 0 ){
                 DB::table('log_allowance_finances')
                         ->where('branch_id','=',$request->branch_id)
                         ->where('startdate','=',$request->startdate)
@@ -618,6 +598,7 @@ class PayrollController extends Controller
                         ->where('created_by',Auth::user()->id)
                         ->delete();
             }
+            
             // thp
             $thps = DB::select("SELECT a.*,b.position_id,b.name as emp_name FROM get_take_home_pay('".$request->startdate."','".$request->enddate."','".$request->branch_id."') as a LEFT JOIN employees as b
                 ON a.employee_id = b.id and b.status = 'active'");
