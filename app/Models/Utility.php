@@ -511,10 +511,12 @@ class Utility extends Model
             $setting[$key] = '';
         }
 
-        $shiftReguler = ShiftType::where('name', 'Reguler')
-            ->where('created_by', Auth::user()->creatorId())
-            ->first();
-
+        $shiftReguler = ShiftType::where('branch_id', Auth::user()->branch_id)->first();
+        // $shiftReguler = ShiftType::where('name', 'Reguler')
+        //     ->where('created_by', Auth::user()->creatorId())
+        //     ->first();
+            // dd($shiftReguler);
+        
         if ($key == 'company_start_time') {
             return $shiftReguler->start_time;
         } elseif ($key == 'company_end_time') {

@@ -451,6 +451,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('bulk-attendance', [AttendanceEmployeeController::class, 'bulkAttendanceData'])->name('bulk-attendance.index');
         Route::post('clock-in-out', [AttendanceEmployeeController::class, 'clockStore'])->name('clock_store');
         Route::post('break-in-out', [AttendanceEmployeeController::class, 'breakStore'])->name('break_store');
+        Route::get('attendance-user', [AttendanceEmployeeController::class, 'attendance_user'])->name('attendance-list');
+        Route::post('search-attendance', [AttendanceEmployeeController::class, 'attendance_search'])->name('search-attendance');
         Route::resource('dayoff', DayoffController::class);
         Route::resource('company-holiday', CompanyHolidayController::class);
         Route::resource('level-approvals', LevelApprovalController::class);

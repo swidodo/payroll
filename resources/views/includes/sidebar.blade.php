@@ -434,6 +434,11 @@
                         <a href="{{route('payslip-user')}}"><i class="la la-file"></i> <span> Payslip</span></a>
                     </li>
                 @endif
+                @if(Auth::user()->type == 'user')
+                    <li class=" {{(request()->routeIs('attendance-list')) ? 'active' : ''}}">
+                        <a href="{{route('attendance-list')}}"><i class="la la-file"></i> <span> Attendance</span></a>
+                    </li>
+                @endif
             
             </ul>
         </div>

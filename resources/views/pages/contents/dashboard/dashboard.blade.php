@@ -98,11 +98,10 @@
                         <div class="punch-btn-section">
                             <form action="{{ route('clock_store') }}" method="post">
                                 @csrf
-
-                                @if (!empty($attendanceStatus) && $attendanceStatus->status == 'Present' || !empty($attendanceStatus) && $attendanceStatus->status == 'Overtime')
+                                @if (!empty($attendanceStatus) && strtoupper($attendanceStatus->status) == 'PRESENT' || !empty($attendanceStatus) && strtolower($attendanceStatus->status) == 'OVERTIME')
                                     <input hidden name="clock" value="clock_out" type="text">
                                     <button {{ empty($shiftSchedule) || !empty($attendanceStatus) && $attendanceStatus->clock_out != '00:00:00' ? 'disabled' : ''}} type="submit" class="btn btn-primary punch-btn">Clock Out </button>
-                                    @else
+                                @else
                                     <input hidden name="clock" value="clock_in" type="text">
                                     <button {{ empty($shiftSchedule) || !empty($attendanceStatus) && $attendanceStatus->clock_out != '00:00:00' ? 'disabled' : ''}} type="submit" class="btn btn-primary punch-btn">Clock In</button>
                                 @endif
