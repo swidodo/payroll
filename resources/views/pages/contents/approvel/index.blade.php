@@ -43,6 +43,7 @@
                                     <div class="btn-box">
                                         <label for="attendance" class="form-label">Branch</label>
                                         <select class="form-control select" id="branch" name="branch">
+                                            <option value="">--select branch --</option>
                                             @foreach ($branch as $branch)
                                                 <option value="{{$branch->id}}" {{($branch->id == Auth::user()->branch_id) ? 'selected':''}}>{{$branch->name}}</option>
                                             @endforeach
