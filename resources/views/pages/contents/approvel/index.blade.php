@@ -45,7 +45,7 @@
                                         <select class="form-control select" id="branch" name="branch">
                                             <option value="" selected>--select branch --</option>
                                             @foreach ($branch as $branch)
-                                                <option value="{{$branch->id}}" {{($branch->id == Auth::user()->branch_id) ? 'selected':''}}>{{$branch->name}}</option>
+                                                <option value="{{$branch->id}}">{{$branch->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
