@@ -225,11 +225,15 @@
                 type : 'post',
                 data : {branch_id : branch_id },
                 success : function(respon){
-                    var emp = '';
-                    $.each(respon, function(key,val){
-                        emp +=`<option value="`+val.id+`">`+ val.no_employee+` - `+val.name+`</option>`;
-                    })
-                    $('#addEmployee').html(emp)
+                    if (respon !=null){
+                        var emp = '';
+                        $.each(respon, function(key,val){
+                            emp +=`<option value="`+val.id+`">`+ val.no_employee+` - `+val.name+`</option>`;
+                        })
+                        $('#addEmployee').html(emp)
+                    }else{
+                        $('#addEmployee').html('')
+                    }
                 }
             })
         })
