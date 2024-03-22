@@ -255,6 +255,9 @@
                             @canany(['manage role', 'create role'])
                                 <li class="{{(request()->routeIs('roles*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('roles*')) ? 'active' : ''}}" href="{{route('roles.index')}}">Roles</a></li>
                             @endcanany
+                            @canany(['manage master approval'])
+                                <li class="{{(request()->routeIs('level-approval')) ? 'active' : ''}}"><a class="{{(request()->routeIs('level-approval*')) ? 'active' : ''}}" href="{{route('level-approval')}}">Approval</a></li>
+                            @endcanany
 
                             <!-- @canany(['manage level approval', 'edit level approval'])
                                 <li class="{{(request()->routeIs('level-approvals*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('level-approvals*')) ? 'active' : ''}}" href="{{ route('level-approvals.index') }}">Set Level Approval </a></li>

@@ -92,6 +92,7 @@ use App\Http\Controllers\AccessMobileController;
 
 // montly-rate pph21
 use App\Http\Controllers\MontlyRateController;
+use App\Http\Controllers\ApprovalController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -610,6 +611,16 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('list-inbox',[InformationController::class,'list_notif'])->name('list-inbox');
         Route::get('/view-inbox/{id}',[InformationController::class,'view_notif'])->name('view-inbox');
         Route::get('payslip-user',[PaySlipController::class,'payslip_user'])->name('payslip-user');
+
+        // approval
+        Route::get('level-approval',[ApprovalController::class,'index'])->name('level-approval');
+        Route::post('get-data-level',[ApprovalController::class,'get_data']);
+        Route::post('get-depart',[ApprovalController::class,'create_data']);
+        Route::post('get-employee-dept',[ApprovalController::class,'get_data_emp']);
+        Route::post('store-approval',[ApprovalController::class,'store']);
+        Route::post('edit-approval',[ApprovalController::class,'edit']);
+        Route::post('update-approval',[ApprovalController::class,'update']);
+        Route::post('delete-approval',[ApprovalController::class,'destroy']);
 
 });
 
