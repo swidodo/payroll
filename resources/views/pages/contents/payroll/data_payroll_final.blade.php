@@ -71,7 +71,7 @@
                                 <th>Allowance Unfixed</th>
                                 <th>Allowance Other</th>
                                 <th>Overtime</th>
-                                <th>RApel/koreksi +</th>
+                                <th>Rapel/koreksi +</th>
                                 <th>Salary in Month</th>
                                 <th>Company Pay Bpjs</th>
                                 <th>Total salary</th>
