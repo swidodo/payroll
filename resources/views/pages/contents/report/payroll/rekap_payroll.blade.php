@@ -76,7 +76,7 @@
                                     <th>Employee BPJS Ketenagakerjaan</th>
                                     <th>Total Employee BPJS</th>
                                     <th>Loans</th>
-                                    <th>Cash Advance {{(auth()->user()->branch_id = 59) ? '/Gaji Gesa' : ''}}</th>
+                                    <th>Cash Advance {{(auth()->user()->branch_id == 59) ? '/Gaji Gesa' : ''}}</th>
                                     <th>Total Deduction Other</th>
                                     <th>PPh21</th>
                                     <th>Total Deduction</th>
