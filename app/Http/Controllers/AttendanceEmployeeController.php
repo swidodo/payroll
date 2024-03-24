@@ -1134,7 +1134,7 @@ class AttendanceEmployeeController extends Controller
             $tglEnd    = 0;
             $exfil = implode(',',$dtfield);
             $data= DB::SELECT("SELECT DISTINCT $exfil FROM rekap_monthly_attendance('$start_date','$end_date') as a
-                                LEFT JOIN SELECT * FROM getattendance('".$request->startdate."','".$request->enddate."','".$request->branch_id."') as b
+                                LEFT JOIN  getattendance('".$request->startdate."','".$request->enddate."','".$request->branch_id."') as b
                                 ON b.no_employee = a.employee_id where branch_id = $request->branch_id");
                                 // rekap_total_attendance('$request->startdate','$request->enddate',$request->branch_id) as b
             $array = [];
