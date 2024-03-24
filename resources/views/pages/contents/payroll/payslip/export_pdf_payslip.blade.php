@@ -404,7 +404,7 @@
                             <tbody>
                             
                                     <tr class="fs-14 " style="font-weight: 400">
-                                        <td style="width: 45%">Kasbon</td>
+                                        <td style="width: 45%">Kasbon {{(auth()->user()->branch_id == 59) ? '/Gaji Gesa' : ''}}</td>
                                         <td>:</td>
                                         <td class="text-right">{{ ($salary->loans =='') ? 0 : formatRupiah($salary->loans) }}</td>
                                     </tr>
