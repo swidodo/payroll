@@ -1147,15 +1147,15 @@ class AttendanceEmployeeController extends Controller
                 ];
                 $dtArr2 =[];
                 foreach($header as $h){
-                    if ($h == "wd"){
-                        $name = 'wd';
+                    if ($h == "wda"){
+                        $name = 'wda';
                     }else{
 
                         $name = 's'.$h;
                     }
                     array_push($dtArr2,$d->$name);
                 }
-                array_push($dtArr2,$d->wda);
+                // array_push($dtArr2,$d->wda);
                 
                 $dat=array_merge($dtArr,$dtArr2);
                 array_push($array,$dat);
