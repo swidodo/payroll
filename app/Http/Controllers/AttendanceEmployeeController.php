@@ -966,71 +966,203 @@ class AttendanceEmployeeController extends Controller
             for($i=$tglstart; $i<=$jumtglstart;$i ++){
                 if($i < 10){
                     array_push($header,'0'.(int)$i);
-                    array_push($field,'0'.(int)$i.' as d'.(int)$i);
+                    array_push($field,'s0'.(int)$i);
                 }else{
                     array_push($header,$i);
-                    array_push($field,$i.' as d'.$i);
+                    array_push($field,'s'.$i);
                 }
             }
 
             $headerEnd = [];
             $fieldEnd = [];
-            for($i=$tglEnd; $i<=$jumtglEnd;$i ++){
+            for($i=1; $i<=$tglEnd;$i ++){
                 if($i < 10){
                     array_push($headerEnd,'0'.(int)$i);
-                    array_push($fieldEnd,'0'.(int)$i.' as e'.(int)$i);
+                    array_push($fieldEnd,'e0'.(int)$i);
                 }else{
                     array_push($headerEnd,$i);
-                    array_push($fieldEnd,$i.' as e'.$i);
+                    array_push($fieldEnd,'e'.$i);
                 }
             }
-            $dtfield = [];
-            foreach($field as $fs){
-                $f = "v_rekap_periode_attendance.$fs";
-                array_push($dtfield,$f);
-            }
-            foreach($fieldEnd as $fe){
-                $f = "v_rekap_periode_attendance_end.$fe";
-                array_push($dtfield,$f);
-            }
-            $data= DB::table('v_rekap_periode_attendance')
-                        ->distinct()
-                        ->leftJoin('v_rekap_periode_attendance_end','v_rekap_periode_attendance_end.employee_id','=', 'v_rekap_periode_attendance.employee_id')
-                        ->where('v_rekap_periode_attendance.bulan','=',$start_date)
-                        ->where('v_rekap_periode_attendance_end.bulan','=',$end_date)
-                        ->where('v_rekap_periode_attendance.branch_id',$request->branch_id)
-                        ->get($dtfield);
+            array_push($headerEnd,'Total');
+
         }else{
+            $header = [];
+            $field = ['employee_id','employee_name'];
+            for($i=$tglstart; $i<=$tglEnd;$i ++){
+                if($i < 10){
+                    array_push($header,'0'.(int)$i);
+                    array_push($field,'s0'.(int)$i);
+                }else{
+                    array_push($field,'s'.$i);
+                    array_push($header,$i);
+                }
+            }
+            $headerEnd = [];
+           
+            $jumtglEnd = 0;
+            $tglEnd    = 0;
+            array_push($headerEnd,'Total');
+        }
+        $start = (($request->startdate !=null) ? $request->startdate : date('Y-m-d'));
+        $end = (($request->enddate !=null) ? $request->enddate : date('Y-m-d'));
+        $br = (($request->branch_id !=null) ? $request->branch_id : '');
+        return view('pages.contents.report.attendance.rekap_monthly',
+                compact('header','tglstart','jumtglstart',
+                        'headerEnd','tglEnd','jumtglEnd','branches','start','end','br'));
+    }
+    public function get_data_monthly(Request $request){
+        $branch = Branch::find(Auth::user()->branch_id);
+                $emp = Employee::where('user_id',Auth::user()->id)->first();
+                if (Auth::user()->type == "company"){
+                    $branches = Branch::where('company_id',$branch->company_id)->get();
+                }else{
+                    $branches = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                                    ->where('access_branches.employee_id',$emp->id)
+                                                    ->where('access_branches.company_id',$branch->company_id)->get();
+                }
+        if(($request->startdate == null)){
+            $bulan      = date('m');
+            $tahun      = date('Y');
+            $tglstart   = date('d');
+            $bulanEnd   = date('m');
+            $tahunEnd   = date('Y');
+            $tglEnd     = date('d');
+            $start_date = date('Y-m');
+            $end_date   = date('Y-m');
+            
+        }else{
+            $bulan       = date('m',strtotime($request->startdate));
+            $tahun       = date('Y',strtotime($request->startdate));
+            $tglstart    = date('d',strtotime($request->startdate));
+
+            $bulanEnd  = date('m',strtotime($request->enddate));
+            $tahunEnd  = date('Y',strtotime($request->enddate));
+            $tglEnd    = date('d',strtotime($request->enddate));
+
+            $start_date = date('Y-m',strtotime($request->startdate));
+            $end_date   = date('Y-m',strtotime($request->enddate));
+        }
+        
+        $jumtglstart = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun); // dapat jumlah tanggal 
+        $jumtglEnd = cal_days_in_month(CAL_GREGORIAN, $bulanEnd, $tahunEnd); // dapat jumlah tanggal
+        
+        if ($start_date != $end_date ){
             $header = [];
             $field = ['employee_id','employee_name'];
             for($i=$tglstart; $i<=$jumtglstart;$i ++){
                 if($i < 10){
                     array_push($header,'0'.(int)$i);
-                    array_push($field,'0'.(int)$i.' as d'.(int)$i);
+                    array_push($field,'s0'.(int)$i);
                 }else{
-                    array_push($field,$i.' as d'.$i);
                     array_push($header,$i);
+                    array_push($field,'s'.$i);
+                }
+            }
+
+            $headerEnd = [];
+            $fieldEnd = [];
+            for($i=1; $i<=$tglEnd;$i ++){
+                if($i < 10){
+                    array_push($headerEnd,'0'.(int)$i);
+                    array_push($fieldEnd,'e0'.(int)$i);
+                }else{
+                    array_push($headerEnd,$i);
+                    array_push($fieldEnd,'e'.$i);
                 }
             }
             $dtfield = [];
             foreach($field as $fs){
-                $f = "v_rekap_periode_attendance.$fs";
-                array_push($dtfield,$f);
+                array_push($dtfield,$fs);
             }
+            foreach($fieldEnd as $fe){
+                array_push($dtfield,$fe);
+            }
+            array_push($dtfield,'total');
+            $arExpl = implode(',',$dtfield);
+            $data= DB::SELECT("SELECT DISTINCT $arExpl FROM rekap_monthly_attendance('$start_date','$end_date') as a
+                                LEFT JOIN rekap_total_attendance('$request->startdate','$request->enddate',$request->branch_id) as b 
+                                ON b.employees_id= a.employee_id where branch_id = $request->branch_id");
+                                // dd($data);
+            $array = [];
+            $i=1;
+            foreach($data as $d){
+                $dtArr = [
+                    $i,
+                    $d->employee_id,
+                    $d->employee_name,
+                ];
+                $dtArr2 =[];
+                foreach($header as $h){
+                    $name = 's'.$h;
+                    array_push($dtArr2,$d->$name);
+                }
+                foreach($headerEnd as $s){
+                    $name = 'e'.$s;
+                    array_push($dtArr2,$d->$name);
+                }
+               
+                    array_push($dtArr2,$d->total);
+                
+                $dat=array_merge($dtArr,$dtArr2);
+                array_push($array,$dat);
+                $i++;
+            }
+            $dtTable['data'] = $array;
+            return DataTables::of($dtTable['data'])->make(true);
+        }else{
+            $header = [];
+            $field = ['employee_id','employee_name'];
+            for($i=$tglstart; $i<=$tglEnd;$i ++){
+                if($i < 10){
+                    array_push($header,'0'.(int)$i);
+                    array_push($field,'s0'.(int)$i);
+                }else{
+                    array_push($field,'s'.$i);
+                    array_push($header,$i);
+                }
+            }
+            array_push($header,'total');
+            $dtfield = [];
+            foreach($field as $fs){
+                array_push($dtfield,$fs);
+            }
+            array_push($dtfield,'total');
             $headerEnd = [];
             $jumtglEnd = 0;
             $tglEnd    = 0;
-            $data= DB::table('v_rekap_periode_attendance')
-                        ->distinct()
-                        ->leftJoin('v_rekap_periode_attendance_end','v_rekap_periode_attendance_end.employee_id','=', 'v_rekap_periode_attendance.employee_id')
-                        ->where('v_rekap_periode_attendance.bulan','=',$start_date)
-                        ->where('v_rekap_periode_attendance.branch_id',$request->branch_id)
-                        ->get($dtfield);
-                        // dd($start_date);
+            $exfil = implode(',',$dtfield);
+            $data= DB::SELECT("SELECT DISTINCT $exfil FROM rekap_monthly_attendance('$start_date','$end_date') as a
+                                LEFT JOIN rekap_total_attendance('$request->startdate','$request->enddate',$request->branch_id) as b
+                                ON b.employees_id = a.employee_id where branch_id = $request->branch_id");
+            $array = [];
+            $i=1;
+            foreach($data as $d){
+                $dtArr = [
+                    $i,
+                    $d->employee_id,
+                    $d->employee_name,
+                ];
+                $dtArr2 =[];
+                foreach($header as $h){
+                    if ($h == "total"){
+                        $name = 'total';
+                    }else{
+
+                        $name = 's'.$h;
+                    }
+                    array_push($dtArr2,$d->$name);
+                }
+                array_push($dtArr2,$d->total);
+                
+                $dat=array_merge($dtArr,$dtArr2);
+                array_push($array,$dat);
+                $i++;
+            }
+            $dtTable['data'] = $array;
+            return DataTables::of($dtTable['data'])->make(true);
         }
-        return view('pages.contents.report.attendance.rekap_monthly',
-                compact('header','data','tglstart','jumtglstart',
-                        'headerEnd','tglEnd','jumtglEnd','branches'));
+    
     }
     public function attendance_user(){
         $data['attendance'] = DB::table('attendance_employees')
