@@ -74,8 +74,8 @@
             <th class="border-top border-left">BPJS Kesehatan</th>
             <th class="border-top border-left">BPJS Ketenagakerjaan</th>
             <th class="border-top border-left">Total BPJS</th>
-            <th class="border-top border-left">Installment</th>
             <th class="border-top border-left">Loans</th>
+            <th class="border-top border-left">Cash Advance {{(auth()->user()->branch_id == 59) ? '/Gaji Gesa' : ''}}</th>
             <th class="border-top border-left">Total Deduction Other</th>
             <th class="border-top border-left">Pph21</th>
             <th class="border-top border-left">Total Deduction</th>

@@ -15,8 +15,8 @@
             <th class="border-top border-left">Employee Pay BPJS Kesehatan</th>
             <th class="border-top border-left">Employee Pay BPJS Ketenagakerjaan</th>
             <th class="border-top border-left">Total Employee Pay BPJS</th>
-            <th class="border-top border-left">Installment</th>
             <th class="border-top border-left">Loans</th>
+            <th class="border-top border-left">Cash Advance {{(auth()->user()->branch_id == 59) ? '/Gaji Gesa' : ''}}</th>
             <th class="border-top border-left">Total Deduction Other</th>
             <th class="border-top border-left">Pph21</th>
             <th class="border-top border-left">Total Deduction</th>
