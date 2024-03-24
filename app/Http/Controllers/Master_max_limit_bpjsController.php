@@ -20,24 +20,24 @@ class Master_max_limit_bpjsController extends Controller
     public function get_data(){
         $branch  = Auth::user()->branch_id;
         $branch = Branch::where('id',$branch)->first();
-        $data   = Master_limit_max_bpjs::where('branch_id','=',$branch->id)->get();
+        $data   = Master_limit_max_bpjs::all();
 
         return DataTables::of($data)
                         ->addIndexColumn()
                         ->addColumn('action', function($row){
                             $btn ='';
-                            // if(Auth()->user()->canany('edit bpjs')){
+                            if(Auth()->user()->canany('edit bpjs')){
                                 $btn .= '<div class="dropdown dropdown-action">
                                 <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                 <div class="dropdown-menu dropdown-menu-right">';
-                                // if(Auth()->user()->can('edit attendance')){
+                                if(Auth()->user()->can('edit bpjs')){
                                     $btn .= '<a  data-id='.$row->id.' class="dropdown-item edit-masterLimit-bpjs" href="javascript:void(0)" ><i class="fa fa-pencil m-r-5"></i> Edit</a>';
-                                // }
-                                // if(Auth()->user()->can('delete attendance')){
+                                }
+                                if(Auth()->user()->can('delete bpjs')){
                                     $btn .= '<a data-id='.$row->id.' class="dropdown-item delete-masterLimit-bpjs" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
-                                // }
+                                }
                                     $btn .= '</div></div>';
-                                // }
+                                }
                                 return $btn;
                             })
                         ->rawColumns(['action'])
