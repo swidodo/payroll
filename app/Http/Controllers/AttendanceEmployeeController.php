@@ -1078,12 +1078,13 @@ class AttendanceEmployeeController extends Controller
             foreach($fieldEnd as $fe){
                 array_push($dtfield,$fe);
             }
-            array_push($dtfield,'total');
+            array_push($dtfield,'wd');
             $arExpl = implode(',',$dtfield);
             $data= DB::SELECT("SELECT DISTINCT $arExpl FROM rekap_monthly_attendance('$start_date','$end_date') as a
-                                LEFT JOIN rekap_total_attendance('$request->startdate','$request->enddate',$request->branch_id) as b 
+                                LEFT JOIN getattendance('".$request->startdate."','".$request->enddate."','".$request->branch_id."') as b
                                 ON b.employees_id= a.employee_id where branch_id = $request->branch_id");
                                 // dd($data);
+                                // rekap_total_attendance('$request->startdate','$request->enddate',$request->branch_id) as b 
             $array = [];
             $i=1;
             foreach($data as $d){
@@ -1122,19 +1123,20 @@ class AttendanceEmployeeController extends Controller
                     array_push($header,$i);
                 }
             }
-            array_push($header,'total');
+            array_push($header,'wd');
             $dtfield = [];
             foreach($field as $fs){
                 array_push($dtfield,$fs);
             }
-            array_push($dtfield,'total');
+            array_push($dtfield,'wd');
             $headerEnd = [];
             $jumtglEnd = 0;
             $tglEnd    = 0;
             $exfil = implode(',',$dtfield);
             $data= DB::SELECT("SELECT DISTINCT $exfil FROM rekap_monthly_attendance('$start_date','$end_date') as a
-                                LEFT JOIN rekap_total_attendance('$request->startdate','$request->enddate',$request->branch_id) as b
-                                ON b.employees_id = a.employee_id where branch_id = $request->branch_id");
+                                LEFT JOIN SELECT * FROM getattendance('".$request->startdate."','".$request->enddate."','".$request->branch_id."') as b
+                                ON b.no_employee = a.employee_id where branch_id = $request->branch_id");
+                                // rekap_total_attendance('$request->startdate','$request->enddate',$request->branch_id) as b
             $array = [];
             $i=1;
             foreach($data as $d){
@@ -1145,8 +1147,8 @@ class AttendanceEmployeeController extends Controller
                 ];
                 $dtArr2 =[];
                 foreach($header as $h){
-                    if ($h == "total"){
-                        $name = 'total';
+                    if ($h == "wd"){
+                        $name = 'wd';
                     }else{
 
                         $name = 's'.$h;
