@@ -81,9 +81,9 @@
                                 <th>Employee Bpjs Kesehatan</th>
                                 <th>Employee Bpjs Ketenegakerjaan</th>
                                 <th>Employee Bpjs Total</th>
-                                <th>Loan Installment</th>
-                                <th>Loan Kasbon</th>
-                                <th>Total Loan</th>
+                                <th>Loans</th>
+                                <th>Cash Advance</th>
+                                <th>Total Loan+Cash Advance</th>
                                 <th>Total Deduction Other</th>
                                 <th>Pph21</th>
                                 <th>Total Deduction</th>

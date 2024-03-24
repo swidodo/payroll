@@ -600,8 +600,9 @@ class PayrollController extends Controller
             }
             
             // thp
-            $thps = DB::select("SELECT a.*,b.position_id,b.name as emp_name FROM get_take_home_pay('".$request->startdate."','".$request->enddate."','".$request->branch_id."') as a LEFT JOIN employees as b
-                ON a.employee_id = b.id and b.status = 'active'");
+            $thps = DB::select("SELECT a.*,b.position_id,b.name as emp_name 
+            FROM get_take_home_pay('".$request->startdate."','".$request->enddate."','".$request->branch_id."') as a 
+            LEFT JOIN employees as b ON a.employee_id = b.id and b.status = 'active'");
                 
             $data_thp = [];
             foreach($thps as $thp) {
@@ -648,14 +649,14 @@ class PayrollController extends Controller
                 $month = date('m',strtotime($request->enddate));
                 $year = date('Y',strtotime($request->enddate));
                 $loans =  DB::table('loans')
-                    ->select('loans.*')
-                    ->leftJoin('loan_options','loan_options.id','loans.loan_type_id')
-                    ->where('loans.employee_id',$thp->employee_id)
-                    ->where('loans.branch_id',$request->branch_id)
-                    ->where('loans.status','ongoing')
-                    // ->whereMonth('loans.updated_at', $month)
-                    // ->whereYear('loans.updated_at', $year)
-                    ->get();
+                            ->select('loans.*')
+                            ->leftJoin('loan_options','loan_options.id','loans.loan_type_id')
+                            ->where('loans.employee_id',$thp->employee_id)
+                            ->where('loans.branch_id',$request->branch_id)
+                            ->where('loans.status','ongoing')
+                            // ->whereMonth('loans.updated_at', $month)
+                            // ->whereYear('loans.updated_at', $year)
+                            ->get();
 
                 if ($loans !=null){
                     foreach($loans as $empLoans){
