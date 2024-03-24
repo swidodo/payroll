@@ -1078,11 +1078,11 @@ class AttendanceEmployeeController extends Controller
             foreach($fieldEnd as $fe){
                 array_push($dtfield,$fe);
             }
-            array_push($dtfield,'wd');
+            array_push($dtfield,'wda');
             $arExpl = implode(',',$dtfield);
             $data= DB::SELECT("SELECT DISTINCT $arExpl FROM rekap_monthly_attendance('$start_date','$end_date') as a
                                 LEFT JOIN getattendance('".$request->startdate."','".$request->enddate."','".$request->branch_id."') as b
-                                ON b.employees_id= a.employee_id where branch_id = $request->branch_id");
+                                ON b.noemployee= a.employee_id where branch_id = $request->branch_id");
                                 // dd($data);
                                 // rekap_total_attendance('$request->startdate','$request->enddate',$request->branch_id) as b 
             $array = [];
@@ -1103,7 +1103,7 @@ class AttendanceEmployeeController extends Controller
                     array_push($dtArr2,$d->$name);
                 }
                
-                    array_push($dtArr2,$d->total);
+                    array_push($dtArr2,$d->wda);
                 
                 $dat=array_merge($dtArr,$dtArr2);
                 array_push($array,$dat);
@@ -1123,12 +1123,12 @@ class AttendanceEmployeeController extends Controller
                     array_push($header,$i);
                 }
             }
-            array_push($header,'wd');
+            array_push($header,'wda');
             $dtfield = [];
             foreach($field as $fs){
                 array_push($dtfield,$fs);
             }
-            array_push($dtfield,'wd');
+            array_push($dtfield,'wda');
             $headerEnd = [];
             $jumtglEnd = 0;
             $tglEnd    = 0;
@@ -1155,7 +1155,7 @@ class AttendanceEmployeeController extends Controller
                     }
                     array_push($dtArr2,$d->$name);
                 }
-                array_push($dtArr2,$d->total);
+                array_push($dtArr2,$d->wda);
                 
                 $dat=array_merge($dtArr,$dtArr2);
                 array_push($array,$dat);
