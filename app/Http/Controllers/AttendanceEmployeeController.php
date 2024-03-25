@@ -129,9 +129,9 @@ class AttendanceEmployeeController extends Controller
                                 if(Auth()->user()->can('edit attendance')){
                                     $btn .= '<a  data-url='.route('attendance.edit', $row->id).' id="edit-attendance_btn" class="dropdown-item edit-attendance" href="javascript:void(0)" ><i class="fa fa-pencil m-r-5"></i> Edit</a>';
                                 }
-                                // if(Auth()->user()->can('delete attendance')){
-                                //     $btn .= '<a id="delete-attendance" data-url='.route('attendance.destroy', $row->id).' class="dropdown-item" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
-                                // }
+                                if(Auth()->user()->can('delete attendance')){
+                                    $btn .= '<a id="delete-attendance" data-url='.route('attendance.destroy', $row->id).' class="dropdown-item" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
+                                }
                                     $btn .= '</div></div>';
                                 }
                                 return $btn;
