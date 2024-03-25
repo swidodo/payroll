@@ -199,15 +199,15 @@
                 })
                 $('#edit_attendance').modal('show')
             })
-            $(document).on('click','.delete-attendance',function(e){
-                e.preventDefault();
-                var url = $(this).attr('data-url');
-                $('#delete_attendance').modal('show')
-                // $.get(url,(data)=>{
-                //     console.log(data);
-                // })
+            // $(document).on('click','.delete-attendance',function(e){
+            //     e.preventDefault();
+            //     var url = $(this).attr('data-url');
+            //     $('#delete_attendance').modal('show')
+            //     // $.get(url,(data)=>{
+            //     //     console.log(data);
+            //     // })
 
-            })
+            // })
         });
         var employeeId = [];
         $(document).on('change','.checkedEmployee',function(){
