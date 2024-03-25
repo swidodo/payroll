@@ -273,6 +273,7 @@ class AttendanceEmployeeController extends Controller
     {
         if (Auth::user()->can('delete attendance')) {
             try{
+                dd($request->id);
                 AttendanceEmployee::destroy($request->id);
                 $res = [
                     'status' => 'success',
