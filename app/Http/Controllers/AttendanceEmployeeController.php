@@ -273,8 +273,7 @@ class AttendanceEmployeeController extends Controller
     {
         if (Auth::user()->can('delete attendance')) {
             try{
-                $attendance = AttendanceEmployee::where('id', $request->id)->first();
-                $attendance->delete();
+                AttendanceEmployee::where('id', $request->id)->delete();
                 $res = [
                     'status' => 'success',
                     'msg'    => 'Data successfully Deleted !'
