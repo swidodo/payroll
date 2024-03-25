@@ -130,7 +130,7 @@ class AttendanceEmployeeController extends Controller
                                     $btn .= '<a  data-url='.route('attendance.edit', $row->id).' id="edit-attendance_btn" class="dropdown-item edit-attendance" href="javascript:void(0)" ><i class="fa fa-pencil m-r-5"></i> Edit</a>';
                                 }
                                 if(Auth()->user()->can('delete attendance')){
-                                    $btn .= '<a id='.$row->id.' class="dropdown-item delete-attendance" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
+                                    $btn .= '<a data-id='.$row->id.' class="dropdown-item delete-attendance" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
                                 }
                                     $btn .= '</div></div>';
                                 }
@@ -273,7 +273,6 @@ class AttendanceEmployeeController extends Controller
     {
         if (Auth::user()->can('delete attendance')) {
             try{
-                dd($request->id);
                 AttendanceEmployee::destroy($request->id);
                 $res = [
                     'status' => 'success',
