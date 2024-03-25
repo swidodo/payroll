@@ -826,7 +826,8 @@ class AttendanceEmployeeController extends Controller
         // dd($sheetData);
         foreach ($sheetData as $key => $value) {
             if ($key > 0) :
-                $employeeId = employee::where('no_employee',$value[1])->where('branch_id',Auth::user()->branch_id)->first();
+                // $employeeId = employee::where('no_employee',$value[1])->where('branch_id',Auth::user()->branch_id)->first();
+                $employeeId = employee::where('no_employee',$value[1])->where('branch_id',$value[10])->first();
                 if ($employeeId != null ):
                     $checked = AttendanceEmployee::where('employee_id',$employeeId->id)->where('date',$value[3])->first();
                     if ($checked !=null):
