@@ -130,7 +130,7 @@ class AttendanceEmployeeController extends Controller
                                     $btn .= '<a  data-url='.route('attendance.edit', $row->id).' id="edit-attendance_btn" class="dropdown-item edit-attendance" href="javascript:void(0)" ><i class="fa fa-pencil m-r-5"></i> Edit</a>';
                                 }
                                 if(Auth()->user()->can('delete attendance')){
-                                    $btn .= '<a id="delete-attendance" data-url='.route('attendance.destroy', $row->id).' class="dropdown-item" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
+                                    $btn .= '<a id='.$row->id.' class="dropdown-item delete-attendance" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
                                 }
                                     $btn .= '</div></div>';
                                 }
@@ -269,17 +269,30 @@ class AttendanceEmployeeController extends Controller
         // }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         if (Auth::user()->can('delete attendance')) {
-            $attendance = AttendanceEmployee::where('id', $id)->first();
-
-            $attendance->delete();
-
-            return redirect()->route('attendance.index')->with('success', 'Attendance successfully deleted.');
+            try{
+                $attendance = AttendanceEmployee::where('id', $request->id)->first();
+                $attendance->delete();
+                $res = [
+                    'status' => 'success',
+                    'msg'    => 'Data successfully Deleted !'
+                ];
+                return response()->json($res);
+            }catch(Exception $e){
+                $res = [
+                    'status' =>'error',
+                    'msg'    =>'Data Fail Deleted !',
+                ];
+                return response()->json($res);
+            }
         } else {
-            toast('Permission denied.', 'error');
-            return redirect()->back();
+            $res = [
+                'status' =>'error',
+                'msg'    =>'Data Fail Deleted !',
+            ];
+            return response()->json($res);
         }
     }
 

@@ -363,6 +363,7 @@ Route::group(['middleware' => 'auth'], function () {
         // Attendance
         // Route::post('import-excel-attendance', [AttendanceEmployeeController::class, 'importExcel'])->name('import.excel.attendace');
         Route::post('import-excel-attendance', [AttendanceEmployeeController::class, 'importExcel'])->name('import-excel-attendance');
+        Route::post('delete-attendance', [AttendanceEmployeeController::class, 'destroy'])->name('delete-attendance');
         Route::get('location-attendance-maps/{id}', [AttendanceEmployeeController::class, 'view_maps'])->name('location-attendance-maps');
 
         // Employees

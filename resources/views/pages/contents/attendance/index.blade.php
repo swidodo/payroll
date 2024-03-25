@@ -509,5 +509,42 @@
 
                 })
         })
+        $(document).on('click','.delete-attendance',function(e){
+            e.preventDefault();
+            var branchId = $('#branch_id').val();
+            var id = $(this).attr('data-id')
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then(function(confirm){
+            if (confirm.value == true){
+                $.ajax({
+                    url : 'delete-attendance',
+                    type : 'post',
+                    data : {id : id},
+                    dataType : 'json',
+                    beforeSend : function(){
+                        $('.containerLoader').attr('hidden',false)
+                    },
+                    success : function(respon){
+                        $('.containerLoader').attr('hidden',true)
+                        swal.fire({
+                            icon : respon.status,
+                            text : respon.msg,
+                        })
+                        loadData(branchId ,"")
+                    },
+                    error : function (){
+                        alert('There is an error !, please try again')
+                    }
+                })
+            }
+        })
+        })
     </script>
 @endpush
