@@ -508,7 +508,7 @@ class Template_v3Controller extends Controller
                             }
                         }
                         if ($value[30] !=null){
-                            $thr = "THR (masa kerja '.$value[29].')";
+                            $thr = "THR (masa kerja $value[29] bulan)";
                             $opt = AllowanceOption::where('name', $thr)->where('pay_type','unfixed')->where('include_attendance','N')->first();
                             if ($opt !=null){
                                 $data =[
