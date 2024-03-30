@@ -7,7 +7,6 @@
 
     <!-- Page Content -->
     <div class="content container-fluid">
-
         <!-- Page Header -->
         <div class="page-header">
             <div class="row align-items-center">
@@ -24,69 +23,64 @@
                 </div>
             </div>
         </div>
-        <!-- /Page Header -->
-        @if (Session::has('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>{{Session::get('success')}}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                </button>
-            </div>
-        @endif
-
+        
         <div class="row">
+            
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form method="GET" action="{{route('attendance.index')}}" accept-charset="UTF-8" id="attendanceemployee_filter">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="btn-box">
-                                        <label for="attendance" class="form-label">Branch</label>
-                                        <select class="form-control select" id="branch" name="branch">
-                                            <option value="" selected>--select branch --</option>
-                                            @foreach ($branch as $branch)
-                                                <option value="{{$branch->id}}">{{$branch->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="btn-box">
-                                        <label for="attendance" class="form-label">Department</label>
-                                        <select class="form-control select" id="department_id" name="department_id">
-                                            
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-2 align-self-end">
-                                    <button type="button" class="btn btn-primary align-self-center" id="btnSerach">search <span class="btn-inner--icon"><i class="la la-search"></i></span></button>
-                                </div> 
+                        @if(isset($leave))
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table w-100" id="attandaceList">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Employee ID</th>
+                                            <th>Employee</th>
+                                            <th>Department</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Leave reason</th>
+                                            <th>Total days</th>
+                                            <th class="text-end">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($leave as $l )
+                                            <tr>
+                                                <td>{{$l->no_employee}}</td>
+                                                <td>{{$l->employee_name}}</td>
+                                                <td>{{$l->department_name}}</td>
+                                                <td>{{$l->start_date}}</td>
+                                                <td>{{$l->end_date}}</td>
+                                                <td>{{$l->leave_reason}}</td>
+                                                <td>{{$l->total_leave_days}}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped custom-table w-100" id="attandaceList">
-                                <thead>
-                                    <tr>
-                                        <th>Status Approve</th>
-                                        <th>Employee ID</th>
-                                        <th>Employee</th>
-                                        <th>Department</th>
-                                        <th>Branch</th>
-                                        <th class="text-end">Action</th>
-                                    </tr>
-                                </thead>
+                        @endif
+                        @if(isset($loan))
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table w-100" id="attandaceList">
+                                    <thead>
+                                        <tr>
+                                            <th>Status Approve</th>
+                                            <th>Employee ID</th>
+                                            <th>Employee</th>
+                                            <th>Department</th>
+                                            <th>Branch</th>
+                                            <th class="text-end">Action</th>
+                                        </tr>
+                                    </thead>
 
-                                <tbody>
+                                    <tbody>
 
-                                </tbody>
-                            </table>
-                        </div>
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

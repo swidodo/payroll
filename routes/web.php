@@ -629,6 +629,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('edit-approval',[ApprovalController::class,'edit']);
         Route::post('update-approval',[ApprovalController::class,'update']);
         Route::post('delete-approval',[ApprovalController::class,'destroy']);
+        Route::post('action-need',[ApprovalController::class,'list_approval']);
 
 });
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Approval;
+use App\Models\Leave;
 use App\Models\Branch;
 use App\Models\Departement;
 use App\Models\Employee;
@@ -178,6 +179,269 @@ class ApprovalController extends Controller
                 'msg'    => 'Something went wrong!'
             ];
             return response()->json($res);
+        }
+    }
+    public function list_approval(){
+        $query = Employee::where('user_id',Auth::user()->id)->first();
+        $data['leave']      = DB::table('v_approve_leave')
+                                ->select('v_approve_leave.*','employees.name as employee_name')
+                                ->leftJoin('employees','employees.id','=','v_approve_leave.employee_id')
+                                ->where('employee_id',$query->employee_id)
+                                ->where('branch_id',$query->branch_id)->get();
+        $data['loan']       = DB::table('v_approve_loan')
+                                ->select('v_approve_loan.*','employees.name as employee_name')
+                                ->leftJoin('employees','employees.id','=','v_approve_loan.employee_id')
+        ->where('employee_id',$query->employee_id)->where('branch_id',$query->branch_id)->get();
+        $data['overtime']   = DB::table('v_overtime_loan')->where('employee_id',$query->employee_id)->where('branch_id',$query->branch_id)->get();
+        $data['timesheet']  = DB::table('v_timesheet_loan')->where('employee_id',$query->employee_id)->where('branch_id',$query->branch_id)->get();
+        return view('pages.contents.approvel.list_approve');
+    }
+    public function approve(Request $request){
+        $chekLevel = DB::table('level_approve')
+                        ->select('level')
+                        ->where('employee_id',$request->employee_id)
+                        ->where('branch_id',Auth::user()->branch_id)->where('department_id',$request->department_id)
+                        ->first();
+        $countLevel = DB::table('level_approve')
+                        ->select('level')
+                        ->where('employee_id',$request->employee_id)
+                        ->where('branch_id',Auth::user()->branch_id)->where('department_id',$request->department_id)
+                        ->orderBy('level','desc')
+                        ->limit(1)
+                        ->first();
+        if ($cekLevel != null){
+            // approve leave
+            if ($request->type = 'leave'){
+                if ($cekLevel->level == '1'){
+                    if($countLevel == '1'){
+                        DB::table('leave_approvals')
+                        ->where('leave_id',$request->leave_id)
+                        ->update([
+                            'status'    => '3',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                        Leave::where('id',$request->leave_id)
+                        ->update([
+                            'status' => 'approve'
+                        ]);
+                    }else{
+                        DB::table('leave_approvals')->update([
+                            'status'    => '1',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                    }
+                }else if($cekLevel->level == '2'){
+                    if($countLevel == '2'){
+                        DB::table('leave_approvals')
+                        ->where('leave_id',$request->leave_id)
+                        ->update([
+                            'status'    => '3',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                        Leave::where('id',$request->leave_id)
+                        ->update([
+                            'status' => 'approve'
+                        ]);
+                    }else{
+                        DB::table('leave_approvals')->update([
+                            'status'    => '1',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                    }
+                }else if($cekLevel->level == '3'){
+                    if($countLevel == '3'){
+                        DB::table('leave_approvals')
+                        ->where('leave_id',$request->leave_id)
+                        ->update([
+                            'status'    => '3',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                        Leave::where('id',$request->leave_id)
+                        ->update([
+                            'status' => 'approve'
+                        ]);
+                    }else{
+                        DB::table('leave_approvals')->update([
+                            'status'    => '1',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                    }
+                }
+            }
+            // approve overtime
+            if ($request->type = 'overtime'){
+                if ($cekLevel->level == '1'){
+                    if($countLevel == '1'){
+                        DB::table('overtime_approvals')
+                        ->where('overtime_id',$request->overtime_id)
+                        ->update([
+                            'status'    => '3',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                        Overtime::where('id',$request->overtime_id)
+                        ->update([
+                            'status' => 'approve'
+                        ]);
+                    }else{
+                        DB::table('overtime_approvals')->update([
+                            'status'    => '1',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                    }
+                }else if($cekLevel->level == '2'){
+                    if($countLevel == '2'){
+                        DB::table('overtime_approvals')
+                        ->where('overtime_id',$request->overtime_id)
+                        ->update([
+                            'status'    => '3',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                        Overtime::where('id',$request->overtime_id)
+                        ->update([
+                            'status' => 'approve'
+                        ]);
+                    }else{
+                        DB::table('overtime_approvals')->update([
+                            'status'    => '1',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                    }
+                }else if($cekLevel->level == '3'){
+                    if($countLevel == '3'){
+                        DB::table('overtime_approvals')
+                        ->where('overtime_id',$request->overtime_id)
+                        ->update([
+                            'status'    => '3',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                        Overtime::where('id',$request->overtime_id)
+                        ->update([
+                            'status' => 'approve'
+                        ]);
+                    }else{
+                        DB::table('overtime_approvals')->update([
+                            'status'    => '1',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                    }
+                }
+            }
+            // approval loan
+            if ($request->type = 'loan'){
+                if ($cekLevel->level == '1'){
+                    if($countLevel == '1'){
+                        DB::table('loan_approvals')
+                        ->where('loan_id',$request->loan_id)
+                        ->update([
+                            'status'    => '3',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                        Loan::where('id',$request->loan_id)
+                        ->update([
+                            'status' => 'approve'
+                        ]);
+                    }else{
+                        DB::table('loan_approvals')->update([
+                            'status'    => '1',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                    }
+                }else if($cekLevel->level == '2'){
+                    if($countLevel == '2'){
+                        DB::table('loan_approvals')
+                        ->where('loan_id',$request->loan_id)
+                        ->update([
+                            'status'    => '3',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                        Loan::where('id',$request->loan_id)
+                        ->update([
+                            'status' => 'approve'
+                        ]);
+                    }else{
+                        DB::table('loan_approvals')->update([
+                            'status'    => '1',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                    }
+                }else if($cekLevel->level == '3'){
+                    if($countLevel == '3'){
+                        DB::table('loan_approvals')
+                        ->where('loan_id',$request->loan_id)
+                        ->update([
+                            'status'    => '3',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                        Loan::where('id',$request->loan_id)
+                        ->update([
+                            'status' => 'approve'
+                        ]);
+                    }else{
+                        DB::table('loan_approvals')->update([
+                            'status'    => '1',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                    }
+                }
+            }
+            // timesheet
+            if ($request->type = 'timesheet'){
+                if ($cekLevel->level == '1'){
+                    if($countLevel == '1'){
+                        DB::table('timesheet_approvals')
+                        ->where('timesheet_id',$request->timesheet_id)
+                        ->update([
+                            'status'    => '3',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                        Timesheet::where('id',$request->timesheet_id)
+                        ->update([
+                            'status' => 'approve'
+                        ]);
+                    }else{
+                        DB::table('timesheet_approvals')->update([
+                            'status'    => '1',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                    }
+                }else if($cekLevel->level == '2'){
+                    if($countLevel == '2'){
+                        DB::table('timesheet_approvals')
+                        ->where('timesheet_id',$request->timesheet_id)
+                        ->update([
+                            'status'    => '3',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                        Timesheet::where('id',$request->timesheet_id)
+                        ->update([
+                            'status' => 'approve'
+                        ]);
+                    }else{
+                        DB::table('timesheet_approvals')->update([
+                            'status'    => '1',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                    }
+                }else if($cekLevel->level == '3'){
+                    if($countLevel == '3'){
+                        DB::table('timesheet_approvals')
+                        ->where('timesheet_id',$request->timesheet_id)
+                        ->update([
+                            'status'    => '3',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                        Timesheet::where('id',$request->timesheet_id)
+                        ->update([
+                            'status' => 'approve'
+                        ]);
+                    }else{
+                        DB::table('timesheet_approvals')->update([
+                            'status'    => '1',
+                            'approve_1' => $request->employee_id,
+                        ]);
+                    }
+                }
+            }
         }
     }
     

@@ -91,7 +91,8 @@ class Template_v3Controller extends Controller
                         }
                         $basic_salary     = (($value[3] !=null) ? $value[3] : 0);
                         $meal_allowance   = (($value[6] !=null) ? $value[6] : 0) * (($value[4] !=null) ? $value[4] : 0);
-                        $allowanceUnfixed = $meal_allowance + (($value[7] !=null) ? $value[7] : 0 ) + (($value[8] !=null) ? $value[8] : 0 ) + (($value[9] !=null) ? $value[9] : 0 ) +(($value[10] !=null) ? $value[10] : 0 )+(($value[11] !=null) ? $value[11] : 0 )+(($value[12] !=null) ? $value[12] : 0 );
+                        $thr = (($value[30] !=null) ? $value[30] : 0);
+                        $allowanceUnfixed = $meal_allowance + $thr + (($value[7] !=null) ? $value[7] : 0 ) + (($value[8] !=null) ? $value[8] : 0 ) + (($value[9] !=null) ? $value[9] : 0 ) +(($value[10] !=null) ? $value[10] : 0 )+(($value[11] !=null) ? $value[11] : 0 )+(($value[12] !=null) ? $value[12] : 0 );
                         $allowancefixed   = (($value[5] !=null) ? $value[5] : 0 );
                         $overtime         = (($value[13] !=null) ? $value[13] : 0);
                         $val_salarymonth  =  $basic_salary + $allowancefixed + $allowanceUnfixed +  $overtime;
@@ -496,6 +497,48 @@ class Template_v3Controller extends Controller
                                     'employee_id'       => $employeeId->id,
                                     'allowance_option_id' => DB::getPdo()->lastInsertId(),
                                     'amount'            => (($value[12] !=null) ? $value[12] : 0 ),
+                                    'created_by'        => Auth::user()->creatorId(),
+                                    'date'              => date('Y-m-d', strtotime($value[27])),
+                                    'branch_id'          => $employeeId->branch_id,
+                                    'created_at'        => $value[27].' '.date('h:m:s'),
+                                    'updated_at'        => $value[27].' '.date('h:m:s')
+                                ];
+                                DB::table('allowances')->insert($data);
+                                
+                            }
+                        }
+                        if ($value[30] !=null){
+                            $thr = "THR (masa kerja '.$value[29].')";
+                            $opt = AllowanceOption::where('name', $thr)->where('pay_type','unfixed')->where('include_attendance','N')->first();
+                            if ($opt !=null){
+                                $data =[
+                                    'employee_id'       => $employeeId->id,
+                                    'allowance_option_id' => $opt->id,
+                                    'amount'            => (($value[30] !=null) ? $value[30] : 0 ),
+                                    'created_by'        => Auth::user()->id,
+                                    'date'              => date('Y-m-d', strtotime($value[27])),
+                                    'branch_id'          => $employeeId->branch_id,
+                                    'created_at'        => $value[27].' '.date('h:m:s'),
+                                    'updated_at'        => $value[27].' '.date('h:m:s')
+                                ];
+                                DB::table('allowances')->insert($data);
+                            }else{
+                                $opts = [
+                                    'name'               =>  $thr,
+                                    'pay_type'           => 'unfixed',
+                                    'include_attendance' => 'N',
+                                    'branch_id'          => $employeeId->branch_id,
+                                    'created_by'         => Auth::user()->id,
+                                    'created_at'        =>  $value[27].' '.date('h:m:s'),
+                                    'updated_at'        =>  $value[27].' '.date('h:m:s')
+                                ];
+                                
+                                $createOpt = AllowanceOption::Insert($opts);
+                                
+                                $data =[
+                                    'employee_id'       => $employeeId->id,
+                                    'allowance_option_id' => DB::getPdo()->lastInsertId(),
+                                    'amount'            => (($value[30] !=null) ? $value[30] : 0 ),
                                     'created_by'        => Auth::user()->creatorId(),
                                     'date'              => date('Y-m-d', strtotime($value[27])),
                                     'branch_id'          => $employeeId->branch_id,
