@@ -86,7 +86,7 @@ class PayrollController extends Controller
     public function get_data_setpayroll(Request $request){
         $data['employee']        = Employee::where('branch_id', '=',$request->branch_id)->get();
         $data['allowanceTypes']  = AllowanceOption::where('branch_id', '=', $request->branch_id)->get();
-        $data['data_bpjs'  ]     = Master_bpjs::where('branch_id','=',Auth::user()->branch_id)->get();
+        $data['data_bpjs'  ]     = Master_bpjs::where('branch_id','=',$request->branch_id)->get();
         return response()->json($data);
     }
     public function store(Request $request)
