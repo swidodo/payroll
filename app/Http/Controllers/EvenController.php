@@ -152,7 +152,7 @@ class EvenController extends Controller
         }
         $data = [
             'title'         => $request->title,
-            'image'         => $request->$link_attach,
+            'image'         => $request->link_attach,
             'content'       => $request->content,
         ];
         $update = Even::where('id',$request->id)->update($data);
