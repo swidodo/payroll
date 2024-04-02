@@ -11,8 +11,8 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Validator;
 class EvenController extends Controller
 {
     public function index(Request $request){
@@ -66,7 +66,7 @@ class EvenController extends Controller
         }else{
             $branch['branch'] = Branch::where('id',$user->id)->get();
         }
-        $branch['data'] = $request->branch_id;
+        $branchSelect['data'] = $request->branch_id;
         // upload file
         if(isset($request->image)){
             $dta = Branch::select('branches.name as branch_name','companies.name as company_name')
@@ -102,7 +102,7 @@ class EvenController extends Controller
                     'status'        =>0
                 ]);
 
-        return redirect()->route('get-even',$branch)->with('success', 'Branch  successfully created.');
+        return redirect()->route('get-even',$branchSelect)->with('success', 'Branch  successfully created.');
     }
     public function edit(Request $request){
         $data['info'] = Even::find($request->id);
@@ -115,7 +115,7 @@ class EvenController extends Controller
         }else{
             $branch['branch'] = Branch::where('id',$user->id)->get();
         }
-        $branch['data'] = $request->branch_id;
+        $branchSelect['data'] = $request->branch_id;
 
         // upload data
         $linkId = Even::where('id',$request->id)->first();
@@ -156,7 +156,7 @@ class EvenController extends Controller
             'content'       => $request->content,
         ];
         $update = Even::where('id',$request->id)->update($data);
-        return redirect()->route('get-even',$branch)->with('success', 'Even  successfully updated.');
+        return redirect()->route('get-even',$branchSelect)->with('success', 'Even  successfully updated.');
     }
     public function publish(Request $request){
         $data = [

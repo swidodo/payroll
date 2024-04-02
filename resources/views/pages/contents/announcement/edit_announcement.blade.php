@@ -21,13 +21,17 @@
         <!-- /Page Header -->
         <div class="row">
             <div class="col-md-12">
-                <form id="formAnnouncement" action="{{route('update-announcement')}}" method="post">
+                <form id="formAnnouncement" action="{{route('update-announcement')}}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label>Title</label>
                         <input type="hidden" name="id" class="form-control" value="{{ $info->id }}">
                         <input type="hidden" name="branch_id" class="form-control" value="{{ $info->branch_id }}">
                         <input type="text" name="title" class="form-control" value="{{ $info->title }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Image</label>
+                        <input type="file" name="image" value="" class="form-control">
                     </div>
                     <div class="form-group">
                         <label>Content</label>

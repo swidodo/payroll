@@ -11,7 +11,8 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 class InformationController extends Controller
 {
     public function index(Request $request){
@@ -70,18 +71,43 @@ class InformationController extends Controller
         }else{
             $branch['branch'] = Branch::where('id',$user->id)->get();
         }
-        $branch['data'] = $request->branch_id;
+        $branchselect['data'] = $request->branch_id;
+         // upload file
+         if(isset($request->image)){
+            $dta = Branch::select('branches.name as branch_name','companies.name as company_name')
+                        ->leftJoin('companies','companies.id','=','branches.company_id')
+                        ->where('branches.id',Auth::user()->branch_id)->first();
+            $company    =  $dta->branch_name;
+            $branch     =  $dta->company_name;
+            $tahun      =  date('Y');
+            $bulan      =  date('m');
+            $tanggal    =  date('d-m-Y');
+
+            $dir        = $company.'/'.$branch.'/'.$tahun.'/'.$bulan.'/'.$tanggal.'/';
+            $path = 'annoucement/'.$dir.$request->get('image');
+            if (! Storage::exists($path)) {
+                Storage::makeDirectory($path,775,true);
+            }
+
+            $fileName = time() . $request->file('image')->getClientOriginalName();
+            $store = $request->file('image')->storeAs($path, $fileName);
+            $pathFile_application = 'storage/app/public/'.$path . $fileName ?? null;
+            $base = URL::to('/');
+            $linkAttach = $base.'/'.$pathFile_application;
+        }else{
+            $linkAttach = null;
+        }
         $save = Information::create([
                     'date'          => date('Y-m-d'),
                     'title'         => $request->title,
-                    'content'       => $request->content,
+                    'image'         => $linkAttach,
                     'content'       => $request->content,
                     'branch_id'     => $request->branch_id,
                     'created_by'    => Auth::user()->id,
                     'status'        =>0
                 ]);
 
-        return redirect()->route('get-announcement',$branch)->with('success', 'Announcement  successfully created.');
+        return redirect()->route('get-announcement',$branchselect)->with('success', 'Announcement  successfully created.');
     }
     public function edit(Request $request){
         $data['info'] = Information::find($request->id);
@@ -95,8 +121,40 @@ class InformationController extends Controller
             $branch['branch'] = Branch::where('id',$user->id)->get();
         }
         $branch['data'] = $request->branch_id;
+        $linkId = Information::where('id',$request->id)->first();
+        if(isset($request->image)){
+            $dta = Branch::select('branches.name as branch_name','companies.name as company_name')
+                        ->leftJoin('companies','companies.id','=','branches.company_id')
+                        ->where('branches.id',Auth::user()->branch_id)->first();
+            $company    =  $dta->branch_name;
+            $branch     =  $dta->company_name;
+            $tahun      =  date('Y');
+            $bulan      =  date('m');
+            $tanggal    =  date('d-m-Y');
+            $dir        = $company.'/'.$branch.'/'.$tahun.'/'.$bulan.'/'.$tanggal.'/';
+            $path = 'annoucement/'.$dir.$request->get('image');
+            if (! Storage::exists($path)) {
+                Storage::makeDirectory($path,775,true);
+            }
+            
+            $fileName = time() . $request->file('image')->getClientOriginalName();
+            $store = $request->file('image')->storeAs($path, $fileName);
+            $pathFile_application = 'storage/app/public/'.$path . $fileName ?? null;
+            $base = URL::to('/');
+            $link_attach = $base.'/'.$pathFile_application;
+
+            $hide = $base.'/storage/app/public';
+            $storagePublic = str_replace($hide,'',$linkId->image);
+            if (Storage::exists($storagePublic)) {
+                Storage::delete($storagePublic);
+            }
+    
+        }else{
+            $link_attach = $linkId->image;
+        }
         $data = [
             'title'         => $request->title,
+            'image'         => $link_attach,
             'content'       => $request->content,
         ];
         $update = Information::where('id',$request->id)->update($data);
@@ -121,6 +179,13 @@ class InformationController extends Controller
         return response()->json($res);
     }
     public function destroy(Request $request){
+        $linkId = Information::where('id',$request->id)->first();
+        $base = URL::to('/');
+        $hide = $base.'/storage/app/public';
+        $storagePublic = str_replace($hide,'',$linkId->image);
+        if (Storage::exists($storagePublic)) {
+            Storage::delete($storagePublic);
+        }
         $del = Information::where('id',$request->id)->delete();
         if($del){
             $res = [

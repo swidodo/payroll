@@ -21,7 +21,7 @@
         <!-- /Page Header -->
         <div class="row">
             <div class="col-md-12">
-                <form action="{{ route('save-announcement') }}" method="POST">
+                <form action="{{ route('save-announcement') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label>Branch</label>
@@ -35,6 +35,10 @@
                     <div class="form-group">
                         <label>Title</label>
                         <input type="text" name="title" value="" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Image</label>
+                        <input type="file" name="image" value="" class="form-control">
                     </div>
                     <div class="form-group">
                         <label>Content</label>

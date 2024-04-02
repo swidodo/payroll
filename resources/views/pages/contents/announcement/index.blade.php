@@ -54,7 +54,7 @@
                                 <th>No</th>
                                 <th>Date</th>
                                 <th>Title</th>
-                                {{-- <th>Content</th> --}}
+                                <th>Image</th>
                                 <th>Status</th>
                                 <th class="text-end">Action</th>
                             </tr>
@@ -110,7 +110,7 @@
                     serverSide: true,
                     destroy: true,
                     ajax : {
-                        url : "get-data",
+                        url : "get-data-announcement",
                         type : 'post',
                         data :{branch_id : branch_id },
                     },
@@ -126,10 +126,16 @@
                             data: 'title',
                             name: 'title'
                         }, 
-                        // {
-                        //     data: 'content',
-                        //     name: 'content'
-                        // },
+                        {
+                            data: 'image',
+                            render : function(data,row,type){
+                                    var btn ='';
+                                    if (data !=null){
+                                        btn ="<a href='"+data+"' target='_blank' class='btn btn-sm btn-primary'>view file </a>";
+                                    }
+                                    return btn;
+                                }
+                        },
                         {
                             data: 'status',
                             render : function(data, row,type){

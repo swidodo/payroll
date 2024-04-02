@@ -608,7 +608,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('delete-access-mobile',[AccessMobileController::class,'destroy'])->name('delete-access-mobile');
         // announcement
         Route::get('get-announcement',[InformationController::class,'index'])->name('get-announcement');
-        Route::post('get-data',[InformationController::class,'get_data'])->name('get-data');
+        Route::post('get-data-announcement',[InformationController::class,'get_data'])->name('get-data-announcement');
         Route::get('create-announcement',[InformationController::class,'create'])->name('create-announcement');
         Route::post('save-announcement',[InformationController::class,'store'])->name('save-announcement');
         Route::get('edit-announcement/{id}',[InformationController::class,'edit']);

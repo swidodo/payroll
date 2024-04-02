@@ -28,6 +28,9 @@
                             {{ $data->title }}
                         </div>
                         <div class="mb-4">
+                            <img src="{{ $data->image }}" class="img-fluid" alt="image">
+                        </div>
+                        <div class="mb-4">
                            {!! $data->content !!}
                         </div>
                     </div>
