@@ -28,7 +28,12 @@
                             {{ $data->title }}
                         </div>
                         <div class="mb-4">
-                            <img src="{!! $data->image !!}" class="img-fluid" alt="image">
+                            {{-- <img src="{!! !!}" class="img-fluid" alt="image"> --}}
+                            @php
+                                $img = basename($data->image);
+                            @endphp
+                            <img src="{{ asset('../storage/app/public/'.$img) }}" class="img-fluid" alt="image">
+                            
                         </div>
                         <div class="mb-4">
                            {!! $data->content !!}
