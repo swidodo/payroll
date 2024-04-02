@@ -32,7 +32,7 @@
                             @php
                                 $url = URL::to('/');
                                 $img = str_replace("$url",'',$data->image);
-                                dd($img);
+                                // dd($img);
                                 dd($data->image);
                             @endphp
                             <img src="{{ asset('../'.$img) }}" class="img-fluid" alt="image">
