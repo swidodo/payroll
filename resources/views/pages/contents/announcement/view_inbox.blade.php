@@ -27,13 +27,10 @@
                         <div class="mb-4">
                             {{ $data->title }}
                         </div>
-                        <div class="mb-4">
-                            {{-- <img src="{!! !!}" class="img-fluid" alt="image"> --}}
+                        <div class="mb-4" style="height: 200px !important;">
                             @php
                                 $url = URL::to('/');
                                 $img = str_replace("$url",'',$data->image);
-                                // dd($img);
-                                // dd($data->image);
                             @endphp
                             <img src="{{ asset('../'.$img) }}" class="img-fluid" alt="image">
                             
