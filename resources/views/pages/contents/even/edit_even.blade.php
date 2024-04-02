@@ -21,7 +21,7 @@
         <!-- /Page Header -->
         <div class="row">
             <div class="col-md-12">
-                <form id="formEven" action="{{route('update-even')}}" method="post">
+                <form id="formEven" action="{{route('update-even')}}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label>Title</label>
