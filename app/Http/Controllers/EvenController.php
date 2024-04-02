@@ -79,14 +79,14 @@ class EvenController extends Controller
             $tanggal    =  date('d-m-Y');
 
             $dir        = $company.'/'.$branch.'/'.$tahun.'/'.$bulan.'/'.$tanggal.'/';
-            $path = 'public/even/'.$dir.$request->get('image');
+            $path = 'even/'.$dir.$request->get('image');
             if (! Storage::exists($path)) {
                 Storage::makeDirectory($path,775,true);
             }
 
             $fileName = time() . $request->file('image')->getClientOriginalName();
-            $store = $request->file('image')->storeAs($path, $fileName);
-            $pathFile_application = 'storage/app/public/'.$path . $fileName ?? null;
+            $store = $request->file('image')->storeAs('public/'.$path, $fileName);
+            $pathFile_application = 'storage/app/'.$path . $fileName ?? null;
             $base = URL::to('/');
             $linkAttach = $base.'/'.$pathFile_application;
         }else{
