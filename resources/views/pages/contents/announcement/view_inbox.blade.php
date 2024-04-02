@@ -31,7 +31,7 @@
                             {{-- <img src="{!! !!}" class="img-fluid" alt="image"> --}}
                             @php
                                 $img = str_replace(URL::to('/'),'',$data->image);
-                                print_r($img);
+                                dd($img);
                             @endphp
                             <img src="{{ asset('../'.$img) }}" class="img-fluid" alt="image">
                             
