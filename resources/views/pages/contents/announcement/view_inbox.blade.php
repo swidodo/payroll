@@ -32,7 +32,7 @@
                             @php
                                 $img = basename($data->image);
                             @endphp
-                            <img src="{{ asset('../storage/app/public/'.$img) }}" class="img-fluid" alt="image">
+                            <img src="{{ asset('../storage/app/public/announcement/'.$img) }}" class="img-fluid" alt="image">
                             
                         </div>
                         <div class="mb-4">
