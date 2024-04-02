@@ -120,7 +120,7 @@ class EvenController extends Controller
         // upload data
         $linkId = Even::where('id',$request->id)->first();
                         
-        if(isset($request->attachment_request_path)){
+        if(isset($request->image)){
             $dir        = $company.'/'.$branch.'/'.$tahun.'/'.$bulan.'/'.$tanggal.'/';
             $path = 'even/'.$dir.$request->get('image');
             if (! Storage::exists($path)) {
@@ -172,7 +172,7 @@ class EvenController extends Controller
         $linkId = Even::where('id',$request->id)->first();
         $base = URL::to('/');
         $hide = $base.'/storage/app/public';
-        $storagePublic = str_replace($hide,'',$linkId->attachment_request_path);
+        $storagePublic = str_replace($hide,'',$linkId->image);
         if (Storage::exists($storagePublic)) {
             Storage::delete($storagePublic);
         }
