@@ -30,8 +30,10 @@
                         <div class="mb-4">
                             {{-- <img src="{!! !!}" class="img-fluid" alt="image"> --}}
                             @php
-                                $img = str_replace(URL::to('/'),'',$data->image);
+                                $url = URL::to('/');
+                                $img = str_replace("$url",'',$data->image);
                                 dd($img);
+                                dd($data->image);
                             @endphp
                             <img src="{{ asset('../'.$img) }}" class="img-fluid" alt="image">
                             
