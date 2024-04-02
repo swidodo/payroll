@@ -30,9 +30,10 @@
                         <div class="mb-4">
                             {{-- <img src="{!! !!}" class="img-fluid" alt="image"> --}}
                             @php
-                                $img = basename($data->image);
+                                $img = str_replace(URL::to('/'),'',$data->image);
+                                print_r($img);
                             @endphp
-                            <img src="{{ asset('../storage/app/public/announcement/'.$img) }}" class="img-fluid" alt="image">
+                            <img src="{{ asset('../'.$img) }}" class="img-fluid" alt="image">
                             
                         </div>
                         <div class="mb-4">
