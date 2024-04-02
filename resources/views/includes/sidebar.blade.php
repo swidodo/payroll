@@ -228,6 +228,13 @@
                         </a>
                     </li>
                 @endcanany
+                @canany(['manage event'])
+                    <li class=" {{(request()->routeIs('get-even')) ? 'active' : ''}}">
+                        <a href="{{route('get-even')}}"><i class="la la-info"></i> <span> Event</span>
+                            {{-- <span class="menu-arrow"></span> --}}
+                        </a>
+                    </li>
+                @endcanany
                 @canany(['manage user', 'create user', 'manage role', 'create role', 'manage level approval', 'edit level approval', 'manage denda', 'create denda', 'edit denda', 'delete denda', 'manage bpjs kesehatan', 'create bpjs kesehatan', 'edit bpjs kesehatan', 'delete bpjs kesehatan', 'manage pph21', 'edit pph21', 'manage jht', 'create jht', 'manage jkk', 'create jkk', 'manage jkm', 'create jkm', 'manage jp', 'create jp', 'manage payslip code pin', 'manage payslip checklist attendance summary', 'manage allowance option', 'create allowance option', 'manage leave type', 'manage reimbursement option', 'manage branch', 'manage loan option', 'manage payslip type'])
                     <li class="submenu">
                         <a href="#"><i class="la la-cog"></i> <span> Setting</span> <span class="menu-arrow"></span></a>

@@ -206,10 +206,10 @@ class EvenController extends Controller
             array_push($pesan,$psn->Even_id);
         }
         
-        $notif = Even::select('information.*')->leftJoin('sys','sys.information_id','=','information.id')
-                        ->where('information.branch_id',Auth::user()->branch_id)
-                        ->where('information.status',1)
-                        ->whereNotIn('information.id', $pesan)
+        $notif = Even::select('evens.*')->leftJoin('sys','sys.evens_id','=','evens.id')
+                        ->where('evens.branch_id',Auth::user()->branch_id)
+                        ->where('evens.status',1)
+                        ->whereNotIn('evens.id', $pesan)
                         ->get();
         return response()->json($notif);
     }
@@ -219,10 +219,10 @@ class EvenController extends Controller
         foreach($read as $psn){
             array_push($ps,$psn->information_id);
         }
-        $notif = Even::select('information.id')->leftJoin('sys','sys.information_id','=','information.id')
-                            ->where('information.branch_id',Auth::user()->branch_id)
-                            ->where('information.status',1)
-                            ->whereNotIn('information.id', $ps)
+        $notif = Even::select('evens.id')->leftJoin('sys','sys.information_id','=','evens.id')
+                            ->where('evens.branch_id',Auth::user()->branch_id)
+                            ->where('evens.status',1)
+                            ->whereNotIn('evens.id', $ps)
                             ->get();
         $notifikasi = [];
         foreach($notif as $psn){
@@ -243,10 +243,10 @@ class EvenController extends Controller
             array_push($pesan,$psn->information_id);
         }
         
-        $notif = Even::leftJoin('sys','sys.information_id','=','information.id')
-                        ->where('information.branch_id',Auth::user()->branch_id)
-                        ->where('information.status',1)
-                        ->whereNotIn('information.id', $pesan)
+        $notif = Even::leftJoin('sys','sys.information_id','=','evens.id')
+                        ->where('evens.branch_id',Auth::user()->branch_id)
+                        ->where('evens.status',1)
+                        ->whereNotIn('evens.id', $pesan)
                         ->count();
         $request->session()->put('notif', $notif);
     }
@@ -256,15 +256,15 @@ class EvenController extends Controller
         foreach($read as $psn){
             array_push($pesan,$psn->information_id);
         }
-        $notif['inbox'] = Even::select('information.*')->leftJoin('sys','sys.information_id','=','information.id')
-                            ->where('information.branch_id',Auth::user()->branch_id)
-                            ->where('information.status',1)
-                            ->whereNotIn('information.id', $pesan)
+        $notif['inbox'] = Even::select('evens.*')->leftJoin('sys','sys.information_id','=','evens.id')
+                            ->where('evens.branch_id',Auth::user()->branch_id)
+                            ->where('evens.status',1)
+                            ->whereNotIn('evens.id', $pesan)
                             ->get();
-        $notif['inbox_read'] = Even::select('information.*')->leftJoin('sys','sys.information_id','=','information.id')
-                            ->where('information.branch_id',Auth::user()->branch_id)
-                            ->where('information.status',1)
-                            ->whereIn('information.id', $pesan)
+        $notif['inbox_read'] = Even::select('evens.*')->leftJoin('sys','sys.information_id','=','evens.id')
+                            ->where('evens.branch_id',Auth::user()->branch_id)
+                            ->where('evens.status',1)
+                            ->whereIn('evens.id', $pesan)
                             ->get();
         return view('pages.contents.even.list',$notif);
     }
@@ -285,10 +285,10 @@ class EvenController extends Controller
             array_push($pesan,$psn->information_id);
         }
         
-        $notifi = Even::leftJoin('sys','sys.information_id','=','information.id')
-                        ->where('information.branch_id',Auth::user()->branch_id)
-                        ->where('information.status',1)
-                        ->whereNotIn('information.id', $pesan)
+        $notifi = Even::leftJoin('sys','sys.information_id','=','evens.id')
+                        ->where('evens.branch_id',Auth::user()->branch_id)
+                        ->where('evens.status',1)
+                        ->whereNotIn('evens.id', $pesan)
                         ->count();
         $request->session()->put('notif', $notifi);
         return view('pages.contents.even.view_inbox',$notif);
