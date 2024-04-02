@@ -141,7 +141,7 @@ class EvenController extends Controller
             $base = URL::to('/');
             $link_attach = $base.'/'.$pathFile_application;
 
-            $hide = $base.'/storage/app/';
+            $hide = $base.'/storage/app/public';
             $storagePublic = str_replace($hide,'',$linkId->image);
             if (Storage::exists($storagePublic)) {
                 Storage::delete($storagePublic);
