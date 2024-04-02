@@ -30,14 +30,14 @@ class EvenController extends Controller
         return DataTables::of($data)
                         ->addColumn('action', function($row){
                             $btn ='';
-                            if(Auth()->user()->canany('edit even')){
+                            if(Auth()->user()->canany('edit event')){
                                 $btn .= '<div class="dropdown dropdown-action">
                                 <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                 <div class="dropdown-menu dropdown-menu-right">';
-                                if(Auth()->user()->can('edit even')){
+                                if(Auth()->user()->can('edit event')){
                                     $btn .= '<a data-id='.$row->id.' class="dropdown-item edit-even" href="javascript:void(0)" ><i class="fa fa-pencil m-r-5"></i> Edit</a>';
                                 }
-                                if(Auth()->user()->can('delete even')){
+                                if(Auth()->user()->can('delete event')){
                                     $btn .= '<a data-id='.$row->id.' class="dropdown-item delete-even" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>';
                                 }
                                 if(Auth()->user()->can('publish even')){
@@ -85,8 +85,8 @@ class EvenController extends Controller
             }
 
             $fileName = time() . $request->file('image')->getClientOriginalName();
-            $store = $request->file('image')->storeAs('public/'.$path, $fileName);
-            $pathFile_application = 'storage/app/'.$path . $fileName ?? null;
+            $store = $request->file('image')->storeAs($path, $fileName);
+            $pathFile_application = 'storage/app/public/'.$path . $fileName ?? null;
             $base = URL::to('/');
             $linkAttach = $base.'/'.$pathFile_application;
         }else{
