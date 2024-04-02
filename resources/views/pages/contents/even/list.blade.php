@@ -1,6 +1,6 @@
 @extends('pages.dashboard')
 
-@section('title', 'Manage Announcement')
+@section('title', 'Inbox Even')
 
 @section('dashboard-content')
 <div class="page-wrapper">
@@ -10,10 +10,10 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Manage Announcement</h3>
+                    <h3 class="page-title">Inbox Even</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Announcement</li>
+                        <li class="breadcrumb-item active">inbox</li>
                     </ul>
                 </div>
             </div>
@@ -21,21 +21,28 @@
         <!-- /Page Header -->
         <div class="row">
             <div class="col-md-12">
-                <form id="formAnnouncement" action="{{route('update-announcement')}}" method="post">
-                    @csrf
-                    <div class="form-group">
-                        <label>Title</label>
-                        <input type="hidden" name="id" class="form-control" value="{{ $info->id }}">
-                        <input type="hidden" name="branch_id" class="form-control" value="{{ $info->branch_id }}">
-                        <input type="text" name="title" class="form-control" value="{{ $info->title }}">
-                    </div>
-                    <div class="form-group">
-                        <label>Content</label>
-                        <textarea class="ckeditor" name="content" rows="7" id="editor">{{ $info->content }}</textarea>
-                    </div>
-                    <a href="{{route('get-announcement')}}" class="btn btn-warning">Cancel</a>
-                    <button type="submit" class="btn btn-primary">Update</button>
-                </form>
+                @if($inbox !=null)
+                    @foreach($inbox as $pesan)
+                        <a href="view-inbox/{{$pesan->id}}" class="text-black">
+                            <div class="card shadow-sm bg-success">
+                                <div class="card-body"> 
+                                    <span class="fa fa-envelope text-light fa-lg me-1"></span> {{ Ucwords($pesan->title) }}
+                                </div>
+                                <div class="card-footer">{{ date('d-m-Y', strtotime($pesan->date))}}</div>
+                            </div>
+                        </a>
+                    @endforeach
+                @endif
+                @foreach ($inbox_read as $read)
+                    <a href="view-inbox/{{$read->id}}" class="text-black">
+                        <div class="card shadow-sm" style="background-color :rgb(210, 212, 214)">
+                            <div class="card-body"> 
+                                <span class="fa fa-envelope-open-o text-light fa-lg me-1"></span> {{ Ucwords($read->title) }}
+                            </div>
+                            <div class="card-footer">{{date('d-m-Y', strtotime($read->date))}}</div>
+                        </div>
+                    </a>
+                @endforeach
             </div>
         </div>
     </div>
@@ -45,6 +52,9 @@
 @push('addon-style')
     <!-- Datatable CSS -->
     <link rel="stylesheet" href="{{asset('assets/css/dataTables.bootstrap4.min.css')}}">
+    <!-- Select2 CSS -->
+    <link rel="stylesheet" href="{{asset('assets/css/select2.min.css')}}">
+
     <!-- Ck Editor -->
 	<link rel="stylesheet" href="{{asset('assets/css/ckeditor.css')}}">
     <!-- Datetimepicker CSS -->
@@ -55,7 +65,8 @@
 @push('addon-script')
     <!-- Slimscroll JS -->
     <script src="{{asset('assets/js/jquery.slimscroll.min.js')}}"></script>
-
+    <!-- Select2 JS -->
+    <script src="{{asset('assets/js/select2.min.js')}}"></script>
     <!-- Datetimepicker JS -->
     <script src="{{asset('assets/js/moment.min.js')}}"></script>
 
@@ -67,9 +78,6 @@
 	<script src="{{asset('assets/js/ckeditor.js')}}"></script>
     <script>
         $(document).ready(function () {
-            $.ajaxSetup({
-                headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
-            });
         });
     </script>
 @endpush

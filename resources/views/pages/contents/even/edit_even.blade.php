@@ -1,6 +1,6 @@
 @extends('pages.dashboard')
 
-@section('title', 'Manage Announcement')
+@section('title', 'Manage Even')
 
 @section('dashboard-content')
 <div class="page-wrapper">
@@ -10,10 +10,10 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Manage Announcement</h3>
+                    <h3 class="page-title">Manage Even</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Announcement</li>
+                        <li class="breadcrumb-item active">Even</li>
                     </ul>
                 </div>
             </div>
@@ -21,7 +21,7 @@
         <!-- /Page Header -->
         <div class="row">
             <div class="col-md-12">
-                <form id="formAnnouncement" action="{{route('update-announcement')}}" method="post">
+                <form id="formEven" action="{{route('update-even')}}" method="post">
                     @csrf
                     <div class="form-group">
                         <label>Title</label>
@@ -30,10 +30,14 @@
                         <input type="text" name="title" class="form-control" value="{{ $info->title }}">
                     </div>
                     <div class="form-group">
+                        <label>Image</label>
+                        <input type="file" name="image" value="" class="form-control" required>
+                    </div>
+                    <div class="form-group">
                         <label>Content</label>
                         <textarea class="ckeditor" name="content" rows="7" id="editor">{{ $info->content }}</textarea>
                     </div>
-                    <a href="{{route('get-announcement')}}" class="btn btn-warning">Cancel</a>
+                    <a href="{{route('get-even')}}" class="btn btn-warning">Cancel</a>
                     <button type="submit" class="btn btn-primary">Update</button>
                 </form>
             </div>

@@ -86,6 +86,7 @@ use App\Http\Controllers\Report\RekapPayrollController;
 use App\Http\Controllers\DailyReportController;
 // unisment
 use App\Http\Controllers\InformationController;
+use App\Http\Controllers\EvenController;
 
 // access branch
 use App\Http\Controllers\AccessBranchController;
@@ -619,7 +620,20 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('list-inbox',[InformationController::class,'list_notif'])->name('list-inbox');
         Route::get('/view-inbox/{id}',[InformationController::class,'view_notif'])->name('view-inbox');
         Route::get('payslip-user',[PaySlipController::class,'payslip_user'])->name('payslip-user');
-
+        // even
+        Route::get('get-even',[EvenController::class,'index'])->name('get-even');
+        Route::post('get-data',[EvenController::class,'get_data'])->name('get-data');
+        Route::get('create-even',[EvenController::class,'create'])->name('create-even');
+        Route::post('save-even',[EvenController::class,'store'])->name('save-even');
+        Route::get('edit-even/{id}',[EvenController::class,'edit']);
+        Route::post('update-even',[EvenController::class,'update'])->name('update-even');
+        Route::post('destroy-even',[EvenController::class,'destroy'])->name('destroy-even');
+        Route::post('publish-even',[EvenController::class,'publish'])->name('publish-even');
+        // Route::post('get-notif',[EvenController::class,'get_notif'])->name('get-notif');
+        // Route::post('clear-notif',[EvenController::class,'clear_notif'])->name('clear-notif');
+        // Route::get('list-inbox',[EvenController::class,'list_notif'])->name('list-inbox');
+        // Route::get('/view-inbox/{id}',[EvenController::class,'view_notif'])->name('view-inbox');
+        // Route::get('payslip-user',[PaySlipController::class,'payslip_user'])->name('payslip-user');
         // approval
         Route::get('level-approval',[ApprovalController::class,'index'])->name('level-approval');
         Route::post('get-data-level',[ApprovalController::class,'get_data']);
