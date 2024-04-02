@@ -121,6 +121,14 @@ class EvenController extends Controller
         $linkId = Even::where('id',$request->id)->first();
                         
         if(isset($request->image)){
+            $dta = Branch::select('branches.name as branch_name','companies.name as company_name')
+                        ->leftJoin('companies','companies.id','=','branches.company_id')
+                        ->where('branches.id',Auth::user()->branch_id)->first();
+            $company    =  $dta->branch_name;
+            $branch     =  $dta->company_name;
+            $tahun      =  date('Y');
+            $bulan      =  date('m');
+            $tanggal    =  date('d-m-Y');
             $dir        = $company.'/'.$branch.'/'.$tahun.'/'.$bulan.'/'.$tanggal.'/';
             $path = 'even/'.$dir.$request->get('image');
             if (! Storage::exists($path)) {
