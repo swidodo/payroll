@@ -22,9 +22,9 @@ class DailyReportExport implements FromView
                     if($this->request->department_id !='all'){
                         $data->where('department_id',$this->request->department_id);
                     }
-                    // if ($this->request->employee_id !='all'){
-                    //     $data->where('department_id',$this->request->employee_id);
-                    // }
+                    if ($this->request->employee_id !='all'){
+                        $data->where('employee_id',$this->request->employee_id);
+                    }
         $res['daily'] = $data->get(); 
         dd( $res);
         return view('pages.contents.report.daily_report.export_daily_report',$res);
