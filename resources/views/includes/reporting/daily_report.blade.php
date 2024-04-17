@@ -84,12 +84,6 @@
             var startdate = $('#startdate').val();
             var enddate = $('#enddate').val();
             getData(department_id,employee_id,startdate,startdate);
-        })
-        // $('#export_report_daily').on('click',function(){
-        //     var deptid  = $('#').val();
-        //     var start   = $('#').val();
-        //     var end     = $('#').val();
-        //     window.href.location = '';
-        // })  
+        })  
     });
 </script>
