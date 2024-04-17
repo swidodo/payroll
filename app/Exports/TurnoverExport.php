@@ -8,6 +8,7 @@ use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Branch;
+use App\Models\AccessBranch;
 use App\Models\Employee;
 class TurnoverExport implements FromView
 {
