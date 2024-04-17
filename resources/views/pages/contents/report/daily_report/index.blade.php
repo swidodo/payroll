@@ -28,24 +28,17 @@
                         @csrf
                         <div class="row">
                             <div class="col-md-4 mb-2">
-                                <label>Branch</label>
-                                <select class="form-control form-select" id="department_id" name="department_id">
-                                    <option value="" selected>-- Select --</option>
-                                    @foreach($branch as $b)
-                                        <option value="{{ $b->id }}">{{ $b->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-4 mb-2">
                                 <label>Department</label>
                                 <select class="form-control form-select" id="department_id" name="department_id">
-                                    <option value="all" selected>-- All --</option>
+                                    @foreach($department as $depart)
+                                    <option value="{{ $depart->id }}">{{ $depart->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-md-3 mb-2">
                                 <label>Employee</label>
                                 <select class="form-control form-select" id="employee_id" name="employee_id">
-                                    <option value="all">-- All --</option>
+                                    <option value="">-- pilih --</option>
                                 </select>
                             </div>
                             <div class="col-md-2 mb-2">

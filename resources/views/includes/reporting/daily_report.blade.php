@@ -61,22 +61,7 @@
                 
             });
         }
-        $('#branch_id').on('change', function(){
-            var branch_id = $(this).val();
-            $.ajax({
-                url : 'branch-depart',
-                type : 'post',
-                data : {branch_id : branch_id},
-                dataType: 'json',
-                success : function(respon){
-                    html ='<option value="all" selected>-- All --</option>';
-                    $.each(respon.department, function(key,val){
-                        html +=`<option value="`+val.id+`">`+val.name+`</option>`
-                    })
-                    $('#department_id').html(html);
-                }
-            })
-        })
+        
         $('#department_id').on('change', function(){
                 var department_id = $(this).val();
                 $.ajax({

@@ -7,18 +7,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Departement;
 use App\Models\Employee;
-use App\Models\Branch;
 use DataTables;
 class DailyReportController extends Controller
 {
     public function index(){
-        $user = Branch::where('id',Auth::user()->branch_id)->first();
-        if(Auth::user()->initial == "HO"){
-            $branch['branch'] = Branch::where('company_id',$user->company_id)->get();
-        }else{
-            $branch['branch'] = Branch::where('id',$user->id)->get();
-        }
-        return view('pages.contents.report.daily_report.index', $branch);
+        $depart['department'] = Departement::select('id','name')->where('branch_id',Auth::user()->branch_id)->groupBy('id','name')->get();
+        return view('pages.contents.report.daily_report.index', $depart);
     }
     public function get_data(Request $request){
 
@@ -53,10 +47,6 @@ class DailyReportController extends Controller
     }
     public function get_employee(Request $request){
         $data = Employee::where('department_id',$request->department_id)->get();
-        return response()->json($data);
-    }
-    public function get_depart(Request $request){
-        $depart['department'] = Departement::select('id','name')->where('branch_id',$request->branch_id)->groupBy('id','name')->get();
         return response()->json($data);
     }
     public function view_maps(Request $request){
