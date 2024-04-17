@@ -24,12 +24,14 @@ class DailyReportController extends Controller
                     'v_daily_reports.foto_url',
                     'v_daily_reports.branch_id',
                     'employees.name as employee_name')
-                    ->leftJoin('employees','employees.id','=','v_daily_reports.employee_id')
-                    ->where('v_daily_reports.department_id',$request->department_id);
+                    ->leftJoin('employees','employees.id','=','v_daily_reports.employee_id');
+                    if($request->department_id !="all"){
+                        $data->where('v_daily_reports.department_id',$request->department_id);
+                    }
                     if ($request->startdate != "" & $request->enddate != ""){
                         $data->whereBetween('v_daily_reports.date',[$request->startdate,$request->enddate]);
                     }
-                    if ($request->employee_id != ""){
+                    if ($request->employee_id != "all"){
                         $data->where('v_daily_reports.employee_id',$request->employee_id);
                     }
                     $data->orderBy('date','DESC');
