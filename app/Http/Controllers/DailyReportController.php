@@ -26,12 +26,12 @@ class DailyReportController extends Controller
                     'employees.name as employee_name')
                     ->leftJoin('employees','employees.id','=','v_daily_reports.employee_id')
                     ->where('v_daily_reports.department_id',$request->department_id);
-                    if ($request->startdate != "" && $request->enddate != ""){
-                        $data->whereBetween('v_daily_reports.date',[$request->startdate,$request->enddate]);
-                    }
-                    if ($request->employee_id != ""){
-                        $data->where('v_daily_reports.employee_id',$request->employee_id);
-                    }
+                    // if ($request->startdate != "" && $request->enddate != ""){
+                    //     $data->whereBetween('v_daily_reports.date',[$request->startdate,$request->enddate]);
+                    // }
+                    // if ($request->employee_id != ""){
+                    //     $data->where('v_daily_reports.employee_id',$request->employee_id);
+                    // }
                     $data->orderBy('date','DESC');
                     $data->get();
         return DataTables::of($data)
