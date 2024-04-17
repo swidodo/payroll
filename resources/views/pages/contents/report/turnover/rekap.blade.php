@@ -29,33 +29,34 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form action="{{route('get-rekap-turnover')}}" method="post">
+                    <form id="FormSearch" action="" method="post">
                         @csrf
-                    <div class="row">
-                        <div class="col-md-4 mb-2">
-                            <label>Branch</label>
-                            <select class="form-control form-select" id="branch_id" name="branch_id">
-                                @foreach($branch as $branches)
-                                @if($branches->id == $brch->id)
-                                <option value="{{ $branches->id }}" selected>{{ $branches->name }}</option>
-                                @else
-                                <option value="{{ $branches->id }}">{{ $branches->name }}</option>
-                                @endif
-                                @endforeach
-                            </select>
+                        <div class="row">
+                            <div class="col-md-4 mb-2">
+                                <label>Branch</label>
+                                <select class="form-control form-select" id="branch_id" name="branch_id">
+                                    @foreach($branch as $branches)
+                                    @if($branches->id == $brch->id)
+                                    <option value="{{ $branches->id }}" selected>{{ $branches->name }}</option>
+                                    @else
+                                    <option value="{{ $branches->id }}">{{ $branches->name }}</option>
+                                    @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-2">
+                                <label>Start Date</label>
+                                <input type="date" name="from_date" id="from_date" class="form-control" required>
+                            </div>
+                            <div class="col-md-2 mb-2">
+                                <label>End Date</label>
+                                <input type="date" name="to_date" id="to_date" class="form-control" required>
+                            </div>
+                            <div class="col-md-3  mb-2">
+                                <button type="button" id="filter-search" class="btn btn-primary me-1 mt-4">Search</button>
+                                <button type="button" id="export-turnover" class="btn btn-success me-1 mt-4"><span class="fa fa-file-excel"></span> Export</button>
+                            </div>
                         </div>
-                        <div class="col-md-2 mb-2">
-                            <label>Start Date</label>
-                            <input type="date" name="from_date" id="from_date" class="form-control" required>
-                        </div>
-                        <div class="col-md-2 mb-2">
-                            <label>End Date</label>
-                            <input type="date" name="to_date" id="to_date" class="form-control" required>
-                        </div>
-                        <div class="col-md-3  mb-2">
-                            <button type="submit" class="btn btn-primary me-1 mt-4">Search</button>
-                        </div>
-                    </div>
                     </form>
                 </div>
             </div>
@@ -124,6 +125,34 @@
 <script>
     $('#branch_id').select2({
         width: '100%',
+    })
+    $('#filter-search').on('click',function(){
+        var from = $('#from_date').val();
+        var to = $('#to_date').val()
+        if(from == ''){
+            alert("Start date not empty !");
+            return false;
+        }
+        if(to == ''){
+            alert("End date not empty !");
+            return false;
+        }
+        $('#FormSearch').attr("action", "{{route('get-rekap-turnover')}}");
+        document.getElementById("FormSearch").submit();
+    })
+    $('#export-turnover').on('click',function(){
+        var from = $('#from_date').val();
+        var to = $('#to_date').val()
+        if(from == ''){
+            alert("Start date not empty !");
+            return false;
+        }
+        if(to == ''){
+            alert("End date not empty !");
+            return false;
+        }
+        $('#FormSearch').attr("action", "{{route('export-turnover')}}");
+        document.getElementById("FormSearch").submit();
     })
 </script>
 @endpush

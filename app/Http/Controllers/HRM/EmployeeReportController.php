@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Exports\EmployeesExport;
 use App\Exports\RemainderContractExport;
+use App\Exports\TurnoverExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -638,6 +639,11 @@ class EmployeeReportController extends Controller
         $date = date('Ymd');
         $fileName = 'remainder-contract_'.$date.'.xlsx';
         return Excel::download(new RemainderContractExport($request), $fileName);
+    }
+    public function ExportExcelTurnover(Request $request){
+        $date = date('Ymd');
+        $fileName = 'turnover-report_'.$date.'.xlsx';
+        return Excel::download(new TurnoverExport($request), $fileName);
     }
 
 }

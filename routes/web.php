@@ -416,6 +416,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('report-contract',[EmployeeReportController::class,'ExportExcelRemainder'])->name('report-contract');
         Route::get('report-turnover',[EmployeeReportController::class,'rekap_turnover'])->name('report-turnover');
         Route::post('get-rekap-turnover',[EmployeeReportController::class,'get_data_rekap'])->name('get-rekap-turnover');
+        Route::post('export-turnover',[EmployeeReportController::class,'ExportExcelTurnover'])->name('export-turnover');
 
 
         // HR Management
