@@ -83,6 +83,7 @@ use App\Http\Controllers\template\Template_v25Controller;
 use App\Http\Controllers\HRM\EmployeeReportController;
 use App\Http\Controllers\Report\ReportRecapAttendanceController;
 use App\Http\Controllers\Report\RekapPayrollController;
+use App\Http\Controllers\Report\RekapDailyReportController;
 use App\Http\Controllers\DailyReportController;
 // unisment
 use App\Http\Controllers\InformationController;
@@ -532,6 +533,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('get-daily-report',[DailyReportController::class,'get_data'])->name('get-daily-report');
         Route::get('maps',[DailyReportController::class,'view_maps'])->name('maps');
         Route::get('get-emp-depart',[DailyReportController::class,'get_employee'])->name('get-emp-depart');
+        Route::post('export-report-daily',[RekapDailyReportController::class,'ExportExcel'])->name('export-report-daily');
 
         // Master bpjs
         Route::get('master-bpjs',[BpjsController::class,'index'])->name('master-bpjs');

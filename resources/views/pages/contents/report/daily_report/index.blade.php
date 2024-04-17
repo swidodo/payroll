@@ -24,33 +24,37 @@
         <div class="row">
             <div class="card">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4 mb-2">
-                            <label>Department</label>
-                            <select class="form-control form-select" id="department_id" name="department_id">
-                                @foreach($department as $depart)
-                                <option value="{{ $depart->id }}">{{ $depart->name }}</option>
-                                @endforeach
-                            </select>
+                    <form action="{{route('export-report-daily')}}" method="POST">
+                        @csrf
+                        <div class="row">
+                            <div class="col-md-4 mb-2">
+                                <label>Department</label>
+                                <select class="form-control form-select" id="department_id" name="department_id">
+                                    @foreach($department as $depart)
+                                    <option value="{{ $depart->id }}">{{ $depart->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-2">
+                                <label>Start Date</label>
+                            <input type="date" class="form-control" id="startdate" name="startdate" required>
+                            </div>
+                            <div class="col-md-2 mb-2">
+                                <label>End Date</label>
+                            <input type="date" class="form-control" id="enddate" name="enddate" required>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <label>Employee</label>
+                                <select class="form-control form-select" id="employee_id" name="employee_id">
+                                    <option value="">-- pilih --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3  mb-2">
+                                <button type="button" id="filter_report_daily" class="btn btn-success me-1 mt-4"><span class="fa fa-filter"></span> Filter</button>
+                                <button type="submit" id="export_report_daily" class="btn btn-success me-1 mt-4"><span class="fa fa-file-excel"></span> Export</button>
+                            </div>
                         </div>
-                        <div class="col-md-2 mb-2">
-                            <label>Start Date</label>
-                           <input type="date" class="form-control" id="startdate" value="">
-                        </div>
-                        <div class="col-md-2 mb-2">
-                            <label>End Date</label>
-                           <input type="date" class="form-control" id="enddate" value="">
-                        </div>
-                        <div class="col-md-3 mb-2">
-                            <label>Employee</label>
-                            <select class="form-control form-select" id="employee_id" name="employee_id">
-                                <option value="">-- pilih --</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3  mb-2">
-                            <button type="button" id="filter_report_daily" class="btn btn-success me-1 mt-4"><span class="fa fa-filter"></span> Filter</button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
             <div class="card">
