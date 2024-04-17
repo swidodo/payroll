@@ -18,8 +18,7 @@ class DailyReportExport implements FromView
     {
          $data = DB::table('v_rekap_daily_report')
                     ->where('branch_id','=',$this->request->branch_id)
-                    ->where('date','>=',$this->request->startdate)
-                    ->where('date','<=',$this->request->enddate);
+                    ->whereBetween('date',[$this->request->startdate,$this->request->enddate]);
                     if($this->request->department_id !='all'){
                         $data->where('department_id',$this->request->department_id);
                     }
