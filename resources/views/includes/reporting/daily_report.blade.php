@@ -69,7 +69,7 @@
                     data : {department_id : department_id},
                     dataType: 'json',
                     success : function(respon){
-                        html ='';
+                        html ='<option value="all" selected>-- All --</option>';
                         $.each(respon, function(key,val){
                             html +=`<option value="`+val.id+`">`+val.name+`</option>`
                         })
