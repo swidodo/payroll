@@ -40,9 +40,6 @@
                                 <label>Department</label>
                                 <select class="form-control form-select" id="department_id" name="department_id">
                                     <option value="all" selected>-- All --</option>
-                                    @foreach($department as $depart)
-                                        <option value="{{ $depart->id }}">{{ $depart->name }}</option>
-                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-md-3 mb-2">
