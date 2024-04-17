@@ -83,7 +83,7 @@
             var employee_id = $('#employee_id').val();
             var startdate = $('#startdate').val();
             var enddate = $('#enddate').val();
-            getData(department_id,employee_id,startdate,startdate);
+            getData(department_id,employee_id,startdate,enddate);
         })  
     });
 </script>
