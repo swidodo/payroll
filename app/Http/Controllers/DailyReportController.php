@@ -29,9 +29,9 @@ class DailyReportController extends Controller
                     if ($request->startdate != "" & $request->enddate != ""){
                         $data->whereBetween('v_daily_reports.date',[$request->startdate,$request->enddate]);
                     }
-                    // if ($request->employee_id != ""){
-                    //     $data->where('v_daily_reports.employee_id',$request->employee_id);
-                    // }
+                    if ($request->employee_id != ""){
+                        $data->where('v_daily_reports.employee_id',$request->employee_id);
+                    }
                     $data->orderBy('date','DESC');
                     
         return DataTables::of($data->get())

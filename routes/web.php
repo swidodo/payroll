@@ -532,7 +532,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('get-daily-report',[DailyReportController::class,'get_data'])->name('get-daily-report');
         Route::post('get-daily-report',[DailyReportController::class,'get_data'])->name('get-daily-report');
         Route::get('maps',[DailyReportController::class,'view_maps'])->name('maps');
-        Route::get('get-emp-depart',[DailyReportController::class,'get_employee'])->name('get-emp-depart');
+        Route::post('get-emp-depart',[DailyReportController::class,'get_employee'])->name('get-emp-depart');
         Route::post('export-report-daily',[RekapDailyReportController::class,'ExportExcel'])->name('export-report-daily');
 
         // Master bpjs
