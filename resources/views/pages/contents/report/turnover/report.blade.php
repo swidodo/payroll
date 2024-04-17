@@ -24,19 +24,23 @@
         <div class="row">
             <div class="card">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4 mb-2">
-                            <label>Branch</label>
-                            <select class="form-control form-select" id="branch_id" name="branch_id">
-                                @foreach($branch as $branches)
-                                <option value="{{ $branches->id }}">{{ $branches->name }}</option>
-                                @endforeach
-                            </select>
+                    <form action="{{route('report-contract')}}" method="POST">
+                        @csrf
+                        <div class="row">
+                            <div class="col-md-4 mb-2">
+                                <label>Branch</label>
+                                <select class="form-control form-select" id="branch_id" name="branch_id">
+                                    @foreach($branch as $branches)
+                                    <option value="{{ $branches->id }}">{{ $branches->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-3  mb-2">
+                                <button type="button" id="filter_report_contract" class="btn btn-primary me-1 mt-4">Search</button>
+                                <button type="submit" id="export_report_contract" class="btn btn-success me-1 mt-4"><span class="fa fa-file-excel"></span> Export</button>
+                            </div>
                         </div>
-                        <div class="col-md-3  mb-2">
-                            <button type="button" id="filter_report_contract" class="btn btn-primary me-1 mt-4">Search</button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
             <div class="card">
