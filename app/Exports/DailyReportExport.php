@@ -26,7 +26,6 @@ class DailyReportExport implements FromView
                         $data->where('employee_id',$this->request->employee_id);
                     }
         $res['daily'] = $data->get(); 
-        dd( $res);
         return view('pages.contents.report.daily_report.export_daily_report',$res);
     }
 }
