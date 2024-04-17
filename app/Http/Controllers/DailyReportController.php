@@ -45,6 +45,7 @@ class DailyReportController extends Controller
     }
     public function get_employee(Request $request){
         $data = Employee::where('department_id',$request->department_id)->get();
+        return response()->json($data);
     }
     public function view_maps(Request $request){
         $data = DB::table('daily_report_details')
