@@ -39,7 +39,7 @@
                             <div class="col-md-3 mb-2">
                                 <label>Employee</label>
                                 <select class="form-control form-select" id="employee_id" name="employee_id">
-                                    <option value="">-- pilih --</option>
+                                    <option value="all">-- All --</option>
                                 </select>
                             </div>
                             <div class="col-md-2 mb-2">
