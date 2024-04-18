@@ -450,7 +450,19 @@ class Template_v13Controller extends Controller
                             ];
                             Loan::insert($data);
                         }
-                        
+                        if ($value[18] != null){
+                            $deduc2 = [
+                                'employee_id'           => $employeeId->id,
+                                'branch_id'             => $employeeId->branch_id,
+                                'date'                  => $value[25],
+                                'name'                  => 'BPJS JP',
+                                'amount'                => $value[18],
+                                'created_by'            => Auth::user()->id,
+                                'created_at'            => $value[25].' '.date('h:m:s'),
+                                'updated_at'            => $value[25].' '.date('h:m:s')
+                            ];
+                            Deduction_other::create($deduc2);
+                        }
                         if ($value[19] != null){
                             $deduc3 = [
                                 'employee_id'           => $employeeId->id,
@@ -516,19 +528,7 @@ class Template_v13Controller extends Controller
                             ];
                             Deduction_other::create($deduc5);
                         }
-                        if ($value[18] != null){
-                            $deduc2 = [
-                                'employee_id'           => $employeeId->id,
-                                'branch_id'             => $employeeId->branch_id,
-                                'date'                  => $value[25],
-                                'name'                  => 'BPJS JP',
-                                'amount'                => $value[18],
-                                'created_by'            => Auth::user()->id,
-                                'created_at'            => $value[25].' '.date('h:m:s'),
-                                'updated_at'            => $value[25].' '.date('h:m:s')
-                            ];
-                            Deduction_other::create($deduc2);
-                        }
+                        
                     endif;
                 endif;
             endif;
