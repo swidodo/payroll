@@ -200,7 +200,7 @@
                             <li class="{{(request()->routeIs('rekap-attandance')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap-attandance')) ? 'active' : ''}}" href="{{ route('rekap-attandance') }}">Rekap Attandance</a></li>
                         @endcanany
                         @canany(['daily report'])
-                            <li class="{{(request()->routeIs('daily-report')) ? 'active' : ''}}"><a class="{{(request()->routeIs('daily-report')) ? 'active' : ''}}" href="{{ route('daily-report') }}">Daily Report/Tracking</a></li>
+                            <li class="{{(request()->routeIs('daily-report')) ? 'active' : ''}}"><a class="{{(request()->routeIs('daily-report')) ? 'active' : ''}}" href="{{ route('daily-report') }}">Tracking</a></li>
                         @endcanany
                         @can(['remainder contract'])
                             <li class="{{(request()->routeIs('remainder-contract')) ? 'active' : ''}}"><a class="{{(request()->routeIs('remainder-contract')) ? 'active' : ''}}" href="{{ route('remainder-contract') }}">Reminder Contract</a></li>
