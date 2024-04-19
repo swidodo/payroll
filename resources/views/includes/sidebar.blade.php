@@ -87,7 +87,7 @@
                             @endcanany
 
                             @canany(['manage timesheet', 'create timesheet', 'edit timesheet', 'delete timesheet'])
-                                <li class="{{(request()->routeIs('timesheets*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('timesheets*')) ? 'active' : ''}}" href="{{ route('timesheets.index') }}">Time Sheet</a></li>
+                                <li class="{{(request()->routeIs('timesheets*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('timesheets*')) ? 'active' : ''}}" href="{{ route('timesheets.index') }}">TimeSheet/Travelling</a></li>
                             @endcanany
 
                             <!-- @canany(['show employee request'])
