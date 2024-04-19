@@ -1,6 +1,6 @@
 @extends('pages.dashboard')
 
-@section('title', 'Timesheet')
+@section('title', 'Travelling')
 
 @section('dashboard-content')
 <div class="page-wrapper">
