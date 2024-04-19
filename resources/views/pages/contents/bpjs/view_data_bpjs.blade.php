@@ -45,6 +45,7 @@
                         </div>
                         <div class="col-md-3 d-flex align-items-center mt-4"> 
                             <button type="button" class="btn btn-primary" id="searchBranch">Search</button>
+                            <button type="button" class="btn btn-success ms-1" id="export-bpjs"><span class="fa fa-file-excel"></span> Export</button>
                         </div>
                     </div>
                 </div>
@@ -177,6 +178,12 @@ function getListMasterBpjs(branchId){
 $('#searchBranch').on('click',function(e){
     var branch_id = $('#branch_id').val();
     getListMasterBpjs(branch_id);
+})
+$('#export-bpjs').on('click',function(e){
+    var branch_id = $('#branch_id').val();
+    window.location.href = 'export-bpjs?branch_id='+branch_id;
+    setTimeout(function(){ $('.containerLoader').attr('hidden',true);}, 5000);
+                
 })
 </script>
 @endpush

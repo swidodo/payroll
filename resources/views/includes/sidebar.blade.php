@@ -196,11 +196,11 @@
                         <ul style="display: none;">
                         @canany(['report attendance'])
                             <li class="{{(request()->routeIs('reporting-attandance')) ? 'active' : ''}}"><a class="{{(request()->routeIs('reporting-attandance')) ? 'active' : ''}}" href="{{ route('reporting-attandance') }}">Report Attandance</a></li>
-                            <li class="{{(request()->routeIs('rekap_monthly_att')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap_monthly_att')) ? 'active' : ''}}" href="{{ route('rekap_monthly_att') }}">Monthly Attandance</a></li>
+                            <li class="{{(request()->routeIs('rekap_monthly_att')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap_monthly_att')) ? 'active' : ''}}" href="{{ route('rekap_monthly_att') }}">Timesheet Attandance</a></li>
                             <li class="{{(request()->routeIs('rekap-attandance')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap-attandance')) ? 'active' : ''}}" href="{{ route('rekap-attandance') }}">Rekap Attandance</a></li>
                         @endcanany
                         @canany(['daily report'])
-                            <li class="{{(request()->routeIs('daily-report')) ? 'active' : ''}}"><a class="{{(request()->routeIs('daily-report')) ? 'active' : ''}}" href="{{ route('daily-report') }}">Daily Report</a></li>
+                            <li class="{{(request()->routeIs('daily-report')) ? 'active' : ''}}"><a class="{{(request()->routeIs('daily-report')) ? 'active' : ''}}" href="{{ route('daily-report') }}">Daily Report/Travelling</a></li>
                         @endcanany
                         @can(['remainder contract'])
                             <li class="{{(request()->routeIs('remainder-contract')) ? 'active' : ''}}"><a class="{{(request()->routeIs('remainder-contract')) ? 'active' : ''}}" href="{{ route('remainder-contract') }}">Reminder Contract</a></li>
@@ -210,6 +210,9 @@
                         @endcan
                         @canany(['rekap payroll'])
                             <li class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}" href="{{ route('rekap-payroll') }}">Rekap Payroll</a></li>
+                        @endcanany
+                        @canany(['rekap reimbursement'])
+                            <li class="{{(request()->routeIs('report-reimbursment')) ? 'active' : ''}}"><a class="{{(request()->routeIs('report-reimbursment')) ? 'active' : ''}}" href="{{ route('report-reimbursment') }}">Rekap Reimbursement</a></li>
                         @endcanany
                             @canany(['rekap bpjs'])
                             <li class="{{(request()->routeIs('get-data-bpjs*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('get-data-bpjs*')) ? 'active' : ''}}" href="{{ route('get-data-bpjs') }}">BPJS</a></li>

@@ -11,6 +11,7 @@ use App\Exports\RekapAttendanceExport;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Exports\ReportAttendanceExport;
+use App\Exports\TimesheetAttendanceExport;
 use Maatwebsite\Excel\Facades\Excel;
 use DataTables;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -107,5 +108,10 @@ class ReportRecapAttendanceController extends Controller
         $date = date('Ymd');
         $fileName = 'Rekap_attendance_'.$date.'.xlsx';
         return Excel::download(new RekapAttendanceExport($request), $fileName);
+    }
+    public function ExportTimesheeAttenndance(Request $request){
+        $date = date('Ymd');
+        $fileName = 'Timesheet_attendance_'.$date.'.xlsx';
+        return Excel::download(new TimesheetAttendanceExport($request), $fileName);
     }
 }

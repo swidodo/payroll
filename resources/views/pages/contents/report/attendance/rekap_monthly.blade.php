@@ -14,7 +14,7 @@
                 <div class="col-md-8">
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="">Report</a></li>
-                        <li class="breadcrumb-item active">Rekap Attendance</li>
+                        <li class="breadcrumb-item active">Timesheet Attendance</li>
                     </ul>
                 </div>
             </div>
@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form action="{{route('rekap_monthly_filter')}}" method="POST">
+                    <form method="POST" id="FormSearch">
                         @csrf
                         <div class="row">
                             <div class="col-md-3 mb-2">
@@ -56,8 +56,9 @@
                                 </select>
                             </div> --}}
                             <div class="col-md-3 d-flex justify-content-start mb-2">
-                                {{-- <button type="button" id="filter_rekap_attendance" class="btn btn-success btn-sm me-1"><span class="fa fa-filter"></span> Filter</button> --}}
-                                <button type="submit" id="print_rekap_attendance" class="btn btn-primary btn-sm"> Search</button>
+                                {{-- <button type="submit" id="print_rekap_attendance" class="btn btn-primary btn-sm"> Search</button> --}}
+                                <button type="button" id="filter-search" class="btn btn-primary btn-sm"> Search</button>
+                                <button type="button" id="export-attendance" class="btn btn-success btn-sm ms-1"><span class="fa fa-file-excel"></span> Export</button>
                             </div>
                         </div>
                     </form>
@@ -97,5 +98,35 @@
 <script src="{{asset('assets/js/jquery.slimscroll.min.js')}}"></script>
 <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
+<script>
+    $('#filter-search').on('click',function(){
+        var from = $('#from_date').val();
+        var to = $('#to_date').val()
+        if(from == ''){
+            alert("Start date not empty !");
+            return false;
+        }
+        if(to == ''){
+            alert("End date not empty !");
+            return false;
+        }
+        $('#FormSearch').attr("action", "{{route('rekap_monthly_filter')}}");
+        document.getElementById("FormSearch").submit();
+    })
+    $('#export-attendance').on('click',function(){
+        var from = $('#from_date').val();
+        var to = $('#to_date').val()
+        if(from == ''){
+            alert("Start date not empty !");
+            return false;
+        }
+        if(to == ''){
+            alert("End date not empty !");
+            return false;
+        }
+        $('#FormSearch').attr("action", "{{route('export-timesheet-attendance')}}");
+        document.getElementById("FormSearch").submit();
+    })
+</script>
 @include('includes.reporting.rekap_monthly_attendance_js');
 @endpush

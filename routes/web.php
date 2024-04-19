@@ -85,6 +85,8 @@ use App\Http\Controllers\Report\ReportRecapAttendanceController;
 use App\Http\Controllers\Report\RekapPayrollController;
 use App\Http\Controllers\Report\RekapDailyReportController;
 use App\Http\Controllers\DailyReportController;
+use App\Http\Controllers\Report\RekapBpjsController;
+use App\Http\Controllers\Report\RekapReimbursController;
 // unisment
 use App\Http\Controllers\InformationController;
 use App\Http\Controllers\EvenController;
@@ -417,6 +419,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('report-turnover',[EmployeeReportController::class,'rekap_turnover'])->name('report-turnover');
         Route::post('get-rekap-turnover',[EmployeeReportController::class,'get_data_rekap'])->name('get-rekap-turnover');
         Route::post('export-turnover',[EmployeeReportController::class,'ExportExcelTurnover'])->name('export-turnover');
+        Route::get('report-reimbursment',[RekapReimbursController::class,'index'])->name('report-reimbursment');
+        Route::post('get-report-reimbursment',[RekapReimbursController::class,'get_data']);
+        Route::post('export-reimbursment',[RekapReimbursController::class,'ExportExcel'])->name('export-reimbursment');
 
 
         // HR Management
@@ -529,6 +534,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('rekap_monthly_att',[AttendanceEmployeeController::class,'rekap_cutoff_montnly'])->name('rekap_monthly_att');
         Route::post('rekap_monthly_filter',[AttendanceEmployeeController::class,'rekap_cutoff_montnly'])->name('rekap_monthly_filter');
         Route::post('get_data_monthly',[AttendanceEmployeeController::class,'get_data_monthly'])->name('get_data_monthly');
+        Route::post('export-timesheet-attendance',[ReportRecapAttendanceController::class,'ExportTimesheeAttenndance'])->name('export-timesheet-attendance');
         // daily report
         Route::get('daily-report',[DailyReportController::class,'index'])->name('daily-report');
         Route::post('get-daily-report',[DailyReportController::class,'get_data'])->name('get-daily-report');
@@ -537,7 +543,9 @@ Route::group(['middleware' => 'auth'], function () {
         // Route::post('branch-depart',[DailyReportController::class,'get_depart'])->name('branch-depart');
         Route::post('get-emp-depart',[DailyReportController::class,'get_employee'])->name('get-emp-depart');
         Route::post('export-report-daily',[RekapDailyReportController::class,'ExportExcel'])->name('export-report-daily');
-
+        // bpjs
+        Route::get('export-bpjs',[RekapBpjsController::class,'ExportExcel']);
+        
         // Master bpjs
         Route::get('master-bpjs',[BpjsController::class,'index'])->name('master-bpjs');
         Route::post('get-master-bpjs',[BpjsController::class,'get_data'])->name('get-master-bpjs');

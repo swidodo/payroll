@@ -115,15 +115,6 @@
     <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
     <script src="{{asset('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
-
-    @if (Session::has('edit-show'))
-    <script>
-        $(window).on('load', function(){
-            $('#edit_reimburst').modal('show')
-        });
-    </script>
-    @endif
-
     <script>
          $.ajaxSetup({
             headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
