@@ -15,7 +15,7 @@
                 <div class="col-md-8">
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="">Report</a></li>
-                        <li class="breadcrumb-item active">daily report</li>
+                        <li class="breadcrumb-item active">Tracking</li>
                     </ul>
                 </div>
             </div>
