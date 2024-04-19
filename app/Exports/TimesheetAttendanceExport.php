@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Concerns\FromView;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Branch;
 use App\Models\Employee;
+use App\Models\AccessBranch;
 
 class TimesheetAttendanceExport implements FromView
 {
