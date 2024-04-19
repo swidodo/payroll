@@ -1,5 +1,5 @@
 @extends('pages.dashboard')
-@section('title', 'Daily Report')
+@section('title', 'Tracking')
 @section('dashboard-content')
 
 @push('addon-style')
