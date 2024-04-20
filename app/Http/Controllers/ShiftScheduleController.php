@@ -215,7 +215,6 @@ class ShiftScheduleController extends Controller
                             }
                         endif;
                         if($checked == null):
-                            dd('test');
                                 $data = [
                                     'employee_id'       => $employeeId->id,
                                     'schedule_date'     => $value[3],
@@ -229,6 +228,7 @@ class ShiftScheduleController extends Controller
                                 ];
                                 if ($shift !=null){
                                     if(!in_array($data,$scheduleShift)){
+                                        dd('test');
                                         array_push($scheduleShift,$data);
                                     }
                                 }
