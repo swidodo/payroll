@@ -228,7 +228,6 @@ class ShiftScheduleController extends Controller
                                 ];
                                 if ($shift !=null){
                                     if(!in_array($data,$scheduleShift)){
-                                        dd('test');
                                         array_push($scheduleShift,$data);
                                     }
                                 }
