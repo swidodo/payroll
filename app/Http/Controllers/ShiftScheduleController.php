@@ -227,6 +227,7 @@ class ShiftScheduleController extends Controller
                                     'created_by'        => Auth::user()->id,
                                 ];
                                 if ($shift !=null){
+                                    dd($shift);
                                     if(!in_array($data,$scheduleShift)){
                                         array_push($scheduleShift,$data);
                                     }
