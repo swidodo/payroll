@@ -55,6 +55,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     // schedule
     Route::group(['prefix' => 'schedule'], function () {
         Route::get('/', [App\Http\Controllers\API\ScheduleController::class, 'index']);
+        Route::get('/init-live-attendance', [App\Http\Controllers\API\ScheduleController::class, 'loadSchedule']);
     });
     // loan
     Route::group(['prefix' =>'loan'], function(){
