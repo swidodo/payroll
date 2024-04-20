@@ -191,8 +191,6 @@ class ShiftScheduleController extends Controller
                 if ($key > 0) :
                     $employeeId = employee::where('no_employee',$value[1])->where('branch_id',Auth::user()->branch_id)->first();
                     if ($employeeId != null ):
-                        dd('test');
-                    
                         $checked    = ShiftSchedule::where('employee_id',$employeeId->id)->where('schedule_date',$value[3])->first();
                         $dayOff     = Dayoff::where('date',$value[3])->where('branch_id',Auth::user()->branch_id)->first();
                         $shift      = ShiftType::where('name', $value[4])->where('branch_id',Auth::user()->branch_id)->first();
@@ -217,6 +215,7 @@ class ShiftScheduleController extends Controller
                             }
                         endif;
                         if($checked == null):
+                            dd('test');
                                 $data = [
                                     'employee_id'       => $employeeId->id,
                                     'schedule_date'     => $value[3],
