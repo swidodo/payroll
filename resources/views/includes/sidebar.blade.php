@@ -211,6 +211,12 @@
                         @canany(['rekap reimbursement'])
                             <li class="{{(request()->routeIs('report-reimbursment')) ? 'active' : ''}}"><a class="{{(request()->routeIs('report-reimbursment')) ? 'active' : ''}}" href="{{ route('report-reimbursment') }}">Rekap Reimbursement</a></li>
                         @endcanany
+                        @canany(['rekap loan'])
+                            <li class="{{(request()->routeIs('report-loan')) ? 'active' : ''}}"><a class="{{(request()->routeIs('report-loan')) ? 'active' : ''}}" href="{{ route('report-loan') }}">Rekap Loan</a></li>
+                        @endcanany
+                        @canany(['rekap cash advance'])
+                            <li class="{{(request()->routeIs('report-cash-advance')) ? 'active' : ''}}"><a class="{{(request()->routeIs('report-cash-advance')) ? 'active' : ''}}" href="{{ route('report-cash-advance') }}">Rekap Cash Advance</a></li>
+                        @endcanany
                         @canany(['rekap payroll'])
                             <li class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}" href="{{ route('rekap-payroll') }}">Rekap Payroll</a></li>
                         @endcanany

@@ -18,7 +18,6 @@ class ShiftScheduleController extends Controller
    
     public function index()
     {
-        //show shift schedule
         if (Auth::user()->can('show shift schedule')) {
             $shiftSchedules = ShiftSchedule::leftJoin('employees','employees.id','=','shift_schedules.employee_id')
             ->where('employees.branch_id', '=', Auth::user()->branch_id)
@@ -237,6 +236,7 @@ class ShiftScheduleController extends Controller
                 endif;
             }
             if (count($scheduleShift) > 0){
+                dd('test');
                 $insertSchedule = ShiftSchedule::insert($scheduleShift);
             }
             $res = [

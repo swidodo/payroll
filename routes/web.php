@@ -87,6 +87,7 @@ use App\Http\Controllers\Report\RekapDailyReportController;
 use App\Http\Controllers\DailyReportController;
 use App\Http\Controllers\Report\RekapBpjsController;
 use App\Http\Controllers\Report\RekapReimbursController;
+use App\Http\Controllers\Report\RekapLoanController;
 // unisment
 use App\Http\Controllers\InformationController;
 use App\Http\Controllers\EvenController;
@@ -545,7 +546,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('export-report-daily',[RekapDailyReportController::class,'ExportExcel'])->name('export-report-daily');
         // bpjs
         Route::get('export-bpjs',[RekapBpjsController::class,'ExportExcel']);
-        
+        // loan
+        Route::get('report-loan',[RekapLoanController::class,'loan'])->name('report-loan');
+        Route::post('loan-report',[RekapLoanController::class,'get_loan']);
+        Route::get('report-cash-advance',[RekapLoanController::class,'cashadvance'])->name('report-cash-advance');
+        Route::post('cash-advance-report',[RekapLoanController::class,'get_cashadvance']);
         // Master bpjs
         Route::get('master-bpjs',[BpjsController::class,'index'])->name('master-bpjs');
         Route::post('get-master-bpjs',[BpjsController::class,'get_data'])->name('get-master-bpjs');
