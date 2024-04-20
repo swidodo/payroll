@@ -189,6 +189,7 @@ class ShiftScheduleController extends Controller
             $scheduleShift = [];
             foreach ($sheetData as $key => $value) {
                 if ($key > 0) :
+                    dd('test');
                     $employeeId = employee::where('no_employee',$value[1])->where('branch_id',Auth::user()->branch_id)->first();
                     if ($employeeId != null ):
                         $checked    = ShiftSchedule::where('employee_id',$employeeId->id)->where('schedule_date',$value[3])->first();
@@ -236,7 +237,6 @@ class ShiftScheduleController extends Controller
                 endif;
             }
             if (count($scheduleShift) > 0){
-                dd('test');
                 $insertSchedule = ShiftSchedule::insert($scheduleShift);
             }
             $res = [
