@@ -40,14 +40,18 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="form-control col-md-4">
-                            <select class="form-control" id="branch_id">
-                                @foreach ($lisBranch as $bch)
-                                    <option value="{{ $bch->id }}" {{($bch->id == Auth::user()->branch_id ) ? 'selected' : ''}}>{{ $bch->name}}</option>
-                                @endforeach
-                            </select>
+                        <div class="row">
+                            <form class=" col-md-4">
+                                <div class="form-group">
+                                    <select class="form-control" id="branch_id">
+                                        @foreach ($lisBranch as $bch)
+                                            <option value="{{ $bch->id }}" {{($bch->id == Auth::user()->branch_id ) ? 'selected' : ''}}>{{ $bch->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <button class="btn btn-primary" id="Search">Search</button>
+                            </form>
                         </div>
-                        <button class="btn btn-primary" id="Search">Search</button>
                     </div>
                 </div>
                 <div class="table-responsive" style="overflow-x: visible">
