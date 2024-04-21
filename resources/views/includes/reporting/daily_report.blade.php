@@ -46,6 +46,10 @@
                         name: 'location_name'
                     },
                     {
+                        data: 'description',
+                        name: 'description'
+                    },
+                    {
                         data: 'foto_url',
                         render : function(data,row,type){
                             var link = `<a href="`+data+`" class="btn btn-success w-100" target="_blank">view</a>`;

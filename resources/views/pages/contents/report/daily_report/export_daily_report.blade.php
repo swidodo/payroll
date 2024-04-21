@@ -10,6 +10,7 @@
             <th border="1">Location Name </th>
             <th border="1">Longitude</th>
             <th border="1">Latitude</th>
+            <th border="1">Description</th>
             <th border="1">Branch name</th>
             
         </tr>
@@ -25,6 +26,7 @@
             <td border="1">{{ $row->location_name }}</td>
             <td border="1">{{ $row->longitude }}</td>
             <td border="1">{{ $row->latitude }}</td>
+            <td border="1">{{ $row->description }}</td>
             <td border="1">{{ $row->branch_name }}</td>
         </tr>
         @endforeach

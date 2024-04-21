@@ -68,6 +68,7 @@
                                     <th>Employee</th>
                                     <th>Time</th>
                                     <th>Location Name</th>
+                                    <th>Description</th>
                                     <th>Foto</th>
                                     <th>Map View</th>
                                 </tr>
