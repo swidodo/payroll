@@ -20,7 +20,7 @@ class ShiftTypeController extends Controller
             if (isset($request->branch_id)){
                 $branch = $request->branch_id;
             }else{
-                $branch = Auth::user()->branch_id();
+                $branch = Auth::user()->branch_id;
             }
             $shiftTypes = ShiftType::where('branch_id', '=', $branch)->get();
             $dayTypes = DayType::all();
