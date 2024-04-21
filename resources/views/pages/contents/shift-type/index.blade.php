@@ -41,16 +41,16 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <form class=" col-md-4">
-                                <div class="form-group">
-                                    <select class="form-control" id="branch_id">
-                                        @foreach ($lisBranch as $bch)
-                                            <option value="{{ $bch->id }}" {{($bch->id == Auth::user()->branch_id ) ? 'selected' : ''}}>{{ $bch->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                            <div class="form-group col-md-4">
+                                <select class="form-control" id="branch_id">
+                                    @foreach ($lisBranch as $bch)
+                                        <option value="{{ $bch->id }}" {{($bch->id == Auth::user()->branch_id ) ? 'selected' : ''}}>{{ $bch->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
                                 <button class="btn btn-primary" id="Search">Search</button>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
