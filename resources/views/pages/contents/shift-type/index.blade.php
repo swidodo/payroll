@@ -41,6 +41,7 @@
                 <div class="card">
                     <div class="card-body">
                         <form action="{{route('filter-data-shiftType')}}" method="POST">
+                            @csrf
                             <div class="row">
                                 <div class="form-group col-md-4">
                                     <select class="form-control" id="branch_id" name="branch_id">
