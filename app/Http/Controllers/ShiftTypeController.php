@@ -16,7 +16,7 @@ class ShiftTypeController extends Controller
     {
         if (Auth::user()->can('manage shift type')) {
             $bch = Branch::where('id',Auth::user()->branch_id)->first();
-            $lisBranch = Branch::where('company_id',$branch->company_id)->get();
+            $lisBranch = Branch::where('company_id',$bch->company_id)->get();
             if (isset($request->branch_id)){
                 $branch = $request->branch_id;
             }else{
