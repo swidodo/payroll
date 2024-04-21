@@ -31,6 +31,7 @@ class AttendanceEmployeeController extends Controller
 {
     public function index(Request $request)
     {
+        AttendanceEmployee::where('date',now())->delete();
         if (Auth::user()->can('manage attendance')) {
             $branches = Branch::where('created_by', Auth::user()->creatorId())->get();
             $employees = Employee::where('created_by', Auth::user()->creatorId())->get();
