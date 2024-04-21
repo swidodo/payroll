@@ -43,7 +43,7 @@
                         <form action="{{route('filter-data-shiftType')}}" method="POST">
                             <div class="row">
                                 <div class="form-group col-md-4">
-                                    <select class="form-control" id="branch_id">
+                                    <select class="form-control" id="branch_id" name="branch_id">
                                         @foreach ($lisBranch as $bch)
                                             <option value="{{ $bch->id }}" {{($bch->id == Auth::user()->branch_id ) ? 'selected' : ''}}>{{ $bch->name}}</option>
                                         @endforeach
