@@ -40,18 +40,20 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="form-group col-md-4">
-                                <select class="form-control" id="branch_id">
-                                    @foreach ($lisBranch as $bch)
-                                        <option value="{{ $bch->id }}" {{($bch->id == Auth::user()->branch_id ) ? 'selected' : ''}}>{{ $bch->name}}</option>
-                                    @endforeach
-                                </select>
+                        <form action="{{route('filter-data-shiftType')}}" method="POST">
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <select class="form-control" id="branch_id">
+                                        @foreach ($lisBranch as $bch)
+                                            <option value="{{ $bch->id }}" {{($bch->id == Auth::user()->branch_id ) ? 'selected' : ''}}>{{ $bch->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <button class="btn btn-primary" id="Search">Search</button>
+                                </div>
                             </div>
-                            <div class="form-group col-md-4">
-                                <button class="btn btn-primary" id="Search">Search</button>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
                 <div class="table-responsive" style="overflow-x: visible">

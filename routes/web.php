@@ -184,6 +184,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('overtime-type', OvertimeTypeController::class);
         Route::resource('day-type', DayTypeController::class);
         Route::resource('shift-type', ShiftTypeController::class);
+        Route::post('filter-data-shiftType', [ShiftTypeController::class,'index'])->name('filter-data-shiftType');
         Route::resource('allowance-option', AllowanceOptionController::class);
         Route::post('get-data-allowance-option', [AllowanceOptionController::class,'get_data'])->name('get-data-allowance-option');
         Route::post('delete-allowance-option', [AllowanceOptionController::class,'destroy'])->name('delete-allowance-option');
