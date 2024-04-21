@@ -38,6 +38,15 @@
 
         <div class="row">
             <div class="col-md-12">
+                <div class="card">
+                    <div class="form-control">
+                        <select class="form-control" id="branch_id">
+                            @foreach ($lisBranch as $bch)
+                                <option value="{{ $bch->id }}" {{($bch->id == Auth::user()->branch_id ) ? 'selected' : ''}}>{{ $bch->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
                 <div class="table-responsive" style="overflow-x: visible">
                     <table class="table table-striped custom-table datatable">
                         <thead>

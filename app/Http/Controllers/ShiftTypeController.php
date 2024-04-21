@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BreakTime;
 use App\Models\DayType;
+use App\Models\Branch;
 use App\Models\ShiftType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,13 +12,20 @@ use Illuminate\Support\Facades\Validator;
 
 class ShiftTypeController extends Controller
 {
-   public function index()
+   public function index(Request $request)
     {
         if (Auth::user()->can('manage shift type')) {
-            $shiftTypes = ShiftType::where('created_by', '=', Auth::user()->creatorId())->get();
-            $dayTypes = DayType::where('created_by', '=', Auth::user()->creatorId())->get();
+            $bch = Branch::where('id',Auth::user()->branch_id)->first();
+            $lisBranch = Branch::where('company_id',$branch->company_id)->get();
+            if (isset($request->branch_id)){
+                $branch = $request->branch_id;
+            }else{
+                $branch = Auth::user()->branch_id();
+            }
+            $shiftTypes = ShiftType::where('branch_id', '=', $branch)->get();
+            $dayTypes = DayType::all();
 
-            return view('pages.contents.shift-type.index', compact('shiftTypes', 'dayTypes'));
+            return view('pages.contents.shift-type.index', compact('shiftTypes', 'dayTypes','lisBranch'));
         } else {
             toast('Permission denied.', 'error');
             return redirect()->back();
@@ -26,10 +34,10 @@ class ShiftTypeController extends Controller
     public function create()
     {
         if (Auth::user()->can('create shift type')) {
-            $shiftTypes = ShiftType::where('created_by', '=', Auth::user()->creatorId())->get();
-            $dayTypes = DayType::where('created_by', '=', Auth::user()->creatorId())->get();
+            // $shiftTypes = ShiftType::where('branch_id', '=', $request->branch_id)->get();
+            $dayTypes = DayType::all();
 
-            return view('pages.contents.shift-type.create', compact('shiftTypes', 'dayTypes'));
+            return view('pages.contents.shift-type.create', compact('dayTypes'));
         } else {
             toast('Permission denied.', 'error');
             return redirect()->back();
@@ -104,7 +112,7 @@ class ShiftTypeController extends Controller
         if (Auth::user()->can('edit shift type')) {
             $shiftType = ShiftType::find($id);
             $breakTimes = BreakTime::where('shift_type_id', $shiftType->id)->get();
-            $dayTypes = DayType::where('created_by', '=', Auth::user()->creatorId())->get();
+            $dayTypes = DayType::all();
 
             return view('pages.contents.shift-type.edit', compact('shiftType', 'dayTypes', 'breakTimes'));
         } else {
