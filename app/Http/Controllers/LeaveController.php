@@ -255,7 +255,7 @@ class LeaveController extends Controller
                         'level'                 => $value->level,
                         'is_approver_company'   => $value->company_id ? true : false,
                         'approver_id'           => isset($value->company_id) ? $value->company_id : $value->employee_id,
-                        'status'                => 'Pending',
+                        'status'                => 'Approved',
                         'created_by'            => Auth::user()->creatorId(),
                     ]);
                 }

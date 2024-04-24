@@ -311,8 +311,8 @@ class PayrollController extends Controller
             $data['payslip_type']   = PayslipType::select('id','name','type')->get();
             $data['valAllowance']   = AllowanceFinance::where('employee_id','=',$data['payroll']->employee_id)->with('allowance_type')->get();
             $data['bpjs']           = Bpjs_value::where('employee_id','=',$data['payroll']->employee_id)->get();
-            $data['master_bpjs']    = Master_bpjs::where('branch_id',Auth::user()->branch_id)->get();
-            $data['allowance']      = AllowanceOption::where('branch_id',Auth::user()->branch_id)->get();
+            $data['master_bpjs']    = Master_bpjs::where('branch_id', $data['payroll']->employee->branch_id)->get();
+            $data['allowance']      = AllowanceOption::where('branch_id', $data['payroll']->employee->branch_id)->get();
 
             return response()->json($data);
         } else {

@@ -836,12 +836,32 @@ class AttendanceEmployeeController extends Controller
         $dataEmployee = [];
         $attendaceData = [];
         $status = null;
-        // dd($sheetData);
         foreach ($sheetData as $key => $value) {
             if ($key > 0) :
                 $branch = Branch::where('alias',$value[10])->first();
-                // $employeeId = employee::where('no_employee',$value[1])->where('branch_id',Auth::user()->branch_id)->first();
                 $employeeId = employee::where('no_employee',$value[1])->where('branch_id', $branch->id)->first();
+                if($employeeId == null){
+                    continue;
+                }
+                $employeeShift = ShiftSchedule::where('employee_id',$employeeId->id)->where('branch_id',$branch->id)->first();
+                $late = '00:00';
+                $totLeave = '00:00';
+                if($employeeShift != null){
+                    if($employeeShift->shift_type->start_time !=null){
+                        $totalLateSeconds = strtotime($value[4]) - strtotime($employeeShift->shift_type->start_time);
+                        $hours = floor($totalLateSeconds / 3600);
+                        $mins  = floor($totalLateSeconds / 60 % 60);
+                        $secs  = floor($totalLateSeconds % 60);
+                        $late  = sprintf('%02d:%02d', $hours, $mins, $secs);
+                    }
+                    if($value[5] !=null){
+                        $totalleaveSeconds = strtotime($value[5]) - strtotime($employeeShift->shift_type->end_time);
+                        $hours = floor($totalleaveSeconds / 3600);
+                        $mins  = floor($totalleaveSeconds / 60 % 60);
+                        $secs  = floor($totalleaveSeconds % 60);
+                        $totLeave  = sprintf('%02d:%02d', $hours, $mins, $secs);
+                    }
+                }
                 if ($employeeId != null ):
                     $checked = AttendanceEmployee::where('employee_id',$employeeId->id)->where('date',$value[3])->first();
                     if ($checked !=null):
@@ -850,9 +870,9 @@ class AttendanceEmployeeController extends Controller
                             'date'              => $value[3],
                             'clock_in'          => $value[4],
                             'clock_out'         => $value[5],
-                            'late'              => $value[6],
-                            'early_leaving'     => $value[7],
-                            'overtime'          => $value[8],
+                            'late'              => (($late > 0) ? $late : '00:00'),
+                            'early_leaving'     => (($totLeave < 0) ? $totLeave : '00:00'),
+                            'overtime'          => (($totLeave > 0) ? $totLeave : '00:00'),
                             'status'            => ucwords($status),
                             'total_rest'        => '00:00:00',
                             'created_at'        => date('Y-m-d h:m:s'),
@@ -881,9 +901,9 @@ class AttendanceEmployeeController extends Controller
                             'date'              => $value[3],
                             'clock_in'          => $value[4],
                             'clock_out'         => $value[5],
-                            'late'              => $value[6],
-                            'early_leaving'     => $value[7],
-                            'overtime'          => $value[8],
+                            'late'              => (($late > 0) ? $late : '00:00'),
+                            'early_leaving'     => (($totLeave < 0) ? $totLeave : '00:00'),
+                            'overtime'          => (($totLeave > 0) ? $totLeave : '00:00'),
                             'status'            => ucwords($status),
                             'total_rest'        => '00:00:00',
                             'created_at'        => date('Y-m-d h:m:s'),
@@ -905,15 +925,11 @@ class AttendanceEmployeeController extends Controller
                 'status' => 'success',
                 'msg'    => 'Successfully Import Attendance !'
             ];
-            // toast('Successfully Import Attendance', 'success');
-            // return redirect()->back();
         }else{
             $res = [
                 'status' => 'success',
                 'msg'    => 'Someting went wrong !'
             ];
-            // toast('Something wrong went Import Attendance', 'error');
-            // return redirect()->back();
         }
         return response()->json($res);
         

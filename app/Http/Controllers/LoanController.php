@@ -207,7 +207,7 @@ class LoanController extends Controller
                     $loan->remaining_installment= $request->amount;
                     $loan->amount               = $request->amount;
                     $loan->installment          = $request->installment;
-                    $loan->status               = 'pending';
+                    $loan->status               = 'ongoing';
                     $loan->type                 = 'installment';
                     $loan->branch_id            = $request->branch_id;
                     $loan->application_date     = date('Y-m-d');
@@ -219,7 +219,7 @@ class LoanController extends Controller
                     $loan->amount               = $request->amount;
                     $loan->installment          = 0;
                     $loan->number_of_installment = 0;
-                    $loan->status               = 'pending';
+                    $loan->status               = 'ongoing';
                     $loan->type                 = 'cash_advance';
                     $loan->branch_id            = $request->branch_id;
                     $loan->created_by           = Auth::user()->creatorId();
