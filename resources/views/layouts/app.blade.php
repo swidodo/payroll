@@ -11,7 +11,7 @@
         <title>@yield('title') - Pehadir</title>
 
 		<!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets/img/favicon.png')}}">
+        <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets/img/logo-pehadir.jpg')}}">
 
         @include('includes.style')
         @stack('addon-style')
