@@ -112,7 +112,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::post('/',[App\Http\Controllers\API\RequestTimeSheetController::class, 'index']);
         Route::post('/create',[App\Http\Controllers\API\RequestTimeSheetController::class, 'store']);
         Route::get('/edit/{id}',[App\Http\Controllers\API\RequestTimeSheetController::class, 'edit']);
-        Route::PUT('/update',[App\Http\Controllers\API\RequestTimeSheetController::class, 'update']);
+        Route::post('/update',[App\Http\Controllers\API\RequestTimeSheetController::class, 'update']);
         Route::get('/{id}',[App\Http\Controllers\API\RequestTimeSheetController::class, 'show']);
         Route::delete('/delete',[App\Http\Controllers\API\RequestTimeSheetController::class, 'destroy']);
     });
