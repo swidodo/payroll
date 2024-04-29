@@ -128,7 +128,7 @@ class BranchController extends Controller
                     return redirect()->route('branches.index')->with('error', 'Branch  already !.');
                 }
                 if($request->status !=null){
-                    if($request->status == 'nonactive'){
+                    if($request->status == '0'){
                          Employee::where('branch_id',$branch->id)->update(['status'=> 'resign','out_date'=>date('Y-m-d')]);
                     }
                     $branch->is_active   = $request->status;
