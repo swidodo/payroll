@@ -139,6 +139,20 @@
                                     @endif
                                 </div>
                             </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <select name="status" id="status" class="form-control">
+                                        <option value="1">Active</option>
+                                        <option value="0">Non Active</option>
+                                    </select>
+                                    @if ($errors->has('status'))
+                                    <div class="text-danger" role="alert">
+                                        <small><strong>{{ $errors->get('status')[0] }}</strong></small>
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                         <div class="submit-section">
                             <button type="submit" class="btn btn-primary submit-btn">Submit</button>

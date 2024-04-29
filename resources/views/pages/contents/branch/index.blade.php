@@ -54,6 +54,7 @@
                                 <th>Branch Code</th>
                                 <th>Latitude</th>
                                 <th>Longitude</th>
+                                <th>Status</th>
                                 @if(Auth::user()->can('edit branch') || Auth::user()->can('delete branch'))
                                     <th class="text-end">Action</th>
                                 @endif
@@ -77,6 +78,9 @@
                                     </td>
                                     <td>
                                         {{$branch->longitude}}
+                                    </td>
+                                    <td>
+                                        {{($branch->is_active =='0') ? 'Non Active' : 'Acttive'}}
                                     </td>
                                     @canany(['edit branch', 'delete branch'])
                                         <td class="text-end">

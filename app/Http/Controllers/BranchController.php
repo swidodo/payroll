@@ -58,6 +58,7 @@ class BranchController extends Controller
             $branch->name       = $request->name;
             $branch->alias      = $comId->company_id.$request->alias;
             $branch->company_id = $comId->company_id;
+            $branch->is_active  = '1';
             $branch->latitude   = $request->latitude;
             $branch->longitude   = $request->longitude;
             $branch->created_by = Auth::user()->creatorId();
@@ -126,11 +127,17 @@ class BranchController extends Controller
                 if($check > 0){
                     return redirect()->route('branches.index')->with('error', 'Branch  already !.');
                 }
-
-                $branch->name       = $request->name;
-                $branch->alias      = $request->company_id.$request->alias;
-                $branch->save();
-
+                if($request->status !=null){
+                    if($request->status == 'nonactive'){
+                         Employee::where('branch_id',$branch->id)->update(['status'=> 'resign','out_date'=>date('Y-m-d')]);
+                    }
+                    $branch->is_active   = $request->status;
+                    $branch->save();
+                }else{
+                    $branch->name       = $request->name;
+                    $branch->alias      = $request->company_id.$request->alias;
+                    $branch->save();
+                }
                 return redirect()->route('branches.index')->with('success', 'Branch successfully updated.');
             } else {
                 toast('Permission denied.', 'error');
