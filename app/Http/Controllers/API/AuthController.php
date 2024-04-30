@@ -142,12 +142,43 @@ class AuthController extends Controller
             'result' => $userData
         ], Response::HTTP_OK);
     }
+    // public function change_profile(Request $request){
+    //     try{
+    //         $dta = Branch::select('branches.name as branch_name','companies.name as company_name')
+    //                         ->leftJoin('companies','companies.id','=','branches.company_id')
+    //                         ->where('branches.id',$request->branch_id)->first();
+    //         $company    =  $dta->branch_name;
+    //         $branch     =  $dta->company_name;
+    //         $tahun      =  date('Y');
+    //         $bulan      =  date('m');
+    //         $tanggal    =  date('d-m-Y');
+    //         $dir        = $company.'/'.$branch.'/'.$tahun.'/'.$bulan.'/'.$tanggal.'/';
+    //         $path = 'profile/'.$dir.$request->get('foto');
+    //         if (! Storage::exists($path)) {
+    //             Storage::makeDirectory($path,775,true);
+    //         }
 
-    /**
-     * createNewToken
-     *
-     * @return void
-     */
+    //         $fileName = time() . $request->file('foto')->getClientOriginalName();
+    //         $store = $request->file('foto')->storeAs($path, $fileName);
+    //         $pathFile_application = 'storage/app/public/'.$path . $fileName ?? null;
+    //         $base = URL::to('/');
+    //         $link_foto = $base.'/'.$pathFile_application;
+    //         $user = [
+    //             'avatar' => $link_foto
+    //         ];
+    //         User::where('id', Auth::user()->id)->update($user);
+    //         return response()->json([
+    //             'status' => Response::HTTP_OK,
+    //             'result' => $userData
+    //         ], Response::HTTP_OK);
+    //     }catch(Exception $e){
+    //         DB::rollBack();
+    //         return response()->json([
+    //             'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
+    //             'mesage' => 'Something went wrong!',
+    //         ], Response::HTTP_UNPROCESSABLE_ENTITY);
+    //     }
+    // }
     protected function createNewToken()
     {
         $user = Auth::user();
