@@ -80,7 +80,7 @@
                                         {{$branch->longitude}}
                                     </td>
                                     <td>
-                                        {{($branch->is_active =='0') ? 'Non Active' : 'Acttive'}}
+                                        {{($branch->is_active =='0') ? 'Non Active' : 'Active'}}
                                     </td>
                                     @canany(['edit branch', 'delete branch'])
                                         <td class="text-end">
