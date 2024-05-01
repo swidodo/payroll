@@ -50,12 +50,30 @@ class NotifikasiController extends Controller
             ->withImageUrl('https://picsum.photos/200/400');
             
     }
-    public function toFirebase()
-    {
-        return (new FirebaseMessage)
-            ->withTitle('test')
-            ->withBody('tesbody')
-            ->withPriority('high');
+    
+    public function toFirebase(Request $request){
+        
+        try{
+            $fcmTokens = User::whereNotNull('fcm_token')->pluck('fcm_token')->toArray();
+    
+            //Notification::send(null,new SendPushNotification($request->title,$request->message,$fcmTokens));
+    
+            /* or */
+    
+            //auth()->user()->notify(new SendPushNotification($title,$message,$fcmTokens));
+    
+            /* or */
+    
+            Larafirebase::withTitle("testing")
+                ->withBody("mesage")
+                ->sendMessage($fcmTokens);
+    
+            return redirect()->back()->with('success','Notification Sent Successfully!!');
+    
+        }catch(\Exception $e){
+            report($e);
+            return redirect()->back()->with('error','Something goes wrong while sending notification.');
+        }
     }
     
     }
