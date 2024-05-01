@@ -19,11 +19,6 @@ use Illuminate\Support\Facades\DB;
 
 class AttendanceController extends Controller
 {
-    /**
-     * index
-     *
-     * @return void
-     */
     public function index()
     {
         $data = [];
@@ -41,12 +36,6 @@ class AttendanceController extends Controller
         $r = ['status' => Response::HTTP_OK, 'result' => $data];
         return response()->json($r, Response::HTTP_OK);
     }
-
-    /**
-     * index
-     *
-     * @return void
-     */
     public function list(Request $request)
     {
         $from = $request->from_date ?? Carbon::now()->subMonths(1)->format('Y-m-d');
@@ -230,11 +219,11 @@ class AttendanceController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'longitude' => ['required', 'numeric', 'between:-180,180'],
-            'latitude' => ['required', 'numeric', 'between:-90,90'],
-            'type' => 'required|string|in:I,O',
-            'notes' => 'nullable|string|max:128',
-            'source' => 'nullable|string|max:128',
-            'photo' => 'nullable|file|max:5120|mimes:jpg,jpeg,png|mimetypes:image/*',
+            'latitude'  => ['required', 'numeric', 'between:-90,90'],
+            'type'      => 'required|string|in:I,O',
+            'notes'     => 'nullable|string|max:128',
+            'source'    => 'nullable|string|max:128',
+            'photo'     => 'nullable|file|max:5120|mimes:jpg,jpeg,png|mimetypes:image/*',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -272,12 +261,20 @@ class AttendanceController extends Controller
             $employeeAttendance->overtime      = '00:00:00';
             $employeeAttendance->total_rest    = '00:00:00';
             $employeeAttendance->save();
+            if($request->is_live == 'ya'){
+                $logitude = $request->longitude;
+                $latitude = $request->latitude;
+            }else{
+                $logitude = null;
+                $latitude = null;
+            }
             $loc = [
                 'attendance_employees_id' => $employeeAttendance->id,
                 'time'                    => $in,
-                'latitude'                => $request->longitude,
-                'longitude'               => $request->latitude,
-                'status'                  => 'clock in'
+                'latitude'                => $logitude,
+                'longitude'               => $latitude,
+                'status'                  => 'clock in',
+                'is_live'                 => $request->is_live
             ];
             DB::table('attendance_locations')->insert($loc);
             if (!is_null($dendas)) {
@@ -378,13 +375,20 @@ class AttendanceController extends Controller
             $employeeAttendance->overtime      = $overtime;
             $employeeAttendance->total_rest    = '00:00:00';
             $employeeAttendance->save();
-            
+            if($request->is_live == 'ya'){
+                $logitude = $request->longitude;
+                $latitude = $request->latitude;
+            }else{
+                $logitude = null;
+                $latitude = null;
+            }
             $locat = [
                 'attendance_employees_id' => $employeeAttendance->id,
                 'time'                    => $out,
-                'latitude'                => $request->longitude,
-                'longitude'               => $request->latitude,
-                'status'                  => 'clock out'
+                'latitude'                => $logitude,
+                'longitude'               => $latitude,
+                'status'                  => 'clock out',
+                'is_live'                 => $request->is_live
             ];
             DB::table('attendance_locations')->insert($locat);
             LogAttendance::create([
