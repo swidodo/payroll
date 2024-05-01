@@ -217,6 +217,7 @@ class AttendanceController extends Controller
     
      public function create(Request $request)
     {
+        date_default_timezone_set($request->timezone);
         $validator = Validator::make($request->all(), [
             'longitude' => ['required', 'numeric', 'between:-180,180'],
             'latitude'  => ['required', 'numeric', 'between:-90,90'],
