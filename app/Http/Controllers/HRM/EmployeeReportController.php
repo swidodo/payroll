@@ -72,6 +72,7 @@ class EmployeeReportController extends Controller
    
     public function monthly_turnover(Request $request){
         $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
+        dd($branch);
         if ($request->branch_id == 0){
             $turnover = DB::table('v_monthly_turnover')
                         ->select(DB::raw("SUM(turnover) / count(branch_id) as turnover "))
@@ -79,14 +80,12 @@ class EmployeeReportController extends Controller
                         ->where('branches.company_id',$branch->company_id)
                         ->get();
             $response['data'] = $turnover;
-            dd($turnover);
         }else{
             $turnover = DB::table('v_monthly_turnover')
                         ->select('*')
                         ->where('branch_id',$request->branch_id)
                         ->get();
             $response['data'] = $turnover;
-            dd($turnover);
         }
         return response()->json($response);
 
