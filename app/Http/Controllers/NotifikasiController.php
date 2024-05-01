@@ -5,7 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Kreait\Firebase\Messaging\Message;
 use Kreait\Firebase\Messaging\Notification;
-use Kreait\Firebase\Messaging\CloudMessage;
+
+//
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Kutia\Larafirebase\Messages\FirebaseMessage;
+
 use App\Models\User;
 class NotifikasiController extends Controller
 {
@@ -25,23 +30,26 @@ class NotifikasiController extends Controller
             ],500);
         }
     }
-   
-public function notification(Request $request)
-{
-    $FcmToken = auth()->user()->fcm_token;
-    $title = $request->input('title');
-    $body = $request->input('body');
-    $message = CloudMessage::fromArray([
-      'token' => $FcmToken,
-      'notification' => [
-        'title' => "test",
-         'body' => "body"
-        ],
-     ]);
-
-   Notification::send($message);
-}
+    public function notification()
+    {
+        $title = 'My Notification Title';
+        $body = 'My Notification Body';
+        $imageUrl = 'https://picsum.photos/400/200';
+        
+        $notification = Notification::fromArray([
+            'title' => $title,
+            'body' => $body,
+            'image' => $imageUrl,
+        ]);
+        
+        $notification = Notification::create($title, $body);
+        
+        $changedNotification = $notification
+            ->withTitle('Changed title')
+            ->withBody('Changed body')
+            ->withImageUrl('https://picsum.photos/200/400');
+            
+    }
     
-   
     }
 
