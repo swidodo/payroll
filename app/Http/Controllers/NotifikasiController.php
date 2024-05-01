@@ -30,25 +30,13 @@ class NotifikasiController extends Controller
             ],500);
         }
     }
-    public function notification()
+    public function notification($topic="topik",$title="sebuah toitle", $body="body")
     {
-        $title = 'My Notification Title';
-        $body = 'My Notification Body';
-        $imageUrl = 'https://picsum.photos/400/200';
-        
-        $notification = Notification::fromArray([
-            'title' => $title,
-            'body' => $body,
-            'image' => $imageUrl,
-        ]);
-        
-        $notification = Notification::create($title, $body);
-        
-        $changedNotification = $notification
-            ->withTitle('Changed title')
-            ->withBody('Changed body')
-            ->withImageUrl('https://picsum.photos/200/400');
-            
+        $firebase = app('firebase.messaging');
+    $message = CloudMessage::withTarget('topic', $topic)
+        ->withNotification(Notification::create($title, $body));
+
+    $firebase->send($message);
     }
     
     }
