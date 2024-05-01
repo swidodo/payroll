@@ -85,18 +85,19 @@
         })
     }
     function monthly_turnover(branch){
-        header();
-        $.ajax({
-            url :'chart-employee_monthly_turnover',
-            type : 'GET',
-            data :{branch_id :branch},
-            dataType : 'json',
-            success :function (response){
-                var data = (response.data[0].turnover == null) ? 0 : response.data[0].turnover;
-                var val = parseFloat(data).toFixed(1);
-                turnover(val);
-            },
-        });
+        turnover(0);
+        // header();
+        // $.ajax({
+        //     url :'chart-employee_monthly_turnover',
+        //     type : 'GET',
+        //     data :{branch_id :branch},
+        //     dataType : 'json',
+        //     success :function (response){
+        //         var data = (response.data[0].turnover == null) ? 0 : response.data[0].turnover;
+        //         var val = parseFloat(data).toFixed(1);
+        //         turnover(val);
+        //     },
+        // });
     }
     function department(branch){
         header();
