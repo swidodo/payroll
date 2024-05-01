@@ -79,6 +79,7 @@ class EmployeeReportController extends Controller
                         ->where('branches.company_id',$branch->company_id)
                         ->get();
             $response['data'] = $turnover;
+            dd($turnover);
         }else{
             $turnover = DB::table('v_monthly_turnover')
                         ->select('*')
