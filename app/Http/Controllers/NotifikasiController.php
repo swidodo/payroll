@@ -10,7 +10,7 @@ use Kreait\Firebase\Messaging\Notification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Kutia\Larafirebase\Messages\FirebaseMessage;
-
+use Kutia\Larafirebase\Facades\Larafirebase;
 use App\Models\User;
 class NotifikasiController extends Controller
 {
