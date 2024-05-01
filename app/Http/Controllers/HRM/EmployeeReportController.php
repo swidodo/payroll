@@ -78,7 +78,11 @@ class EmployeeReportController extends Controller
                         ->leftJoin('branches','branches.id','=','v_monthly_turnover.branch_id')
                         ->where('branches.company_id',$branch->company_id)
                         ->get();
-            $response['data'] = $turnover;
+            if($turnover){
+            }else{
+                $response['data'] = null;
+
+            }
         }else{
             $turnover = DB::table('v_monthly_turnover')
                         ->select('*')
