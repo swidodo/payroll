@@ -7,6 +7,7 @@
     https://firebase.google.com/docs/web/setup#available-libraries -->
 
 <script>
+    import axios from 'axios';
     // Your web app's Firebase configuration
     var firebaseConfig = {
         apiKey: "AIzaSyDZB-o1EiE0o3VZN0fZBBUBfBpHu_v3ggk",
