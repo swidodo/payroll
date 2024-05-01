@@ -9,13 +9,13 @@
 <script>
     // Your web app's Firebase configuration
     var firebaseConfig = {
-        apiKey: "XXXXXXXXXXXXXXXXXXXXXXXXXX",
-        authDomain: "XXXXXXX.firebaseapp.com",
-        projectId: "XXXXXXXXXX",
-        storageBucket: "XXXXXXXXXX.appspot.com",
-        messagingSenderId: "XXXXXXXXXX",
-        appId: "1:XXXXXXXXX:web:XXXXXXXXXXXXX"
-    };
+        apiKey: "AIzaSyDZB-o1EiE0o3VZN0fZBBUBfBpHu_v3ggk",
+        authDomain: "pehadir-1f207.firebaseapp.com",
+        projectId: "pehadir-1f207",
+        storageBucket: "pehadir-1f207.appspot.com",
+        messagingSenderId: "918999990118",
+        appId: "1:918999990118:web:d6d957545d102a5c6fd2a7",
+  };
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
 
