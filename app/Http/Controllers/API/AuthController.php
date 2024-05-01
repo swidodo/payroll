@@ -164,10 +164,18 @@ class AuthController extends Controller
             $pathFile_application   = 'storage/app/public/'.$path . $fileName ?? null;
             $base                   = URL::to('/');
             $link_foto              = $base.'/'.$pathFile_application;
-            $user = [
+            $dataUser = [
                 'avatar' => $link_foto
             ];
-            User::where('id', Auth::user()->id)->update($user);
+            User::where('id', Auth::user()->id)->update($dataUser);
+            $user = Auth::user();
+            $userData = [
+                'name' => $user->name,
+                'initials' => $user->initial,
+                'email' => $user->email,
+                'profile_pic' => $user->avatar,
+                'branch' => isset($user->employee->branch) ? $user->employee->branch->name : 'Unknown company'
+            ];
             return response()->json([
                 'status' => Response::HTTP_OK,
                 'result' => $userData
