@@ -667,7 +667,7 @@ Route::group(['middleware' => 'auth'], function () {
         //  push notif
         Route::get('/notif', [NotifikasiController::class, 'index']);
         Route::post('/fcm-token', [NotifikasiController::class, 'updateToken'])->name('fcmToken');
-        Route::get('/send-notification',[NotifikasiController::class,'sendNotification'])->name('notification');
+        Route::get('/send-notification',[NotifikasiController::class,'sendNotification']);
 
 });
 
