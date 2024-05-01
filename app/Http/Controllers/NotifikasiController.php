@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Kreait\Firebase\Messaging\Message;
 use Kreait\Firebase\Messaging\Notification;
-use Kutia\Larafirebase\Facades\Larafirebase;
+
+//
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Kutia\Larafirebase\Messages\FirebaseMessage;
 
 use App\Models\User;
 class NotifikasiController extends Controller
@@ -26,7 +30,7 @@ class NotifikasiController extends Controller
             ],500);
         }
     }
-    public function sendNotificatn()
+    public function sendNotification()
     {
         $title = 'My Notification Title';
         $body = 'My Notification Body';
@@ -34,7 +38,7 @@ class NotifikasiController extends Controller
         
         $notification = Notification::fromArray([
             'title' => $title,
-            'body' => $body, 
+            'body' => $body,
             'image' => $imageUrl,
         ]);
         
@@ -46,31 +50,13 @@ class NotifikasiController extends Controller
             ->withImageUrl('https://picsum.photos/200/400');
             
     }
-    public function sendNotification(){
-        $title = 'My Notification Title';
-        $body = 'My Notification Body';
-    
-        try{
-            $fcmTokens = User::whereNotNull('fcm_token')->pluck('fcm_token')->toArray();
-    
-            //Notification::send(null,new SendPushNotification($request->title,$request->message,$fcmTokens));
-    
-            /* or */
-    
-            //auth()->user()->notify(new SendPushNotification($title,$message,$fcmTokens));
-    
-            /* or */
-    
-            Larafirebase::withTitle($title)
-                ->withBody($body)
-                ->sendMessage($fcmTokens);
-    
-            return redirect()->back()->with('success','Notification Sent Successfully!!');
-    
-        }catch(\Exception $e){
-            report($e);
-            return redirect()->back()->with('error','Something goes wrong while sending notification.');
-        }
+    public function toFirebase($notifiable)
+    {
+        return (new FirebaseMessage)
+            ->withTitle('test')
+            ->withBody('tesbody')
+            ->withPriority('high');
     }
+    
     }
 
