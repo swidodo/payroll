@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Kreait\Firebase\Messaging\Message;
 use Kreait\Firebase\Messaging\Notification;
+use Kutia\Larafirebase\Facades\Larafirebase;
+
 use App\Models\User;
 class NotifikasiController extends Controller
 {
