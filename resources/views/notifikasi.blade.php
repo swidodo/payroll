@@ -25,7 +25,7 @@
         messaging.requestPermission().then(function () {
             return messaging.getToken()
         }).then(function(token) {
-            
+            console.log(token)
             axios.post("{{ route('fcmToken') }}",{
                 _method:"PATCH",
                 token
