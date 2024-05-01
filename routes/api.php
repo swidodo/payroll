@@ -21,6 +21,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::group(['prefix' => 'auth'], function () {
         Route::get('/logout', [App\Http\Controllers\API\AuthController::class, 'logout']);
         Route::get('/profile', [App\Http\Controllers\API\AuthController::class, 'profile']);
+        Route::post('/change-foto-profile', [App\Http\Controllers\API\AuthController::class, 'change_profile']);
         Route::post('/change-password', [App\Http\Controllers\API\AuthController::class, 'change_password']);
     });
     Route::group(['prefix' => 'menu'], function () {
