@@ -24,7 +24,7 @@ class NotifikasiController extends Controller
             ],500);
         }
     }
-    public function sendNotification()
+    public function sendNotificatn()
     {
         $title = 'My Notification Title';
         $body = 'My Notification Body';
