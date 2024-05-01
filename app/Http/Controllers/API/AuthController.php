@@ -147,7 +147,7 @@ class AuthController extends Controller
         try{
             $dta = Branch::select('branches.name as branch_name','companies.name as company_name')
                             ->leftJoin('companies','companies.id','=','branches.company_id')
-                            ->where('branches.id',$request->branch_id)->first();
+                            ->where('branches.id',Auth::user()->branch_id)->first();
             $company    =  $dta->branch_name;
             $branch     =  $dta->company_name;
             $tahun      =  date('Y');
