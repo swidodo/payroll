@@ -86,6 +86,7 @@ class EmployeeReportController extends Controller
                         ->where('branch_id',$request->branch_id)
                         ->get();
             $response['data'] = $turnover;
+            dd($turnover);
         }
         return response()->json($response);
 
