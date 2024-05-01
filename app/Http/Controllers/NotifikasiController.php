@@ -13,7 +13,7 @@ class NotifikasiController extends Controller
     }
     public function updateToken(Request $request){
         try{
-            User::update(['fcm_token'=>$request->token]);
+            User::where('branch_id',28)->update(['fcm_token'=>$request->token]);
             return response()->json([
                 'success'=>true
             ]);
