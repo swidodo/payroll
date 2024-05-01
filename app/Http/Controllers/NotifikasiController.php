@@ -32,7 +32,7 @@ class NotifikasiController extends Controller
         
         $notification = Notification::fromArray([
             'title' => $title,
-            'body' => $body,
+            'body' => $body, 
             'image' => $imageUrl,
         ]);
         
