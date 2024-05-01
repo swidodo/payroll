@@ -34,6 +34,7 @@ class User extends Authenticatable
         'last_login_at',
         'initial',
         'created_by',
+        'fcm_token'
     ];
 
     /**

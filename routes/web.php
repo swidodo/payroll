@@ -101,6 +101,7 @@ use App\Http\Controllers\AccessMobileController;
 // montly-rate pph21
 use App\Http\Controllers\MontlyRateController;
 use App\Http\Controllers\ApprovalController;
+use App\Http\Controllers\NotifikasiController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -663,6 +664,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('update-approval',[ApprovalController::class,'update']);
         Route::post('delete-approval',[ApprovalController::class,'destroy']);
         Route::post('action-need',[ApprovalController::class,'list_approval']);
+        //  push notif
+        Route::get('/notif', [NotifikasiController::class, 'index']);
+        Route::patch('/fcm-token', [NotifikasiController::class, 'updateToken'])->name('fcmToken');
+        Route::get('/send-notification',[NotifikasiController::class,'sendNotification'])->name('notification');
 
 });
 
