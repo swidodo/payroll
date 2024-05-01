@@ -5,12 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Kreait\Firebase\Messaging\Message;
 use Kreait\Firebase\Messaging\Notification;
-
-//
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Kutia\Larafirebase\Messages\FirebaseMessage;
-use Kutia\Larafirebase\Facades\Larafirebase;
+use Kreait\Firebase\Messaging\CloudMessage;
 use App\Models\User;
 class NotifikasiController extends Controller
 {
@@ -30,51 +25,23 @@ class NotifikasiController extends Controller
             ],500);
         }
     }
-    public function sendNotification()
-    {
-        $title = 'My Notification Title';
-        $body = 'My Notification Body';
-        $imageUrl = 'https://picsum.photos/400/200';
-        
-        $notification = Notification::fromArray([
-            'title' => $title,
-            'body' => $body,
-            'image' => $imageUrl,
-        ]);
-        
-        $notification = Notification::create($title, $body);
-        
-        $changedNotification = $notification
-            ->withTitle('Changed title')
-            ->withBody('Changed body')
-            ->withImageUrl('https://picsum.photos/200/400');
-            
-    }
+   
+public function notification(Request $request)
+{
+    $FcmToken = auth()->user()->fcm_token;
+    $title = $request->input('title');
+    $body = $request->input('body');
+    $message = CloudMessage::fromArray([
+      'token' => $FcmToken,
+      'notification' => [
+        'title' => "test",
+         'body' => "body"
+        ],
+     ]);
+
+   $this->notification->send($message);
+}
     
-    public function toFirebase(Request $request){
-        
-        try{
-            $fcmTokens = User::whereNotNull('fcm_token')->pluck('fcm_token')->toArray();
-    
-            //Notification::send(null,new SendPushNotification($request->title,$request->message,$fcmTokens));
-    
-            /* or */
-    
-            //auth()->user()->notify(new SendPushNotification($title,$message,$fcmTokens));
-    
-            /* or */
-    
-            Larafirebase::withTitle("testing")
-                ->withBody("mesage")
-                ->sendMessage($fcmTokens);
-    
-            return redirect()->back()->with('success','Notification Sent Successfully!!');
-    
-        }catch(\Exception $e){
-            report($e);
-            return redirect()->back()->with('error','Something goes wrong while sending notification.');
-        }
-    }
-    
+   
     }
 
