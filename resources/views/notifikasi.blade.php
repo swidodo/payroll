@@ -1,13 +1,16 @@
 
 <!-- The core Firebase JS SDK is always required and must be listed first -->
+
 <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-messaging.js"></script>
-
+<script src="{{asset('assets/js/jquery-3.6.0.min.js')}}"></script>
 <!-- TODO: Add SDKs for Firebase products that you want to use
     https://firebase.google.com/docs/web/setup#available-libraries -->
 
 <script>
-    import axios from 'axios';
+    $.ajaxSetup({
+        headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
+    });
     // Your web app's Firebase configuration
     var firebaseConfig = {
         apiKey: "AIzaSyDZB-o1EiE0o3VZN0fZBBUBfBpHu_v3ggk",
@@ -26,15 +29,30 @@
         messaging.requestPermission().then(function () {
             return messaging.getToken()
         }).then(function(token) {
-            console.log(token)
-            axios.post("{{ route('fcmToken') }}",{
-                _method:"PATCH",
-                token
-            }).then(({data})=>{
-                console.log(data)
-            }).catch(({response:{data}})=>{
-                console.error(data)
-            })
+
+            $.ajax({
+                url : "{{ route('fcmToken') }}",
+                type : 'post',
+                data : {token:token},
+                dataType : 'json',
+                success : function(respon){
+                    console.log(respon);
+                },
+                error : function(){
+                    alert('There is an error !, please try again')
+                }
+            });
+
+
+        //     console.log(token)
+        //     axios.post("{{ route('fcmToken') }}",{
+        //         _method:"PATCH",
+        //         token
+        //     }).then(({data})=>{
+        //         console.log(data)
+        //     }).catch(({response:{data}})=>{
+        //         console.error(data)
+        //     })
 
         }).catch(function (err) {
             console.log(`Token Error :: ${err}`);
