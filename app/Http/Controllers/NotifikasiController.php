@@ -50,7 +50,7 @@ class NotifikasiController extends Controller
             ->withImageUrl('https://picsum.photos/200/400');
             
     }
-    public function toFirebase($notifiable)
+    public function toFirebase()
     {
         return (new FirebaseMessage)
             ->withTitle('test')
