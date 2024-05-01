@@ -39,7 +39,7 @@ public function notification(Request $request)
         ],
      ]);
 
-   $this->notification->send($message);
+   Notification::send($message);
 }
     
    
