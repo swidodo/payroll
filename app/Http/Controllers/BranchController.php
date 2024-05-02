@@ -131,6 +131,8 @@ class BranchController extends Controller
                     if($request->status == '0'){
                          Employee::where('branch_id',$branch->id)->update(['status'=> 'resign','out_date'=>date('Y-m-d')]);
                     }
+                    $branch->name       = $request->name;
+                    $branch->alias      = $request->company_id.$request->alias;
                     $branch->is_active   = $request->status;
                     $branch->save();
                 }else{
