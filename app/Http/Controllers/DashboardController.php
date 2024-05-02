@@ -35,7 +35,23 @@ class DashboardController extends Controller
                         ->whereNotIn('information.id', $pesan)
                         ->count();
         $request->session()->put('notif', $notif);
-        if (Auth::user()->initial == 'HO') {
+        if (Auth::user()->initial == 'HO' && Auth::user()->type ='company') {
+            $branch = Branch::find(Auth::user()->branch_id);
+            $data['branches'] = Branch::all();
+            // get notif
+            $read = Sys::where('user_id',Auth::user()->id)->get();
+            $pesan=[];
+            foreach($read as $psn){
+                array_push($pesan,$psn->information_id);
+            }
+            
+            $data['inbox'] = Information::select('information.*')->leftJoin('sys','sys.information_id','=','information.id')
+                            ->where('information.branch_id',Auth::user()->branch_id)
+                            ->where('information.status',1)
+                            ->whereNotIn('information.id', $pesan)
+                            ->get();
+            return view('pages.contents.dashboard.dashboard-company', $data);
+        }else if (Auth::user()->initial == 'HO' && Auth::user()->type ='company') {
             $branch = Branch::find(Auth::user()->branch_id);
             $data['branches'] = Branch::where('company_id', '=', $branch->company_id)->get();
             // get notif
@@ -51,7 +67,7 @@ class DashboardController extends Controller
                             ->whereNotIn('information.id', $pesan)
                             ->get();
             return view('pages.contents.dashboard.dashboard-company', $data);
-        } else {
+        }else {
             $employee = Employee::where('user_id', Auth::user()->id)->first();
             $attendanceStatus = $employee->present_status($employee->id, date('Y-m-d'));
             $attendanceEmployee = AttendanceEmployee::where('employee_id', $employee->id)
