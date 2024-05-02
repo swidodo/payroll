@@ -23,6 +23,27 @@ class EmployeeReportController extends Controller
         return Excel::download(new EmployeesExport($request), 'Employee Report.xlsx');
     }
     public function employee_status(Request $request){
+        if(Auth::user()->type =='company' && $request->branch_id == '0'){
+            $status = DB::table('v_employee_status')
+                        ->select(DB::raw("sum(v_employee_status.permanent) as permanent,
+                        sum(v_employee_status.contract) as contract,
+                        sum(v_employee_status.probation) as probation,
+                        sum(v_employee_status.daily_worker) as daily_work,
+                        sum(v_employee_status.freelance) as freelance"))
+                        ->leftJoin('branches','branches.id','v_employee_status.branch_id')
+                        ->get();
+            $response['data'] = $status;
+        }else{
+            $status = DB::table('v_employee_status')
+                            ->select(DB::raw("sum(v_employee_status.permanent) as permanent,
+                            sum(v_employee_status.contract) as contract,
+                            sum(v_employee_status.probation) as probation,
+                            sum(v_employee_status.daily_worker) as daily_work,
+                            sum(v_employee_status.freelance) as freelance"))
+                        ->where('branch_id',$request->branch_id)
+                        ->get();
+                $response['data'] = $status;
+        }
         if($request->branch_id == '0'){
             $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
             $status = DB::table('v_employee_status')
@@ -49,6 +70,23 @@ class EmployeeReportController extends Controller
         return response()->json($response);
     }
     public function employee_gender(Request $request){
+        if(Auth::user()->type =='company' && $request->branch_id == '0'){
+            $gender = DB::table('v_employee_gender')
+                        ->select('v_employee_gender.label',DB::raw("SUM(value) as value"))
+                        ->leftJoin('branches','branches.id','=','v_employee_gender.branch_id')
+                        ->groupBy('label')
+                        ->get();
+            $response['data'] = $gender;
+        }else{
+            $gender = DB::table('v_employee_gender')
+                        ->select('label',DB::raw("SUM(value) as value"))
+                        ->where('branch_id',$request->branch_id)
+                        ->groupBy('branch_id')
+                        ->groupBy('label')
+                        ->get();
+            $response['data'] = $gender;
+        }
+        //
         if($request->branch_id == '0'){
             $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
             $gender = DB::table('v_employee_gender')
