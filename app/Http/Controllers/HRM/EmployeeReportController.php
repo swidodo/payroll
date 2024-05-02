@@ -133,7 +133,179 @@ class EmployeeReportController extends Controller
     }
     public function report_totalemployee(Request $request){
         $branch = DB::table('branches')->where('id',Auth::user()->branch_id)->first();
-        if($request->branch_id == 0){
+        if(Auth::user()->type =='company' && $request->branch_id == 0){
+            // male
+           $data['jan_male'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='MALE' 
+                                            AND to_char(date(a.created_at),'mm') ='01' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+           $data['feb_male'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='MALE' 
+                                            AND to_char(date(a.created_at),'mm') ='02' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+           $data['mart_male'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='MALE' 
+                                            AND to_char(date(a.created_at),'mm') ='03' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+           $data['april_male'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='MALE' 
+                                            AND to_char(date(a.created_at),'mm') ='04' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+           $data['mei_male'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='MALE' 
+                                            AND to_char(date(a.created_at),'mm') ='05' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+           $data['juni_male'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='MALE' 
+                                            AND to_char(date(a.created_at),'mm') ='06' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+           $data['july_male'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='MALE' 
+                                            AND to_char(date(a.created_at),'mm') ='07' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+           $data['agust_male'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='MALE' 
+                                            AND to_char(date(a.created_at),'mm') ='08' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+           $data['sept_male'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='MALE' 
+                                            AND to_char(date(a.created_at),'mm') ='09' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+           $data['okt_male'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='MALE' 
+                                            AND to_char(date(a.created_at),'mm') ='10' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+           $data['nov_male'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='MALE' 
+                                            AND to_char(date(a.created_at),'mm') ='11' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+           $data['des_male'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='MALE' 
+                                            AND to_char(date(a.created_at),'mm') ='12' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+            // 
+           $data['jan_female'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='FEMALE' 
+                                            AND to_char(date(a.created_at),'mm') ='01' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+           $data['feb_female'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='FEMALE' 
+                                            AND to_char(date(a.created_at),'mm') ='02' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+           $data['mart_female'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='FEMALE' 
+                                            AND to_char(date(a.created_at),'mm') ='03' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+           $data['april_female'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='FEMALE' 
+                                            AND to_char(date(a.created_at),'mm') ='04' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+           $data['mei_female'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='FEMALE' 
+                                            AND to_char(date(a.created_at),'mm') ='05' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+           $data['juni_female'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='FEMALE' 
+                                            AND to_char(date(a.created_at),'mm') ='06' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+           $data['july_female'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='FEMALE' 
+                                            AND to_char(date(a.created_at),'mm') ='07' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+           $data['agust_female'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='FEMALE' 
+                                            AND to_char(date(a.created_at),'mm') ='08' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+           $data['sept_female'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='FEMALE' 
+                                            AND to_char(date(a.created_at),'mm') ='09' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+           $data['okt_female'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='FEMALE' 
+                                            AND to_char(date(a.created_at),'mm') ='10' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+           $data['nov_female'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='FEMALE' 
+                                            AND to_char(date(a.created_at),'mm') ='11' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+           $data['des_female'] = DB::select("SELECT count(a.id) FROM employees a
+                                            LEFT JOIN branches as b 
+                                            ON b.id = a.branch_id
+                                            WHERE UPPER(gender) ='FEMALE' 
+                                            AND to_char(date(a.created_at),'mm') ='12' 
+                                            AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
+                                            ");
+
+        }else if(Auth::user()->type !='company' && $request->branch_id == 0){
             // male
            $data['jan_male'] = DB::select("SELECT count(a.id) FROM employees a
                                             LEFT JOIN branches as b 
@@ -304,7 +476,6 @@ class EmployeeReportController extends Controller
                                             AND to_char(date(a.created_at),'mm') ='12' 
                                             AND to_char(date(a.created_at),'YYYY') = to_char(date(now()),'YYYY')
                                             AND b.company_id = $branch->company_id");
-
         }else{
             // female
             $data['jan_female'] = DB::select("SELECT count(a.id) FROM employees a
