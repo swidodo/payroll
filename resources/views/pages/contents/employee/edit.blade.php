@@ -137,13 +137,13 @@
                                     <div class="form-group col-md-6">
                                         <label for="marital_status" class="form-label">Status</label>
                                         <select class="form-control select"  id="status-employee-edit" name="employee_status">
-                                            @if ($currentDate != $employee->company_doj )
+                                            {{-- @if ($currentDate != $employee->company_doj ) --}}
                                                 <option value="active" {{ ($employee->status == "active") ? 'selected' : ''}}>Active</option>
                                                 <option value="contract termination" {{ ($employee->status == "contract termination") ? 'selected' : ''}}>Contract Termination</option>
                                                 <option value="resign" {{ ($employee->status == "resign") ? 'selected' : ''}}>Resign</option>
                                                 <option value="fired" {{ ($employee->status == "fired") ? 'selected' : ''}}>Fired</option>
                                                 <option value="pension" {{ ($employee->status == "pension") ? 'selected' : ''}}>Pension</option>
-                                           @endif
+                                           {{-- @endif --}}
                                         </select>
                                     </div>
                                 </div>
