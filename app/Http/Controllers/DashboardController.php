@@ -35,7 +35,7 @@ class DashboardController extends Controller
                         ->whereNotIn('information.id', $pesan)
                         ->count();
         $request->session()->put('notif', $notif);
-        if (Auth::user()->initial == 'HO' && Auth::user()->type ='company') {
+        if (Auth::user()->initial == 'HO' && Auth::user()->type =='company') {
             $branch = Branch::find(Auth::user()->branch_id);
             $data['branches'] = Branch::all();
             // get notif
@@ -51,7 +51,7 @@ class DashboardController extends Controller
                             ->whereNotIn('information.id', $pesan)
                             ->get();
             return view('pages.contents.dashboard.dashboard-company', $data);
-        }else if (Auth::user()->initial == 'HO' && Auth::user()->type ='company') {
+        }else if (Auth::user()->initial == 'HO' && Auth::user()->type !='company') {
             $branch = Branch::find(Auth::user()->branch_id);
             $data['branches'] = Branch::where('company_id', '=', $branch->company_id)->get();
             // get notif
