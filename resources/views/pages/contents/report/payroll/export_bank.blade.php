@@ -85,7 +85,6 @@
 @push('addon-script')
  <!-- Slimscroll JS -->
  <script src="{{asset('assets/js/jquery.slimscroll.min.js')}}"></script>
-
 <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
 @include('includes.reporting.export_bank_payroll_js');

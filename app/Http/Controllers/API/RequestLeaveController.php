@@ -252,6 +252,12 @@ class RequestLeaveController extends Controller
 
                 // upload data
                 $linkId = Leave::where('id',$request->id)->first();
+                if($linkId == null){
+                    return response()->json([
+                        'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                        'message' => 'Data not found'
+                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                }
                                 
                 if(isset($request->attachment_request_path)){
                     $dir        = $company.'/'.$branch.'/'.$tahun.'/'.$bulan.'/'.$tanggal.'/';
