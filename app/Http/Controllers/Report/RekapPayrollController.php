@@ -74,8 +74,15 @@ class RekapPayrollController extends Controller
         $fileName = 'Rekap_payroll_'.$date.'.xlsx';
         return Excel::download(new RekapPayrollExport($request), $fileName);
     }
-    // public function export_bank_payroll(Request $request){
-
-    // }
+    public function data_bank_payroll(Request $request){
+        if (Auth::user()->initial == "HO"){
+            $data['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                            ->where('access_branches.employee_id',$emp->id)
+                                            ->where('access_branches.company_id',$branch->company_id)->get();
+        }else{
+            $data['branch'] = $branch = Branch::where('id',Auth::user()->branch_id)->get();
+        }
+        return view('pages.contents.report.payroll.export_bank',$data);
+    }
     
 }

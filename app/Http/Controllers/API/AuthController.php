@@ -173,7 +173,7 @@ class AuthController extends Controller
                 'name' => $user->name,
                 'initials' => $user->initial,
                 'email' => $user->email,
-                'profile_pic' => $user->avatar,
+                'profile_pic' => $link_foto,
                 'branch' => isset($user->employee->branch) ? $user->employee->branch->name : 'Unknown company'
             ];
             return response()->json([

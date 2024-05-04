@@ -53,7 +53,7 @@
                         </div>
                         <div class="col-md-3 d-flex justify-content-start mb-2">
                             <button type="button" id="filter_rekap_payroll" class="btn btn-success btn-sm me-1"><span class="fa fa-filter"></span> Filter</button>
-                            <button type="button" id="print_rekap_payroll" class="btn btn-primary btn-sm"> <span class="fa fa-print"></span> Print</button>
+                            <button type="button" id="print_rekap_payroll" class="btn btn-primary btn-sm"> <span class="fa fa-export"></span>Export</button>
                         </div>
                     </div>
                 </div>
@@ -61,29 +61,15 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                    <table id="report_rekap_payroll" class="table table-striped table-bordered table-hover table-sm">
+                    <table id="data_export_payroll" class="table table-striped table-bordered table-hover table-sm">
                             <thead>
                                 <tr>
-                                    <th>Employee ID</th>
-                                    <th>Employee Name</th>
-                                    <th>Position</th>
-                                    <th>Bank Name</th>
-                                    <th>Account Number</th>
-                                    <th>Basic Salary</th>
-                                    <th>Allowance Fixed</th>
-                                    <th>Allowance Unfixed</th>
-                                    <th>Allowance Other</th>
-                                    <th>Overtime</th>
-                                    <th>Salary This Month</th>
-                                    <th>Employee BPJS Kesehatan</th>
-                                    <th>Employee BPJS Ketenagakerjaan</th>
-                                    <th>Total Employee BPJS</th>
-                                    <th>Loans</th>
-                                    <th>Cash Advance {{(auth()->user()->branch_id == 59) ? '/Gaji Gesa' : ''}}</th>
-                                    <th>Total Deduction Other</th>
-                                    <th>PPh21</th>
-                                    <th>Total Deduction</th>
-                                    <th>Take Home Pay</th>
+                                    <th>Acc. No</th>
+                                    <th>Trans. Amount</th>
+                                    <th>Emp. Number</th>
+                                    <th>Emp. Name</th>
+                                    <th>Dept</th>
+                                    <th>Trans. Date</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -102,5 +88,5 @@
 
 <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
-@include('includes.reporting.rekap_payroll_js');
+@include('includes.reporting.export_bank_payroll_js');
 @endpush
