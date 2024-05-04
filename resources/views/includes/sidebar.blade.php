@@ -213,14 +213,12 @@
                                 </ul>
                             </li>
                             @endcanany                        
-                            @canany(['rekap loan','rekap cash advance'])
+                            @canany(['rekap payroll'])
                             <li class="submenu" >
                                 <a style="padding: 9px 10px 9px 50px" href="#"> <span>Payroll</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;padding: px 10px 9px 50px">
                                     <li class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}" href="{{ route('rekap-payroll') }}">Rekap Payroll</a></li>
-                                    <li class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}" href="{{ route('rekap-payroll') }}">Export Payroll Bank</a></li>
-                                    <li class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}" href="{{ route('rekap-payroll') }}">Report Attandance</a></li>
-                                    
+                                    {{-- <li class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}" href="{{ route('rekap-payroll') }}">Export Payroll Bank</a></li> --}}
                                 </ul>
                             </li>
                             @endcanany                        
@@ -236,9 +234,9 @@
                             @canany(['rekap reimbursement'])
                                 <li class="{{(request()->routeIs('report-reimbursment')) ? 'active' : ''}}"><a class="{{(request()->routeIs('report-reimbursment')) ? 'active' : ''}}" href="{{ route('report-reimbursment') }}">Rekap Reimbursement</a></li>
                             @endcanany
-                            @canany(['rekap payroll'])
+                            {{-- @canany(['rekap payroll'])
                                 <li class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}" href="{{ route('rekap-payroll') }}">Rekap Payroll</a></li>
-                            @endcanany
+                            @endcanany --}}
                             @canany(['rekap bpjs'])
                                 <li class="{{(request()->routeIs('get-data-bpjs*')) ? 'active' : ''}}"><a class="{{(request()->routeIs('get-data-bpjs*')) ? 'active' : ''}}" href="{{ route('get-data-bpjs') }}">BPJS</a></li>
                             @endcanany
