@@ -102,7 +102,7 @@ class RekapPayrollController extends Controller
                     ->where('startdate',$request->start_date)
                     ->where('enddate',$request->end_date)
                     ->orderBy('no_employee','ASC')
-                    ->get();
+                    ->cursor();
         $filename = "payroll-bank.csv";
         return response()->streamDownload(function() use ($data) {
             $csv = fopen("php://output", "w+");
