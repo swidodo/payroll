@@ -127,14 +127,23 @@ class BranchController extends Controller
                 if($check > 0){
                     return redirect()->route('branches.index')->with('error', 'Branch  already !.');
                 }
+                $checkStatus  = Branch::where('id',$request->id)->first();
                 if($request->status !=null){
-                    if($request->status == '0'){
-                         Employee::where('branch_id',$branch->id)->update(['status'=> 'resign','out_date'=>date('Y-m-d')]);
+                    if($request->status <>  $checkStatus->is_active){
+                        if($request->status == '0'){
+                            Employee::where('branch_id',$branch->id)->update(['status'=> 'resign','out_date'=>date('Y-m-d')]);
+                        }else if($request->status == '1'){
+                            Employee::where('branch_id',$branch->id)->update(['status'=> 'active','out_date'=>null]);
+                        }
+                        $branch->name       = $request->name;
+                        $branch->alias      = $request->company_id.$request->alias;
+                        $branch->is_active   = $request->status;
+                        $branch->save();
+                    }else{
+                        $branch->name       = $request->name;
+                        $branch->alias      = $request->company_id.$request->alias;
+                        $branch->save();
                     }
-                    $branch->name       = $request->name;
-                    $branch->alias      = $request->company_id.$request->alias;
-                    $branch->is_active   = $request->status;
-                    $branch->save();
                 }else{
                     $branch->name       = $request->name;
                     $branch->alias      = $request->company_id.$request->alias;

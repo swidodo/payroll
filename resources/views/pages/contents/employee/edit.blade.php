@@ -136,7 +136,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="marital_status" class="form-label">Status</label>
-                                        <select class="form-control select"  id="status-employee-edit" name="employee_status">
+                                        <select class="form-control select"  id="status-employee-edit" name="employee_status" required>
                                             {{-- @if ($currentDate != $employee->company_doj ) --}}
                                                 <option value="active" {{ ($employee->status == "active") ? 'selected' : ''}}>Active</option>
                                                 <option value="contract termination" {{ ($employee->status == "contract termination") ? 'selected' : ''}}>Contract Termination</option>

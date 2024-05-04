@@ -217,7 +217,13 @@ class AttendanceController extends Controller
     
      public function create(Request $request)
     {
-        date_default_timezone_set($request->timezone);
+        $getZone    = Branch::where('id',Auth::user()->branch_id)->first();
+        if($getZone !=null){
+            $timezone = ($getZone->timezone !=null) ? :'Asia/Jakarta';
+        }else{
+            $timezone = 'Asia/Jakarta';
+        }
+        date_default_timezone_set($timezone);
         $validator = Validator::make($request->all(), [
             'longitude' => ['required', 'numeric', 'between:-180,180'],
             'latitude'  => ['required', 'numeric', 'between:-90,90'],
