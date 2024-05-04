@@ -1,5 +1,5 @@
 @extends('pages.dashboard')
-@section('title', 'export Payroll bank')
+@section('title', 'export csv Payroll')
 @section('dashboard-content')
 
 @push('addon-style')
@@ -14,7 +14,7 @@
                 <div class="col-md-8">
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="">Report</a></li>
-                        <li class="breadcrumb-item active">Rekap Payroll</li>
+                        <li class="breadcrumb-item active">Export Template CSV Payroll</li>
                     </ul>
                 </div>
             </div>
