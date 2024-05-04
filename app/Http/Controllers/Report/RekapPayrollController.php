@@ -90,8 +90,8 @@ class RekapPayrollController extends Controller
     public function get_export_payroll(Request $request){
         $data = DB::table('v_export_to_bank')
                     ->where('branch_id',$request->branch_id)
-                    ->where('startdate',$request->startdate)
-                    ->where('enddate',$request->enddate)
+                    ->where('startdate',$request->start_date)
+                    ->where('enddate',$request->end_date)
                     ->get();
         return DataTables::of($data)->make(true);
     }
