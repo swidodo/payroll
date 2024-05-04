@@ -71,7 +71,7 @@ class RequestOvertimeController extends Controller
                     'created_by'        => Auth::user()->id,
                 ];
             Overtime::create($data);
-            $emp = Employee::where('user_id',$request->employee_id)->first();
+            $emp = Employee::where('id',$request->employee_id)->first();
             $superior = DB::table('level_approvals')->where('department_id',$emp->department_id)->where('branch_id',Auth::user()->branch_id)->get();
             $approve1 = null;
             $approve2 = null;

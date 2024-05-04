@@ -582,6 +582,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('rekap-payroll',[RekapPayrollController::class,'index'])->name('rekap-payroll');
         Route::post('get-rekap-payroll',[RekapPayrollController::class,'get_rekap_payroll'])->name('get-rekap-payroll');
         Route::get('data-export-payroll',[RekapPayrollController::class,'data_export_payroll'])->name('data-export-payroll');
+        Route::post('get-export-payroll',[RekapPayrollController::class,'get_export_payroll'])->name('get-export-payroll');
         Route::get('rekap-payroll-pdf',[RekapPayrollController::class,'cetak_pdf'])->name('rekap-payroll-pdf');
         Route::get('rekap-payroll-excel',[RekapPayrollController::class,'ExportExcel'])->name('rekap-payroll-excel');
         // request

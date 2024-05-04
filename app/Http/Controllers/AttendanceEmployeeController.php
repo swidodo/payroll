@@ -118,8 +118,7 @@ class AttendanceEmployeeController extends Controller
                     if ($request->employee_id != []){
                         $data->whereIn('employees.id',$request->employee_id);
                     }
-                    $data->get();
-        return DataTables::of($data)
+        return DataTables::of($data->get())
                         ->addIndexColumn()
                         ->addColumn('action', function($row){
                             $btn ='';

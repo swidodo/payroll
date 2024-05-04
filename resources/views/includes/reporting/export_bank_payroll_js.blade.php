@@ -16,7 +16,7 @@
                 serverSide: true,
                 destroy: true,
                 ajax : {
-                    "url" : 'get-bank-payroll',
+                    "url" : 'get-export-payroll',
                     "type": 'post',
                     "data" : {branch_id:branch_id, start_date:start_date,end_date:end_date}
                 },
