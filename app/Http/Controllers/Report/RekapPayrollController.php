@@ -92,11 +92,36 @@ class RekapPayrollController extends Controller
                     ->where('branch_id',$request->branch_id)
                     ->where('startdate',$request->start_date)
                     ->where('enddate',$request->end_date)
+                    ->orderBy('no_employee','ASC')
                     ->get();
         return DataTables::of($data)->make(true);
     }
     public function export_payrollToBank(){
+        $data = DB::table('v_export_to_bank')
+                    ->where('branch_id',$request->branch_id)
+                    ->where('startdate',$request->start_date)
+                    ->where('enddate',$request->end_date)
+                    ->orderBy('no_employee','ASC')
+                    ->get();
+        $filename = "payroll-bank.csv";
+        return response()->streamDownload(function() use ($data) {
+            $csv = fopen("php://output", "w+");
 
+            fputcsv($csv, ["Acc. No", "Trans. Amount", "Emp. Number", "Dept", "Trans. Date"]);
+
+            foreach ($data as $row) {
+                fputcsv($csv, [
+                    $row->account_number,
+                    $row->take_home_pay,
+                    $row->no_employee,
+                    $row->name,
+                    $row->department,
+                    $row->date
+                ]);
+            }
+
+            fclose($csv);
+        }, $filename, ["Content-type" => "text/csv"]);
     }
     
 }

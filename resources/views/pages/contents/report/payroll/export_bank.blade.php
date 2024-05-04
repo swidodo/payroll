@@ -28,6 +28,8 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    <form action="{{route('export-bank-payroll')}}" method="post">
+                    @csrf
                     <div class="row">
                         <div class="col-md-3 mb-2">
                             <select class="form-control form-select" id="branch_id" name="branch_id">
@@ -52,10 +54,11 @@
                             </select>
                         </div>
                         <div class="col-md-3 d-flex justify-content-start mb-2">
-                            <button type="button" id="filter_rekap_payroll" class="btn btn-success btn-sm me-1"><span class="fa fa-filter"></span> Filter</button>
-                            <button type="button" id="print_rekap_payroll" class="btn btn-primary btn-sm"> <span class="fa fa-export"></span>Export</button>
+                            <a href="javascript:void(0)" id="filter_rekap_payroll" class="btn btn-success btn-sm me-1"><span class="fa fa-filter"></span> Filter</a>
+                            <button type="submit" id="print_rekap_payroll" class="btn btn-primary btn-sm"> <span class="fa fa-export"></span>Export</button>
                         </div>
                     </div>
+                </form>
                 </div>
             </div>
             <div class="card">
