@@ -45,7 +45,7 @@
                             <input type="date" name="end_date" id="to_date" class="form-control">
                         </div>
                         <div class="col-md-2 mb-2">
-                            <select class="form-control form-select" name="type" id="type_print">
+                            <select class="form-control form-select" name="bank_name" id="type_print">
                                 <option value="BCA">BCA</option>
                                 <option value="BRI">BRI</option>
                                 <option value="BNI">BNI</option>
