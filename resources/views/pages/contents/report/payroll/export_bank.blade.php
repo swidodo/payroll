@@ -39,10 +39,10 @@
                             </select>
                         </div>
                         <div class="col-md-2 mb-2">
-                            <input type="date" name="from_date" id="from_date" class="form-control">
+                            <input type="date" name="start_date" id="from_date" class="form-control">
                         </div>
                         <div class="col-md-2 mb-2">
-                            <input type="date" name="to_date" id="to_date" class="form-control">
+                            <input type="date" name="end_date" id="to_date" class="form-control">
                         </div>
                         <div class="col-md-2 mb-2">
                             <select class="form-control form-select" name="type" id="type_print">
