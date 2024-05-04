@@ -77,23 +77,26 @@ class RekapPayrollController extends Controller
     public function data_export_payroll(Request $request){
         $initial = Auth::user()->initial;
         $branch = Branch::where('id',Auth::user()->branch_id)->first();
-        // $emp = Employee::where('user_id',Auth::user()->id)->first();
-        // if (Auth::user()->initial == "HO"){
-        //     $data['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
-        //                                     ->where('access_branches.employee_id',$emp->id)
-        //                                     ->where('access_branches.company_id',$branch->company_id)->get();
-        // }else{
+        $emp = Employee::where('user_id',Auth::user()->id)->first();
+        if (Auth::user()->initial == "HO"){
+            $data['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
+                                            ->where('access_branches.employee_id',$emp->id)
+                                            ->where('access_branches.company_id',$branch->company_id)->get();
+        }else{
             $data['branch'] = $branch = Branch::where('id',Auth::user()->branch_id)->get();
-        // }
+        }
         return view('pages.contents.report.payroll.export_bank',$data);
     }
     public function get_export_payroll(Request $request){
-        $data = DB::table('take_home_pay')
+        $data = DB::table('v_export_to_bank')
                     ->where('branch_id',$request->branch_id)
                     ->where('startdate',$request->startdate)
                     ->where('enddate',$request->enddate)
                     ->get();
         return DataTables::of($data)->make(true);
+    }
+    public function export_payrollToBank(){
+
     }
     
 }
