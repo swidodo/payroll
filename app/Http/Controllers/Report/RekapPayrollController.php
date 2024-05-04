@@ -96,7 +96,7 @@ class RekapPayrollController extends Controller
                     ->get();
         return DataTables::of($data)->make(true);
     }
-    public function export_payrollToBank(){
+    public function export_payrollToBank(Request $request){
         $data = DB::table('v_export_to_bank')
                     ->where('branch_id',$request->branch_id)
                     ->where('startdate',$request->start_date)
