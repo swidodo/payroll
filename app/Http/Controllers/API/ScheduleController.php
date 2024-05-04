@@ -74,6 +74,11 @@ class ScheduleController extends Controller
                             ->where('shift_schedules.schedule_date', now())
                             ->orderBy('shift_schedules.id', 'asc')
                             ->first();
+            if ($data['schedule'] == null){
+                $data['btn']        = false;
+                $data['text_btn']   = 'No Schedule';
+                $data['btn_msg']    = "No Schedule";
+            }
             return response()->json([
                 'status' => Response::HTTP_OK,
                 'result' => $data,
