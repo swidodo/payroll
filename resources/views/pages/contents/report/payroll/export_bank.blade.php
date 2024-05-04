@@ -54,7 +54,7 @@
                             </select>
                         </div>
                         <div class="col-md-3 d-flex justify-content-start mb-2">
-                            <a href="javascript:void(0)" id="filter_rekap_payroll" class="btn btn-success btn-sm me-1"><span class="fa fa-filter"></span> Filter</a>
+                            <a href="javascript:void(0)" id="filter_rekap_payroll" class="btn btn-success btn-sm me-1 text-center"><span class="fa fa-filter"></span> Filter</a>
                             <button type="submit" id="print_rekap_payroll" class="btn btn-primary btn-sm"> <span class="fa fa-export"></span>Export</button>
                         </div>
                     </div>
