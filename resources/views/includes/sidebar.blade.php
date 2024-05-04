@@ -218,7 +218,7 @@
                                 <a style="padding: 9px 10px 9px 50px" href="#"> <span>Payroll</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;padding: px 10px 9px 50px">
                                     <li class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}" href="{{ route('rekap-payroll') }}">Rekap Payroll</a></li>
-                                    {{-- <li class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('rekap-payroll')) ? 'active' : ''}}" href="{{ route('rekap-payroll') }}">Export Payroll Bank</a></li> --}}
+                                    <li class="{{(request()->routeIs('data-export-payroll')) ? 'active' : ''}}"><a class="{{(request()->routeIs('data-export-payroll')) ? 'active' : ''}}" href="{{ route('data-export-payroll') }}">Export Payroll Bank</a></li>
                                 </ul>
                             </li>
                             @endcanany                        
