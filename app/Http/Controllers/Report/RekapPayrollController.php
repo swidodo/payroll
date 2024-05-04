@@ -81,6 +81,7 @@ class RekapPayrollController extends Controller
         if (Auth::user()->initial == "HO"){
             $data['branch'] = AccessBranch::leftJoin('branches','branches.id','=','access_branches.branch_id')
                                             ->where('access_branches.employee_id',$emp->id)
+                                            ->orderBy('branches.name','ASC')
                                             ->where('access_branches.company_id',$branch->company_id)->get();
         }else{
             $data['branch'] = $branch = Branch::where('id',Auth::user()->branch_id)->get();
