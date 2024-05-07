@@ -4,6 +4,18 @@
 
 @push('addon-style')
 <link rel="stylesheet" href="{{asset('assets/css/dataTables.bootstrap4.min.css')}}">
+<style>
+    th:first-child, td:first-child
+    {
+       background: #fff; 
+    }
+    th:nth-child(2), td:nth-child(2){
+        position:sticky !important;
+        background: #fff;
+        z-index:4;
+        left:0px;
+    }
+</style>
 @endpush
 <div class="page-wrapper">
     <!-- Page Content -->

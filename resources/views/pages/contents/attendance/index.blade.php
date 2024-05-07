@@ -158,6 +158,18 @@
 
     <!-- Datetimepicker CSS -->
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap-datetimepicker.min.css')}}">
+    <style>
+        th:first-child, td:first-child
+        {
+           background: #fff; 
+        }
+        th:nth-child(2), td:nth-child(2){
+            position:sticky !important;
+            background: #fff;
+            z-index:4;
+            left:0px;
+        }
+    </style>
 @endpush
 
 @push('addon-script')

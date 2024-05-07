@@ -114,6 +114,28 @@
     <!-- Datetimepicker CSS -->
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap-datetimepicker.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/sweetalert2/sweetalert2.min.css')}}">
+    <style>
+        th:first-child, td:first-child
+        {
+            position:sticky !important;
+            background: #fff;
+            z-index:4;
+            left:0px;
+           background: #fff; 
+        }
+        th:nth-child(2), td:nth-child(2){
+            position:sticky !important;
+            background: #fff;
+            z-index:4;
+            left:57px;
+        }
+        th:nth-child(3), td:nth-child(3){
+            position:sticky !important;
+            background: #fff;
+            z-index:4;
+            left:167px;
+        }
+    </style>
 @endpush
 
 @push('addon-script')
