@@ -166,6 +166,10 @@
                                             <option value="PE">Annual Proreta End</option>
                                         </select>
                                     </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="no_kpj" class="form-label">No. KPJ</label>
+                                        <input type="text" name="no_kpj" class="form-control" id="no_kpj">
+                                    </div>
                                     <hr >
                                     <div class="form-group col-md-6">
                                         <label for="branch_id" class="form-label">Branch</label>

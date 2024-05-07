@@ -157,6 +157,11 @@
                                     <td  class="borderless">{{ucwords($employee->total_leave) ?? ''}}</td>
                                 </tr>
                                 <tr>
+                                    <td  class="borderless">No. KPJ</td>
+                                    <td  class="borderless">:</td>
+                                    <td  class="borderless">{{ ($employee->no_kpj) ?? ''}}</td>
+                                </tr>
+                                <tr>
                                     <td  class="borderless">Branch</td>
                                     <td  class="borderless">:</td>
                                     <td  class="borderless">{{ $employee->branch_name }}</td>

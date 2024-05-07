@@ -245,16 +245,7 @@ class EmployeeController extends Controller
     {
         if (Auth::user()->can('edit employee')) {
             $validator = Validator::make(
-                $request->all(),
-                [
-                    // 'name' => 'required',
-                    // 'dob' => 'required',
-                    // 'doe' => 'required',
-                    // 'gender' => 'required',
-                    // 'phone' => 'required|numeric',
-                    // 'address' => 'required',
-                    // 'document.*' => 'mimes:jpeg,png,jpg,gif,svg,pdf,doc,zip|max:20480',
-                ]
+                $request->all()
             );
 
             if ($validator->fails()) {
@@ -320,22 +311,24 @@ class EmployeeController extends Controller
                 $request['department'] = '';
             }
             $employee = Employee::findOrFail($id);
-            $request['leave_type'] = $request->leave_type == 0 ? null : $request->leave_type;
-            $request['marital_status'] = $request->marital_status == 0 ? null : $request->marital_status;
-            $request['identity_card'] = $request->identity_card == 0 ? null : $request->identity_card;
-            $request['family_card'] = $request->family_card == 0 ? null : $request->family_card;
-            $request['npwp_number'] = $request->npwp_number == 0 ? null : $request->npwp_number;
-            $request['account_number'] = $request->account_number == 0 ? null : $request->account_number;
-            $request['religion'] = $request->religion == 0 ? null : $request->religion;
-            $request['work_type'] = $request->work_type == 0 ? null : $request->work_type;
-            $request['status'] = $request->employee_status == 0 ? null : $request->employee_status;
-            $request['no_employee'] = $request->no_employee == 0 ? null : $request->no_employee;
-            $request['out_date']    = $request->out_date == 0 ? null : $request->out_date;
+            $request['leave_type']      = $request->leave_type == 0 ? null : $request->leave_type;
+            $request['marital_status']  = $request->marital_status == 0 ? null : $request->marital_status;
+            $request['identity_card']   = $request->identity_card == 0 ? null : $request->identity_card;
+            $request['family_card']     = $request->family_card == 0 ? null : $request->family_card;
+            $request['npwp_number']     = $request->npwp_number == 0 ? null : $request->npwp_number;
+            $request['account_number']  = $request->account_number == 0 ? null : $request->account_number;
+            $request['religion']        = $request->religion == 0 ? null : $request->religion;
+            $request['work_type']       = $request->work_type == 0 ? null : $request->work_type;
+            $request['status']          = $request->employee_status == 0 ? null : $request->employee_status;
+            $request['no_employee']     = $request->no_employee == 0 ? null : $request->no_employee;
+            $request['out_date']        = $request->out_date == 0 ? null : $request->out_date;
+            $request['no_kpj']          = $request->no_kpj;
             
             if ($request['status'] == 'fired' || $request['status'] == 'pension' || $request['status'] == 'resign') {
                 $request['is_active'] = 0;
                 $request['out_date'] = date('Y-m-d');
             }
+            
             //total leave
             if ($request->company_doj != '' || $employee->company_doj != "-" || $request->company_doj != '--' || $request->company_doj != null){
                 if($employee->company_doj != "-"){
@@ -1230,6 +1223,8 @@ class EmployeeController extends Controller
             "no_employee"           => $request->no_employee,
             "employee_type"         => strtoupper( $request->employee_type),
             "work_type"             => $request->work_type,
+            "leave_type"            => $request->leave_type,
+            "no_kpj"                => $request->no_kpj,
             "department_id"         => $request->department,
             "position_id"           => $request->position,
             "account_holder_name"   => $request->account_holder_name,
@@ -1240,9 +1235,9 @@ class EmployeeController extends Controller
             "status"                => strtolower( $request->status),
             "company_doj"           => $request->company_doj,
             "company_doe"           => $request->company_doe,
-            "branch_id"             =>$request->branch_id,
-            "employee_id"           =>User::employeeIdFormat($request->branch_id, self::employeeNumber(Auth::user()->creatorId())),
-            "user_id"               =>$userId,
+            "branch_id"             => $request->branch_id,
+            "employee_id"           => User::employeeIdFormat($request->branch_id, self::employeeNumber(Auth::user()->creatorId())),
+            "user_id"               => $userId,
             "is_active"             => 1,
             "created_by"            => Auth::user()->creatorId(),
             "created_at"            => date('Y-m-d h:m:s'),
