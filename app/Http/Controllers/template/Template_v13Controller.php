@@ -310,7 +310,7 @@ class Template_v13Controller extends Controller
                             }
                         }
                         if ($value[8] !=null){
-                            $opt = AllowanceOption::where('name','Shif')->where('pay_type','unfixed')->where('include_attendance','N')->first();
+                            $opt = AllowanceOption::where('name','Housing')->where('pay_type','unfixed')->where('include_attendance','N')->first();
                             if ($opt !=null){
                                 $data =[
                                     'employee_id'       => $employeeId->id,
@@ -325,7 +325,7 @@ class Template_v13Controller extends Controller
                                 DB::table('allowances')->insert($data);
                             }else{
                                 $opts = [
-                                    'name'               => 'Shif',
+                                    'name'               => 'Housing',
                                     'pay_type'           => 'unfixed',
                                     'include_attendance' => 'N',
                                     'branch_id'          => $employeeId->branch_id,
@@ -468,7 +468,7 @@ class Template_v13Controller extends Controller
                                 'employee_id'           => $employeeId->id,
                                 'branch_id'             => $employeeId->branch_id,
                                 'date'                  => $value[25],
-                                'name'                  => 'Potongan Materai',
+                                'name'                  => 'Safety Helm',
                                 'amount'                => $value[19],
                                 'created_by'            => Auth::user()->id,
                                 'created_at'            => $value[25].' '.date('h:m:s'),
@@ -481,7 +481,7 @@ class Template_v13Controller extends Controller
                                 'employee_id'           => $employeeId->id,
                                 'branch_id'             => $employeeId->branch_id,
                                 'date'                  => $value[25],
-                                'name'                  => 'Seragam',
+                                'name'                  => 'Seragam + IDCARD',
                                 'amount'                => $value[20],
                                 'created_by'            => Auth::user()->id,
                                 'created_at'            => $value[25].' '.date('h:m:s'),
@@ -520,7 +520,7 @@ class Template_v13Controller extends Controller
                                 'employee_id'           => $employeeId->id,
                                 'branch_id'             => $employeeId->branch_id,
                                 'date'                  => $value[25],
-                                'name'                  => 'Potongan Lain-lain',
+                                'name'                  => 'Safety Shoes',
                                 'amount'                => $value[23],
                                 'created_by'            => Auth::user()->id,
                                 'created_at'            => $value[25].' '.date('h:m:s'),
