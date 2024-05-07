@@ -245,7 +245,9 @@ class EmployeeController extends Controller
     {
         if (Auth::user()->can('edit employee')) {
             $validator = Validator::make(
-                $request->all()
+                $request->all(),[
+                    
+                ]
             );
 
             if ($validator->fails()) {
