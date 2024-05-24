@@ -53,6 +53,22 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('/announcement', [App\Http\Controllers\API\AnnouanEvenController::class, 'announcement']);
         Route::get('/event', [App\Http\Controllers\API\AnnouanEvenController::class, 'event']);
     });
+
+    // rotation shift
+    Route::group(['prefix' => 'shift'], function () {
+        Route::get('/', [App\Http\Controllers\API\ShiftController::class, 'index']);
+        Route::get('/create', [App\Http\Controllers\API\ShiftController::class, 'create']);
+        Route::post('/check_req_date', [App\Http\Controllers\API\ShiftController::class, 'check_req_date_employee']);
+        Route::post('/check_schedule_repalce_employee', [App\Http\Controllers\API\ShiftController::class, 'check_schedule_date_repemployee']);
+        Route::get('/repalce_employee', [App\Http\Controllers\API\ShiftController::class, 'get_emp_replace']);
+        Route::post('/store', [App\Http\Controllers\API\ShiftController::class, 'store']);
+        Route::PUT('/update', [App\Http\Controllers\API\ShiftController::class, 'update']);
+        Route::get('/{id}', [App\Http\Controllers\API\ShiftController::class, 'edit']);
+        Route::get('/show/{id}', [App\Http\Controllers\API\ShiftController::class, 'detail']);
+        Route::delete('/{id}', [App\Http\Controllers\API\ShiftController::class, 'destroy']);
+       
+    });
+
     // schedule
     Route::group(['prefix' => 'schedule'], function () {
         Route::get('/', [App\Http\Controllers\API\ScheduleController::class, 'index']);

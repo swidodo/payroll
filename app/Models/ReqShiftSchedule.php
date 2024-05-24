@@ -9,15 +9,7 @@ class ReqShiftSchedule extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'employee_id',
-        'remark',
-        'requested_date',
-        'status',
-        'rejected_reason',
-        'attachment_reject',
-        'created_by',
-    ];
+    protected $guarded = ['id'];
 
     public function employee()
     {
