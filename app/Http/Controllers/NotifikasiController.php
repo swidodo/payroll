@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Kreait\Firebase\Messaging\Message;
 use Kreait\Firebase\Messaging\Notification;
+use Kreait\Firebase\Messaging\CloudMessage;
 
 //
 use Illuminate\Bus\Queueable;
@@ -32,11 +33,26 @@ class NotifikasiController extends Controller
     }
     public function notification($topic="topik",$title="sebuah toitle", $body="body")
     {
-        $firebase = app('firebase.messaging');
-        $message = CloudMessage::withTarget('topic', $topic)
-            ->withNotification(Notification::create($title, $body));
+        // $firebase = app('firebase.messaging');
+        // $message = CloudMessage::withTarget('topic', $topic)
+        //     ->withNotification(Notification::create($title, $body));
 
-        $firebase->send($message);
+        // $firebase->send($message);
+        $FcmToken = auth()->user()->fcm_token;
+        // $title = $request->input('title');
+        // $body = $request->input('body');
+        $message = CloudMessage::fromArray([
+          'token' => $FcmToken,
+          'notification' => [
+            'title' => $title,
+             'body' => $body
+            ],
+         ]);
+    
+       $this->notification->send($message);
+
+
+
     }
     
     }
