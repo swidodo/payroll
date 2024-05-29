@@ -49,7 +49,7 @@ class NotifikasiController extends Controller
             ],
          ]);
     
-       $this->notification->send($message);
+       $this->send($message);
 
 
 
