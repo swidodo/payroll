@@ -30,7 +30,7 @@ class TalentController extends Controller
                 }else{
                     return response()->json([
                         'status' => Response::HTTP_OK,
-                        'message' => "You don't have project.",
+                        'message' => "You don't have Talent or Project.",
                     ], Response::HTTP_OK);
                 }
                 return response()->json([
@@ -40,7 +40,7 @@ class TalentController extends Controller
             }else{
                 return response()->json([
                     'status' => Response::HTTP_OK,
-                    'message' => "You don't have project.",
+                    'message' => "You don't have Talent or Project.",
                 ], Response::HTTP_OK);
             }
         }catch(Exception $e){
