@@ -33,7 +33,7 @@ class NotifikasiController extends Controller
     }
     public function notification($topic="topik",$title="sebuah toitle", $body="body")
     {
-        $firebase = app('firebase.messaging');
+        // $firebase = app('firebase.messaging');
         $message = CloudMessage::withTarget('topic', $topic)
             ->withNotification(Notification::create($title, $body));
 
