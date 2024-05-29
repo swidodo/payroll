@@ -426,7 +426,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('get-report-reimbursment',[RekapReimbursController::class,'get_data']);
         Route::post('export-reimbursment',[RekapReimbursController::class,'ExportExcel'])->name('export-reimbursment');
 
-
         // HR Management
         Route::resource('performance-review', PerformanceReviewController::class);
         Route::resource('travels', TravelController::class);
@@ -508,8 +507,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('update-departement',[DepartementController::class,'update'])->name('update-departement');
         Route::post('destroy-departement',[DepartementController::class,'destroy'])->name('destroy-departement');
         Route::post('import-department',[DepartementController::class,'importExcelDepartment'])->name('import-department');
-        
         /** departement */
+        
         // group position
         Route::get('group-position', [GroupPositionController::class,'index'])->name('group-position');
         Route::post('get-group-position', [GroupPositionController::class,'get_data'])->name('get-group-position');
