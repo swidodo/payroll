@@ -24,7 +24,7 @@ class NotifikasiController extends Controller
             return response()->json([
                 'success'=>true
             ]);
-        }catch(\Exception $e){
+        }catch(Exception $e){
             report($e);
             return response()->json([
                 'success'=>false
@@ -40,6 +40,7 @@ class NotifikasiController extends Controller
         $firebase->send($message);
         
     }
+    
     
     }
 
