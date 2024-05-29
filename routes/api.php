@@ -33,6 +33,14 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('/download/{id}', [App\Http\Controllers\API\PayslipController::class, 'download']);
         Route::post('/{id}', [App\Http\Controllers\API\PayslipController::class, 'detail']);
     });
+    // KPI
+    Route::group(['prefix' => 'kpi'], function () {
+        Route::get('/', [App\Http\Controllers\API\PerfomeController::class, 'index']);
+    });
+    // talent
+    Route::group(['prefix' => 'talent'], function () {
+        Route::get('/', [App\Http\Controllers\API\TalentController::class, 'index']);
+    });
     // attendance
     Route::group(['prefix' => 'attendances'], function () {
         Route::get('/', [App\Http\Controllers\API\AttendanceController::class, 'index']);

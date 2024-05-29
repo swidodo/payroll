@@ -17,6 +17,7 @@ class ProjectController extends Controller
 {
     public function index()
     {
+        
         if (Auth::user()->can('manage project')) {
             // if (Auth::user()->type != 'company') {
             //     // $user     = Auth::user();

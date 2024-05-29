@@ -101,8 +101,8 @@ class Template_v7Controller extends Controller
                         $val_salarymonth  = $basic_salary + $allowancefixed + $allowanceUnfixed + $overtime + $rapel;
 
                         $total_loan       = (($value[14] !=null) ? $value[14] : 0 );
-                        $deduction_other  = (($value[15] !=null) ? $value[15] : 0 ) + (($value[18] !=null) ? $value[18] : 0 ) + (($value[19] !=null) ? $value[19] : 0 ) + (($value[20] !=null) ? $value[20] : 0 ) + (($value[21] !=null) ? $value[21] : 0 ) + (($value[22] !=null) ? $value[22] : 0 ) + (($value[23] !=null) ? $value[23] : 0 );
-                        $bpjs             = (($value[16] !=null) ? $value[16] : 0 ) + (($value[17] !=null) ? $value[17] : 0 );
+                        $deduction_other  = (($value[15] !=null) ? $value[15] : 0 ) + (($value[19] !=null) ? $value[19] : 0 ) + (($value[20] !=null) ? $value[20] : 0 ) + (($value[21] !=null) ? $value[21] : 0 ) + (($value[22] !=null) ? $value[22] : 0 ) + (($value[23] !=null) ? $value[23] : 0 );
+                        $bpjs             = (($value[16] !=null) ? $value[16] : 0 ) + (($value[17] !=null) ? $value[17] : 0 ) + (($value[18] !=null) ? $value[18] : 0 );
                         $total_deduction  = $total_loan + $deduction_other + $bpjs;
                         $thp              = $val_salarymonth -  $total_deduction;
                         $datas = [

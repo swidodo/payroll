@@ -10,11 +10,6 @@ use Illuminate\Support\Facades\Validator;
 
 class PerformanceReviewController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         if (Auth::user()->can('manage performance review')) {
