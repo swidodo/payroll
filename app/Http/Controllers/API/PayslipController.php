@@ -101,7 +101,8 @@ class PayslipController extends Controller
         $data['attendance'] = DB::select("SELECT * FROM getsalary('" . $data['salary']->startdate . "','" . $data['salary']->enddate . "','" . $data['salary']->branch_id . "') where employee_id = '" . $data['salary']->employee_id . "'");
         $data['adm']    = Deduction_admin::where('branch_id', $data['salary']->branch_id)->get();
 
-        $pdf = Pdf::loadview('pages.contents.payroll.payslip.pdf_mobile', $data);
+        // $pdf = Pdf::loadview('pages.contents.payroll.payslip.pdf_mobile', $data);
+        $pdf = Pdf::loadview('pages.contents.payroll.payslip.export_pdf_payslip', $data);
         return $pdf->download('payslip-' . $data['salary']->employee_name . '-' . substr($data['salary']->enddate, 0, 7) . '.pdf');
     }
     
