@@ -23,6 +23,7 @@ class PayslipController extends Controller
         $data = DB::table('take_home_pay')
             ->select('take_home_pay.*')
             ->where('take_home_pay.employee_id', '=', auth()->user()->employee->id)
+            ->orderBy('take_home_pay.startdate','ASC')
             ->paginate(10);
         $r = ['status' => Response::HTTP_OK, 'result' => $data];
         return response()->json($r, Response::HTTP_OK);
