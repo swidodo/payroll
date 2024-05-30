@@ -459,7 +459,7 @@
                         <td class="fs-14" style="width: 36%">Sub Total</td>
                         <td class=" fs-14 text-right pr-3" style="padding-right: 20px">{{ formatRupiah($salary->basic_salary + $salary->overtime + $salary->allowance_fixed + $salary->allowance_unfixed + $salary->allowance_other + $salary->rapel + $salary->kompensasi)}}</td>
                         <td class=" fs-14" style="width: 39%; padding-left: 35px">Sub Total</td>
-                        <td class=" fs-14 text-center" style="padding-right: 20px">{{ formatRupiah($salary->total_pay_loans + $salary->employee_pay_bpjs_kesehatan + $salary->employee_pay_bpjs_ketenagakerjaan + $salary->pph21 + $salary->total_deduction_other) }}</td>
+                        <td class=" fs-14 text-center" style="padding-right: 20px">{{ formatRupiah($salary->total_deduction) }}</td>
                     </tr>
                 </tbody>
             </table>
