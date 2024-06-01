@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 // basic salary total borongan
-class Template_v19BoronganController extends Controller
+class Template_v20BoronganController extends Controller
 {
     public function index(Request $request){
         $file_extension = request()->file('import-payroll')->extension();
