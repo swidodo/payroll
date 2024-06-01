@@ -373,7 +373,7 @@ class Template_v17Controller extends Controller
                                 'employee_id'           => $employeeId->id,
                                 'branch_id'             => $employeeId->branch_id,
                                 'date'                  => $value[22],
-                                'name'                  => 'Potongan Sanksi',
+                                'name'                  => 'Potongan Lain-lain',
                                 'amount'                => $value[20],
                                 'created_by'            => Auth::user()->id,
                                 'created_at'            => $value[22].' '.date('h:m:s'),
