@@ -502,7 +502,7 @@ class Template_v16Controller extends Controller
                                 'employee_id'           => $employeeId->id,
                                 'branch_id'             => $employeeId->branch_id,
                                 'date'                  => $value[23],
-                                'name'                  => 'Tax Allowance',
+                                'name'                  => 'Lain-lain',
                                 'amount'                => $value[21],
                                 'created_by'            => Auth::user()->id,
                                 'created_at'            => $value[23].' '.date('h:m:s'),

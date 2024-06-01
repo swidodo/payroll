@@ -76,6 +76,7 @@ use App\Http\Controllers\template\Template_v16Controller;
 use App\Http\Controllers\template\Template_v17Controller;
 use App\Http\Controllers\template\Template_v18Controller;
 use App\Http\Controllers\template\Template_v19BoronganController;
+use App\Http\Controllers\template\Template_v20BoronganController;
 use App\Http\Controllers\template\Template_v23Controller;
 use App\Http\Controllers\template\Template_v24Controller;
 use App\Http\Controllers\template\Template_v25Controller;
@@ -320,6 +321,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('import-payroll-v17',[Template_v17Controller::class,'index'])->name('import-payroll-v17');
         Route::post('import-payroll-v18',[Template_v18Controller::class,'index'])->name('import-payroll-v18');
         Route::post('import-payroll-v19',[Template_v19BoronganController::class,'index'])->name('import-payroll-v19');
+        Route::post('import-payroll-v20',[Template_v20BoronganController::class,'index'])->name('import-payroll-v20');
         Route::post('import-payroll-v23',[Template_v23Controller::class,'index'])->name('import-payroll-v23');
         Route::post('import-payroll-v24',[Template_v24Controller::class,'index'])->name('import-payroll-v24');
         Route::post('import-payroll-v25',[Template_v25Controller::class,'index'])->name('import-payroll-v25');

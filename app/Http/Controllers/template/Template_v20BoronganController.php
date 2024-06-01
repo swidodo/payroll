@@ -192,7 +192,7 @@ class Template_v19BoronganController extends Controller
                         }
                        
                         if ($value[6] !=null){
-                            $opt = AllowanceOption::where('name','Rapel/Koreksi +')->where('pay_type','unfixed')->where('include_attendance','N')->first();
+                            $opt = AllowanceOption::where('name','Overtime')->where('pay_type','unfixed')->where('include_attendance','N')->first();
                             if ($opt !=null){
                                 $data =[
                                     'employee_id'       => $employeeId->id,
@@ -207,7 +207,7 @@ class Template_v19BoronganController extends Controller
                                 DB::table('allowances')->insert($data);
                             }else{
                                 $opts = [
-                                    'name'               => 'Rapel/Koreksi +',
+                                    'name'               => 'Overtime',
                                     'pay_type'           => 'unfixed',
                                     'include_attendance' => 'Y',
                                     'branch_id'          => $employeeId->branch_id,
