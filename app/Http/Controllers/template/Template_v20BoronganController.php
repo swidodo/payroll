@@ -136,7 +136,7 @@ class Template_v20BoronganController extends Controller
                             'total_pay_loans'                   => $total_loan,
                             'sanksi_adm'                        => 0,
                             'total_deduction_other'             => $deduction_other,
-                            'pph15'                             => 0,
+                            'pph21'                             => 0,
                             'total_deduction'                   => $total_deduction,
                             'startdate'                         => $value[14],
                             'enddate'                           => $value[16],
