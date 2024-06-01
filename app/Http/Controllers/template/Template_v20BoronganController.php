@@ -139,7 +139,7 @@ class Template_v20BoronganController extends Controller
                             'pph21'                             => 0,
                             'total_deduction'                   => $total_deduction,
                             'startdate'                         => $value[14],
-                            'enddate'                           => $value[16],
+                            'enddate'                           => $value[15],
                             'take_home_pay'                     => $thp,
                             'total_attendance'                  => $value[4],
                             // 'total_overtime_hour'               => ,
