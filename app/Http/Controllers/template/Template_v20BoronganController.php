@@ -121,7 +121,7 @@ class Template_v20BoronganController extends Controller
                             'allowance_fixed'                   => $fixed,
                             'allowance_unfixed'                 => $unfixed,
                             'allowance_other'                   => 0,
-                            'overtime'                          => 0,
+                            'overtime'                          => (($value[6] !=null) ? $value[6] : 0 ),
                             'salary_this_month'                 => $val_salarymonth,
                             'company_pay_bpjs'                  => 0,
                             'total_salary'                      => $val_salarymonth,
