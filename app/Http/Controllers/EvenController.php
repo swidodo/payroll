@@ -208,9 +208,11 @@ class EvenController extends Controller
                 'status' => 1,
             ];
             $publish = Even::where('id',$request->id)->update($data);
-            // $even = Even::where('id',$request->id)->first();
-            
-            // $this->sendNotification($even->title,$even->content,'');
+            $even    = Even::where('id',$request->id)->first();
+            $user    = User::where('branch_id',$even->branch_id)->whereNotIn('fcm_token',null)->get();
+            foreach($user as $notif){
+                $this->sendNotification($notif->fcm_token,$even->title,$even->content);
+            }
             $res = [
                 'status' => 'success',
                 'msg'    => 'Data success publish!',
