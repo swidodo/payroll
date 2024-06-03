@@ -23,7 +23,7 @@ class NotifikasiController extends Controller
         $this->client = new Client();
     }
     public function index(){
-        return $access_token;
+        return $this->access_token;
     }
     public function sendNotification($token, $title, $body, $data = [])
     {
