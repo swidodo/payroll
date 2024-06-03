@@ -13,6 +13,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Kutia\Larafirebase\Messages\FirebaseMessage;
 
 use App\Models\User;
+use GuzzleHttp\Client;
+use Google_Client;
+
 class NotifikasiController extends Controller
 {
     private $client;
