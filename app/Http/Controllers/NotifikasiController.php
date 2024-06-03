@@ -40,10 +40,10 @@ class NotifikasiController extends Controller
                     'title' => "notif",
                     'body' => "Hallo body notif"
                 ],
-                'data' => $data
+                // 'data' => $data
             ]
         ];
-        return $message; die();
+        // return $message; die();
         // $message = [
         //     'message' => [
         //         'token' => $token,
