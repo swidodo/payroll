@@ -205,6 +205,23 @@ class AuthController extends Controller
             ], Response::HTTP_OK);
         }
     }
+    public function delete_FCM(Request $request){
+        try{
+            $data = User::where('id',Auth::user()->id)->first();
+            if($data->fcm_token != null){
+                User::where('id',Auth::user()->id)->delete();
+            }
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'message' => 'FCM token has been delete.'
+            ], Response::HTTP_OK);
+        }catch(Exception $e){
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'message' => "FCM token invalid delete."
+            ], Response::HTTP_OK);
+        }
+    }
     protected function createNewToken()
     {
         $user = Auth::user();

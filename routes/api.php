@@ -24,6 +24,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::post('/change-foto-profile', [App\Http\Controllers\API\AuthController::class, 'change_profile']);
         Route::post('/change-password', [App\Http\Controllers\API\AuthController::class, 'change_password']);
         Route::post('/update-fcm', [App\Http\Controllers\API\AuthController::class, 'update_FCM']);
+        Route::post('/delete-fcm', [App\Http\Controllers\API\AuthController::class, 'delete_FCM']);
     });
     Route::group(['prefix' => 'menu'], function () {
         Route::get('/', [App\Http\Controllers\API\MenuController::class, 'index']);
