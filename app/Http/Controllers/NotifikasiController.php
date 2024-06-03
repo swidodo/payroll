@@ -43,6 +43,7 @@ class NotifikasiController extends Controller
                 'data' => $data
             ]
         ];
+        return $message; die();
         // $message = [
         //     'message' => [
         //         'token' => $token,
