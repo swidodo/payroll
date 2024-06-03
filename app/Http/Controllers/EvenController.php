@@ -46,7 +46,7 @@ class EvenController extends Controller
                     'title' => $title,
                     'body' => $body
                 ],
-                'data' => $data
+                // 'data' => $data
             ]
         ];
 
@@ -212,7 +212,7 @@ class EvenController extends Controller
             $even    = Even::where('id',$request->id)->first();
             $user    = User::where('branch_id',$even->branch_id)->where('fcm_token','<>',null)->get();
             foreach($user as $notif){
-                $this->sendNotification($notif->fcm_token,$even->title,$even->content );
+                $this->sendNotification($notif->fcm_token,$even->title,$even->content,'');
             }
             $res = [
                 'status' => 'success',
