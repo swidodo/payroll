@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use GuzzleHttp\Client;
-use Google_Client;
+use Google\Client as Google_Client;
 
 class NotifikasiController extends Controller
 {
