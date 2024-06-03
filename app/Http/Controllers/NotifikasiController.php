@@ -26,34 +26,23 @@ class NotifikasiController extends Controller
         return $this->access_token;
     }
     public function sendNotification(
-        $token="", 
+        $token="d_JCIabRTsicZ5jPcjyM8r:APA91bH1b83SUUVvvpGvUcqvOkOAoddp_HQkDYQZhWFw-Q4bP6LXNJfSOSicCZGvWKDCQ7C-mPIhmdNRbdF7GlHarL-7s1EBAwtOg7e8FM2KyVVUJBVpoeFruIOPfce6V3KyndnYMssU", 
     $title ="notif", 
-    $body="hello", 
+    $body="hello Havi", 
     $data = [])
     {
         $url = "https://fcm.googleapis.com/v1/projects/{$this->project_id}/messages:send";
 
         $message = [
             'message' => [
-                'token' => 'euHpJ1IfligegtvoL5VzKP:APA91bEDnjimH235KLfTjJAPw5YP9Bxa1aATg9zdmjGs2cnb3PC5eRlBIxLJ97sEmwb1-6uZSmEUgWl3aYIJemceccqIuq5PYkTkCIoel_Jw176Uj-nNxb4Zq32neCPHecaPipx17kzS',
+                'token' => $token,
                 'notification' => [
-                    'title' => "notif",
-                    'body' => "Hallo body notif"
+                    'title' => $title,
+                    'body' => $body
                 ],
                 // 'data' => $data
             ]
         ];
-        // return $message; die();
-        // $message = [
-        //     'message' => [
-        //         'token' => $token,
-        //         'notification' => [
-        //             'title' => $title,
-        //             'body' => $body
-        //         ],
-        //         'data' => $data
-        //     ]
-        // ];
 
         $response = $this->client->post($url, [
             'headers' => [
