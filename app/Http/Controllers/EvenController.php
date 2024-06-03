@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Branch;
 use App\Models\Even;
 use App\Models\Sys;
+use App\Models\User;
 use DataTables;
 use Exception;
 use Illuminate\Support\Facades\Auth;
