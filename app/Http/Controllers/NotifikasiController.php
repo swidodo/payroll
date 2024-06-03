@@ -11,6 +11,7 @@ use Kreait\Firebase\Messaging\CloudMessage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Kutia\Larafirebase\Messages\FirebaseMessage;
+require 'vendor/autoload.php';
 
 use App\Models\User;
 use GuzzleHttp\Client as Google_Client;
