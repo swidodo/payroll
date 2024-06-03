@@ -210,7 +210,7 @@ class EvenController extends Controller
             ];
             $publish = Even::where('id',$request->id)->update($data);
             $even    = Even::where('id',$request->id)->first();
-            $user    = User::where('branch_id',$even->branch_id)->whereNotIn('fcm_token',null)->get();
+            $user    = User::where('branch_id',$even->branch_id)->where('fcm_token','<>',null)->get();
             foreach($user as $notif){
                 $this->sendNotification($notif->fcm_token,$even->title,$even->content );
             }
