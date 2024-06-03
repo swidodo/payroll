@@ -27,7 +27,7 @@ class NotifikasiController extends Controller
         $this->project_id = 'pehadir-1f207';
 
         $googleClient = new Google_Client();
-        $googleClient->setAuthConfig(storage_path('app/your-firebase-service-account.json'));
+        $googleClient->setAuthConfig(storage_path('app/pehadir-1f207-8c712bfe1daa.json'));
         $googleClient->addScope('https://www.googleapis.com/auth/cloud-platform');
 
         $this->access_token = $googleClient->fetchAccessTokenWithAssertion()["access_token"];
