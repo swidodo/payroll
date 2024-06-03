@@ -188,6 +188,23 @@ class AuthController extends Controller
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
+    public function update_FCM(Request $request){
+        try{
+            $data = User::where('id',Auth::user()->id)->first();
+            if($data->fcm_token == null){
+                User::where('id',Auth::user()->id)->update(['fcm_token'=> $request->fcm_token]);
+            }
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'message' => 'FCM token has been updated.'
+            ], Response::HTTP_OK);
+        }catch(Exception $e){
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'message' => "FCM token invalid updated."
+            ], Response::HTTP_OK);
+        }
+    }
     protected function createNewToken()
     {
         $user = Auth::user();
