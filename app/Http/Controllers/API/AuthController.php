@@ -191,9 +191,7 @@ class AuthController extends Controller
     public function update_FCM(Request $request){
         try{
             $data = User::where('id',Auth::user()->id)->first();
-            if($data->fcm_token == null){
-                User::where('id',Auth::user()->id)->update(['fcm_token'=> $request->fcm_token]);
-            }
+            User::where('id',Auth::user()->id)->update(['fcm_token'=> $request->fcm_token]);
             return response()->json([
                 'status' => Response::HTTP_OK,
                 'message' => 'FCM token has been updated.'
