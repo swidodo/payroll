@@ -25,7 +25,8 @@ class NotifikasiController extends Controller
     public function index(){
         return $this->access_token;
     }
-    public function sendNotification($token="euHpJ1IfligegtvoL5VzKP:APA91bEDnjimH235KLfTjJAPw5YP9Bxa1aATg9zdmjGs2cnb3PC5eRlBIxLJ97sEmwb1-6uZSmEUgWl3aYIJemceccqIuq5PYkTkCIoel_Jw176Uj-nNxb4Zq32neCPHecaPipx17kzS", 
+    public function sendNotification(
+        $token="", 
     $title ="notif", 
     $body="hello", 
     $data = [])
@@ -34,14 +35,24 @@ class NotifikasiController extends Controller
 
         $message = [
             'message' => [
-                'token' => $token,
+                'token' => 'euHpJ1IfligegtvoL5VzKP:APA91bEDnjimH235KLfTjJAPw5YP9Bxa1aATg9zdmjGs2cnb3PC5eRlBIxLJ97sEmwb1-6uZSmEUgWl3aYIJemceccqIuq5PYkTkCIoel_Jw176Uj-nNxb4Zq32neCPHecaPipx17kzS',
                 'notification' => [
-                    'title' => $title,
-                    'body' => $body
+                    'title' => "notif",
+                    'body' => "Hallo body notif"
                 ],
                 'data' => $data
             ]
         ];
+        // $message = [
+        //     'message' => [
+        //         'token' => $token,
+        //         'notification' => [
+        //             'title' => $title,
+        //             'body' => $body
+        //         ],
+        //         'data' => $data
+        //     ]
+        // ];
 
         $response = $this->client->post($url, [
             'headers' => [
