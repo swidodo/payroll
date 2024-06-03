@@ -669,7 +669,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('delete-approval',[ApprovalController::class,'destroy']);
         Route::post('action-need',[ApprovalController::class,'list_approval']);
         //  push notif
-        Route::get('/notif', [NotifikasiController::class, 'index']);
+        Route::get('/notif', [NotifikasiController::class, 'sendNotification']);
         Route::post('/fcm-token', [NotifikasiController::class, 'updateToken'])->name('fcmToken');
         Route::get('/send-notification',[NotifikasiController::class,'notification']);
 

@@ -25,7 +25,10 @@ class NotifikasiController extends Controller
     public function index(){
         return $this->access_token;
     }
-    public function sendNotification($token, $title, $body, $data = [])
+    public function sendNotification($token="euHpJ1IfligegtvoL5VzKP:APA91bEDnjimH235KLfTjJAPw5YP9Bxa1aATg9zdmjGs2cnb3PC5eRlBIxLJ97sEmwb1-6uZSmEUgWl3aYIJemceccqIuq5PYkTkCIoel_Jw176Uj-nNxb4Zq32neCPHecaPipx17kzS", 
+    $title ="notif", 
+    $body="hello", 
+    $data = [])
     {
         $url = "https://fcm.googleapis.com/v1/projects/{$this->project_id}/messages:send";
 
