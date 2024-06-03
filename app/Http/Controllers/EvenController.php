@@ -57,7 +57,6 @@ class EvenController extends Controller
             ],
             'json' => $message
         ]);
-        dd($message);
         return json_decode($response->getBody(), true);
     }
     public function index(Request $request){
