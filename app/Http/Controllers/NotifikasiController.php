@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use GuzzleHttp\Client;
-use Google\Client as Google_Client;
+use Google_Client;
 
 class NotifikasiController extends Controller
 {
@@ -16,7 +16,7 @@ class NotifikasiController extends Controller
         $this->project_id = env('FIREBASE_PROJECT_ID');
 
         $googleClient = new Google_Client();
-        $googleClient->setAuthConfig('pehadir-1f207-8c712bfe1daa.json');
+        $googleClient->setAuthConfig(storage_path('app/pehadir-1f207-8c712bfe1daa.json'));
         $googleClient->addScope('https://www.googleapis.com/auth/cloud-platform');
 
         $this->access_token = $googleClient->fetchAccessTokenWithAssertion()["access_token"];
