@@ -1,49 +1,53 @@
 <?php
-require 'vendor/autoload.php';
 
-use Google\Client as Google_Client;
+namespace App\Http\Controllers;
 
-// Buat instance Google_Client
-$googleClient = new Google_Client();
-$googleClient->setAuthConfig('pehadir-1f207-8c712bfe1daa.json');
-$googleClient->addScope('https://www.googleapis.com/auth/cloud-platform');
+use GuzzleHttp\Client;
+use Google_Client;
 
-// Dapatkan access token
-$accessToken = $googleClient->fetchAccessTokenWithAssertion()["access_token"];
-print_r($accessToken);die();
-// Siapkan data notifikasi
-$url = "https://fcm.googleapis.com/v1/projects/pehadir-1f207/messages:send";
-$data = [
-    'message' => [
-        'token' => 'DEVICE_REGISTRATION_TOKEN',
-        'notification' => [
-            'title' => 'Hello',
-            'body' => 'World'
-        ],
-        'data' => [
-            'key1' => 'value1',
-            'key2' => 'value2'
-        ]
-    ]
-];
+class NotifikasiController extends Controller
+{
+    private $client;
+    private $project_id;
+    private $access_token;
 
-// Siapkan permintaan cURL
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $url);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    'Authorization: Bearer ' . $accessToken,
-    'Content-Type: application/json'
-]);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    public function __construct()
+    {
+        $this->project_id = env('FIREBASE_PROJECT_ID');
 
-// Eksekusi permintaan dan dapatkan respons
-$response = curl_exec($ch);
-if (curl_errno($ch)) {
-    echo 'Error:' . curl_error($ch);
+        $googleClient = new Google_Client();
+        $googleClient->setAuthConfig('pehadir-1f207-8c712bfe1daa.json');
+        $googleClient->addScope('https://www.googleapis.com/auth/cloud-platform');
+
+        $this->access_token = $googleClient->fetchAccessTokenWithAssertion()["access_token"];
+        $this->client = new Client();
+    }
+    public function index(){
+        return $access_token;
+    }
+    public function sendNotification($token, $title, $body, $data = [])
+    {
+        $url = "https://fcm.googleapis.com/v1/projects/{$this->project_id}/messages:send";
+
+        $message = [
+            'message' => [
+                'token' => $token,
+                'notification' => [
+                    'title' => $title,
+                    'body' => $body
+                ],
+                'data' => $data
+            ]
+        ];
+
+        $response = $this->client->post($url, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->access_token,
+                'Content-Type' => 'application/json'
+            ],
+            'json' => $message
+        ]);
+
+        return json_decode($response->getBody(), true);
+    }
 }
-curl_close($ch);
-
-// Cetak respons
-echo $response;
