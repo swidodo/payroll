@@ -476,9 +476,9 @@
                     </li>
                 @endif
                 @if(Auth::user()->type == 'user')
-                    <li class=" {{(request()->routeIs('action-need')) ? 'active' : ''}}">
+                    {{-- <li class=" {{(request()->routeIs('action-need')) ? 'active' : ''}}">
                         <a href="{{route('action-need')}}"><i class="la la-file"></i> <span> Action Need</span></a>
-                    </li>
+                    </li> --}}
                 @endif
             
             </ul>
